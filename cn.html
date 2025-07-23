@@ -1,149 +1,184 @@
----
-layout: default
----
-<style>
-/* Modal Styling */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pygment_trac.css">
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.min.css">
+    <title>王伟钦 - 个人主页</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        
+        <!-- 中文版Bio -->
+        <table>
+        <td><img src="images/weiqin.png" alt="王伟钦的照片" height="180px"></td>
+        <td>
+          <div>
+            <h1>王伟钦 <font size="5"; font style="font-family:KaiTi">(Weiqin Wang)</font></h1>
+            <b>硕士研究生</b><br/>
+            <a href="https://csse.szu.edu.cn/"  target="_blank">深圳大学计算机与软件学院</a><br/>
+            <br/>
+            <b>邮箱</b>: here1swqw@gmail.com<br/>
+          </div>
+        </td>
+        </table>
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 10% auto; /* 10% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-  max-width: 700px;
-  border-radius: 8px;
-  position: relative;
-}
-
-.close-button {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#bibtex-modal-content pre {
-  white-space: pre-wrap;       /* Since CSS 2.1 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word;       /* Internet Explorer 5.5+ */
-  background-color: #f4f4f4;
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 5px;
-  max-height: 400px; /* Limit height and enable scroll if content is too long */
-  overflow-y: auto;
-}
-</style> 
-
-<!-- 语言切换链接 -->
-<div style="text-align: right; margin-bottom: 10px;">
-  <a href="index.html" style="text-decoration: none; color: #0066cc;">English</a>
-</div>
-
-<!-- [<a href="https://scholar.google.com/citations?user=v1YnW6gAAAAJ&hl=en" target="_blank">Google Scholar</a>] -->
-<h2>发表论文 📄</h2>  <!-- 论文 -->
-(<b>*</b> 表示共同第一作者, <b>#</b> 表示通讯作者)
-
-<p>
-  <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a href="https://arxiv.org/abs/2505.10772" target="_blank">arxiv</a>][<a href="javascript:void(0);" onclick="openBibModal('bibtex/wang2025ranked.bib')">bib</a>] <br/>
-    &nbsp;&nbsp; &nbsp; <b>Weiqin Wang</b>, Yile Wang, and Hui Huang. <br/>
-    &nbsp;&nbsp; &nbsp; To appear in Findings of the 63th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>) 2025 
-</p>
-
-<hr>
-<h2>获奖情况 🏆</h2> <!-- 奖项 -->
-<ul>
-  <li>🏆 <b>本科生国家奖学金</b></li>
-  <li>🥈 <b>二等奖</b>, 全国大学生数学建模竞赛</li>
-  <li>🥉 <b>三等奖</b>, 团体程序设计天梯赛</li>
-  <li>🏅 <b>一等奖</b>, 美国大学生数学建模竞赛（MCM/ICM）</li>
-  <li>🥇 <b>一等奖</b>, 第十五届蓝桥杯程序设计竞赛福建赛区</li>
-</ul>
-
-<hr>
-<h2>学术与专业服务</h2> <!-- 专业服务 -->
-<ul>
-  <li><b>编译原理</b>, 助教, 2025春季<br/>主要职责：实验设计、实验指导、实验批改、答疑解惑。</li>
-</ul>
-
-<hr>
-<h2>教育背景</h2> <!-- 学习经历 -->
-<ul>
-  <li><b>学士学位</b> 计算机科学与技术专业, <b>福建农林大学</b>, 2021.09-2025.06</li>
-  <li><b>硕士研究生在读</b> 计算机科学与技术专业, <b>深圳大学</b>, 2025.09–2028.06</li>
-</ul>
-
-<br/><br/>
-<!-- The Modal -->
-<div id="bibtexModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close-button" onclick="closeBibModal()">&times;</span>
-    <h3>BibTeX 引用</h3>
-    <div id="bibtex-modal-content"><pre>加载中...</pre></div>
-  </div>
-</div>
-
-<script>
-// Get the modal
-var modal = document.getElementById('bibtexModal');
-var bibtexModalContent = document.getElementById('bibtex-modal-content').getElementsByTagName('pre')[0];
-
-// Function to open modal and load BibTeX
-async function openBibModal(bibFileUrl) {
-    bibtexModalContent.textContent = '加载中...'; // Reset content
-    modal.style.display = "block";
-    try {
-        const response = await fetch(bibFileUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        <p>王伟钦，现为深圳大学计算机与软件学院硕士研究生（2025年推荐免试录取），师从<a href="https://ylwangy.github.io/" target="_blank">王一乐</a>副教授。主要研究方向为人工智能、自然语言处理与大语言模型，致力于推动人工智能技术的理论与应用研究。</p>
+        
+        <!-- 页面内容 -->
+        <style>
+        /* Modal Styling */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1000; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         }
-        const text = await response.text();
-        bibtexModalContent.textContent = text;
-    } catch (error) {
-        bibtexModalContent.textContent = `加载 BibTeX 文件时出错: ${error.message}`;
-        console.error('Error fetching BibTeX:', error);
-    }
-}
 
-// Function to close modal
-function closeBibModal() {
-    modal.style.display = "none";
-}
+        .modal-content {
+          background-color: #fefefe;
+          margin: 10% auto; /* 10% from the top and centered */
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%; /* Could be more or less, depending on screen size */
+          max-width: 700px;
+          border-radius: 8px;
+          position: relative;
+        }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        closeBibModal();
-    }
-}
+        .close-button {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
 
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
-        closeBibModal();
-    }
-});
-</script>
-( <i>最后更新于 2025年5月15日</i> ) 
+        .close-button:hover,
+        .close-button:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        #bibtex-modal-content pre {
+          white-space: pre-wrap;       /* Since CSS 2.1 */
+          white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+          white-space: -pre-wrap;      /* Opera 4-6 */
+          white-space: -o-pre-wrap;    /* Opera 7 */
+          word-wrap: break-word;       /* Internet Explorer 5.5+ */
+          background-color: #f4f4f4;
+          border: 1px solid #ddd;
+          padding: 15px;
+          border-radius: 5px;
+          max-height: 400px; /* Limit height and enable scroll if content is too long */
+          overflow-y: auto;
+        }
+        </style> 
+
+        <!-- 语言切换链接 -->
+        <div style="text-align: right; margin-bottom: 10px;">
+          <a href="index.html" style="text-decoration: none; color: #0066cc;">English</a>
+        </div>
+
+        <!-- [<a href="https://scholar.google.com/citations?user=v1YnW6gAAAAJ&hl=en" target="_blank">Google Scholar</a>] -->
+        <h2>发表论文 📄</h2>  <!-- 论文 -->
+        (<b>*</b> 表示共同第一作者, <b>#</b> 表示通讯作者)
+
+        <p>
+          <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a href="https://arxiv.org/abs/2505.10772" target="_blank">arxiv</a>][<a href="javascript:void(0);" onclick="openBibModal('bibtex/wang2025ranked.bib')">bib</a>] <br/>
+            &nbsp;&nbsp; &nbsp; <b>Weiqin Wang</b>, Yile Wang, and Hui Huang. <br/>
+            &nbsp;&nbsp; &nbsp; To appear in Findings of the 63th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>) 2025 
+        </p>
+
+        <hr>
+        <h2>获奖情况 🏆</h2> <!-- 奖项 -->
+        <ul>
+          <li>🏆 <b>本科生国家奖学金</b></li>
+          <li>🥈 <b>二等奖</b>, 全国大学生数学建模竞赛</li>
+          <li>🥉 <b>三等奖</b>, 团体程序设计天梯赛</li>
+          <li>🏅 <b>一等奖</b>, 美国大学生数学建模竞赛（MCM/ICM）</li>
+          <li>🥇 <b>一等奖</b>, 第十五届蓝桥杯程序设计竞赛福建赛区</li>
+        </ul>
+
+        <hr>
+        <h2>学术与专业服务</h2> <!-- 专业服务 -->
+        <ul>
+          <li><b>编译原理</b>, 助教, 2025春季<br/>主要职责：实验设计、实验指导、实验批改、答疑解惑。</li>
+        </ul>
+
+        <hr>
+        <h2>教育背景</h2> <!-- 学习经历 -->
+        <ul>
+          <li><b>学士学位</b> 计算机科学与技术专业, <b>福建农林大学</b>, 2021.09-2025.06</li>
+          <li><b>硕士研究生在读</b> 计算机科学与技术专业, <b>深圳大学</b>, 2025.09–2028.06</li>
+        </ul>
+
+        <br/><br/>
+        <!-- The Modal -->
+        <div id="bibtexModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close-button" onclick="closeBibModal()">&times;</span>
+            <h3>BibTeX 引用</h3>
+            <div id="bibtex-modal-content"><pre>加载中...</pre></div>
+          </div>
+        </div>
+
+        <script>
+        // Get the modal
+        var modal = document.getElementById('bibtexModal');
+        var bibtexModalContent = document.getElementById('bibtex-modal-content').getElementsByTagName('pre')[0];
+
+        // Function to open modal and load BibTeX
+        async function openBibModal(bibFileUrl) {
+            bibtexModalContent.textContent = '加载中...'; // Reset content
+            modal.style.display = "block";
+            try {
+                const response = await fetch(bibFileUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                bibtexModalContent.textContent = text;
+            } catch (error) {
+                bibtexModalContent.textContent = `加载 BibTeX 文件时出错: ${error.message}`;
+                console.error('Error fetching BibTeX:', error);
+            }
+        }
+
+        // Function to close modal
+        function closeBibModal() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeBibModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeBibModal();
+            }
+        });
+        </script>
+        ( <i>最后更新于 2025年5月15日</i> )
+
+      </section>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+  </body>
+</html> 
