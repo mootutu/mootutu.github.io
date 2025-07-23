@@ -56,14 +56,14 @@ layout: default
 }
 </style> 
 
-<!-- Language switch link -->
+<!-- 语言切换链接 -->
 <div style="text-align: right; margin-bottom: 10px;">
-  <a href="cn.html" style="text-decoration: none; color: #0066cc;">中文</a>
+  <a href="index.html" style="text-decoration: none; color: #0066cc;">English</a>
 </div>
 
 <!-- [<a href="https://scholar.google.com/citations?user=v1YnW6gAAAAJ&hl=en" target="_blank">Google Scholar</a>] -->
-<h2 >Publications 📄</h2>  <!-- 论文 -->
-(<b>*</b> equal contribution, <b>#</b> corresponding author)
+<h2>发表论文 📄</h2>  <!-- 论文 -->
+(<b>*</b> 表示共同第一作者, <b>#</b> 表示通讯作者)
 
 <p>
   <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a href="https://arxiv.org/abs/2505.10772" target="_blank">arxiv</a>][<a href="javascript:void(0);" onclick="openBibModal('bibtex/wang2025ranked.bib')">bib</a>] <br/>
@@ -71,41 +71,28 @@ layout: default
     &nbsp;&nbsp; &nbsp; To appear in Findings of the 63th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>) 2025 
 </p>
 
-<!-- 
-  模板：如何添加新的论文条目
-  复制下面的 <li>...</li> 代码块，并修改相应内容即可。
-  确保将新的BibTeX文件放置在 bibtex/ 文件夹下，并更新链接。
--->
-<!--
-<li>
-  <b><u>[在此处填写您的论文标题]</u></b> 
-  [<a href="[在此处填写arXiv链接，例如：https://arxiv.org/abs/xxxx.xxxxx]" target="_blank">arxiv</a>]
-  [<a href="javascript:void(0);" onclick="openBibModal('bibtex/[在此处填写您的BibTeX文件名，例如：yourpaper202X.bib]')">bib</a>] 
-  <br/>
-  &nbsp;&nbsp; &nbsp; [在此处填写作者，例如：<b>您的名字</b>, 合作者1, 合作者2.] <br/>
-  &nbsp;&nbsp; &nbsp; [在此处填写发表信息，例如：Proceedings of the Conference on Neural Information Processing Systems (<b>NeurIPS</b>) 202X]
-</li>
--->
+<hr>
+<h2>获奖情况 🏆</h2> <!-- 奖项 -->
+<ul>
+  <li>🏆 <b>本科生国家奖学金</b></li>
+  <li>🥈 <b>二等奖</b>, 全国大学生数学建模竞赛</li>
+  <li>🥉 <b>三等奖</b>, 团体程序设计天梯赛</li>
+  <li>🏅 <b>一等奖</b>, 美国大学生数学建模竞赛（MCM/ICM）</li>
+  <li>🥇 <b>一等奖</b>, 第十五届蓝桥杯程序设计竞赛福建赛区</li>
+</ul>
 
 <hr>
-<h2 >Award 🏆</h2> <!-- 奖项 -->
-
- <p><li><b>National Scholarship for Undergraduate Students</b></li>
- <p><li><b>Second Prize</b>, National Undergraduate Mathematical Contest in Modeling</li>
- <p><li><b>Third Prize</b>, National Team Programming Ladder Tournament</li>
- <p><li><b>Meritorious Winner</b>, Mathematical Contest in Modeling/Interdisciplinary Contest in Modeling (MCM/ICM), USA</li>
- <p><li><b>First Prize</b>, 15th Lanqiao Cup Programming Competition, Fujian Province</li>
-
+<h2>学术与专业服务</h2> <!-- 专业服务 -->
+<ul>
+  <li><b>编译原理</b>, 助教, 2025春季<br/>主要职责：实验设计、实验指导、实验批改、答疑解惑。</li>
+</ul>
 
 <hr>
-<h2 >Academic & Professional Services</h2> <!-- 专业服务 -->
-<p><li><b>Principles of Compilation</b>, Teaching Assistant, Spring 2025<br/>Main responsibilities: experiment design, lab instruction, grading, and answering students' questions.</li>
-
-
-<hr>
-<h2 >Education 🎓</h2> <!-- 学习经历 -->
-<p><li><b>B.Sc.</b> in Computer Science and Technology, <b>Fujian Agriculture and Forestry University</b>, 2021.09-2025.06, Fuzhou, China.</li></p>
-<p><li><b>M.Sc. candidate</b> in Computer Science and Technology, <b>Shenzhen University</b>, 2025.09–2028.06, Shenzhen, China.</li></p>
+<h2>教育背景</h2> <!-- 学习经历 -->
+<ul>
+  <li><b>学士学位</b> 计算机科学与技术专业, <b>福建农林大学</b>, 2021.09-2025.06</li>
+  <li><b>硕士研究生在读</b> 计算机科学与技术专业, <b>深圳大学</b>, 2025.09–2028.06</li>
+</ul>
 
 <br/><br/>
 <!-- The Modal -->
@@ -113,8 +100,8 @@ layout: default
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close-button" onclick="closeBibModal()">&times;</span>
-    <h3>BibTeX Entry</h3>
-    <div id="bibtex-modal-content"><pre>Loading...</pre></div>
+    <h3>BibTeX 引用</h3>
+    <div id="bibtex-modal-content"><pre>加载中...</pre></div>
   </div>
 </div>
 
@@ -125,7 +112,7 @@ var bibtexModalContent = document.getElementById('bibtex-modal-content').getElem
 
 // Function to open modal and load BibTeX
 async function openBibModal(bibFileUrl) {
-    bibtexModalContent.textContent = 'Loading...'; // Reset content
+    bibtexModalContent.textContent = '加载中...'; // Reset content
     modal.style.display = "block";
     try {
         const response = await fetch(bibFileUrl);
@@ -135,7 +122,7 @@ async function openBibModal(bibFileUrl) {
         const text = await response.text();
         bibtexModalContent.textContent = text;
     } catch (error) {
-        bibtexModalContent.textContent = `Error loading BibTeX file: ${error.message}`;
+        bibtexModalContent.textContent = `加载 BibTeX 文件时出错: ${error.message}`;
         console.error('Error fetching BibTeX:', error);
     }
 }
@@ -159,4 +146,4 @@ document.addEventListener('keydown', function(event) {
     }
 });
 </script>
-( <i>last updated on May. 15, 2025</i> )
+( <i>最后更新于 2025年5月15日</i> ) 
