@@ -1,6 +1,6 @@
 # Jekyll Environment for My Academic Website
 
-This repository contains the Jekyll environment, which is used to automatically generate my personal academic website hosted on github pages ([link](QwQwangg.github.io)).
+This repository contains the Jekyll environment, which is used to automatically generate my personal academic website hosted on github pages ([link](mootutu.github.io)).
 
 ## Publication List
 
