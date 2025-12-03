@@ -1,0 +1,331 @@
+---
+layout: blog-layout-cn
+---
+
+<style>
+  /* Blog Post Styles */
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .blog-title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-meta {
+    color: #666;
+    font-size: 1rem;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .blog-content {
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .blog-content h2 {
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .blog-content h3 {
+    color: #34495e;
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
+
+  .blog-content p {
+    margin-bottom: 15px;
+    text-align: justify;
+  }
+
+  .blog-content ul, .blog-content ol {
+    margin-bottom: 15px;
+    padding-left: 30px;
+  }
+
+  .blog-content li {
+    margin-bottom: 8px;
+  }
+
+  .blog-content code {
+    background-color: #f0f2f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+  }
+
+  .blog-content pre {
+    background-color: #f0f2f5;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .blog-content pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .blog-content blockquote {
+    border-left: 4px solid #0066cc;
+    padding-left: 15px;
+    margin-left: 0;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 15px;
+  }
+
+  .blog-tags {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .blog-tag {
+    background-color: #f0f2f5;
+    color: #666;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .blog-tag:hover {
+    background-color: #e0e4e8;
+    color: #333;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .back-link:hover {
+    background-color: #0066cc;
+    color: #fff;
+  }
+</style>
+
+<div class="blog-container">
+  <a href="../blog-cn.html" class="back-link">← 返回博客列表</a>
+
+  <div class="blog-header">
+    <h1 class="blog-title">如何使用 Git 管理技术项目</h1>
+    <div class="blog-meta">
+      <span>作者：王伟钦</span>
+      <span>发布日期：2025-12-03</span>
+      <span>阅读时长：8 分钟</span>
+      <span>分类：技术教程</span>
+    </div>
+  </div>
+
+  <div class="blog-content">
+    <!-- 目录 -->
+    <div class="toc">
+      <div class="toc-title">目录</div>
+      <ul>
+        <li class="toc-h2"><a href="#git-basics">1. Git 基础知识</a></li>
+        <li class="toc-h3"><a href="#git-install">1.1 Git 安装</a></li>
+        <li class="toc-h3"><a href="#git-config">1.2 Git 配置</a></li>
+        <li class="toc-h2"><a href="#git-workflow">2. 基本工作流程</a></li>
+        <li class="toc-h3"><a href="#git-init">2.1 初始化仓库</a></li>
+        <li class="toc-h3"><a href="#git-add">2.2 添加文件</a></li>
+        <li class="toc-h3"><a href="#git-commit">2.3 提交更改</a></li>
+        <li class="toc-h2"><a href="#git-branches">3. 分支管理</a></li>
+        <li class="toc-h3"><a href="#git-branch-create">3.1 创建和切换分支</a></li>
+        <li class="toc-h3"><a href="#git-merge">3.2 合并分支</a></li>
+        <li class="toc-h2"><a href="#git-remote">4. 远程仓库</a></li>
+        <li class="toc-h3"><a href="#git-remote-add">4.1 添加远程仓库</a></li>
+        <li class="toc-h3"><a href="#git-push-pull">4.2 推送和拉取</a></li>
+      </ul>
+    </div>
+
+    <!-- 正文内容 -->
+    <p>Git 是目前最流行的分布式版本控制系统，它可以帮助开发者有效管理代码变更，协作开发项目。本文将介绍 Git 的基础知识和常用工作流程，帮助你快速上手 Git。</p>
+
+    <h2 id="git-basics">1. Git 基础知识</h2>
+    <p>Git 是一个分布式版本控制系统，这意味着每个开发者都可以拥有完整的代码仓库副本，包括所有历史记录。这种设计使得 Git 具有以下优势：</p>
+    <ul>
+      <li>离线工作：不需要始终连接到中央服务器</li>
+      <li>分支管理：轻量级分支，便于实验和协作</li>
+      <li>安全性：完整的校验机制，确保数据完整性</li>
+      <li>高性能：快速的提交、分支切换和合并操作</li>
+    </ul>
+
+    <h3 id="git-install">1.1 Git 安装</h3>
+    <p>在不同操作系统上安装 Git 的方法略有不同：</p>
+    <ul>
+      <li><strong>Windows</strong>：从 <a href="https://git-scm.com/download/win" target="_blank">Git 官网</a> 下载安装包，按照提示安装</li>
+      <li><strong>macOS</strong>：使用 Homebrew 安装：<code>brew install git</code></li>
+      <li><strong>Linux</strong>：使用包管理器安装，例如 Ubuntu：<code>sudo apt-get install git</code></li>
+    </ul>
+    <p>安装完成后，可以通过以下命令验证 Git 是否安装成功：</p>
+    <pre><code>git --version</code></pre>
+
+    <h3 id="git-config">1.2 Git 配置</h3>
+    <p>安装完成后，需要配置 Git 的用户信息，这些信息会出现在你的提交记录中：</p>
+    <pre><code>git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"</code></pre>
+    <p>还可以配置默认编辑器和其他选项：</p>
+    <pre><code># 设置默认编辑器为 VS Code
+git config --global core.editor "code --wait"
+
+# 配置彩色输出
+git config --global color.ui true</code></pre>
+
+    <h2 id="git-workflow">2. 基本工作流程</h2>
+    <p>Git 的基本工作流程包括以下几个步骤：</p>
+
+    <h3 id="git-init">2.1 初始化仓库</h3>
+    <p>要创建一个新的 Git 仓库，可以使用 <code>git init</code> 命令：</p>
+    <pre><code># 创建新目录
+mkdir my-project
+cd my-project
+
+# 初始化 Git 仓库
+git init</code></pre>
+    <p>这会在当前目录下创建一个 <code>.git</code> 目录，用于存储 Git 仓库的所有信息。</p>
+
+    <h3 id="git-add">2.2 添加文件</h3>
+    <p>在 Git 中，需要先将文件添加到暂存区，然后才能提交。可以使用 <code>git add</code> 命令添加文件：</p>
+    <pre><code># 添加单个文件
+git add index.html
+
+# 添加所有文件
+git add .
+
+# 添加特定类型的文件
+git add *.js</code></pre>
+    <p>可以使用 <code>git status</code> 命令查看当前仓库的状态，包括已修改和已暂存的文件：</p>
+    <pre><code>git status</code></pre>
+
+    <h3 id="git-commit">2.3 提交更改</h3>
+    <p>当文件添加到暂存区后，可以使用 <code>git commit</code> 命令提交更改：</p>
+    <pre><code>git commit -m "Initial commit"</code></pre>
+    <p>提交信息应该清晰地描述本次提交的内容，遵循一定的规范，例如：</p>
+    <ul>
+      <li>使用现在时态（"Add feature" 而不是 "Added feature"）</li>
+      <li>简洁明了，不超过 50 个字符</li>
+      <li>如果需要更详细的描述，可以在第一行之后添加空行，然后写详细描述</li>
+    </ul>
+
+    <h2 id="git-branches">3. 分支管理</h2>
+    <p>分支是 Git 的核心特性之一，它允许你在不影响主代码的情况下进行开发。常用的分支策略包括：</p>
+    <ul>
+      <li>主分支（main/master）：稳定的代码版本</li>
+      <li>开发分支（develop）：正在开发的代码</li>
+      <li>功能分支（feature/*）：特定功能的开发</li>
+      <li>修复分支（fix/*）：bug 修复</li>
+    </ul>
+
+    <h3 id="git-branch-create">3.1 创建和切换分支</h3>
+    <p>可以使用以下命令创建和切换分支：</p>
+    <pre><code># 创建新分支
+git branch feature/login
+
+# 切换到新分支
+git checkout feature/login
+
+# 同时创建并切换分支
+git checkout -b feature/login</code></pre>
+    <p>可以使用 <code>git branch</code> 命令查看所有分支，当前分支前面会有一个 <code>*</code> 号：</p>
+    <pre><code>git branch</code></pre>
+
+    <h3 id="git-merge">3.2 合并分支</h3>
+    <p>当功能开发完成后，可以将功能分支合并到主分支或开发分支：</p>
+    <pre><code># 切换到目标分支
+git checkout main
+
+# 合并功能分支
+git merge feature/login</code></pre>
+    <p>如果合并过程中出现冲突，需要手动解决冲突，然后再次提交：</p>
+    <pre><code># 解决冲突后，添加修改的文件
+git add .
+
+# 提交合并
+git commit -m "Merge feature/login into main"</code></pre>
+
+    <h2 id="git-remote">4. 远程仓库</h2>
+    <p>远程仓库是 Git 协作开发的核心，可以将本地仓库与远程仓库关联，实现代码共享和协作。</p>
+
+    <h3 id="git-remote-add">4.1 添加远程仓库</h3>
+    <p>可以使用 <code>git remote add</code> 命令添加远程仓库：</p>
+    <pre><code>git remote add origin https://github.com/username/repository.git</code></pre>
+    <p>可以使用 <code>git remote -v</code> 命令查看所有远程仓库：</p>
+    <pre><code>git remote -v</code></pre>
+
+    <h3 id="git-push-pull">4.2 推送和拉取</h3>
+    <p>将本地分支推送到远程仓库：</p>
+    <pre><code>git push -u origin main</code></pre>
+    <p>从远程仓库拉取最新代码：</p>
+    <pre><code>git pull origin main</code></pre>
+    <p>克隆远程仓库：</p>
+    <pre><code>git clone https://github.com/username/repository.git</code></pre>
+
+    <blockquote>
+      <p><strong>提示</strong>：在团队协作中，建议定期拉取远程仓库的最新代码，以避免冲突。</p>
+    </blockquote>
+
+    <h2>5. 常用 Git 命令总结</h2>
+    <p>以下是一些常用的 Git 命令：</p>
+    <ul>
+      <li><code>git init</code>：初始化仓库</li>
+      <li><code>git add</code>：添加文件到暂存区</li>
+      <li><code>git commit</code>：提交更改</li>
+      <li><code>git status</code>：查看仓库状态</li>
+      <li><code>git log</code>：查看提交历史</li>
+      <li><code>git branch</code>：管理分支</li>
+      <li><code>git checkout</code>：切换分支</li>
+      <li><code>git merge</code>：合并分支</li>
+      <li><code>git remote</code>：管理远程仓库</li>
+      <li><code>git push</code>：推送代码到远程仓库</li>
+      <li><code>git pull</code>：从远程仓库拉取代码</li>
+    </ul>
+
+    <h2>6. 总结</h2>
+    <p>Git 是一个功能强大的版本控制系统，掌握 Git 的基本使用方法对于现代开发者来说是必不可少的。本文介绍了 Git 的基础知识、基本工作流程、分支管理和远程仓库的使用方法，希望能够帮助你快速上手 Git。</p>
+    <p>要成为 Git 高手，需要不断实践和学习。建议你在实际项目中使用 Git，尝试不同的工作流程和分支策略，逐步掌握 Git 的高级功能。</p>
+
+    <!-- 标签 -->
+    <div class="blog-tags">
+      <a href="#" class="blog-tag">Git</a>
+      <a href="#" class="blog-tag">版本控制</a>
+      <a href="#" class="blog-tag">技术教程</a>
+      <a href="#" class="blog-tag">编程工具</a>
+      <a href="#" class="blog-tag">开发流程</a>
+    </div>
+  </div>
+</div>

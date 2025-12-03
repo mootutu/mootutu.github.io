@@ -22,102 +22,75 @@ layout: blog-layout
     margin-bottom: 10px;
   }
 
-  .blog-meta {
+  .blog-subtitle {
+    font-size: 1.1rem;
     color: #666;
-    font-size: 1rem;
+    font-weight: normal;
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .blog-post {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .blog-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .blog-post-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-post-title a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+
+  .blog-post-title a:hover {
+    color: #0066cc;
+  }
+
+  .blog-post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
     display: flex;
     gap: 20px;
-    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
   }
 
-  .blog-content {
-    line-height: 1.8;
-    color: #333;
-  }
-
-  .blog-content h2 {
-    color: #2c3e50;
-    margin-top: 30px;
+  .blog-post-excerpt {
+    color: #555;
+    line-height: 1.6;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-content h3 {
-    color: #34495e;
-    margin-top: 25px;
-    margin-bottom: 15px;
-  }
-
-  .blog-content p {
-    margin-bottom: 15px;
     text-align: justify;
   }
 
-  .blog-content ul, .blog-content ol {
-    margin-bottom: 15px;
-    padding-left: 30px;
-  }
-
-  .blog-content li {
-    margin-bottom: 8px;
-  }
-
-  .blog-content code {
-    background-color: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
-  }
-
-  .blog-content pre {
-    background-color: #f0f2f5;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .blog-content pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .blog-content blockquote {
-    border-left: 4px solid #0066cc;
-    padding-left: 15px;
-    margin-left: 0;
-    color: #666;
-    font-style: italic;
-    margin-bottom: 15px;
-  }
-
-  .blog-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin: 20px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .blog-tags {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
+  .blog-post-tags {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
   }
 
   .blog-tag {
     background-color: #f0f2f5;
     color: #666;
-    padding: 6px 12px;
+    padding: 4px 12px;
     border-radius: 15px;
     font-size: 0.85rem;
     text-decoration: none;
@@ -129,302 +102,76 @@ layout: blog-layout
     color: #333;
   }
 
-  /* Table of Contents Styles */
-  .toc {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border: 1px solid #e9ecef;
-  }
-
-  .toc-title {
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #333;
-  }
-
-  .toc ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-
-  .toc li {
-    margin-bottom: 8px;
-  }
-
-  .toc a {
+  .read-more {
     text-decoration: none;
-    color: #666;
-    transition: color 0.3s ease;
-  }
-
-  .toc a:hover {
     color: #0066cc;
-  }
-
-  .toc-h2 {
     font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
   }
 
-  .toc-h3 {
-    padding-left: 20px;
-    font-size: 0.95rem;
+  .read-more:hover {
+    background-color: #0066cc;
+    color: #fff;
   }
 </style>
 
 <div class="blog-container">
   <div class="blog-header">
-    <h1 class="blog-title">Automating Tasks with Python</h1>
-    <div class="blog-meta">
-      <span>Author: Weiqin Wang</span>
-      <span>Published: December 3, 2025</span>
-      <span>Reading Time: 7 minutes</span>
-      <span>Category: Technical Tutorial</span>
-    </div>
+    <h1 class="blog-title">Personal Blog</h1>
+    <p class="blog-subtitle">Recording tool usage, technical learning, and insights</p>
   </div>
 
-  <div class="blog-content">
-    <!-- Table of Contents -->
-    <div class="toc">
-      <div class="toc-title">Table of Contents</div>
-      <ul>
-        <li class="toc-h2"><a href="#python-automation">1. Introduction to Python Automation</a></li>
-        <li class="toc-h3"><a href="#why-python">1.1 Why Python for Automation?</a></li>
-        <li class="toc-h3"><a href="#setup-environment">1.2 Setting Up Your Environment</a></li>
-        <li class="toc-h2"><a href="#file-operations">2. File System Operations</a></li>
-        <li class="toc-h3"><a href="#reading-writing">2.1 Reading and Writing Files</a></li>
-        <li class="toc-h3"><a href="#file-management">2.2 File Management</a></li>
-        <li class="toc-h2"><a href="#web-automation">3. Web Automation</a></li>
-        <li class="toc-h3"><a href="#beautifulsoup">3.1 Web Scraping with BeautifulSoup</a></li>
-        <li class="toc-h3"><a href="#selenium">3.2 Browser Automation with Selenium</a></li>
-        <li class="toc-h2"><a href="#practical-examples">4. Practical Automation Examples</a></li>
-        <li class="toc-h3"><a href="#example1">4.1 Example 1: Renaming Files in Bulk</a></li>
-        <li class="toc-h3"><a href="#example2">4.2 Example 2: Automating Email Sending</a></li>
-      </ul>
-    </div>
+  <div class="blog-posts">
+    <!-- Blog Post 1 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="blog/automating-tasks-python.html">Automating Tasks with Python</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: December 3, 2025</span>
+        <span>Reading Time: 7 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">Python is a versatile programming language that excels at automation tasks. Whether you're dealing with file management, web scraping, or repetitive tasks, Python provides powerful libraries and a simple syntax to get the job done efficiently.</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Python</a>
+        <a href="#" class="blog-tag">Automation</a>
+        <a href="#" class="blog-tag">Technical Tutorial</a>
+      </div>
+      <a href="blog/automating-tasks-python.html" class="read-more">Read More</a>
+    </article>
 
-    <!-- Main Content -->
-    <p>Python is a versatile programming language that excels at automation tasks. Whether you're dealing with file management, web scraping, or repetitive tasks, Python provides powerful libraries and a simple syntax to get the job done efficiently. In this article, we'll explore the basics of Python automation and walk through some practical examples.</p>
+    <!-- Blog Post 2 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="blog/git-basics.html">Git Basics for Developers</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: November 28, 2025</span>
+        <span>Reading Time: 8 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">Git is the most popular distributed version control system, helping developers manage code changes and collaborate effectively. This article introduces Git fundamentals and common workflows.</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Git</a>
+        <a href="#" class="blog-tag">Version Control</a>
+        <a href="#" class="blog-tag">Development</a>
+      </div>
+      <a href="blog/git-basics.html" class="read-more">Read More</a>
+    </article>
 
-    <h2 id="python-automation">1. Introduction to Python Automation</h2>
-    <p>Automation involves using software to perform tasks without human intervention. Python is particularly well-suited for automation due to its readability, extensive library ecosystem, and cross-platform compatibility.</p>
-
-    <h3 id="why-python">1.1 Why Python for Automation?</h3>
-    <ul>
-      <li><strong>Readable Syntax</strong>: Python's simple, English-like syntax makes it easy to write and maintain automation scripts</li>
-      <li><strong>Extensive Libraries</strong>: Python has a rich ecosystem of libraries for almost any automation task</li>
-      <li><strong>Cross-Platform</strong>: Python scripts run on Windows, macOS, and Linux with minimal modifications</li>
-      <li><strong>Large Community</strong>: A vast community means plenty of resources and support</li>
-      <li><strong>Integration Capabilities</strong>: Python can interact with other languages, APIs, and systems</li>
-    </ul>
-
-    <h3 id="setup-environment">1.2 Setting Up Your Environment</h3>
-    <p>To get started with Python automation, you'll need to:</p>
-    <ol>
-      <li>Install Python: Download from the <a href="https://www.python.org/downloads/" target="_blank">official Python website</a></li>
-      <li>Install a code editor: VS Code, PyCharm, or Sublime Text are popular choices</li>
-      <li>Set up a virtual environment: <code>python -m venv venv</code></li>
-      <li>Activate the virtual environment:</li>
-    </ol>
-    <pre><code># Windows
-venv\Scripts\activate
-
-# macOS/Linux
-source venv/bin/activate</code></pre>
-    <p>You can then install required packages using pip:</p>
-    <pre><code>pip install requests beautifulsoup4 selenium</code></pre>
-
-    <h2 id="file-operations">2. File System Operations</h2>
-    <p>Python's <code>os</code> and <code>shutil</code> modules provide powerful tools for file system automation.</p>
-
-    <h3 id="reading-writing">2.1 Reading and Writing Files</h3>
-    <p>Reading and writing files is a fundamental automation task:</p>
-    <pre><code># Reading a file
-with open('example.txt', 'r') as f:
-    content = f.read()
-    print(content)
-
-# Writing to a file
-with open('output.txt', 'w') as f:
-    f.write('Hello, Automation!')
-
-# Appending to a file
-with open('output.txt', 'a') as f:
-    f.write('\nAdding more content.')</code></pre>
-
-    <h3 id="file-management">2.2 File Management</h3>
-    <p>You can perform various file management tasks:</p>
-    <pre><code>import os
-import shutil
-
-# Create a directory
-os.makedirs('new_folder', exist_ok=True)
-
-# List files in a directory
-files = os.listdir('.')
-print(files)
-
-# Copy a file
-shutil.copy('source.txt', 'destination.txt')
-
-# Move a file
-shutil.move('old_name.txt', 'new_name.txt')
-
-# Delete a file
-os.remove('file_to_delete.txt')
-
-# Delete a directory
-s shutil.rmtree('directory_to_delete')</code></pre>
-
-    <h2 id="web-automation">3. Web Automation</h2>
-    <p>Python can automate web-related tasks, including web scraping and browser automation.</p>
-
-    <h3 id="beautifulsoup">3.1 Web Scraping with BeautifulSoup</h3>
-    <p>BeautifulSoup is a library for parsing HTML and XML documents. Here's an example of scraping a website:</p>
-    <pre><code>import requests
-from bs4 import BeautifulSoup
-
-# Send a GET request
-url = 'https://example.com'
-response = requests.get(url)
-
-# Parse the HTML content
-soup = BeautifulSoup(response.text, 'html.parser')
-
-# Extract data
-title = soup.find('title').text
-paragraphs = [p.text for p in soup.find_all('p')]
-
-print(f"Title: {title}")
-print(f"Number of paragraphs: {len(paragraphs)}")</code></pre>
-
-    <h3 id="selenium">3.2 Browser Automation with Selenium</h3>
-    <p>Selenium allows you to automate web browsers. Here's a simple example:</p>
-    <pre><code>from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
-# Initialize the browser
-driver = webdriver.Chrome()  # You'll need chromedriver installed
-
-# Open a website
-driver.get('https://www.google.com')
-
-# Find the search box
-search_box = driver.find_element_by_name('q')
-
-# Enter a search query
-search_box.send_keys('Python automation')
-search_box.send_keys(Keys.RETURN)
-
-# Close the browser after a delay
-import time
-time.sleep(5)
-driver.quit()</code></pre>
-
-    <h2 id="practical-examples">4. Practical Automation Examples</h2>
-    <p>Let's explore some real-world automation examples.</p>
-
-    <h3 id="example1">4.1 Example 1: Renaming Files in Bulk</h3>
-    <p>This script renames all JPG files in a directory with a sequential numbering scheme:</p>
-    <pre><code>import os
-
-def rename_files(directory):
-    # Change to the target directory
-    os.chdir(directory)
-    
-    # Get all JPG files
-    jpg_files = [f for f in os.listdir('.') if f.endswith('.jpg')]
-    
-    # Sort files to ensure consistent numbering
-    jpg_files.sort()
-    
-    # Rename files
-    for i, filename in enumerate(jpg_files):
-        new_name = f"photo_{i+1:03d}.jpg"
-        os.rename(filename, new_name)
-        print(f"Renamed: {filename} -> {new_name}")
-
-# Usage
-rename_files('path/to/photos')</code></pre>
-
-    <h3 id="example2">4.2 Example 2: Automating Email Sending</h3>
-    <p>This script sends an email with an attachment:</p>
-    <pre><code>import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-
-def send_email():
-    # Email configuration
-    sender_email = "your_email@example.com"
-    receiver_email = "recipient@example.com"
-    password = "your_password"
-    
-    # Create the email message
-    message = MIMEMultipart()
-    message['From'] = sender_email
-    message['To'] = receiver_email
-    message['Subject'] = "Automated Email from Python"
-    
-    # Email body
-    body = "This is an automated email sent from a Python script."
-    message.attach(MIMEText(body, 'plain'))
-    
-    # Attach a file
-    filename = "report.pdf"
-    attachment = open(filename, "rb")
-    
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload((attachment).read())
-    encoders.encode_base64(part)
-    part.add_header(
-        'Content-Disposition',
-        f"attachment; filename= {filename}",
-    )
-    
-    message.attach(part)
-    
-    # Send the email
-    with smtplib.SMTP('smtp.gmail.com', 587) as server:
-        server.starttls()
-        server.login(sender_email, password)
-        text = message.as_string()
-        server.sendmail(sender_email, receiver_email, text)
-    
-    print("Email sent successfully!")
-
-# Usage
-send_email()</code></pre>
-
-    <blockquote>
-      <p><strong>Note</strong>: For Gmail, you'll need to enable "Less secure app access" or use an app-specific password.</p>
-    </blockquote>
-
-    <h2>5. Best Practices for Python Automation</h2>
-    <ul>
-      <li><strong>Use Descriptive Names</strong>: Choose clear, descriptive names for variables and functions</li>
-      <li><strong>Add Comments</strong>: Document your code to make it easier to understand and maintain</li>
-      <li><strong>Handle Errors</strong>: Use try-except blocks to handle potential errors gracefully</li>
-      <li><strong>Test Thoroughly</strong>: Test your scripts in a controlled environment before deploying</li>
-      <li><strong>Use Version Control</strong>: Track changes to your automation scripts using Git</li>
-      <li><strong>Modularize Code</strong>: Break down complex scripts into reusable functions</li>
-      <li><strong>Follow PEP 8</strong>: Adhere to Python's style guide for consistency</li>
-    </ul>
-
-    <h2>6. Conclusion</h2>
-    <p>Python automation can save you time and reduce human error by automating repetitive tasks. Whether you're managing files, scraping websites, or automating emails, Python provides the tools you need to get the job done efficiently.</p>
-    <p>Remember that the key to successful automation is understanding the task thoroughly, writing clear and maintainable code, and testing rigorously. With practice, you'll be able to automate a wide range of tasks and become more productive in your work.</p>
-    <p>Start small with simple scripts and gradually take on more complex automation projects. The possibilities with Python automation are endless!</p>
-
-    <!-- Tags -->
-    <div class="blog-tags">
-      <a href="#" class="blog-tag">Python</a>
-      <a href="#" class="blog-tag">Automation</a>
-      <a href="#" class="blog-tag">Scripting</a>
-      <a href="#" class="blog-tag">Web Scraping</a>
-      <a href="#" class="blog-tag">File Management</a>
-    </div>
+    <!-- Blog Post 3 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="blog/markdown-guide.html">Markdown Guide for Technical Writing</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: November 20, 2025</span>
+        <span>Reading Time: 6 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">Markdown is a lightweight markup language perfect for technical writing. Learn the basics of Markdown syntax and how to use it effectively for documentation and blogging.</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Markdown</a>
+        <a href="#" class="blog-tag">Technical Writing</a>
+        <a href="#" class="blog-tag">Documentation</a>
+      </div>
+      <a href="blog/markdown-guide.html" class="read-more">Read More</a>
+    </article>
   </div>
 </div>
