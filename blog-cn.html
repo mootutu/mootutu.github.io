@@ -1,0 +1,174 @@
+---
+layout: default-cn
+---
+
+<style>
+  /* Blog Page Styles */
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: normal;
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .blog-post {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .blog-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .blog-post-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-post-title a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+
+  .blog-post-title a:hover {
+    color: #0066cc;
+  }
+
+  .blog-post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .blog-post-excerpt {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .blog-post-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .blog-tag {
+    background-color: #f0f2f5;
+    color: #666;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .blog-tag:hover {
+    background-color: #e0e4e8;
+    color: #333;
+  }
+
+  .read-more {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .read-more:hover {
+    background-color: #0066cc;
+    color: #fff;
+  }
+</style>
+
+<div class="blog-container">
+  <div class="blog-header">
+    <h1 class="blog-title">个人博客</h1>
+    <p class="blog-subtitle">记录工具使用、技术学习与生活感悟</p>
+  </div>
+
+  <div class="blog-posts">
+    <!-- Sample Blog Post 1 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">工具使用记录：Markdown 编辑器推荐</a></h2>
+      <div class="blog-post-meta">
+        <span>发布日期：2025-12-03</span>
+        <span>阅读时长：5 分钟</span>
+      </div>
+      <p class="blog-post-excerpt">在这篇文章中，我将分享几款我常用的 Markdown 编辑器，包括它们的优缺点和适用场景。从简单易用的在线编辑器到功能强大的桌面应用，总有一款适合你...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">工具推荐</a>
+        <a href="#" class="blog-tag">Markdown</a>
+        <a href="#" class="blog-tag">编辑器</a>
+      </div>
+      <a href="#" class="read-more">阅读更多</a>
+    </article>
+
+    <!-- Sample Blog Post 2 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">Git 高级技巧：分支管理最佳实践</a></h2>
+      <div class="blog-post-meta">
+        <span>发布日期：2025-11-28</span>
+        <span>阅读时长：8 分钟</span>
+      </div>
+      <p class="blog-post-excerpt">Git 分支管理是版本控制的核心技能之一。本文将介绍一些实用的分支管理策略，包括 Git Flow、GitHub Flow 以及我在实际项目中的使用经验...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Git</a>
+        <a href="#" class="blog-tag">版本控制</a>
+        <a href="#" class="blog-tag">开发技巧</a>
+      </div>
+      <a href="#" class="read-more">阅读更多</a>
+    </article>
+
+    <!-- Sample Blog Post 3 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">Python 自动化：批量处理文件的实用脚本</a></h2>
+      <div class="blog-post-meta">
+        <span>发布日期：2025-11-20</span>
+        <span>阅读时长：6 分钟</span>
+      </div>
+      <p class="blog-post-excerpt">Python 是一门非常适合自动化任务的语言。在本文中，我将分享几个实用的 Python 脚本，用于批量处理文件，包括重命名、转换格式、提取内容等...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Python</a>
+        <a href="#" class="blog-tag">自动化</a>
+        <a href="#" class="blog-tag">脚本编程</a>
+      </div>
+      <a href="#" class="read-more">阅读更多</a>
+    </article>
+  </div>
+</div>

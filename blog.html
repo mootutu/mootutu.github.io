@@ -1,0 +1,174 @@
+---
+layout: default
+---
+
+<style>
+  /* Blog Page Styles */
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: normal;
+  }
+
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .blog-post {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .blog-post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .blog-post-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .blog-post-title a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+
+  .blog-post-title a:hover {
+    color: #0066cc;
+  }
+
+  .blog-post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .blog-post-excerpt {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .blog-post-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .blog-tag {
+    background-color: #f0f2f5;
+    color: #666;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .blog-tag:hover {
+    background-color: #e0e4e8;
+    color: #333;
+  }
+
+  .read-more {
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid #0066cc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .read-more:hover {
+    background-color: #0066cc;
+    color: #fff;
+  }
+</style>
+
+<div class="blog-container">
+  <div class="blog-header">
+    <h1 class="blog-title">Personal Blog</h1>
+    <p class="blog-subtitle">Recording tool usage, technical learning, and life insights</p>
+  </div>
+
+  <div class="blog-posts">
+    <!-- Sample Blog Post 1 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">Tool Usage: Recommended Markdown Editors</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: December 3, 2025</span>
+        <span>Reading Time: 5 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">In this article, I'll share some of my favorite Markdown editors, including their pros, cons, and suitable use cases. From simple online editors to powerful desktop applications, there's something for everyone...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Tool Recommendations</a>
+        <a href="#" class="blog-tag">Markdown</a>
+        <a href="#" class="blog-tag">Editors</a>
+      </div>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+
+    <!-- Sample Blog Post 2 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">Git Advanced Tips: Branch Management Best Practices</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: November 28, 2025</span>
+        <span>Reading Time: 8 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">Git branch management is one of the core skills of version control. This article will introduce some practical branch management strategies, including Git Flow, GitHub Flow, and my experience in actual projects...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Git</a>
+        <a href="#" class="blog-tag">Version Control</a>
+        <a href="#" class="blog-tag">Development Tips</a>
+      </div>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+
+    <!-- Sample Blog Post 3 -->
+    <article class="blog-post">
+      <h2 class="blog-post-title"><a href="#">Python Automation: Useful Scripts for Batch File Processing</a></h2>
+      <div class="blog-post-meta">
+        <span>Published: November 20, 2025</span>
+        <span>Reading Time: 6 minutes</span>
+      </div>
+      <p class="blog-post-excerpt">Python is a great language for automation tasks. In this article, I'll share several useful Python scripts for batch file processing, including renaming, format conversion, content extraction, and more...</p>
+      <div class="blog-post-tags">
+        <a href="#" class="blog-tag">Python</a>
+        <a href="#" class="blog-tag">Automation</a>
+        <a href="#" class="blog-tag">Scripting</a>
+      </div>
+      <a href="#" class="read-more">Read More</a>
+    </article>
+  </div>
+</div>

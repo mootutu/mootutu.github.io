@@ -1,0 +1,82 @@
+<style>
+  /* Navigation Bar Styles */
+  .navbar {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .navbar-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .navbar-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+
+  .navbar-item {
+    display: inline;
+  }
+
+  .navbar-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-link:hover {
+    background-color: #e9ecef;
+    color: #0066cc;
+  }
+
+  .navbar-link.active {
+    color: #0066cc;
+    font-weight: 600;
+    border-bottom: 2px solid #0066cc;
+  }
+
+  /* Responsive Navigation */
+  @media (max-width: 768px) {
+    .navbar-menu {
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .navbar-link {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<nav class="navbar">
+  <div class="navbar-container">
+    <ul class="navbar-menu">
+      {% if page.url contains '-cn.html' or page.url == '/index-cn.html' %}
+        <!-- Chinese Navigation -->
+        <li class="navbar-item"><a href="index-cn.html" class="navbar-link {% if page.url == '/index-cn.html' %}active{% endif %}">首页</a></li>
+        <li class="navbar-item"><a href="blog-cn.html" class="navbar-link {% if page.url == '/blog-cn.html' %}active{% endif %}">博客</a></li>
+        <li class="navbar-item"><a href="tools-cn.html" class="navbar-link {% if page.url == '/tools-cn.html' %}active{% endif %}">工具记录</a></li>
+      {% else %}
+        <!-- English Navigation -->
+        <li class="navbar-item"><a href="index.html" class="navbar-link {% if page.url == '/index.html' %}active{% endif %}">Home</a></li>
+        <li class="navbar-item"><a href="blog.html" class="navbar-link {% if page.url == '/blog.html' %}active{% endif %}">Blog</a></li>
+        <li class="navbar-item"><a href="tools.html" class="navbar-link {% if page.url == '/tools.html' %}active{% endif %}">Tools</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
