@@ -1,5 +1,6 @@
 en:
   home: Home
+  about: About
   blog: Blog
   tools: Tools
   language_name: 中文
@@ -8,6 +9,7 @@ en:
 
 zh-CN:
   home: 首页
+  about: 关于
   blog: 博客
   tools: 工具记录
   language_name: English
