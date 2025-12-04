@@ -14,7 +14,8 @@
 
       <!-- Language switch link -->
       <div style="text-align: right; margin-bottom: 10px;">
-        <a href="index-cn.html" style="text-decoration: none; color: #0066cc;">中文</a>
+        <a href="{{ page.translate_url | default: '/index-cn.html' }}"
+          style="text-decoration: none; color: #0066cc;">中文</a>
       </div>
 
       {%include bio.html %}

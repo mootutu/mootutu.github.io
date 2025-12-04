@@ -1,5 +1,6 @@
 ---
 layout: blog-layout-cn
+translate_url: /blog/blog/automating-tasks-python.html
 ---
 
 <style>
@@ -55,7 +56,8 @@ layout: blog-layout-cn
     text-align: justify;
   }
 
-  .blog-content ul, .blog-content ol {
+  .blog-content ul,
+  .blog-content ol {
     margin-bottom: 15px;
     padding-left: 30px;
   }
@@ -171,7 +173,8 @@ layout: blog-layout-cn
     </div>
 
     <!-- 正文内容 -->
-    <p>Python 是一门非常适合自动化任务的编程语言，它简洁易读的语法和丰富的第三方库使其成为自动化领域的首选。无论是文件管理、数据处理还是网页爬取，Python 都能轻松胜任。本文将介绍 Python 自动化的基础知识和一些实用示例，帮助你快速入门。</p>
+    <p>Python 是一门非常适合自动化任务的编程语言，它简洁易读的语法和丰富的第三方库使其成为自动化领域的首选。无论是文件管理、数据处理还是网页爬取，Python 都能轻松胜任。本文将介绍 Python
+      自动化的基础知识和一些实用示例，帮助你快速入门。</p>
 
     <h2 id="python-automation">1. Python 自动化简介</h2>
     <p>自动化是指使用软件来执行原本需要人工完成的任务，从而提高效率、减少错误。Python 凭借其强大的库生态系统和易用性，在自动化领域占据了重要地位。</p>
@@ -180,7 +183,9 @@ layout: blog-layout-cn
     <ul>
       <li><strong>简单易学</strong>：Python 语法简洁明了，学习曲线平缓</li>
       <li><strong>跨平台</strong>：可以在 Windows、macOS 和 Linux 上运行</li>
-      <li><strong>丰富的库</strong>：拥有大量专门用于自动化的库，如 <code>os</code>、<code>shutil</code>、<code>requests</code>、<code>beautifulsoup4</code>、<code>selenium</code> 等</li>
+      <li><strong>丰富的库</strong>：拥有大量专门用于自动化的库，如
+        <code>os</code>、<code>shutil</code>、<code>requests</code>、<code>beautifulsoup4</code>、<code>selenium</code> 等
+      </li>
       <li><strong>社区支持</strong>：拥有庞大的开发者社区，遇到问题容易找到解决方案</li>
       <li><strong>通用性</strong>：可以用于各种类型的自动化任务</li>
     </ul>
@@ -290,7 +295,7 @@ driver.quit()</code></pre>
 
     <h2 id="practical-examples">4. 实用自动化示例</h2>
     <p>以下是一些实用的 Python 自动化示例：</p>
-    
+
     <h3>4.1 批量重命名文件</h3>
     <pre><code>import os
 

@@ -14,7 +14,8 @@
 
       <!-- 语言切换链接 -->
       <div style="text-align: right; margin-bottom: 10px;">
-        <a href="blog.html" style="text-decoration: none; color: #0066cc;">English</a>
+        <a href="{{ page.translate_url | default: '/blog.html' }}"
+          style="text-decoration: none; color: #0066cc;">English</a>
       </div>
 
       {{content}}
