@@ -1,0 +1,15 @@
+en:
+  home: Home
+  blog: Blog
+  tools: Tools
+  language_name: 中文
+  bio_include: bio.html
+  back_to_blog: "← Back to Blog List"
+
+zh-CN:
+  home: 首页
+  blog: 博客
+  tools: 工具记录
+  language_name: English
+  bio_include: bio-cn.html
+  back_to_blog: "← 返回博客列表"

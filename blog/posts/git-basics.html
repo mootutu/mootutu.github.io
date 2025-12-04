@@ -1,6 +1,7 @@
 ---
 layout: blog-layout
-translate_url: /blog/blog_cn/git-tutorial.html
+lang: en
+translate_url: /cn/blog/posts/git-tutorial.html
 ---
 
 <style>
@@ -142,7 +143,8 @@ translate_url: /blog/blog_cn/git-tutorial.html
 </style>
 
 <div class="blog-container">
-  <a href="../../blog.html" class="back-link">← Back to Blog List</a>
+  {% assign ui = site.data.ui_text[page.lang] %}
+  <a href="/blog.html" class="back-link">{{ ui.back_to_blog }}</a>
 
   <div class="blog-header">
     <h1 class="blog-title">Git Basics for Developers</h1>

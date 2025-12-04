@@ -1,28 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ page.lang | default: 'en' }}">
 
 <head>
   <meta charset="utf-8">
-  <link rel="icon" href="assets/images/nailong.ico" type="image/jpeg">
+  <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
 </head>
 
 <body>
   <div class="wrapper">
     <section>
 
-      {%include navigation.html %}
+      {% include navigation.html %}
 
       <!-- Language switch link -->
       <div style="text-align: right; margin-bottom: 10px;">
-        <a href="{{ page.translate_url | default: '/blog-cn.html' }}"
-          style="text-decoration: none; color: #0066cc;">中文</a>
+        {% assign ui = site.data.ui_text[page.lang] %}
+        <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
+          ui.language_name }}</a>
       </div>
 
       {{content}}
 
     </section>
   </div>
-  <script src="assets/javascripts/scale.fix.js"></script>
+  <script src="/assets/javascripts/scale.fix.js"></script>
 </body>
 
 </html>

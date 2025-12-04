@@ -66,16 +66,20 @@
 <nav class="navbar">
   <div class="navbar-container">
     <ul class="navbar-menu">
-      {% if page.url contains '-cn.html' or page.url == '/index-cn.html' %}
-        <!-- Chinese Navigation -->
-        <li class="navbar-item"><a href="index-cn.html" class="navbar-link {% if page.url == '/index-cn.html' %}active{% endif %}">首页</a></li>
-        <li class="navbar-item"><a href="blog-cn.html" class="navbar-link {% if page.url == '/blog-cn.html' %}active{% endif %}">博客</a></li>
-        <li class="navbar-item"><a href="tools-cn.html" class="navbar-link {% if page.url == '/tools-cn.html' %}active{% endif %}">工具记录</a></li>
+      {% assign ui = site.data.ui_text[page.lang] %}
+      {% if page.lang == 'zh-CN' %}
+      <li class="navbar-item"><a href="/cn/index.html"
+          class="navbar-link {% if page.url == '/cn/index.html' %}active{% endif %}">{{ ui.home }}</a></li>
+      <li class="navbar-item"><a href="/cn/blog.html"
+          class="navbar-link {% if page.url contains '/cn/blog' %}active{% endif %}">{{ ui.blog }}</a></li>
+      <!-- <li class="navbar-item"><a href="/cn/tools.html" class="navbar-link {% if page.url == '/cn/tools.html' %}active{% endif %}">{{ ui.tools }}</a></li> -->
       {% else %}
-        <!-- English Navigation -->
-        <li class="navbar-item"><a href="index.html" class="navbar-link {% if page.url == '/index.html' %}active{% endif %}">Home</a></li>
-        <li class="navbar-item"><a href="blog.html" class="navbar-link {% if page.url == '/blog.html' %}active{% endif %}">Blog</a></li>
-        <li class="navbar-item"><a href="tools.html" class="navbar-link {% if page.url == '/tools.html' %}active{% endif %}">Tools</a></li>
+      <li class="navbar-item"><a href="/index.html"
+          class="navbar-link {% if page.url == '/index.html' %}active{% endif %}">{{ ui.home }}</a></li>
+      <li class="navbar-item"><a href="/blog.html"
+          class="navbar-link {% if page.url contains '/blog' and page.url != '/cn/blog.html' %}active{% endif %}">{{
+          ui.blog }}</a></li>
+      <!-- <li class="navbar-item"><a href="/tools.html" class="navbar-link {% if page.url == '/tools.html' %}active{% endif %}">{{ ui.tools }}</a></li> -->
       {% endif %}
     </ul>
   </div>

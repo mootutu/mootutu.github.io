@@ -1,6 +1,7 @@
 ---
-layout: blog-layout-cn
-translate_url: /blog/blog/git-basics.html
+layout: blog-layout
+lang: zh-CN
+translate_url: /blog/posts/git-basics.html
 ---
 
 <style>
@@ -142,7 +143,8 @@ translate_url: /blog/blog/git-basics.html
 </style>
 
 <div class="blog-container">
-  <a href="../../blog-cn.html" class="back-link">← 返回博客列表</a>
+  {% assign ui = site.data.ui_text[page.lang] %}
+  <a href="/cn/blog.html" class="back-link">{{ ui.back_to_blog }}</a>
 
   <div class="blog-header">
     <h1 class="blog-title">如何使用 Git 管理技术项目</h1>
