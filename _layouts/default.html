@@ -19,7 +19,11 @@
           ui.language_name }}</a>
       </div>
 
-      {% include {{ ui.bio_include }} %}
+      {% if page.lang == 'zh-CN' %}
+      {% include bio-cn.html %}
+      {% else %}
+      {% include bio.html %}
+      {% endif %}
 
       {{content}}
 
