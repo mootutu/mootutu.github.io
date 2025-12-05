@@ -1,5 +1,24 @@
 <table>
-  <td><img src="assets/images/weiqin.png" alt="王伟钦的照片" height="180px"></td>
+  <td style="text-align: center; vertical-align: top;">
+    <div style="position: relative; display: inline-block;">
+      <img id="profile-pic-cn" src="assets/images/mootutu.png" alt="王伟钦的照片" height="180px"
+        style="display: block; border-radius: 8px;">
+      <button onclick="toggleImageCn()" title="切换照片"
+        style="position: absolute; bottom: 5px; right: 5px; cursor: pointer; padding: 6px; border: none; border-radius: 50%; background: rgba(255, 255, 255, 0.8); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">
+        🔄
+      </button>
+    </div>
+    <script>
+      function toggleImageCn() {
+        var img = document.getElementById('profile-pic-cn');
+        if (img.src.indexOf('mootutu.png') !== -1) {
+          img.src = 'assets/images/weiqin.png';
+        } else {
+          img.src = 'assets/images/mootutu.png';
+        }
+      }
+    </script>
+  </td>
   <td>
     <div>
       <h1>王伟钦 <font size="5" ; font style="font-family:KaiTi">(Weiqin Wang)</font>
