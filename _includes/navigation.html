@@ -1,13 +1,16 @@
 <style>
-  /* Navigation Bar Styles */
+  /* Modern Navigation Bar with Glassmorphism */
   .navbar {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e9ecef;
-    margin-bottom: 20px;
-    padding: 10px 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     z-index: 1000;
+    padding: 0.8rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
   }
 
   .navbar-container {
@@ -17,47 +20,65 @@
   }
 
   .navbar-menu {
-    list-style-type: none;
+    list-style: none;
+    /* clean list */
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 30px;
+    gap: 12px;
+    /* Consistent gap between items */
     align-items: center;
   }
 
   .navbar-item {
-    display: inline;
+    display: flex;
+    align-items: center;
   }
 
   .navbar-link {
     text-decoration: none;
-    color: #333;
+    color: #4a5568;
+    /* Neutral dark grey */
     font-weight: 500;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    /* Pill shape */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    position: relative;
+    border: none;
+    /* Reset existing border styles */
   }
 
   .navbar-link:hover {
-    background-color: #e9ecef;
-    color: #0066cc;
+    color: #2d3748;
+    background-color: rgba(0, 0, 0, 0.04);
+    text-decoration: none;
   }
 
   .navbar-link.active {
-    color: #0066cc;
+    color: #2563eb;
+    /* Primary Blue */
+    background-color: rgba(37, 99, 235, 0.08);
     font-weight: 600;
-    border-bottom: 2px solid #0066cc;
+    border-bottom: none;
+    /* Ensure no border bottom */
   }
 
-  /* Responsive Navigation */
+  /* Responsive Adjustments */
   @media (max-width: 768px) {
+    .navbar {
+      padding: 0.6rem 0;
+    }
+
     .navbar-menu {
+      gap: 8px;
       flex-wrap: wrap;
-      gap: 15px;
     }
 
     .navbar-link {
-      padding: 6px 10px;
+      padding: 0.4rem 0.8rem;
       font-size: 0.9rem;
     }
   }
