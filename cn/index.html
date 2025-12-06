@@ -81,7 +81,7 @@ translate_url: /index.html
 <p>
   <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a
       href="https://aclanthology.org/2025.findings-acl.744.pdf" target="_blank">pdf</a>][<a href="javascript:void(0);"
-      onclick="openBibModal('assets/bibtex/wang2025ranked.bib')">bib</a>] <br />
+      onclick="openBibModal('/assets/bibtex/wang2025ranked.bib')">bib</a>] <br />
     &nbsp;&nbsp; &nbsp; <b>王伟钦</b>, 王祎乐, 黄慧. <br />
     &nbsp;&nbsp; &nbsp; In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL
       Findings</b>), 2025
@@ -119,11 +119,13 @@ translate_url: /index.html
 <div id="bibtexModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-    <span class="close-button" onclick="closeBibModal()">&times;</span>
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
       <h3 style="margin: 0;">BibTeX 引用</h3>
-      <button id="copyBtn" onclick="copyBibtex()"
-        style="padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">复制</button>
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <button id="copyBtn" onclick="copyBibtex()"
+          style="padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">复制</button>
+        <span class="close-button" onclick="closeBibModal()" style="float: none; line-height: 1;">&times;</span>
+      </div>
     </div>
     <div id="bibtex-modal-content">
       <pre>加载中...</pre>
