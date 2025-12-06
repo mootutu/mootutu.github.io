@@ -78,7 +78,7 @@ translate_url: /cn/index.html
 <h2>Publications 📄</h2> <!-- 论文 -->
 (<b>*</b> equal contribution, <b>#</b> corresponding author)
 
-<ul>
+<p>
   <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a
       href="https://aclanthology.org/2025.findings-acl.744.pdf" target="_blank">pdf</a>][<a href="javascript:void(0);"
       onclick="openBibModal('assets/bibtex/wang2025ranked.bib')">bib</a>] <br />
@@ -88,7 +88,7 @@ translate_url: /cn/index.html
     <!-- <li><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a href="https://arxiv.org/abs/2505.10772" target="_blank">arxiv</a>][<a href="javascript:void(0);" onclick="openBibModal('bibtex/wang2025ranked.bib')">bib</a>] <br/>
     &nbsp;&nbsp; &nbsp; <b>Weiqin Wang</b>, Yile Wang, and Hui Huang. <br/>
     &nbsp;&nbsp; &nbsp; In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025 -->
-</ul>
+</p>
 
 <!-- 
   模板：如何添加新的论文条目
@@ -142,7 +142,11 @@ translate_url: /cn/index.html
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close-button" onclick="closeBibModal()">&times;</span>
-    <h3>BibTeX Entry</h3>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+      <h3 style="margin: 0;">BibTeX Entry</h3>
+      <button id="copyBtn" onclick="copyBibtex()"
+        style="padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">Copy</button>
+    </div>
     <div id="bibtex-modal-content">
       <pre>Loading...</pre>
     </div>
@@ -174,6 +178,21 @@ translate_url: /cn/index.html
   // Function to close modal
   function closeBibModal() {
     modal.style.display = "none";
+  }
+
+  // Copy functionality
+  function copyBibtex() {
+    const content = bibtexModalContent.textContent;
+    navigator.clipboard.writeText(content).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const originalText = btn.innerText;
+      btn.innerText = 'Copied!';
+      setTimeout(() => {
+        btn.innerText = originalText;
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
   }
 
   // When the user clicks anywhere outside of the modal, close it
