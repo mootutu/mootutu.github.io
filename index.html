@@ -141,16 +141,14 @@ translate_url: /cn/index.html
 <div id="bibtexModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-      <h3 style="margin: 0;">BibTeX Entry</h3>
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <button id="copyBtn" onclick="copyBibtex()"
-          style="padding: 5px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">Copy</button>
-        <span class="close-button" onclick="closeBibModal()" style="float: none; line-height: 1;">&times;</span>
-      </div>
-    </div>
+    <span class="close-button" onclick="closeBibModal()">&times;</span>
+    <h3 style="margin-top: 0;">BibTeX Entry</h3>
     <div id="bibtex-modal-content">
       <pre>Loading...</pre>
+    </div>
+    <div style="text-align: right; margin-top: 10px;">
+      <button id="copyBtn" onclick="copyBibtex()"
+        style="padding: 5px 15px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #f8f9fa;">Copy</button>
     </div>
   </div>
 </div>
@@ -211,4 +209,4 @@ translate_url: /cn/index.html
     }
   });
 </script>
-( <i>last updated on Dec. 4, 2025</i> )
+( <i>last updated on Dec. 6, 2025</i> )
