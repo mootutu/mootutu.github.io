@@ -1,7 +1,7 @@
 <table>
   <td style="text-align: center; vertical-align: top;">
     <div style="position: relative; display: inline-block;">
-      <img id="profile-pic" src="assets/images/mootutu.png" alt="Weiqin Wang's photo" height="180px"
+      <img id="profile-pic" src="/assets/images/mootutu.png" alt="Weiqin Wang's photo" height="180px"
         style="display: block; border-radius: 8px;">
       <button onclick="toggleImage()" title="Switch Photo"
         style="position: absolute; bottom: 5px; right: 5px; cursor: pointer; padding: 6px; border: none; border-radius: 50%; background: rgba(255, 255, 255, 0.8); box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;">
@@ -12,9 +12,9 @@
       function toggleImage() {
         var img = document.getElementById('profile-pic');
         if (img.src.indexOf('mootutu.png') !== -1) {
-          img.src = 'assets/images/weiqin.png';
+          img.src = '/assets/images/weiqin.png';
         } else {
-          img.src = 'assets/images/mootutu.png';
+          img.src = '/assets/images/mootutu.png';
         }
       }
     </script>
