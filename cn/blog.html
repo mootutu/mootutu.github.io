@@ -46,6 +46,8 @@ translate_url: /blog.html
     gap: 0;
     overflow: hidden;
     align-items: stretch;
+    min-height: 165px;
+    /* Based on 220px width 4:3 ratio */
   }
 
   .blog-post:hover {
@@ -62,6 +64,7 @@ translate_url: /blog.html
   .blog-post-image {
     flex-shrink: 0;
     width: 220px;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
     display: flex;
     align-items: center;
