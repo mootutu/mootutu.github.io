@@ -116,12 +116,14 @@
       </div>
 
       <div class="blog-wrapper">
+        {% unless page.url contains '/blog.html' or page.url contains '/index.html' %}
         <aside class="blog-sidebar">
           <div class="toc-sticky">
             <h4>Table of Contents</h4>
             <div id="dynamic-toc"></div>
           </div>
         </aside>
+        {% endunless %}
 
         <main class="blog-main">
           {{content}}
