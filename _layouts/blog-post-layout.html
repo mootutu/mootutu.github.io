@@ -8,8 +8,7 @@
         rel="stylesheet">
     <style>
         .blog-wrapper {
-            display: grid;
-            grid-template-columns: 1fr minmax(auto, 1100px) 1fr;
+            display: flex;
             gap: 40px;
             max-width: 100%;
             margin: 0 auto;
@@ -18,16 +17,15 @@
         }
 
         .blog-sidebar {
-            grid-column: 1;
+            flex-shrink: 0;
             display: none;
             /* Hidden by default on small screens */
-            justify-self: end;
-            width: 250px;
+            width: 200px;
         }
 
         .blog-main {
-            grid-column: 2;
-            width: 100%;
+            flex: 1;
+            min-width: 0;
         }
 
         .toc-sticky {
@@ -106,7 +104,7 @@
         @media (max-width: 1279px) {
             .blog-wrapper {
                 display: block;
-                max-width: 1100px;
+                max-width: 100%;
                 margin: 0 auto;
             }
 
