@@ -6,278 +6,277 @@
   <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
-</head>
 
-{% include navigation.html %}
+  <style>
+    .blog-wrapper {
+      display: grid;
+      grid-template-columns: 1fr minmax(auto, 960px) 1fr;
+      gap: 40px;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+      padding: 0 20px;
+    }
 
-<!-- Language switch link -->
-<div style="text-align: right; margin-bottom: 10px;">
-  {% assign ui = site.data.ui_text[page.lang] %}
-  <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
-    ui.language_name }}</a>
-</div>
+    .blog-sidebar {
+      /* Place sidebar in the first column */
+      grid-column: 1;
+      display: none;
+      /* Hidden by default on small screens */
+      justify-self: end;
+      /* Align to the right side of the left column */
+      width: 250px;
+    }
 
-<div class="wrapper">
-  <section>
+    .blog-main {
+      /* Place content in the middle column */
+      grid-column: 2;
+      width: 100%;
+      /* max-width is controlled by grid column definition */
+    }
 
-    <style>
+    /* Empty third column usually, but ensures centering */
+
+    .toc-sticky {
+      position: sticky;
+      top: 100px;
+      /* Offset for navbar */
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 15px;
+    }
+
+    .toc-sticky h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-left: 2px solid #e2e8f0;
+    }
+
+    .toc-item {
+      margin: 0;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 6px 0 6px 15px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+      margin-left: -2px;
+    }
+
+    .toc-link:hover {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .toc-link.active {
+      color: #2563eb;
+      font-weight: 500;
+      border-left-color: #2563eb;
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .toc-child {
+      padding-left: 15px;
+      font-size: 0.85rem;
+    }
+
+    /* Hide in-content TOC */
+    .blog-content .toc {
+      display: none !important;
+    }
+
+    /* Fix anchor jump offset */
+    .blog-content h1,
+    .blog-content h2,
+    .blog-content h3,
+    .blog-content h4,
+    .blog-content h5,
+    .blog-content h6 {
+      scroll-margin-top: 100px;
+    }
+
+    @media (min-width: 1280px) {
+      .blog-sidebar {
+        display: block;
+      }
+    }
+
+    /* Fallback for smaller screens */
+    @media (max-width: 1279px) {
       .blog-wrapper {
-        display: grid;
-        grid-template-columns: 1fr minmax(auto, 960px) 1fr;
-        gap: 40px;
-        max-width: 100%;
+        display: block;
+        max-width: 960px;
         margin: 0 auto;
-        position: relative;
-        padding: 0 20px;
       }
 
       .blog-sidebar {
-        /* Place sidebar in the first column */
-        grid-column: 1;
         display: none;
-        /* Hidden by default on small screens */
-        justify-self: end;
-        /* Align to the right side of the left column */
-        width: 250px;
       }
+    }
 
-      .blog-main {
-        /* Place content in the middle column */
-        grid-column: 2;
-        width: 100%;
-        /* max-width is controlled by grid column definition */
-      }
+    /* Back to Top Button */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background-color: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
 
-      /* Empty third column usually, but ensures centering */
+    #back-to-top:hover {
+      transform: translateY(-3px);
+      background-color: #1d4ed8;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
-      .toc-sticky {
-        position: sticky;
-        top: 100px;
-        /* Offset for navbar */
-        max-height: calc(100vh - 120px);
-        overflow-y: auto;
-        padding-right: 15px;
-      }
+    #back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-      .toc-sticky h4 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #64748b;
-      }
+    /* Layout Overrides - Match Learning Section */
+    .wrapper {
+      max-width: 1100px !important;
+      margin: 0 auto;
+      padding: 0 40px;
+      width: auto !important;
+    }
 
-      .toc-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        border-left: 2px solid #e2e8f0;
-      }
+    section {
+      width: 100% !important;
+      float: none !important;
+      padding-bottom: 50px;
+    }
+  </style>
+</head>
 
-      .toc-item {
-        margin: 0;
-      }
+<body>
+  {% include navigation.html %}
 
-      .toc-link {
-        display: block;
-        padding: 6px 0 6px 15px;
-        color: #64748b;
-        text-decoration: none;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        transition: all 0.2s;
-        border-left: 2px solid transparent;
-        margin-left: -2px;
-      }
+  <!-- Language switch link -->
+  <div style="text-align: right; margin-bottom: 10px;">
+    {% assign ui = site.data.ui_text[page.lang] %}
+    <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
+      ui.language_name }}</a>
+  </div>
 
-      .toc-link:hover {
-        color: #2563eb;
-        text-decoration: none;
-      }
+  <div class="wrapper">
+    <section>
 
-      .toc-link.active {
-        color: #2563eb;
-        font-weight: 500;
-        border-left-color: #2563eb;
-        background: linear-gradient(90deg, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
-      }
+      <div class="blog-wrapper">
+        {% unless page.url contains '/blog.html' or page.url contains '/index.html' %}
+        <aside class="blog-sidebar">
+          <div class="toc-sticky">
+            <h4>Table of Contents</h4>
+            <div id="dynamic-toc"></div>
+          </div>
+        </aside>
+        {% endunless %}
 
-      .toc-child {
-        padding-left: 15px;
-        font-size: 0.85rem;
-      }
+        <main class="blog-main">
+          {{content}}
+        </main>
+      </div>
 
-      /* Hide in-content TOC */
-      .blog-content .toc {
-        display: none !important;
-      }
+      <!-- Back to Top Button -->
+      <!-- Using a simple SVG arrow for icon -->
+      <button id="back-to-top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 15l-6-6-6 6" />
+        </svg>
+      </button>
 
-      /* Fix anchor jump offset */
-      .blog-content h1,
-      .blog-content h2,
-      .blog-content h3,
-      .blog-content h4,
-      .blog-content h5,
-      .blog-content h6 {
-        scroll-margin-top: 100px;
-      }
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          // Back to Top functionality
+          const backToTopButton = document.getElementById('back-to-top');
 
-      @media (min-width: 1280px) {
-        .blog-sidebar {
-          display: block;
-        }
-      }
-
-      /* Fallback for smaller screens */
-      @media (max-width: 1279px) {
-        .blog-wrapper {
-          display: block;
-          max-width: 960px;
-          margin: 0 auto;
-        }
-
-        .blog-sidebar {
-          display: none;
-        }
-      }
-
-      /* Back to Top Button */
-      #back-to-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background-color: #2563eb;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-      }
-
-      #back-to-top:hover {
-        transform: translateY(-3px);
-        background-color: #1d4ed8;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      #back-to-top.visible {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      /* Layout Overrides - Match Learning Section */
-      .wrapper {
-        max-width: 1100px !important;
-        margin: 0 auto;
-        padding: 0 40px;
-        width: auto !important;
-      }
-
-      section {
-        width: 100% !important;
-        float: none !important;
-        padding-bottom: 50px;
-      }
-    </style>
-
-
-
-    <div class="blog-wrapper">
-      {% unless page.url contains '/blog.html' or page.url contains '/index.html' %}
-      <aside class="blog-sidebar">
-        <div class="toc-sticky">
-          <h4>Table of Contents</h4>
-          <div id="dynamic-toc"></div>
-        </div>
-      </aside>
-      {% endunless %}
-
-      <main class="blog-main">
-        {{content}}
-      </main>
-    </div>
-
-    <!-- Back to Top Button -->
-    <!-- Using a simple SVG arrow for icon -->
-    <button id="back-to-top" title="Back to Top">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 15l-6-6-6 6" />
-      </svg>
-    </button>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        // Back to Top functionality
-        const backToTopButton = document.getElementById('back-to-top');
-
-        window.addEventListener('scroll', function () {
-          if (window.scrollY > 300) {
-            backToTopButton.classList.add('visible');
-          } else {
-            backToTopButton.classList.remove('visible');
-          }
-        });
-
-        backToTopButton.addEventListener('click', function () {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+          window.addEventListener('scroll', function () {
+            if (window.scrollY > 300) {
+              backToTopButton.classList.add('visible');
+            } else {
+              backToTopButton.classList.remove('visible');
+            }
           });
+
+          backToTopButton.addEventListener('click', function () {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          });
+
+          const tocContainer = document.getElementById('dynamic-toc');
+          const contentContainer = document.querySelector('.blog-content');
+
+          if (!contentContainer) return;
+
+          // Find all h2 and h3 headers
+          const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
+          if (headers.length === 0) return;
+
+          const ul = document.createElement('ul');
+          ul.className = 'toc-list';
+
+          // Create TOC items
+          headers.forEach((header, index) => {
+            // Ensure header has ID
+            if (!header.id) {
+              header.id = 'section-' + index;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'toc-item';
+            if (header.tagName.toLowerCase() === 'h3') {
+              li.classList.add('toc-child');
+            }
+
+            const a = document.createElement('a');
+            a.href = '#' + header.id;
+            a.className = 'toc-link';
+            a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, ''); // Remove numbering if present
+
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+
+          tocContainer.appendChild(ul);
         });
+      </script>
 
-        const tocContainer = document.getElementById('dynamic-toc');
-        const contentContainer = document.querySelector('.blog-content');
-
-        if (!contentContainer) return;
-
-        // Find all h2 and h3 headers
-        const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
-        if (headers.length === 0) return;
-
-        const ul = document.createElement('ul');
-        ul.className = 'toc-list';
-
-        // Create TOC items
-        headers.forEach((header, index) => {
-          // Ensure header has ID
-          if (!header.id) {
-            header.id = 'section-' + index;
-          }
-
-          const li = document.createElement('li');
-          li.className = 'toc-item';
-          if (header.tagName.toLowerCase() === 'h3') {
-            li.classList.add('toc-child');
-          }
-
-          const a = document.createElement('a');
-          a.href = '#' + header.id;
-          a.className = 'toc-link';
-          a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, ''); // Remove numbering if present
-
-          li.appendChild(a);
-          ul.appendChild(li);
-        });
-
-        tocContainer.appendChild(ul);
-      });
-    </script>
-
-  </section>
-</div>
-<script src="/assets/javascripts/scale.fix.js"></script>
+    </section>
+  </div>
+  <script src="/assets/javascripts/scale.fix.js"></script>
 </body>
 
 </html>

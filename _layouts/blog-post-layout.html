@@ -253,6 +253,20 @@
             margin-bottom: 20px;
             color: #1e293b;
         }
+
+        /* Layout Overrides - Match Learning Section */
+        .wrapper {
+            max-width: 1100px !important;
+            margin: 0 auto;
+            padding: 0 40px;
+            width: auto !important;
+        }
+
+        section {
+            width: 100% !important;
+            float: none !important;
+            padding-bottom: 50px;
+        }
     </style>
 </head>
 
@@ -265,85 +279,92 @@
             ui.language_name }}</a>
     </div>
 
-    <div class="blog-wrapper">
-        <aside class="blog-sidebar">
-            <div class="toc-sticky">
-                <h4>Table of Contents</h4>
-                <div id="dynamic-toc"></div>
+    <div class="wrapper">
+        <section>
+
+            <div class="blog-wrapper">
+                <aside class="blog-sidebar">
+                    <div class="toc-sticky">
+                        <h4>Table of Contents</h4>
+                        <div id="dynamic-toc"></div>
+                    </div>
+                </aside>
+
+                <main class="blog-main">
+                    <a href="{% if page.lang == 'zh-CN' %}/cn/blog.html{% else %}/blog.html{% endif %}"
+                        class="back-link">
+                        {% if page.lang == 'zh-CN' %}← 返回博客{% else %}← Back to Blog{% endif %}
+                    </a>
+
+                    <div class="post-content">
+                        {{ content }}
+                    </div>
+                </main>
             </div>
-        </aside>
 
-        <main class="blog-main">
-            <a href="{% if page.lang == 'zh-CN' %}/cn/blog.html{% else %}/blog.html{% endif %}" class="back-link">
-                {% if page.lang == 'zh-CN' %}← 返回博客{% else %}← Back to Blog{% endif %}
-            </a>
+            <!-- Back to Top Button -->
+            <button id="back-to-top" title="Back to Top">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 15l-6-6-6 6" />
+                </svg>
+            </button>
 
-            <div class="post-content">
-                {{ content }}
-            </div>
-        </main>
-    </div>
+            <script src="/assets/javascripts/scale.fix.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // TOC Generation
+                    const tocContainer = document.getElementById('dynamic-toc');
+                    const contentContainer = document.querySelector('.post-content');
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" title="Back to Top">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 15l-6-6-6 6" />
-        </svg>
-    </button>
+                    if (contentContainer) {
+                        const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
+                        if (headers.length > 0) {
+                            const ul = document.createElement('ul');
+                            ul.className = 'toc-list';
 
-    <script src="/assets/javascripts/scale.fix.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // TOC Generation
-            const tocContainer = document.getElementById('dynamic-toc');
-            const contentContainer = document.querySelector('.post-content');
+                            headers.forEach((header, index) => {
+                                if (!header.id) header.id = 'section-' + index;
 
-            if (contentContainer) {
-                const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
-                if (headers.length > 0) {
-                    const ul = document.createElement('ul');
-                    ul.className = 'toc-list';
+                                const li = document.createElement('li');
+                                li.className = 'toc-item';
+                                if (header.tagName.toLowerCase() === 'h3') li.classList.add('toc-child');
 
-                    headers.forEach((header, index) => {
-                        if (!header.id) header.id = 'section-' + index;
+                                const a = document.createElement('a');
+                                a.href = '#' + header.id;
+                                a.className = 'toc-link';
+                                a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, '');
 
-                        const li = document.createElement('li');
-                        li.className = 'toc-item';
-                        if (header.tagName.toLowerCase() === 'h3') li.classList.add('toc-child');
+                                li.appendChild(a);
+                                ul.appendChild(li);
+                            });
 
-                        const a = document.createElement('a');
-                        a.href = '#' + header.id;
-                        a.className = 'toc-link';
-                        a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, '');
+                            tocContainer.appendChild(ul);
+                        }
+                    }
 
-                        li.appendChild(a);
-                        ul.appendChild(li);
+                    // Back to Top functionality
+                    const backToTopButton = document.getElementById('back-to-top');
+
+                    window.addEventListener('scroll', function () {
+                        if (window.scrollY > 300) {
+                            backToTopButton.classList.add('visible');
+                        } else {
+                            backToTopButton.classList.remove('visible');
+                        }
                     });
 
-                    tocContainer.appendChild(ul);
-                }
-            }
-
-            // Back to Top functionality
-            const backToTopButton = document.getElementById('back-to-top');
-
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    backToTopButton.classList.add('visible');
-                } else {
-                    backToTopButton.classList.remove('visible');
-                }
-            });
-
-            backToTopButton.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+                    backToTopButton.addEventListener('click', function () {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    });
                 });
-            });
-        });
-    </script>
+            </script>
+
+        </section>
+    </div>
 </body>
 
 </html>
