@@ -1,219 +1,57 @@
 ---
-layout: blog-layout
+layout: blog-post-layout
 lang: zh-CN
 translate_url: /blog/posts/automating-tasks-python.html
 ---
 
-<style>
-  /* Blog Post Styles */
-  .blog-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
+<h1 class="blog-title">Python 自动化入门指南</h1>
+<div class="blog-meta">
+  <span>作者：王伟钦</span>
+  <span>发布日期：2025-11-28</span>
+  <span>阅读时长：7 分钟</span>
+  <span>分类：技术教程</span>
+</div>
 
-  .blog-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e9ecef;
-  }
+<div class="blog-content">
+  <p>Python 是一门非常适合自动化任务的编程语言，它简洁易读的语法和丰富的第三方库使其成为自动化领域的首选。无论是文件管理、数据处理还是网页爬取，Python 都能轻松胜任。本文将介绍 Python
+    自动化的基础知识和一些实用示例，帮助你快速入门。</p>
 
-  .blog-title {
-    font-size: 2.2rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
+  <h2 id="python-automation">1. Python 自动化简介</h2>
+  <p>自动化是指使用软件来执行原本需要人工完成的任务，从而提高效率、减少错误。Python 凭借其强大的库生态系统和易用性，在自动化领域占据了重要地位。</p>
 
-  .blog-meta {
-    color: #666;
-    font-size: 1rem;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  <h3 id="why-python">1.1 为什么选择 Python 进行自动化？</h3>
+  <ul>
+    <li><strong>简单易学</strong>：Python 语法简洁明了，学习曲线平缓</li>
+    <li><strong>跨平台</strong>：可以在 Windows、macOS 和 Linux 上运行</li>
+    <li><strong>丰富的库</strong>：拥有大量专门用于自动化的库，如
+      <code>os</code>、<code>shutil</code>、<code>requests</code>、<code>beautifulsoup4</code>、<code>selenium</code> 等
+    </li>
+    <li><strong>社区支持</strong>：拥有庞大的开发者社区，遇到问题容易找到解决方案</li>
+    <li><strong>通用性</strong>：可以用于各种类型的自动化任务</li>
+  </ul>
 
-  .blog-content {
-    line-height: 1.8;
-    color: #333;
-  }
-
-  .blog-content h2 {
-    color: #2c3e50;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-content h3 {
-    color: #34495e;
-    margin-top: 25px;
-    margin-bottom: 15px;
-  }
-
-  .blog-content p {
-    margin-bottom: 15px;
-    text-align: justify;
-  }
-
-  .blog-content ul,
-  .blog-content ol {
-    margin-bottom: 15px;
-    padding-left: 30px;
-  }
-
-  .blog-content li {
-    margin-bottom: 8px;
-  }
-
-  .blog-content code {
-    background-color: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-  }
-
-  .blog-content pre {
-    background-color: #f0f2f5;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .blog-content pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .blog-content blockquote {
-    border-left: 4px solid #0066cc;
-    padding-left: 15px;
-    margin-left: 0;
-    color: #666;
-    font-style: italic;
-    margin-bottom: 15px;
-  }
-
-  .blog-tags {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .blog-tag {
-    background-color: #f0f2f5;
-    color: #666;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .blog-tag:hover {
-    background-color: #e0e4e8;
-    color: #333;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #0066cc;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 16px;
-    border: 1px solid #0066cc;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-
-  .back-link:hover {
-    background-color: #0066cc;
-    color: #fff;
-  }
-</style>
-
-<div class="blog-container">
-  {% assign ui = site.data.ui_text[page.lang] %}
-  <a href="/cn/blog.html" class="back-link">{{ ui.back_to_blog }}</a>
-
-  <div class="blog-header">
-    <h1 class="blog-title">Python 自动化入门指南</h1>
-    <div class="blog-meta">
-      <span>作者：王伟钦</span>
-      <span>发布日期：2025-11-28</span>
-      <span>阅读时长：7 分钟</span>
-      <span>分类：技术教程</span>
-    </div>
-  </div>
-
-  <div class="blog-content">
-    <!-- 目录 -->
-    <div class="toc">
-      <div class="toc-title">目录</div>
-      <ul>
-        <li class="toc-h2"><a href="#python-automation">1. Python 自动化简介</a></li>
-        <li class="toc-h3"><a href="#why-python">1.1 为什么选择 Python 进行自动化？</a></li>
-        <li class="toc-h3"><a href="#setup-environment">1.2 设置开发环境</a></li>
-        <li class="toc-h2"><a href="#file-operations">2. 文件系统操作</a></li>
-        <li class="toc-h3"><a href="#reading-writing">2.1 读取和写入文件</a></li>
-        <li class="toc-h3"><a href="#file-management">2.2 文件管理</a></li>
-        <li class="toc-h2"><a href="#web-automation">3. Web 自动化</a></li>
-        <li class="toc-h3"><a href="#beautifulsoup">3.1 使用 BeautifulSoup 进行网页爬取</a></li>
-        <li class="toc-h3"><a href="#selenium">3.2 使用 Selenium 进行浏览器自动化</a></li>
-        <li class="toc-h2"><a href="#practical-examples">4. 实用自动化示例</a></li>
-      </ul>
-    </div>
-
-    <!-- 正文内容 -->
-    <p>Python 是一门非常适合自动化任务的编程语言，它简洁易读的语法和丰富的第三方库使其成为自动化领域的首选。无论是文件管理、数据处理还是网页爬取，Python 都能轻松胜任。本文将介绍 Python
-      自动化的基础知识和一些实用示例，帮助你快速入门。</p>
-
-    <h2 id="python-automation">1. Python 自动化简介</h2>
-    <p>自动化是指使用软件来执行原本需要人工完成的任务，从而提高效率、减少错误。Python 凭借其强大的库生态系统和易用性，在自动化领域占据了重要地位。</p>
-
-    <h3 id="why-python">1.1 为什么选择 Python 进行自动化？</h3>
-    <ul>
-      <li><strong>简单易学</strong>：Python 语法简洁明了，学习曲线平缓</li>
-      <li><strong>跨平台</strong>：可以在 Windows、macOS 和 Linux 上运行</li>
-      <li><strong>丰富的库</strong>：拥有大量专门用于自动化的库，如
-        <code>os</code>、<code>shutil</code>、<code>requests</code>、<code>beautifulsoup4</code>、<code>selenium</code> 等
-      </li>
-      <li><strong>社区支持</strong>：拥有庞大的开发者社区，遇到问题容易找到解决方案</li>
-      <li><strong>通用性</strong>：可以用于各种类型的自动化任务</li>
-    </ul>
-
-    <h3 id="setup-environment">1.2 设置开发环境</h3>
-    <p>要开始使用 Python 进行自动化，你需要：</p>
-    <ol>
-      <li>安装 Python：从 <a href="https://www.python.org/downloads/" target="_blank">Python 官方网站</a> 下载并安装最新版本</li>
-      <li>安装一个代码编辑器：推荐使用 VS Code、PyCharm 或 Sublime Text</li>
-      <li>设置虚拟环境：<code>python -m venv venv</code></li>
-      <li>激活虚拟环境：</li>
-    </ol>
-    <pre><code># Windows
+  <h3 id="setup-environment">1.2 设置开发环境</h3>
+  <p>要开始使用 Python 进行自动化，你需要：</p>
+  <ol>
+    <li>安装 Python：从 <a href="https://www.python.org/downloads/" target="_blank">Python 官方网站</a> 下载并安装最新版本</li>
+    <li>安装一个代码编辑器：推荐使用 VS Code、PyCharm 或 Sublime Text</li>
+    <li>设置虚拟环境：<code>python -m venv venv</code></li>
+    <li>激活虚拟环境：</li>
+  </ol>
+  <pre><code># Windows
 venv\Scripts\activate
 
 # macOS/Linux
 source venv/bin/activate</code></pre>
-    <p>安装常用的自动化库：</p>
-    <pre><code>pip install requests beautifulsoup4 selenium</code></pre>
+  <p>安装常用的自动化库：</p>
+  <pre><code>pip install requests beautifulsoup4 selenium</code></pre>
 
-    <h2 id="file-operations">2. 文件系统操作</h2>
-    <p>文件操作是自动化中最常见的任务之一，Python 的 <code>os</code> 和 <code>shutil</code> 库提供了强大的文件操作功能。</p>
+  <h2 id="file-operations">2. 文件系统操作</h2>
+  <p>文件操作是自动化中最常见的任务之一，Python 的 <code>os</code> 和 <code>shutil</code> 库提供了强大的文件操作功能。</p>
 
-    <h3 id="reading-writing">2.1 读取和写入文件</h3>
-    <p>读取和写入文件是基本的文件操作：</p>
-    <pre><code># 读取文件
+  <h3 id="reading-writing">2.1 读取和写入文件</h3>
+  <p>读取和写入文件是基本的文件操作：</p>
+  <pre><code># 读取文件
 with open('example.txt', 'r') as f:
     content = f.read()
     print(content)
@@ -226,9 +64,9 @@ with open('output.txt', 'w') as f:
 with open('output.txt', 'a') as f:
     f.write('\nAdding more content.')</code></pre>
 
-    <h3 id="file-management">2.2 文件管理</h3>
-    <p>可以使用 <code>os</code> 和 <code>shutil</code> 库进行文件和目录管理：</p>
-    <pre><code>import os
+  <h3 id="file-management">2.2 文件管理</h3>
+  <p>可以使用 <code>os</code> 和 <code>shutil</code> 库进行文件和目录管理：</p>
+  <pre><code>import os
 import shutil
 
 # 创建目录
@@ -250,12 +88,12 @@ os.remove('file_to_delete.txt')
 # 删除目录
 tshutil.rmtree('directory_to_delete')</code></pre>
 
-    <h2 id="web-automation">3. Web 自动化</h2>
-    <p>Python 可以用于自动化网页相关的任务，如网页爬取和浏览器操作。</p>
+  <h2 id="web-automation">3. Web 自动化</h2>
+  <p>Python 可以用于自动化网页相关的任务，如网页爬取和浏览器操作。</p>
 
-    <h3 id="beautifulsoup">3.1 使用 BeautifulSoup 进行网页爬取</h3>
-    <p>BeautifulSoup 是一个用于解析 HTML 和 XML 文档的库，常用于网页爬取：</p>
-    <pre><code>import requests
+  <h3 id="beautifulsoup">3.1 使用 BeautifulSoup 进行网页爬取</h3>
+  <p>BeautifulSoup 是一个用于解析 HTML 和 XML 文档的库，常用于网页爬取：</p>
+  <pre><code>import requests
 from bs4 import BeautifulSoup
 
 # 发送请求
@@ -272,9 +110,9 @@ paragraphs = [p.text for p in soup.find_all('p')]
 print(f"标题: {title}")
 print(f"段落数量: {len(paragraphs)}")</code></pre>
 
-    <h3 id="selenium">3.2 使用 Selenium 进行浏览器自动化</h3>
-    <p>Selenium 可以模拟人类在浏览器中的操作，用于自动化复杂的网页交互：</p>
-    <pre><code>from selenium import webdriver
+  <h3 id="selenium">3.2 使用 Selenium 进行浏览器自动化</h3>
+  <p>Selenium 可以模拟人类在浏览器中的操作，用于自动化复杂的网页交互：</p>
+  <pre><code>from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # 初始化浏览器
@@ -295,11 +133,11 @@ import time
 time.sleep(5)
 driver.quit()</code></pre>
 
-    <h2 id="practical-examples">4. 实用自动化示例</h2>
-    <p>以下是一些实用的 Python 自动化示例：</p>
+  <h2 id="practical-examples">4. 实用自动化示例</h2>
+  <p>以下是一些实用的 Python 自动化示例：</p>
 
-    <h3>4.1 批量重命名文件</h3>
-    <pre><code>import os
+  <h3>4.1 批量重命名文件</h3>
+  <pre><code>import os
 
 def rename_files(directory):
     """批量重命名目录中的 JPG 文件"""
@@ -315,8 +153,8 @@ def rename_files(directory):
 # 使用示例
 rename_files('photos')</code></pre>
 
-    <h3>4.2 自动化发送邮件</h3>
-    <pre><code>import smtplib
+  <h3>4.2 自动化发送邮件</h3>
+  <pre><code>import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -343,27 +181,26 @@ with smtplib.SMTP('smtp.gmail.com', 587) as server:
     server.sendmail(sender_email, receiver_email, text)
     print("邮件发送成功!")</code></pre>
 
-    <h2>5. 最佳实践</h2>
-    <ul>
-      <li><strong>使用描述性的变量名</strong>：使代码更易于理解和维护</li>
-      <li><strong>添加注释</strong>：解释复杂的逻辑和功能</li>
-      <li><strong>错误处理</strong>：使用 try-except 块处理可能的错误</li>
-      <li><strong>模块化设计</strong>：将代码分解为可重用的函数</li>
-      <li><strong>测试</strong>：在不同环境中测试你的脚本</li>
-      <li><strong>版本控制</strong>：使用 Git 管理你的脚本版本</li>
-    </ul>
+  <h2>5. 最佳实践</h2>
+  <ul>
+    <li><strong>使用描述性的变量名</strong>：使代码更易于理解和维护</li>
+    <li><strong>添加注释</strong>：解释复杂的逻辑和功能</li>
+    <li><strong>错误处理</strong>：使用 try-except 块处理可能的错误</li>
+    <li><strong>模块化设计</strong>：将代码分解为可重用的函数</li>
+    <li><strong>测试</strong>：在不同环境中测试你的脚本</li>
+    <li><strong>版本控制</strong>：使用 Git 管理你的脚本版本</li>
+  </ul>
 
-    <h2>6. 总结</h2>
-    <p>Python 是一门强大的自动化工具，无论是简单的文件操作还是复杂的 Web 自动化，都能轻松胜任。通过本文的介绍，你应该已经掌握了 Python 自动化的基础知识和一些实用技巧。</p>
-    <p>要成为 Python 自动化高手，需要不断实践和学习。建议你从简单的任务开始，逐渐尝试更复杂的自动化项目。随着经验的积累，你将能够用 Python 自动化更多重复的工作，提高工作效率。</p>
+  <h2>6. 总结</h2>
+  <p>Python 是一门强大的自动化工具，无论是简单的文件操作还是复杂的 Web 自动化，都能轻松胜任。通过本文的介绍，你应该已经掌握了 Python 自动化的基础知识和一些实用技巧。</p>
+  <p>要成为 Python 自动化高手，需要不断实践和学习。建议你从简单的任务开始，逐渐尝试更复杂的自动化项目。随着经验的积累，你将能够用 Python 自动化更多重复的工作，提高工作效率。</p>
 
-    <!-- 标签 -->
-    <div class="blog-tags">
-      <a href="#" class="blog-tag">Python</a>
-      <a href="#" class="blog-tag">自动化</a>
-      <a href="#" class="blog-tag">编程</a>
-      <a href="#" class="blog-tag">技术教程</a>
-      <a href="#" class="blog-tag">Web 爬取</a>
-    </div>
+  <!-- 标签 -->
+  <div class="blog-tags">
+    <a href="#" class="blog-tag">Python</a>
+    <a href="#" class="blog-tag">自动化</a>
+    <a href="#" class="blog-tag">编程</a>
+    <a href="#" class="blog-tag">技术教程</a>
+    <a href="#" class="blog-tag">Web 爬取</a>
+
   </div>
-</div>
