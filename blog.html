@@ -38,15 +38,14 @@ translate_url: /cn/blog.html
 
   .blog-post {
     background-color: #fff;
-    padding: 0;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
-    gap: 0;
+    gap: 25px;
     overflow: hidden;
     align-items: center;
-    /* Center content vertically */
   }
 
   .blog-post:hover {
@@ -57,19 +56,20 @@ translate_url: /cn/blog.html
   .blog-post-content {
     flex: 1;
     min-width: 0;
-    padding: 25px;
   }
 
   .blog-post-image {
     flex-shrink: 0;
-    width: 180px;
-    /* Reduced width slightly for better square balance */
+    width: 220px;
+    /* Enlarged but balanced with 20px padding */
     aspect-ratio: 1 / 1;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #f8fafc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   .blog-post-image img {
