@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="{{ page.lang | default: 'en' }}">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
+    <style>
+        .learning-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-color: #2563eb;
+        }
+
+        .topic-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .topic-desc {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <section>
+            {% include navigation.html %}
+
+            <div style="text-align: right; margin-bottom: 10px;">
+                {% assign ui = site.data.ui_text[page.lang] %}
+                <a href="{{ page.translate_url | default: ui.language_url }}"
+                    style="text-decoration: none; color: #0066cc;">{{
+                    ui.language_name }}</a>
+            </div>
+
+            {{ content }}
+
+        </section>
+    </div>
+    <script src="/assets/javascripts/scale.fix.js"></script>
+</body>
+
+</html>

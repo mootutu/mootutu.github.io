@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="{{ page.lang | default: 'en' }}">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
+    <style>
+        .learning-entries {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .entry-link {
+            display: block;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #2d3748;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .entry-link:hover {
+            background: #fff;
+            border-color: #2563eb;
+            color: #2563eb;
+            transform: translateX(5px);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <section>
+            {% include navigation.html %}
+
+            <div style="text-align: right; margin-bottom: 10px;">
+                {% assign ui = site.data.ui_text[page.lang] %}
+                <a href="{{ page.translate_url | default: ui.language_url }}"
+                    style="text-decoration: none; color: #0066cc;">{{
+                    ui.language_name }}</a>
+            </div>
+
+            <a href="{% if page.lang == 'zh-CN' %}/cn/learning.html{% else %}/learning.html{% endif %}"
+                class="back-link">
+                {% if page.lang == 'zh-CN' %}← 返回学习列表{% else %}← Back to Learning List{% endif %}
+            </a>
+
+            {{ content }}
+
+        </section>
+    </div>
+    <script src="/assets/javascripts/scale.fix.js"></script>
+</body>
+
+</html>
