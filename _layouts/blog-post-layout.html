@@ -507,20 +507,16 @@
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             const savedMode = localStorage.getItem('darkMode');
 
-            if (savedMode === 'enabled') {
+            if (savedMode === 'true') {
                 document.body.classList.add('dark-mode');
                 darkModeToggle.textContent = '☀️';
             }
 
             darkModeToggle.addEventListener('click', function () {
                 document.body.classList.toggle('dark-mode');
-                if (document.body.classList.contains('dark-mode')) {
-                    localStorage.setItem('darkMode', 'enabled');
-                    darkModeToggle.textContent = '☀️';
-                } else {
-                    localStorage.setItem('darkMode', 'disabled');
-                    darkModeToggle.textContent = '🌙';
-                }
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                darkModeToggle.textContent = isDark ? '☀️' : '🌙';
             });
         });
     </script>
