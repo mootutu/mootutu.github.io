@@ -8,6 +8,127 @@
         rel="stylesheet">
 
     <style>
+        .learning-wrapper {
+            display: grid;
+            grid-template-columns: 1fr minmax(auto, 960px) 1fr;
+            gap: 40px;
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .learning-sidebar {
+            /* Place sidebar in the first column */
+            grid-column: 1;
+            display: none;
+            /* Hidden by default on small screens */
+            justify-self: end;
+            /* Align to the right side of the left column */
+            width: 250px;
+        }
+
+        .learning-main {
+            /* Place content in the middle column */
+            grid-column: 2;
+            width: 100%;
+            /* max-width is controlled by grid column definition */
+        }
+
+        /* Empty third column usually, but ensures centering */
+
+        .toc-sticky {
+            position: sticky;
+            top: 100px;
+            /* Offset for navbar */
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .toc-sticky h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .toc-item {
+            margin: 0;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 6px 0 6px 15px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            margin-left: -2px;
+        }
+
+        .toc-link:hover {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .toc-link.active {
+            color: #2563eb;
+            font-weight: 500;
+            border-left-color: #2563eb;
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .toc-child {
+            padding-left: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Hide in-content TOC */
+        .learning-content .toc {
+            display: none !important;
+        }
+
+        /* Fix anchor jump offset */
+        .learning-content h1,
+        .learning-content h2,
+        .learning-content h3,
+        .learning-content h4,
+        .learning-content h5,
+        .learning-content h6 {
+            scroll-margin-top: 100px;
+        }
+
+        @media (min-width: 1280px) {
+            .learning-sidebar {
+                display: block;
+            }
+        }
+
+        /* Fallback for smaller screens */
+        @media (max-width: 1279px) {
+            .learning-wrapper {
+                display: block;
+                max-width: 960px;
+                margin: 0 auto;
+            }
+
+            .learning-sidebar {
+                display: none;
+            }
+        }
+
         .learning-topics {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -46,7 +167,7 @@
             line-height: 1.5;
         }
 
-        /* Layout Overrides */
+        /* Layout Overrides - Match Blog Section */
         .wrapper {
             max-width: 1100px !important;
             margin: 0 auto;
@@ -121,6 +242,7 @@
 <body>
     {% include navigation.html %}
 
+    <!-- Language switch link -->
     <div style="text-align: right; margin-bottom: 10px;">
         {% assign ui = site.data.ui_text[page.lang] %}
         <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
@@ -130,7 +252,22 @@
     <div class="wrapper">
         <section>
 
-            {{ content }}
+            <div class="learning-wrapper">
+                {% unless page.url contains '/learning.html' or page.url contains '/learning-cn.html' %}
+                <aside class="learning-sidebar">
+                    <div class="toc-sticky">
+                        <h4>Table of Contents</h4>
+                        <div id="dynamic-toc"></div>
+                    </div>
+                </aside>
+                {% endunless %}
+
+                <main class="learning-main">
+                    <div class="learning-content">
+                        {{ content }}
+                    </div>
+                </main>
+            </div>
 
             <!-- Back to Top Button -->
             <button id="back-to-top" title="Back to Top">
@@ -140,31 +277,68 @@
                 </svg>
             </button>
 
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Back to Top functionality
+                    const backToTopButton = document.getElementById('back-to-top');
+
+                    window.addEventListener('scroll', function () {
+                        if (window.scrollY > 300) {
+                            backToTopButton.classList.add('visible');
+                        } else {
+                            backToTopButton.classList.remove('visible');
+                        }
+                    });
+
+                    backToTopButton.addEventListener('click', function () {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    // Dynamic TOC generation
+                    const tocContainer = document.getElementById('dynamic-toc');
+                    const contentContainer = document.querySelector('.learning-content');
+
+                    if (!contentContainer) return;
+
+                    // Find all h2 and h3 headers
+                    const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
+                    if (headers.length === 0) return;
+
+                    const ul = document.createElement('ul');
+                    ul.className = 'toc-list';
+
+                    // Create TOC items
+                    headers.forEach((header, index) => {
+                        // Ensure header has ID
+                        if (!header.id) {
+                            header.id = 'section-' + index;
+                        }
+
+                        const li = document.createElement('li');
+                        li.className = 'toc-item';
+                        if (header.tagName.toLowerCase() === 'h3') {
+                            li.classList.add('toc-child');
+                        }
+
+                        const a = document.createElement('a');
+                        a.href = '#' + header.id;
+                        a.className = 'toc-link';
+                        a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, ''); // Remove numbering if present
+
+                        li.appendChild(a);
+                        ul.appendChild(li);
+                    });
+
+                    tocContainer.appendChild(ul);
+                });
+            </script>
+
         </section>
     </div>
-
     <script src="/assets/javascripts/scale.fix.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Back to Top functionality
-            const backToTopButton = document.getElementById('back-to-top');
-
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 300) {
-                    backToTopButton.classList.add('visible');
-                } else {
-                    backToTopButton.classList.remove('visible');
-                }
-            });
-
-            backToTopButton.addEventListener('click', function () {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
