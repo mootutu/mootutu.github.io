@@ -5,11 +5,151 @@
     <meta charset="utf-8">
     <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
     <style>
+        .blog-wrapper {
+            display: grid;
+            grid-template-columns: 1fr minmax(auto, 960px) 1fr;
+            gap: 40px;
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .blog-sidebar {
+            grid-column: 1;
+            display: none;
+            /* Hidden by default on small screens */
+            justify-self: end;
+            width: 250px;
+        }
+
+        .blog-main {
+            grid-column: 2;
+            width: 100%;
+        }
+
+        .toc-sticky {
+            position: sticky;
+            top: 100px;
+            /* Offset for navbar */
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+
+        .toc-sticky h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .toc-item {
+            margin: 0;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 6px 0 6px 15px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            margin-left: -2px;
+        }
+
+        .toc-link:hover {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .toc-child {
+            padding-left: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Hide in-content TOC */
+        .post-content .toc {
+            display: none !important;
+        }
+
+        /* Fix anchor jump offset */
+        .post-content h1,
+        .post-content h2,
+        .post-content h3,
+        .post-content h4,
+        .post-content h5,
+        .post-content h6 {
+            scroll-margin-top: 100px;
+        }
+
+        @media (min-width: 1280px) {
+            .blog-sidebar {
+                display: block;
+            }
+        }
+
+        /* Fallback for smaller screens */
+        @media (max-width: 1279px) {
+            .blog-wrapper {
+                display: block;
+                max-width: 960px;
+                margin: 0 auto;
+            }
+
+            .blog-sidebar {
+                display: none;
+            }
+        }
+
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-3px);
+            background-color: #1d4ed8;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .post-content {
             line-height: 1.7;
             color: #2d3748;
-            max-width: 900px;
-            margin: 0 auto;
         }
 
         .back-link {
@@ -23,35 +163,27 @@
         .back-link:hover {
             color: #2563eb;
         }
-
-        /* Layout Overrides */
-        .wrapper {
-            max-width: 1100px !important;
-            margin: 0 auto;
-            padding: 0 40px;
-            width: auto !important;
-        }
-
-        section {
-            width: 100% !important;
-            float: none !important;
-            padding-bottom: 50px;
-        }
     </style>
 </head>
 
 <body>
     {% include navigation.html %}
-    <div class="wrapper">
-        <section>
 
-            <div style="text-align: right; margin-bottom: 10px;">
-                {% assign ui = site.data.ui_text[page.lang] %}
-                <a href="{{ page.translate_url | default: ui.language_url }}"
-                    style="text-decoration: none; color: #0066cc;">{{
-                    ui.language_name }}</a>
+    <div style="text-align: right; margin-bottom: 10px; max-width: 1100px; margin: 0 auto; padding-right: 20px;">
+        {% assign ui = site.data.ui_text[page.lang] %}
+        <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
+            ui.language_name }}</a>
+    </div>
+
+    <div class="blog-wrapper">
+        <aside class="blog-sidebar">
+            <div class="toc-sticky">
+                <h4>Table of Contents</h4>
+                <div id="dynamic-toc"></div>
             </div>
+        </aside>
 
+        <main class="blog-main">
             <a href="{{ page.topic_url }}" class="back-link">
                 {% if page.lang == 'zh-CN' %}← 返回目录{% else %}← Back to Topic{% endif %}
             </a>
@@ -59,10 +191,69 @@
             <div class="post-content">
                 {{ content }}
             </div>
-
-        </section>
+        </main>
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
     <script src="/assets/javascripts/scale.fix.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // TOC Generation
+            const tocContainer = document.getElementById('dynamic-toc');
+            const contentContainer = document.querySelector('.post-content');
+
+            if (contentContainer) {
+                const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
+                if (headers.length > 0) {
+                    const ul = document.createElement('ul');
+                    ul.className = 'toc-list';
+
+                    headers.forEach((header, index) => {
+                        if (!header.id) header.id = 'section-' + index;
+
+                        const li = document.createElement('li');
+                        li.className = 'toc-item';
+                        if (header.tagName.toLowerCase() === 'h3') li.classList.add('toc-child');
+
+                        const a = document.createElement('a');
+                        a.href = '#' + header.id;
+                        a.className = 'toc-link';
+                        a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, '');
+
+                        li.appendChild(a);
+                        ul.appendChild(li);
+                    });
+
+                    tocContainer.appendChild(ul);
+                }
+            }
+
+            // Back to Top functionality
+            const backToTopButton = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
