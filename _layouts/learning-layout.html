@@ -262,6 +262,99 @@
             background-color: #1d4ed8;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        /* Dark Mode Toggle Button */
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 150px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        #dark-mode-toggle:hover {
+            transform: translateY(-3px);
+            background-color: #1d4ed8;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a2e;
+        }
+
+        body.dark-mode .wrapper {
+            background-color: #16213e;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6 {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .learning-content,
+        body.dark-mode .topic-desc {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode .topic-card {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+
+        body.dark-mode .topic-card:hover {
+            border-color: #60a5fa;
+        }
+
+        body.dark-mode .topic-title {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .learning-header {
+            border-bottom-color: #334155;
+        }
+
+        body.dark-mode .learning-title {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .learning-subtitle {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .toc-sticky h4 {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .toc-list {
+            border-left-color: #334155;
+        }
+
+        body.dark-mode .toc-link {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .toc-link:hover,
+        body.dark-mode .toc-link.active {
+            color: #60a5fa;
+        }
     </style>
 </head>
 
@@ -269,6 +362,11 @@
     {% include navigation.html %}
 
     {% assign ui = site.data.ui_text[page.lang] %}
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="dark-mode-toggle" title="Toggle Dark Mode">
+        🌙
+    </button>
 
     <!-- Language Switcher Button -->
     <a id="lang-switcher" href="{{ page.translate_url | default: ui.language_url }}" title="{{ ui.language_name }}">
@@ -321,6 +419,26 @@
                             top: 0,
                             behavior: 'smooth'
                         });
+                    });
+
+                    // Dark Mode functionality
+                    const darkModeToggle = document.getElementById('dark-mode-toggle');
+                    const savedMode = localStorage.getItem('darkMode');
+
+                    if (savedMode === 'enabled') {
+                        document.body.classList.add('dark-mode');
+                        darkModeToggle.textContent = '☀️';
+                    }
+
+                    darkModeToggle.addEventListener('click', function () {
+                        document.body.classList.toggle('dark-mode');
+                        if (document.body.classList.contains('dark-mode')) {
+                            localStorage.setItem('darkMode', 'enabled');
+                            darkModeToggle.textContent = '☀️';
+                        } else {
+                            localStorage.setItem('darkMode', 'disabled');
+                            darkModeToggle.textContent = '🌙';
+                        }
                     });
 
                     // Dynamic TOC generation

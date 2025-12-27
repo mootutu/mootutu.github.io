@@ -90,6 +90,81 @@
             background-color: #1d4ed8;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
+
+        /* Dark Mode Toggle Button */
+        #dark-mode-toggle {
+            position: fixed;
+            bottom: 150px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        #dark-mode-toggle:hover {
+            transform: translateY(-3px);
+            background-color: #1d4ed8;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #1a1a2e;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .wrapper {
+            background-color: #16213e;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .navbar {
+            background-color: rgba(22, 33, 62, 0.95);
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .navbar-brand {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .navbar-link {
+            color: #94a3b8;
+        }
+
+        body.dark-mode .navbar-link:hover {
+            color: #e2e8f0;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .navbar-link.active {
+            color: #60a5fa;
+            background-color: rgba(96, 165, 250, 0.15);
+        }
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3 {
+            color: #e2e8f0;
+        }
+
+        body.dark-mode a {
+            color: #60a5fa;
+        }
+
+        body.dark-mode hr {
+            border-color: #334155;
+        }
     </style>
 </head>
 
@@ -97,6 +172,27 @@
     {% include navigation.html %}
 
     {% assign ui = site.data.ui_text[page.lang] %}
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="dark-mode-toggle" title="Toggle Dark Mode">
+        <svg id="dark-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg id="light-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="display: none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </button>
 
     <!-- Language Switcher Button -->
     <a id="lang-switcher" href="{{ page.translate_url | default: ui.language_url }}" title="{{ ui.language_name }}">
@@ -135,6 +231,25 @@
                     top: 0,
                     behavior: 'smooth'
                 });
+            });
+
+            // Dark Mode Toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const darkIcon = document.getElementById('dark-icon');
+            const lightIcon = document.getElementById('light-icon');
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'block';
+            }
+
+            darkModeToggle.addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                darkIcon.style.display = isDark ? 'none' : 'block';
+                lightIcon.style.display = isDark ? 'block' : 'none';
             });
         });
     </script>
