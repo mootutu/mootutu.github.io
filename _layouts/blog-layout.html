@@ -196,48 +196,6 @@
           });
 
           tocContainer.appendChild(ul);
-
-          const links = document.querySelectorAll('.toc-link');
-
-          // ScrollSpy using scroll event for higher accuracy
-          function onScroll() {
-            const scrollPos = window.scrollY || document.documentElement.scrollTop;
-            const offset = 150; // Offset for navbar + breathing room
-
-            let currentHeaderId = null;
-
-            // Find the last header that is above the offset line
-            for (let i = 0; i < headers.length; i++) {
-              const header = headers[i];
-              if (header.offsetTop <= scrollPos + offset) {
-                currentHeaderId = header.id;
-              } else {
-                break;
-              }
-            }
-
-            links.forEach(link => {
-              link.classList.remove('active');
-              if (currentHeaderId && link.getAttribute('href') === '#' + currentHeaderId) {
-                link.classList.add('active');
-              }
-            });
-          }
-
-          // Throttled scroll listener
-          let ticking = false;
-          window.addEventListener('scroll', function () {
-            if (!ticking) {
-              window.requestAnimationFrame(function () {
-                onScroll();
-                ticking = false;
-              });
-              ticking = true;
-            }
-          });
-
-          // Initial check
-          onScroll();
         });
       </script>
 
