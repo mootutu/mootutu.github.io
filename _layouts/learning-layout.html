@@ -84,7 +84,7 @@
 <body>
     {% include navigation.html %}
 
-    <div style="text-align: right; margin: 10px auto; max-width: 1200px; padding: 0 20px;">
+    <div style="text-align: right; margin-bottom: 10px;">
         {% assign ui = site.data.ui_text[page.lang] %}
         <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
             ui.language_name }}</a>
