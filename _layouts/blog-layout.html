@@ -14,27 +14,33 @@
 
       <style>
         .blog-wrapper {
-          display: flex;
-          justify-content: center;
+          display: grid;
+          grid-template-columns: 1fr minmax(auto, 960px) 1fr;
           gap: 40px;
-          max-width: 1200px;
+          max-width: 100%;
           margin: 0 auto;
           position: relative;
+          padding: 0 20px;
         }
 
         .blog-sidebar {
-          width: 250px;
-          flex-shrink: 0;
+          /* Place sidebar in the first column */
+          grid-column: 1;
           display: none;
           /* Hidden by default on small screens */
+          justify-self: end;
+          /* Align to the right side of the left column */
+          width: 250px;
         }
 
         .blog-main {
-          flex-grow: 1;
-          max-width: 800px;
-          /* Match existing blog container max-width */
+          /* Place content in the middle column */
+          grid-column: 2;
           width: 100%;
+          /* max-width is controlled by grid column definition */
         }
+
+        /* Empty third column usually, but ensures centering */
 
         .toc-sticky {
           position: sticky;
@@ -99,9 +105,32 @@
           display: none !important;
         }
 
-        @media (min-width: 1024px) {
+        /* Fix anchor jump offset */
+        .blog-content h1,
+        .blog-content h2,
+        .blog-content h3,
+        .blog-content h4,
+        .blog-content h5,
+        .blog-content h6 {
+          scroll-margin-top: 100px;
+        }
+
+        @media (min-width: 1280px) {
           .blog-sidebar {
             display: block;
+          }
+        }
+
+        /* Fallback for smaller screens */
+        @media (max-width: 1279px) {
+          .blog-wrapper {
+            display: block;
+            max-width: 960px;
+            margin: 0 auto;
+          }
+
+          .blog-sidebar {
+            display: none;
           }
         }
       </style>
