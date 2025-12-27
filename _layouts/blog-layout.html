@@ -12,6 +12,100 @@
   <div class="wrapper">
     <section>
 
+      <style>
+        .blog-wrapper {
+          display: flex;
+          justify-content: center;
+          gap: 40px;
+          max-width: 1200px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .blog-sidebar {
+          width: 250px;
+          flex-shrink: 0;
+          display: none;
+          /* Hidden by default on small screens */
+        }
+
+        .blog-main {
+          flex-grow: 1;
+          max-width: 800px;
+          /* Match existing blog container max-width */
+          width: 100%;
+        }
+
+        .toc-sticky {
+          position: sticky;
+          top: 100px;
+          /* Offset for navbar */
+          max-height: calc(100vh - 120px);
+          overflow-y: auto;
+          padding-right: 15px;
+        }
+
+        .toc-sticky h4 {
+          margin-top: 0;
+          margin-bottom: 10px;
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: #64748b;
+        }
+
+        .toc-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          border-left: 2px solid #e2e8f0;
+        }
+
+        .toc-item {
+          margin: 0;
+        }
+
+        .toc-link {
+          display: block;
+          padding: 6px 0 6px 15px;
+          color: #64748b;
+          text-decoration: none;
+          font-size: 0.9rem;
+          line-height: 1.4;
+          transition: all 0.2s;
+          border-left: 2px solid transparent;
+          margin-left: -2px;
+        }
+
+        .toc-link:hover {
+          color: #2563eb;
+          text-decoration: none;
+        }
+
+        .toc-link.active {
+          color: #2563eb;
+          font-weight: 500;
+          border-left-color: #2563eb;
+          background: linear-gradient(90deg, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .toc-child {
+          padding-left: 15px;
+          font-size: 0.85rem;
+        }
+
+        /* Hide in-content TOC */
+        .blog-content .toc {
+          display: none !important;
+        }
+
+        @media (min-width: 1024px) {
+          .blog-sidebar {
+            display: block;
+          }
+        }
+      </style>
+
       {% include navigation.html %}
 
       <!-- Language switch link -->
@@ -21,7 +115,81 @@
           ui.language_name }}</a>
       </div>
 
-      {{content}}
+      <div class="blog-wrapper">
+        <aside class="blog-sidebar">
+          <div class="toc-sticky">
+            <h4>Table of Contents</h4>
+            <div id="dynamic-toc"></div>
+          </div>
+        </aside>
+
+        <main class="blog-main">
+          {{content}}
+        </main>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const tocContainer = document.getElementById('dynamic-toc');
+          const contentContainer = document.querySelector('.blog-content');
+
+          if (!contentContainer) return;
+
+          // Find all h2 and h3 headers
+          const headers = contentContainer.querySelectorAll('h2, h3');
+          if (headers.length === 0) return;
+
+          const ul = document.createElement('ul');
+          ul.className = 'toc-list';
+
+          headers.forEach((header, index) => {
+            // Ensure header has ID
+            if (!header.id) {
+              header.id = 'section-' + index;
+            }
+
+            const li = document.createElement('li');
+            li.className = 'toc-item';
+            if (header.tagName.toLowerCase() === 'h3') {
+              li.classList.add('toc-child');
+            }
+
+            const a = document.createElement('a');
+            a.href = '#' + header.id;
+            a.className = 'toc-link';
+            a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, ''); // Remove numbering if present
+
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+
+          tocContainer.appendChild(ul);
+
+          // ScrollSpy
+          const links = document.querySelectorAll('.toc-link');
+          const observerOptions = {
+            root: null,
+            rootMargin: '-100px 0px -66%',
+            threshold: 0
+          };
+
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                links.forEach(link => {
+                  link.classList.remove('active');
+                  if (link.getAttribute('href') === '#' + id) {
+                    link.classList.add('active');
+                  }
+                });
+              }
+            });
+          }, observerOptions);
+
+          headers.forEach(header => observer.observe(header));
+        });
+      </script>
 
     </section>
   </div>
