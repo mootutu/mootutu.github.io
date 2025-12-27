@@ -11,6 +11,7 @@
         body {
             margin: 0;
             padding: 0;
+            background-color: #f1f5f9;
         }
 
         .learning-wrapper {
@@ -26,7 +27,6 @@
         .toc-sticky {
             position: sticky;
             top: 100px;
-            /* Offset for navbar */
             max-height: calc(100vh - 120px);
             overflow-y: auto;
             padding-right: 15px;
@@ -74,12 +74,10 @@
             font-size: 0.85rem;
         }
 
-        /* Hide in-content TOC */
         .topic-content .toc {
             display: none !important;
         }
 
-        /* Fix anchor jump offset */
         .topic-content h1,
         .topic-content h2,
         .topic-content h3,
@@ -89,7 +87,6 @@
             scroll-margin-top: 100px;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .learning-wrapper {
                 padding: 0 15px;
@@ -143,16 +140,18 @@
 
         /* Layout Overrides */
         .wrapper {
-            max-width: 1100px !important;
-            margin: 0 auto;
-            padding: 20px 40px 0 40px;
-            width: auto !important;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 40px 60px;
+            width: auto;
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
         }
 
         section {
-            width: 100% !important;
-            float: none !important;
-            padding-bottom: 50px;
+            width: 100%;
+            padding-bottom: 20px;
         }
 
         /* Centered Header Styles (Matching Blog) */
