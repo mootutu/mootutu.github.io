@@ -8,26 +8,18 @@
         rel="stylesheet">
 
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
         .learning-wrapper {
-            display: grid;
-            grid-template-columns: 1fr minmax(auto, 960px) 1fr;
-            gap: 40px;
-            max-width: 100%;
+            max-width: 960px;
             margin: 0 auto;
-            position: relative;
             padding: 0 20px;
         }
 
-        .learning-sidebar {
-            grid-column: 1;
-            display: none;
-            /* Hidden by default on small screens */
-            justify-self: end;
-            width: 250px;
-        }
-
         .learning-main {
-            grid-column: 2;
             width: 100%;
         }
 
@@ -97,22 +89,10 @@
             scroll-margin-top: 100px;
         }
 
-        @media (min-width: 1280px) {
-            .learning-sidebar {
-                display: block;
-            }
-        }
-
-        /* Fallback for smaller screens */
-        @media (max-width: 1279px) {
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
             .learning-wrapper {
-                display: block;
-                max-width: 960px;
-                margin: 0 auto;
-            }
-
-            .learning-sidebar {
-                display: none;
+                padding: 0 15px;
             }
         }
 
@@ -245,13 +225,6 @@
         <section>
 
             <div class="learning-wrapper">
-                <aside class="learning-sidebar">
-                    <div class="toc-sticky">
-                        <h4>Table of Contents</h4>
-                        <div id="dynamic-toc"></div>
-                    </div>
-                </aside>
-
                 <main class="learning-main">
                     <a href="{% if page.lang == 'zh-CN' %}/cn/learning.html{% else %}/learning.html{% endif %}"
                         class="back-link">
