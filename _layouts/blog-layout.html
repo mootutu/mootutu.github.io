@@ -167,12 +167,13 @@
           if (!contentContainer) return;
 
           // Find all h2 and h3 headers
-          const headers = contentContainer.querySelectorAll('h2, h3');
+          const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
           if (headers.length === 0) return;
 
           const ul = document.createElement('ul');
           ul.className = 'toc-list';
 
+          // Create TOC items
           headers.forEach((header, index) => {
             // Ensure header has ID
             if (!header.id) {
@@ -196,29 +197,47 @@
 
           tocContainer.appendChild(ul);
 
-          // ScrollSpy
           const links = document.querySelectorAll('.toc-link');
-          const observerOptions = {
-            root: null,
-            rootMargin: '-100px 0px -66%',
-            threshold: 0
-          };
 
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const id = entry.target.getAttribute('id');
-                links.forEach(link => {
-                  link.classList.remove('active');
-                  if (link.getAttribute('href') === '#' + id) {
-                    link.classList.add('active');
-                  }
-                });
+          // ScrollSpy using scroll event for higher accuracy
+          function onScroll() {
+            const scrollPos = window.scrollY || document.documentElement.scrollTop;
+            const offset = 150; // Offset for navbar + breathing room
+
+            let currentHeaderId = null;
+
+            // Find the last header that is above the offset line
+            for (let i = 0; i < headers.length; i++) {
+              const header = headers[i];
+              if (header.offsetTop <= scrollPos + offset) {
+                currentHeaderId = header.id;
+              } else {
+                break;
+              }
+            }
+
+            links.forEach(link => {
+              link.classList.remove('active');
+              if (currentHeaderId && link.getAttribute('href') === '#' + currentHeaderId) {
+                link.classList.add('active');
               }
             });
-          }, observerOptions);
+          }
 
-          headers.forEach(header => observer.observe(header));
+          // Throttled scroll listener
+          let ticking = false;
+          window.addEventListener('scroll', function () {
+            if (!ticking) {
+              window.requestAnimationFrame(function () {
+                onScroll();
+                ticking = false;
+              });
+              ticking = true;
+            }
+          });
+
+          // Initial check
+          onScroll();
         });
       </script>
 
