@@ -4,209 +4,48 @@ lang: en
 translate_url: /cn/blog/posts/markdown-guide.html
 ---
 
-<style>
-  /* Blog Post Styles */
-  .blog-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .blog-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-title {
-    font-size: 2.2rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .blog-meta {
-    color: #666;
-    font-size: 1rem;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .blog-content {
-    line-height: 1.8;
-    color: #333;
-  }
-
-  .blog-content h2 {
-    color: #2c3e50;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-content h3 {
-    color: #34495e;
-    margin-top: 25px;
-    margin-bottom: 15px;
-  }
-
-  .blog-content p {
-    margin-bottom: 15px;
-    text-align: justify;
-  }
-
-  .blog-content ul,
-  .blog-content ol {
-    margin-bottom: 15px;
-    padding-left: 30px;
-  }
-
-  .blog-content li {
-    margin-bottom: 8px;
-  }
-
-  .blog-content code {
-    background-color: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-  }
-
-  .blog-content pre {
-    background-color: #f0f2f5;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .blog-content pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .blog-content blockquote {
-    border-left: 4px solid #0066cc;
-    padding-left: 15px;
-    margin-left: 0;
-    color: #666;
-    font-style: italic;
-    margin-bottom: 15px;
-  }
-
-  .blog-tags {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .blog-tag {
-    background-color: #f0f2f5;
-    color: #666;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .blog-tag:hover {
-    background-color: #e0e4e8;
-    color: #333;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #0066cc;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 16px;
-    border: 1px solid #0066cc;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-
-  .back-link:hover {
-    background-color: #0066cc;
-    color: #fff;
-  }
-</style>
-
-<div class="blog-container">
-  {% assign ui = site.data.ui_text[page.lang] %}
-  <a href="/blog.html" class="back-link">{{ ui.back_to_blog }}</a>
-
-  <div class="blog-header">
-    <h1 class="blog-title">Markdown Guide for Technical Writing</h1>
-    <div class="blog-meta">
-      <span>Author: Weiqin Wang</span>
-      <span>Published: November 20, 2025</span>
-      <span>Reading Time: 6 minutes</span>
-      <span>Category: Technical Writing</span>
-    </div>
+<div class="blog-header">
+  <h1 class="blog-title">Markdown Guide for Technical Writing</h1>
+  <div class="blog-meta">
+    <span>Author: Weiqin Wang</span>
+    <span>Published: November 20, 2025</span>
+    <span>Reading Time: 6 minutes</span>
+    <span>Category: Technical Writing</span>
   </div>
+</div>
 
-  <div class="blog-content">
-    <!-- Table of Contents -->
-    <div class="toc">
-      <div class="toc-title">Table of Contents</div>
-      <ul>
-        <li class="toc-h2"><a href="#markdown-intro">1. Introduction to Markdown</a></li>
-        <li class="toc-h2"><a href="#basic-syntax">2. Basic Markdown Syntax</a></li>
-        <li class="toc-h3"><a href="#headings">2.1 Headings</a></li>
-        <li class="toc-h3"><a href="#text-formatting">2.2 Text Formatting</a></li>
-        <li class="toc-h3"><a href="#lists">2.3 Lists</a></li>
-        <li class="toc-h3"><a href="#links-images">2.4 Links and Images</a></li>
-        <li class="toc-h2"><a href="#advanced-syntax">3. Advanced Markdown Features</a></li>
-        <li class="toc-h3"><a href="#code">3.1 Code Blocks</a></li>
-        <li class="toc-h3"><a href="#tables">3.2 Tables</a></li>
-        <li class="toc-h3"><a href="#blockquote">3.3 Blockquotes</a></li>
-        <li class="toc-h2"><a href="#best-practices">4. Best Practices for Technical Writing</a></li>
-      </ul>
-    </div>
+<!-- Main Content -->
+<p>Markdown is a lightweight markup language that has become the standard for technical writing. It's simple to
+  learn, easy to read in its raw form, and can be converted to HTML, PDF, and other formats. In this guide, we'll
+  cover the basics of Markdown syntax and best practices for technical documentation.</p>
 
-    <!-- Main Content -->
-    <p>Markdown is a lightweight markup language that has become the standard for technical writing. It's simple to
-      learn, easy to read in its raw form, and can be converted to HTML, PDF, and other formats. In this guide, we'll
-      cover the basics of Markdown syntax and best practices for technical documentation.</p>
+<h2 id="markdown-intro">1. Introduction to Markdown</h2>
+<p>Created by John Gruber in 2004, Markdown was designed to be "easy to write and easy to read." Its syntax is
+  intentionally simple, allowing writers to focus on content rather than formatting.</p>
+<p>Key advantages of Markdown for technical writing:</p>
+<ul>
+  <li>Plain text format that works with any text editor</li>
+  <li>Simple, intuitive syntax</li>
+  <li>Wide support across platforms and tools</li>
+  <li>Easy conversion to multiple formats</li>
+  <li>Perfect for documentation, READMEs, and blogs</li>
+</ul>
 
-    <h2 id="markdown-intro">1. Introduction to Markdown</h2>
-    <p>Created by John Gruber in 2004, Markdown was designed to be "easy to write and easy to read." Its syntax is
-      intentionally simple, allowing writers to focus on content rather than formatting.</p>
-    <p>Key advantages of Markdown for technical writing:</p>
-    <ul>
-      <li>Plain text format that works with any text editor</li>
-      <li>Simple, intuitive syntax</li>
-      <li>Wide support across platforms and tools</li>
-      <li>Easy conversion to multiple formats</li>
-      <li>Perfect for documentation, READMEs, and blogs</li>
-    </ul>
+<h2 id="basic-syntax">2. Basic Markdown Syntax</h2>
+<p>Let's start with the fundamental Markdown syntax elements.</p>
 
-    <h2 id="basic-syntax">2. Basic Markdown Syntax</h2>
-    <p>Let's start with the fundamental Markdown syntax elements.</p>
-
-    <h3 id="headings">2.1 Headings</h3>
-    <p>Use hash symbols (#) for headings, with 1-6 hashes corresponding to heading levels 1-6:</p>
-    <pre><code># Heading 1
+<h3 id="headings">2.1 Headings</h3>
+<p>Use hash symbols (#) for headings, with 1-6 hashes corresponding to heading levels 1-6:</p>
+<pre><code># Heading 1
 ## Heading 2
 ### Heading 3
 #### Heading 4
 ##### Heading 5
 ###### Heading 6</code></pre>
 
-    <h3 id="text-formatting">2.2 Text Formatting</h3>
-    <p>Format text with emphasis and strong emphasis:</p>
-    <pre><code>*Italic text*
+<h3 id="text-formatting">2.2 Text Formatting</h3>
+<p>Format text with emphasis and strong emphasis:</p>
+<pre><code>*Italic text*
 _Italic text_
 
 **Bold text**
@@ -214,12 +53,12 @@ __Bold text__
 
 ***Bold and italic***
 ___Bold and italic___</code></pre>
-    <p>Strikethrough text (not supported in all Markdown flavors):</p>
-    <pre><code>~~Strikethrough text~~</code></pre>
+<p>Strikethrough text (not supported in all Markdown flavors):</p>
+<pre><code>~~Strikethrough text~~</code></pre>
 
-    <h3 id="lists">2.3 Lists</h3>
-    <p>Create unordered lists with asterisks, plus signs, or hyphens:</p>
-    <pre><code>* Item 1
+<h3 id="lists">2.3 Lists</h3>
+<p>Create unordered lists with asterisks, plus signs, or hyphens:</p>
+<pre><code>* Item 1
 * Item 2
 * Item 3
   * Subitem 3.1
@@ -232,140 +71,138 @@ ___Bold and italic___</code></pre>
 - Item X
 - Item Y
 - Item Z</code></pre>
-    <p>Create ordered lists with numbers:</p>
-    <pre><code>1. First item
+<p>Create ordered lists with numbers:</p>
+<pre><code>1. First item
 2. Second item
 3. Third item
    1. Subitem 3.1
    2. Subitem 3.2
 4. Fourth item</code></pre>
 
-    <h3 id="links-images">2.4 Links and Images</h3>
-    <p>Create links with square brackets and parentheses:</p>
-    <pre><code>[Link text](https://example.com)
+<h3 id="links-images">2.4 Links and Images</h3>
+<p>Create links with square brackets and parentheses:</p>
+<pre><code>[Link text](https://example.com)
 
 [Link with title](https://example.com "Link title")
 
 [Reference link][ref]
 
 [ref]: https://example.com</code></pre>
-    <p>Add images with an exclamation mark before the square brackets:</p>
-    <pre><code>![Alt text](image.jpg)
+<p>Add images with an exclamation mark before the square brackets:</p>
+<pre><code>![Alt text](image.jpg)
 
 ![Alt text with title](image.jpg "Image title")</code></pre>
 
-    <h2 id="advanced-syntax">3. Advanced Markdown Features</h2>
-    <p>Now let's explore some more advanced Markdown features commonly used in technical writing.</p>
+<h2 id="advanced-syntax">3. Advanced Markdown Features</h2>
+<p>Now let's explore some more advanced Markdown features commonly used in technical writing.</p>
 
-    <h3 id="code">3.1 Code Blocks</h3>
-    <p>Display code with backticks:</p>
-    <pre><code>`Inline code`</code></pre>
-    <p>Create code blocks with triple backticks, optionally specifying a language for syntax highlighting:</p>
-    <pre><code>```python
+<h3 id="code">3.1 Code Blocks</h3>
+<p>Display code with backticks:</p>
+<pre><code>`Inline code`</code></pre>
+<p>Create code blocks with triple backticks, optionally specifying a language for syntax highlighting:</p>
+<pre><code>```python
 def hello_world():
     print("Hello, world!")
 
 hello_world()
 ```</code></pre>
-    <p>For compatibility with older Markdown processors, you can also indent code blocks by four spaces:</p>
-    <pre><code>    def hello_world():
+<p>For compatibility with older Markdown processors, you can also indent code blocks by four spaces:</p>
+<pre><code>    def hello_world():
         print("Hello, world!")</code></pre>
 
-    <h3 id="tables">3.2 Tables</h3>
-    <p>Create tables with pipes and hyphens:</p>
-    <pre><code>| Column 1 | Column 2 | Column 3 |
+<h3 id="tables">3.2 Tables</h3>
+<p>Create tables with pipes and hyphens:</p>
+<pre><code>| Column 1 | Column 2 | Column 3 |
 |----------|----------|----------|
 | Row 1    | Data 1   | Data 2   |
 | Row 2    | Data 3   | Data 4   |
 | Row 3    | Data 5   | Data 6   |</code></pre>
-    <p>Align columns with colons:</p>
-    <pre><code>| Left-aligned | Center-aligned | Right-aligned |
+<p>Align columns with colons:</p>
+<pre><code>| Left-aligned | Center-aligned | Right-aligned |
 | :----------- | :------------: | ------------: |
 | Left         | Center         | Right         |
 | Align        | Align          | Align         |</code></pre>
 
-    <h3 id="blockquote">3.3 Blockquotes</h3>
-    <p>Create blockquotes with the greater-than symbol:</p>
-    <pre><code>> This is a blockquote.
+<h3 id="blockquote">3.3 Blockquotes</h3>
+<p>Create blockquotes with the greater-than symbol:</p>
+<pre><code>> This is a blockquote.
 >
 > This is the second paragraph of the blockquote.</code></pre>
-    <p>Nest blockquotes:</p>
-    <pre><code>> This is the outer blockquote.
+<p>Nest blockquotes:</p>
+<pre><code>> This is the outer blockquote.
 >
 >> This is the inner blockquote.
 >
 > Back to the outer blockquote.</code></pre>
 
-    <h2 id="best-practices">4. Best Practices for Technical Writing</h2>
-    <p>Follow these best practices to create effective technical documentation with Markdown:</p>
+<h2 id="best-practices">4. Best Practices for Technical Writing</h2>
+<p>Follow these best practices to create effective technical documentation with Markdown:</p>
 
-    <h3>4.1 Structure Your Content</h3>
-    <ul>
-      <li>Use clear, hierarchical headings</li>
-      <li>Organize content logically</li>
-      <li>Include a table of contents for longer documents</li>
-      <li>Use lists for step-by-step instructions</li>
-    </ul>
+<h3>4.1 Structure Your Content</h3>
+<ul>
+  <li>Use clear, hierarchical headings</li>
+  <li>Organize content logically</li>
+  <li>Include a table of contents for longer documents</li>
+  <li>Use lists for step-by-step instructions</li>
+</ul>
 
-    <h3>4.2 Write Clear, Concise Content</h3>
-    <ul>
-      <li>Use short paragraphs</li>
-      <li>Write in active voice</li>
-      <li>Be precise and specific</li>
-      <li>Avoid jargon when possible</li>
-      <li>Define technical terms</li>
-    </ul>
+<h3>4.2 Write Clear, Concise Content</h3>
+<ul>
+  <li>Use short paragraphs</li>
+  <li>Write in active voice</li>
+  <li>Be precise and specific</li>
+  <li>Avoid jargon when possible</li>
+  <li>Define technical terms</li>
+</ul>
 
-    <h3>4.3 Format for Readability</h3>
-    <ul>
-      <li>Use code blocks for code examples</li>
-      <li>Highlight important information</li>
-      <li>Use tables for structured data</li>
-      <li>Include diagrams and images where helpful</li>
-      <li>Use consistent formatting</li>
-    </ul>
+<h3>4.3 Format for Readability</h3>
+<ul>
+  <li>Use code blocks for code examples</li>
+  <li>Highlight important information</li>
+  <li>Use tables for structured data</li>
+  <li>Include diagrams and images where helpful</li>
+  <li>Use consistent formatting</li>
+</ul>
 
-    <h3>4.4 Use Version Control</h3>
-    <ul>
-      <li>Track changes to your documentation with Git</li>
-      <li>Use meaningful commit messages</li>
-      <li>Collaborate with others through pull requests</li>
-      <li>Maintain a clear commit history</li>
-    </ul>
+<h3>4.4 Use Version Control</h3>
+<ul>
+  <li>Track changes to your documentation with Git</li>
+  <li>Use meaningful commit messages</li>
+  <li>Collaborate with others through pull requests</li>
+  <li>Maintain a clear commit history</li>
+</ul>
 
-    <h3>4.5 Choose the Right Tools</h3>
-    <ul>
-      <li>Use a Markdown editor with preview functionality</li>
-      <li>Consider using a static site generator like Jekyll or Hugo</li>
-      <li>Use CI/CD pipelines for automated publishing</li>
-      <li>Consider using documentation platforms like Read the Docs</li>
-    </ul>
+<h3>4.5 Choose the Right Tools</h3>
+<ul>
+  <li>Use a Markdown editor with preview functionality</li>
+  <li>Consider using a static site generator like Jekyll or Hugo</li>
+  <li>Use CI/CD pipelines for automated publishing</li>
+  <li>Consider using documentation platforms like Read the Docs</li>
+</ul>
 
-    <h2>5. Popular Markdown Tools</h2>
-    <p>Here are some popular tools for working with Markdown:</p>
-    <ul>
-      <li><strong>Editors</strong>: Typora, VS Code, Atom, Sublime Text</li>
-      <li><strong>Online Editors</strong>: Dillinger, StackEdit, HackMD</li>
-      <li><strong>Static Site Generators</strong>: Jekyll, Hugo, Gatsby</li>
-      <li><strong>Documentation Platforms</strong>: Read the Docs, GitBook, MkDocs</li>
-    </ul>
+<h2>5. Popular Markdown Tools</h2>
+<p>Here are some popular tools for working with Markdown:</p>
+<ul>
+  <li><strong>Editors</strong>: Typora, VS Code, Atom, Sublime Text</li>
+  <li><strong>Online Editors</strong>: Dillinger, StackEdit, HackMD</li>
+  <li><strong>Static Site Generators</strong>: Jekyll, Hugo, Gatsby</li>
+  <li><strong>Documentation Platforms</strong>: Read the Docs, GitBook, MkDocs</li>
+</ul>
 
-    <h2>6. Conclusion</h2>
-    <p>Markdown is a powerful, easy-to-learn language for technical writing. Its simplicity and versatility make it
-      ideal for creating documentation, READMEs, blogs, and more.</p>
-    <p>By mastering Markdown syntax and following best practices, you can create clear, well-structured technical
-      content that is easy to read and maintain. Remember to keep your writing clear, concise, and focused on your
-      audience's needs.</p>
-    <p>Start practicing with Markdown today, and you'll soon discover why it's become the standard for technical
-      documentation!</p>
+<h2>6. Conclusion</h2>
+<p>Markdown is a powerful, easy-to-learn language for technical writing. Its simplicity and versatility make it
+  ideal for creating documentation, READMEs, blogs, and more.</p>
+<p>By mastering Markdown syntax and following best practices, you can create clear, well-structured technical
+  content that is easy to read and maintain. Remember to keep your writing clear, concise, and focused on your
+  audience's needs.</p>
+<p>Start practicing with Markdown today, and you'll soon discover why it's become the standard for technical
+  documentation!</p>
 
-    <!-- Tags -->
-    <div class="blog-tags">
-      <a href="#" class="blog-tag">Markdown</a>
-      <a href="#" class="blog-tag">Technical Writing</a>
-      <a href="#" class="blog-tag">Documentation</a>
-      <a href="#" class="blog-tag">Writing</a>
-      <a href="#" class="blog-tag">Tutorial</a>
-    </div>
-  </div>
+<!-- Tags -->
+<div class="blog-tags">
+  <a href="#" class="blog-tag">Markdown</a>
+  <a href="#" class="blog-tag">Technical Writing</a>
+  <a href="#" class="blog-tag">Documentation</a>
+  <a href="#" class="blog-tag">Writing</a>
+  <a href="#" class="blog-tag">Tutorial</a>
 </div>

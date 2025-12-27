@@ -4,232 +4,69 @@ lang: en
 translate_url: /cn/blog/posts/git-basics.html
 ---
 
-<style>
-  /* Blog Post Styles */
-  .blog-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .blog-header {
-    text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-title {
-    font-size: 2.2rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .blog-meta {
-    color: #666;
-    font-size: 1rem;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .blog-content {
-    line-height: 1.8;
-    color: #333;
-  }
-
-  .blog-content h2 {
-    color: #2c3e50;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
-  }
-
-  .blog-content h3 {
-    color: #34495e;
-    margin-top: 25px;
-    margin-bottom: 15px;
-  }
-
-  .blog-content p {
-    margin-bottom: 15px;
-    text-align: justify;
-  }
-
-  .blog-content ul,
-  .blog-content ol {
-    margin-bottom: 15px;
-    padding-left: 30px;
-  }
-
-  .blog-content li {
-    margin-bottom: 8px;
-  }
-
-  .blog-content code {
-    background-color: #f0f2f5;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-  }
-
-  .blog-content pre {
-    background-color: #f0f2f5;
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 20px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .blog-content pre code {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  .blog-content blockquote {
-    border-left: 4px solid #0066cc;
-    padding-left: 15px;
-    margin-left: 0;
-    color: #666;
-    font-style: italic;
-    margin-bottom: 15px;
-  }
-
-  .blog-tags {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .blog-tag {
-    background-color: #f0f2f5;
-    color: #666;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
-
-  .blog-tag:hover {
-    background-color: #e0e4e8;
-    color: #333;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 20px;
-    color: #0066cc;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 16px;
-    border: 1px solid #0066cc;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-  }
-
-  .back-link:hover {
-    background-color: #0066cc;
-    color: #fff;
-  }
-</style>
-
-<div class="blog-container">
-  {% assign ui = site.data.ui_text[page.lang] %}
-  <a href="/blog.html" class="back-link">{{ ui.back_to_blog }}</a>
-
-  <div class="blog-header">
-    <h1 class="blog-title">Git Basics for Developers</h1>
-    <div class="blog-meta">
-      <span>Author: Weiqin Wang</span>
-      <span>Published: November 28, 2025</span>
-      <span>Reading Time: 8 minutes</span>
-      <span>Category: Technical Tutorial</span>
-    </div>
+<div class="blog-header">
+  <h1 class="blog-title">Git Basics for Developers</h1>
+  <div class="blog-meta">
+    <span>Author: Weiqin Wang</span>
+    <span>Published: November 28, 2025</span>
+    <span>Reading Time: 8 minutes</span>
+    <span>Category: Technical Tutorial</span>
   </div>
+</div>
 
-  <div class="blog-content">
-    <!-- Table of Contents -->
-    <div class="toc">
-      <div class="toc-title">Table of Contents</div>
-      <ul>
-        <li class="toc-h2"><a href="#git-basics">1. Git Fundamentals</a></li>
-        <li class="toc-h3"><a href="#git-install">1.1 Installing Git</a></li>
-        <li class="toc-h3"><a href="#git-config">1.2 Configuring Git</a></li>
-        <li class="toc-h2"><a href="#git-workflow">2. Basic Git Workflow</a></li>
-        <li class="toc-h3"><a href="#git-init">2.1 Initializing a Repository</a></li>
-        <li class="toc-h3"><a href="#git-add">2.2 Adding Files</a></li>
-        <li class="toc-h3"><a href="#git-commit">2.3 Committing Changes</a></li>
-        <li class="toc-h2"><a href="#git-branches">3. Branch Management</a></li>
-        <li class="toc-h3"><a href="#git-branch-create">3.1 Creating and Switching Branches</a></li>
-        <li class="toc-h3"><a href="#git-merge">3.2 Merging Branches</a></li>
-        <li class="toc-h2"><a href="#git-remote">4. Remote Repositories</a></li>
-        <li class="toc-h3"><a href="#git-remote-add">4.1 Adding a Remote Repository</a></li>
-        <li class="toc-h3"><a href="#git-push-pull">4.2 Pushing and Pulling</a></li>
-      </ul>
-    </div>
+<!-- Main Content -->
+<p>Git is the most popular distributed version control system, helping developers manage code changes and
+  collaborate effectively. In this article, we'll cover the basics of Git, including installation, configuration,
+  and common workflows.</p>
 
-    <!-- Main Content -->
-    <p>Git is the most popular distributed version control system, helping developers manage code changes and
-      collaborate effectively. In this article, we'll cover the basics of Git, including installation, configuration,
-      and common workflows.</p>
+<h2 id="git-basics">1. Git Fundamentals</h2>
+<p>Git is a distributed version control system, which means every developer has a complete copy of the repository,
+  including all history. This design provides several advantages:</p>
+<ul>
+  <li>Offline work: No need to be connected to a central server</li>
+  <li>Lightweight branching: Easy to create and manage branches</li>
+  <li>Security: Complete integrity checks for all data</li>
+  <li>Performance: Fast commits, branch switches, and merges</li>
+</ul>
 
-    <h2 id="git-basics">1. Git Fundamentals</h2>
-    <p>Git is a distributed version control system, which means every developer has a complete copy of the repository,
-      including all history. This design provides several advantages:</p>
-    <ul>
-      <li>Offline work: No need to be connected to a central server</li>
-      <li>Lightweight branching: Easy to create and manage branches</li>
-      <li>Security: Complete integrity checks for all data</li>
-      <li>Performance: Fast commits, branch switches, and merges</li>
-    </ul>
+<h3 id="git-install">1.1 Installing Git</h3>
+<p>The installation process varies depending on your operating system:</p>
+<ul>
+  <li><strong>Windows</strong>: Download the installer from the <a href="https://git-scm.com/download/win"
+      target="_blank">Git website</a></li>
+  <li><strong>macOS</strong>: Use Homebrew: <code>brew install git</code></li>
+  <li><strong>Linux</strong>: Use your package manager, e.g., Ubuntu: <code>sudo apt-get install git</code></li>
+</ul>
+<p>Verify installation with:</p>
+<pre><code>git --version</code></pre>
 
-    <h3 id="git-install">1.1 Installing Git</h3>
-    <p>The installation process varies depending on your operating system:</p>
-    <ul>
-      <li><strong>Windows</strong>: Download the installer from the <a href="https://git-scm.com/download/win"
-          target="_blank">Git website</a></li>
-      <li><strong>macOS</strong>: Use Homebrew: <code>brew install git</code></li>
-      <li><strong>Linux</strong>: Use your package manager, e.g., Ubuntu: <code>sudo apt-get install git</code></li>
-    </ul>
-    <p>Verify installation with:</p>
-    <pre><code>git --version</code></pre>
-
-    <h3 id="git-config">1.2 Configuring Git</h3>
-    <p>Set up your user information, which will appear in your commits:</p>
-    <pre><code>git config --global user.name "Your Name"
+<h3 id="git-config">1.2 Configuring Git</h3>
+<p>Set up your user information, which will appear in your commits:</p>
+<pre><code>git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"</code></pre>
-    <p>You can also configure your default editor and other preferences:</p>
-    <pre><code># Set default editor to VS Code
+<p>You can also configure your default editor and other preferences:</p>
+<pre><code># Set default editor to VS Code
 git config --global core.editor "code --wait"
 
 # Enable colored output
 git config --global color.ui true</code></pre>
 
-    <h2 id="git-workflow">2. Basic Git Workflow</h2>
-    <p>The basic Git workflow involves several key steps:</p>
+<h2 id="git-workflow">2. Basic Git Workflow</h2>
+<p>The basic Git workflow involves several key steps:</p>
 
-    <h3 id="git-init">2.1 Initializing a Repository</h3>
-    <p>Create a new Git repository:</p>
-    <pre><code># Create a new directory
+<h3 id="git-init">2.1 Initializing a Repository</h3>
+<p>Create a new Git repository:</p>
+<pre><code># Create a new directory
 mkdir my-project
 cd my-project
 
 # Initialize Git repository
 git init</code></pre>
-    <p>This creates a <code>.git</code> directory to store all repository data.</p>
+<p>This creates a <code>.git</code> directory to store all repository data.</p>
 
-    <h3 id="git-add">2.2 Adding Files</h3>
-    <p>Add files to the staging area before committing:</p>
-    <pre><code># Add a single file
+<h3 id="git-add">2.2 Adding Files</h3>
+<p>Add files to the staging area before committing:</p>
+<pre><code># Add a single file
 git add index.html
 
 # Add all files
@@ -237,32 +74,32 @@ git add .
 
 # Add specific file types
 git add *.js</code></pre>
-    <p>Check the repository status with:</p>
-    <pre><code>git status</code></pre>
+<p>Check the repository status with:</p>
+<pre><code>git status</code></pre>
 
-    <h3 id="git-commit">2.3 Committing Changes</h3>
-    <p>Commit your staged changes with a descriptive message:</p>
-    <pre><code>git commit -m "Initial commit"</code></pre>
-    <p>Follow good commit message practices:</p>
-    <ul>
-      <li>Use present tense ("Add feature" not "Added feature")</li>
-      <li>Keep the first line under 50 characters</li>
-      <li>Add a more detailed description after a blank line if needed</li>
-    </ul>
+<h3 id="git-commit">2.3 Committing Changes</h3>
+<p>Commit your staged changes with a descriptive message:</p>
+<pre><code>git commit -m "Initial commit"</code></pre>
+<p>Follow good commit message practices:</p>
+<ul>
+  <li>Use present tense ("Add feature" not "Added feature")</li>
+  <li>Keep the first line under 50 characters</li>
+  <li>Add a more detailed description after a blank line if needed</li>
+</ul>
 
-    <h2 id="git-branches">3. Branch Management</h2>
-    <p>Branches are Git's superpower, allowing you to work on features or fixes without affecting the main codebase.
-      Common branching strategies include:</p>
-    <ul>
-      <li>Main branch (main/master): Stable code</li>
-      <li>Develop branch: Active development</li>
-      <li>Feature branches (feature/*): Specific features</li>
-      <li>Fix branches (fix/*): Bug fixes</li>
-    </ul>
+<h2 id="git-branches">3. Branch Management</h2>
+<p>Branches are Git's superpower, allowing you to work on features or fixes without affecting the main codebase.
+  Common branching strategies include:</p>
+<ul>
+  <li>Main branch (main/master): Stable code</li>
+  <li>Develop branch: Active development</li>
+  <li>Feature branches (feature/*): Specific features</li>
+  <li>Fix branches (fix/*): Bug fixes</li>
+</ul>
 
-    <h3 id="git-branch-create">3.1 Creating and Switching Branches</h3>
-    <p>Create and manage branches with these commands:</p>
-    <pre><code># Create a new branch
+<h3 id="git-branch-create">3.1 Creating and Switching Branches</h3>
+<p>Create and manage branches with these commands:</p>
+<pre><code># Create a new branch
 git branch feature/login
 
 # Switch to a branch
@@ -270,73 +107,71 @@ git checkout feature/login
 
 # Create and switch to a branch in one command
 git checkout -b feature/login</code></pre>
-    <p>List all branches with:</p>
-    <pre><code>git branch</code></pre>
+<p>List all branches with:</p>
+<pre><code>git branch</code></pre>
 
-    <h3 id="git-merge">3.2 Merging Branches</h3>
-    <p>Merge a feature branch into the main branch:</p>
-    <pre><code># Switch to the target branch
+<h3 id="git-merge">3.2 Merging Branches</h3>
+<p>Merge a feature branch into the main branch:</p>
+<pre><code># Switch to the target branch
 git checkout main
 
 # Merge the feature branch
 git merge feature/login</code></pre>
-    <p>If conflicts occur, resolve them manually and commit again:</p>
-    <pre><code># After resolving conflicts
+<p>If conflicts occur, resolve them manually and commit again:</p>
+<pre><code># After resolving conflicts
 git add .
 git commit -m "Merge feature/login into main"</code></pre>
 
-    <h2 id="git-remote">4. Remote Repositories</h2>
-    <p>Remote repositories enable collaboration. They allow you to share your work and pull changes from others.</p>
+<h2 id="git-remote">4. Remote Repositories</h2>
+<p>Remote repositories enable collaboration. They allow you to share your work and pull changes from others.</p>
 
-    <h3 id="git-remote-add">4.1 Adding a Remote Repository</h3>
-    <p>Connect your local repository to a remote server:</p>
-    <pre><code>git remote add origin https://github.com/username/repository.git</code></pre>
-    <p>List remotes with:</p>
-    <pre><code>git remote -v</code></pre>
+<h3 id="git-remote-add">4.1 Adding a Remote Repository</h3>
+<p>Connect your local repository to a remote server:</p>
+<pre><code>git remote add origin https://github.com/username/repository.git</code></pre>
+<p>List remotes with:</p>
+<pre><code>git remote -v</code></pre>
 
-    <h3 id="git-push-pull">4.2 Pushing and Pulling</h3>
-    <p>Push your local changes to the remote repository:</p>
-    <pre><code>git push -u origin main</code></pre>
-    <p>Pull the latest changes from the remote:</p>
-    <pre><code>git pull origin main</code></pre>
-    <p>Clone an existing repository:</p>
-    <pre><code>git clone https://github.com/username/repository.git</code></pre>
+<h3 id="git-push-pull">4.2 Pushing and Pulling</h3>
+<p>Push your local changes to the remote repository:</p>
+<pre><code>git push -u origin main</code></pre>
+<p>Pull the latest changes from the remote:</p>
+<pre><code>git pull origin main</code></pre>
+<p>Clone an existing repository:</p>
+<pre><code>git clone https://github.com/username/repository.git</code></pre>
 
-    <blockquote>
-      <p><strong>Tip</strong>: Regularly pull changes to avoid conflicts when collaborating with others.</p>
-    </blockquote>
+<blockquote>
+  <p><strong>Tip</strong>: Regularly pull changes to avoid conflicts when collaborating with others.</p>
+</blockquote>
 
-    <h2>5. Common Git Commands</h2>
-    <p>Here's a quick reference of frequently used Git commands:</p>
-    <ul>
-      <li><code>git init</code>: Initialize a new repository</li>
-      <li><code>git add</code>: Add files to staging area</li>
-      <li><code>git commit</code>: Commit changes</li>
-      <li><code>git status</code>: Check repository status</li>
-      <li><code>git log</code>: View commit history</li>
-      <li><code>git branch</code>: Manage branches</li>
-      <li><code>git checkout</code>: Switch branches</li>
-      <li><code>git merge</code>: Merge branches</li>
-      <li><code>git remote</code>: Manage remote repositories</li>
-      <li><code>git push</code>: Push changes to remote</li>
-      <li><code>git pull</code>: Pull changes from remote</li>
-    </ul>
+<h2>5. Common Git Commands</h2>
+<p>Here's a quick reference of frequently used Git commands:</p>
+<ul>
+  <li><code>git init</code>: Initialize a new repository</li>
+  <li><code>git add</code>: Add files to staging area</li>
+  <li><code>git commit</code>: Commit changes</li>
+  <li><code>git status</code>: Check repository status</li>
+  <li><code>git log</code>: View commit history</li>
+  <li><code>git branch</code>: Manage branches</li>
+  <li><code>git checkout</code>: Switch branches</li>
+  <li><code>git merge</code>: Merge branches</li>
+  <li><code>git remote</code>: Manage remote repositories</li>
+  <li><code>git push</code>: Push changes to remote</li>
+  <li><code>git pull</code>: Pull changes from remote</li>
+</ul>
 
-    <h2>6. Conclusion</h2>
-    <p>Git is an essential tool for modern developers. By understanding the basics of Git, you can effectively manage
-      your code, collaborate with others, and maintain a reliable history of your project.</p>
-    <p>To become proficient with Git, practice regularly and explore more advanced features like rebasing, stashing, and
-      interactive rebase. The more you use Git, the more comfortable you'll become with its powerful capabilities.</p>
-    <p>Remember that version control is about more than just tracking changes—it's about enabling efficient
-      collaboration and ensuring the integrity of your codebase.</p>
+<h2>6. Conclusion</h2>
+<p>Git is an essential tool for modern developers. By understanding the basics of Git, you can effectively manage
+  your code, collaborate with others, and maintain a reliable history of your project.</p>
+<p>To become proficient with Git, practice regularly and explore more advanced features like rebasing, stashing, and
+  interactive rebase. The more you use Git, the more comfortable you'll become with its powerful capabilities.</p>
+<p>Remember that version control is about more than just tracking changes—it's about enabling efficient
+  collaboration and ensuring the integrity of your codebase.</p>
 
-    <!-- Tags -->
-    <div class="blog-tags">
-      <a href="#" class="blog-tag">Git</a>
-      <a href="#" class="blog-tag">Version Control</a>
-      <a href="#" class="blog-tag">Development</a>
-      <a href="#" class="blog-tag">Tutorial</a>
-      <a href="#" class="blog-tag">Programming</a>
-    </div>
-  </div>
+<!-- Tags -->
+<div class="blog-tags">
+  <a href="#" class="blog-tag">Git</a>
+  <a href="#" class="blog-tag">Version Control</a>
+  <a href="#" class="blog-tag">Development</a>
+  <a href="#" class="blog-tag">Tutorial</a>
+  <a href="#" class="blog-tag">Programming</a>
 </div>
