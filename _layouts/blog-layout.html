@@ -6,22 +6,44 @@
   <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
+  <style>
+    .post-content {
+      line-height: 1.7;
+      color: #2d3748;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+      color: #2563eb;
+    }
+  </style>
 </head>
 
 <body>
   <div class="wrapper">
     <section>
-
       {% include navigation.html %}
 
-      <!-- Language switch link -->
       <div style="text-align: right; margin-bottom: 10px;">
         {% assign ui = site.data.ui_text[page.lang] %}
         <a href="{{ page.translate_url | default: ui.language_url }}" style="text-decoration: none; color: #0066cc;">{{
           ui.language_name }}</a>
       </div>
 
-      {{content}}
+      <a href="{{ page.topic_url }}" class="back-link">
+        {% if page.lang == 'zh-CN' %}← 返回目录{% else %}← Back to Topic{% endif %}
+      </a>
+
+      <div class="post-content">
+        {{ content }}
+      </div>
 
     </section>
   </div>
