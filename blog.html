@@ -39,14 +39,57 @@ translate_url: /cn/blog.html
   .blog-post {
     background-color: #fff;
     padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    gap: 30px;
+    overflow: hidden;
   }
 
   .blog-post:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .blog-post-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .blog-post-image {
+    flex-shrink: 0;
+    width: 200px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+  }
+
+  .blog-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .blog-post:hover .blog-post-image img {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .blog-post {
+      flex-direction: column-reverse;
+      gap: 20px;
+    }
+
+    .blog-post-image {
+      width: 100%;
+      height: 200px;
+    }
   }
 
   .blog-post-title {
@@ -130,56 +173,73 @@ translate_url: /cn/blog.html
   <div class="blog-posts">
     <!-- Blog Post 1 -->
     <article class="blog-post">
-      <h2 class="blog-post-title"><a href="/blog/posts/automating-tasks-python.html">Automating Tasks with Python</a>
-      </h2>
-      <div class="blog-post-meta">
-        <span>Published: December 3, 2025</span>
-        <span>Reading Time: 7 minutes</span>
+      <div class="blog-post-content">
+        <h2 class="blog-post-title"><a href="/blog/posts/automating-tasks-python.html">Automating Tasks with Python</a>
+        </h2>
+        <div class="blog-post-meta">
+          <span>Published: December 3, 2025</span>
+          <span>Reading Time: 7 minutes</span>
+        </div>
+        <p class="blog-post-excerpt">Python is a versatile programming language that excels at automation tasks. Whether
+          you're dealing with file management, web scraping, or repetitive tasks, Python provides powerful libraries and
+          a
+          simple syntax to get the job done efficiently.</p>
+        <div class="blog-post-tags">
+          <a href="#" class="blog-tag">Python</a>
+          <a href="#" class="blog-tag">Automation</a>
+          <a href="#" class="blog-tag">Technical Tutorial</a>
+        </div>
+        <a href="/blog/posts/automating-tasks-python.html" class="read-more">Read More</a>
       </div>
-      <p class="blog-post-excerpt">Python is a versatile programming language that excels at automation tasks. Whether
-        you're dealing with file management, web scraping, or repetitive tasks, Python provides powerful libraries and a
-        simple syntax to get the job done efficiently.</p>
-      <div class="blog-post-tags">
-        <a href="#" class="blog-tag">Python</a>
-        <a href="#" class="blog-tag">Automation</a>
-        <a href="#" class="blog-tag">Technical Tutorial</a>
+      <div class="blog-post-image">
+        <img src="/assets/images/nailong.jpg" alt="Automating Tasks with Python">
       </div>
-      <a href="/blog/posts/automating-tasks-python.html" class="read-more">Read More</a>
     </article>
 
     <!-- Blog Post 2 -->
     <article class="blog-post">
-      <h2 class="blog-post-title"><a href="/blog/posts/git-basics.html">Git Basics for Developers</a></h2>
-      <div class="blog-post-meta">
-        <span>Published: November 28, 2025</span>
-        <span>Reading Time: 8 minutes</span>
+      <div class="blog-post-content">
+        <h2 class="blog-post-title"><a href="/blog/posts/git-basics.html">Git Basics for Developers</a></h2>
+        <div class="blog-post-meta">
+          <span>Published: November 28, 2025</span>
+          <span>Reading Time: 8 minutes</span>
+        </div>
+        <p class="blog-post-excerpt">Git is the most popular distributed version control system, helping developers
+          manage
+          code changes and collaborate effectively. This article introduces Git fundamentals and common workflows.</p>
+        <div class="blog-post-tags">
+          <a href="#" class="blog-tag">Git</a>
+          <a href="#" class="blog-tag">Version Control</a>
+          <a href="#" class="blog-tag">Development</a>
+        </div>
+        <a href="/blog/posts/git-basics.html" class="read-more">Read More</a>
       </div>
-      <p class="blog-post-excerpt">Git is the most popular distributed version control system, helping developers manage
-        code changes and collaborate effectively. This article introduces Git fundamentals and common workflows.</p>
-      <div class="blog-post-tags">
-        <a href="#" class="blog-tag">Git</a>
-        <a href="#" class="blog-tag">Version Control</a>
-        <a href="#" class="blog-tag">Development</a>
+      <div class="blog-post-image">
+        <img src="/assets/images/nailong.jpg" alt="Git Basics for Developers">
       </div>
-      <a href="/blog/posts/git-basics.html" class="read-more">Read More</a>
     </article>
 
     <!-- Blog Post 3 -->
     <article class="blog-post">
-      <h2 class="blog-post-title"><a href="/blog/posts/markdown-guide.html">Markdown Guide for Technical Writing</a>
-      </h2>
-      <div class="blog-post-meta">
-        <span>Published: November 20, 2025</span>
-        <span>Reading Time: 6 minutes</span>
+      <div class="blog-post-content">
+        <h2 class="blog-post-title"><a href="/blog/posts/markdown-guide.html">Markdown Guide for Technical Writing</a>
+        </h2>
+        <div class="blog-post-meta">
+          <span>Published: November 20, 2025</span>
+          <span>Reading Time: 6 minutes</span>
+        </div>
+        <p class="blog-post-excerpt">Markdown is a lightweight markup language perfect for technical writing. Learn the
+          basics of Markdown syntax and how to use it effectively for documentation and blogging.</p>
+        <div class="blog-post-tags">
+          <a href="#" class="blog-tag">Markdown</a>
+          <a href="#" class="blog-tag">Technical Writing</a>
+          <a href="#" class="blog-tag">Documentation</a>
+        </div>
+        <a href="/blog/posts/markdown-guide.html" class="read-more">Read More</a>
       </div>
-      <p class="blog-post-excerpt">Markdown is a lightweight markup language perfect for technical writing. Learn the
-        basics of Markdown syntax and how to use it effectively for documentation and blogging.</p>
-      <div class="blog-post-tags">
-        <a href="#" class="blog-tag">Markdown</a>
-        <a href="#" class="blog-tag">Technical Writing</a>
-        <a href="#" class="blog-tag">Documentation</a>
+      <div class="blog-post-image">
+        <img src="/assets/images/nailong.jpg" alt="Markdown Guide for Technical Writing">
       </div>
-      <a href="/blog/posts/markdown-guide.html" class="read-more">Read More</a>
     </article>
   </div>
 </div>
