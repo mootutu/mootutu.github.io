@@ -294,74 +294,94 @@
                         {% if page.lang == 'zh-CN' %}← 返回博客{% else %}← Back to Blog{% endif %}
                     </a>
 
-                    <div class="post-content">
-                        {{ content }}
-                    </div>
-                </main>
+                    <h1 class="blog-title">{{ page.title }}</h1>
+
+                    {% assign content_text = content | strip_html %}
+                    {% if page.lang == 'zh-CN' %}
+                    {% assign word_count = content_text | size %}
+                    {% assign words_per_minute = 500 %}
+                    {% else %}
+                    {% assign word_count = content_text | number_of_words %}
+                    {% assign words_per_minute = 200 %}
+                    {% endif %}
+                    {% assign read_time = word_count | divided_by: words_per_minute %}
+                    {% if read_time < 1 %}{% assign read_time=1 %}{% endif %} <div class="blog-meta">
+                        <span>{{ ui.author }}: {{ page.author | default: "Weiqin Wang" }}</span>
+                        <span>{{ ui.published }}: {{ page.date | date: "%B %d, %Y" }}</span>
+                        <span>{{ ui.reading_time }}: {{ read_time }} {{ ui.minutes }}</span>
+                        {% if page.category %}
+                        <span>{{ ui.category }}: {{ page.category }}</span>
+                        {% endif %}
             </div>
 
-            <!-- Back to Top Button -->
-            <button id="back-to-top" title="Back to Top">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 15l-6-6-6 6" />
-                </svg>
-            </button>
+            <div class="post-content">
+                {{ content }}
+            </div>
+            </main>
+    </div>
 
-            <script src="/assets/javascripts/scale.fix.js"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    // TOC Generation
-                    const tocContainer = document.getElementById('dynamic-toc');
-                    const contentContainer = document.querySelector('.post-content');
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Back to Top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
 
-                    if (contentContainer) {
-                        const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
-                        if (headers.length > 0) {
-                            const ul = document.createElement('ul');
-                            ul.className = 'toc-list';
+    <script src="/assets/javascripts/scale.fix.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // TOC Generation
+            const tocContainer = document.getElementById('dynamic-toc');
+            const contentContainer = document.querySelector('.post-content');
 
-                            headers.forEach((header, index) => {
-                                if (!header.id) header.id = 'section-' + index;
+            if (contentContainer) {
+                const headers = Array.from(contentContainer.querySelectorAll('h2, h3'));
+                if (headers.length > 0) {
+                    const ul = document.createElement('ul');
+                    ul.className = 'toc-list';
 
-                                const li = document.createElement('li');
-                                li.className = 'toc-item';
-                                if (header.tagName.toLowerCase() === 'h3') li.classList.add('toc-child');
+                    headers.forEach((header, index) => {
+                        if (!header.id) header.id = 'section-' + index;
 
-                                const a = document.createElement('a');
-                                a.href = '#' + header.id;
-                                a.className = 'toc-link';
-                                a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, '');
+                        const li = document.createElement('li');
+                        li.className = 'toc-item';
+                        if (header.tagName.toLowerCase() === 'h3') li.classList.add('toc-child');
 
-                                li.appendChild(a);
-                                ul.appendChild(li);
-                            });
+                        const a = document.createElement('a');
+                        a.href = '#' + header.id;
+                        a.className = 'toc-link';
+                        a.textContent = header.textContent.replace(/^\d+(\.\d+)*\s*/, '');
 
-                            tocContainer.appendChild(ul);
-                        }
-                    }
-
-                    // Back to Top functionality
-                    const backToTopButton = document.getElementById('back-to-top');
-
-                    window.addEventListener('scroll', function () {
-                        if (window.scrollY > 300) {
-                            backToTopButton.classList.add('visible');
-                        } else {
-                            backToTopButton.classList.remove('visible');
-                        }
+                        li.appendChild(a);
+                        ul.appendChild(li);
                     });
 
-                    backToTopButton.addEventListener('click', function () {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    });
+                    tocContainer.appendChild(ul);
+                }
+            }
+
+            // Back to Top functionality
+            const backToTopButton = document.getElementById('back-to-top');
+
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            });
+
+            backToTopButton.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
                 });
-            </script>
+            });
+        });
+    </script>
 
-        </section>
+    </section>
     </div>
 </body>
 

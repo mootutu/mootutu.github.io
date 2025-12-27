@@ -7,6 +7,11 @@ en:
   language_name: 中文
   bio_include: bio.html
   back_to_blog: "← Back to Blog List"
+  author: "Author"
+  published: "Published"
+  reading_time: "Reading Time"
+  minutes: "min"
+  category: "Category"
 
 zh-CN:
   home: 首页
@@ -17,3 +22,8 @@ zh-CN:
   language_name: English
   bio_include: bio-cn.html
   back_to_blog: "← 返回博客列表"
+  author: "作者"
+  published: "发布日期"
+  reading_time: "阅读时长"
+  minutes: "分钟"
+  category: "分类"
