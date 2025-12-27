@@ -4,11 +4,9 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     line-height: 1.5;
     background-color: rgba(248, 250, 252, 0.90);
-    /* Slightly off-white/cool grey for contrast against #fff body */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    /* Slightly stronger border */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -22,17 +20,62 @@
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Navbar Brand with Typing Cursor */
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  .navbar-brand::before {
+    content: '>';
+    color: #64748b;
+    margin-right: 8px;
+    font-weight: 400;
+  }
+
+  .navbar-brand::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #2563eb;
+    margin-left: 2px;
+    animation: blink-cursor 1s steps(1) infinite;
+  }
+
+  @keyframes blink-cursor {
+
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .navbar-brand:hover {
+    color: #2563eb;
+    text-decoration: none;
   }
 
   .navbar-menu {
     list-style: none;
-    /* clean list */
     margin: 0;
     padding: 0;
     display: flex;
     gap: 12px;
-    /* Consistent gap between items */
     align-items: center;
   }
 
@@ -44,18 +87,15 @@
   .navbar-link {
     text-decoration: none;
     color: #4a5568;
-    /* Neutral dark grey */
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 9999px;
-    /* Pill shape */
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.95rem;
     line-height: 1.5;
     letter-spacing: 0.01em;
     position: relative;
     border: none;
-    /* Reset existing border styles */
   }
 
   .navbar-link:hover {
@@ -66,17 +106,19 @@
 
   .navbar-link.active {
     color: #2563eb;
-    /* Primary Blue */
     background-color: rgba(37, 99, 235, 0.08);
     font-weight: 600;
     border-bottom: none;
-    /* Ensure no border bottom */
   }
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
     .navbar {
       padding: 0.6rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1rem;
     }
 
     .navbar-menu {
@@ -93,6 +135,10 @@
 
 <nav class="navbar">
   <div class="navbar-container">
+    <!-- Brand with Typing Cursor -->
+    <a href="{% if page.lang == 'zh-CN' %}/cn/index.html{% else %}/index.html{% endif %}" class="navbar-brand">Weiqin
+      Wang</a>
+
     <ul class="navbar-menu">
       {% assign ui = site.data.ui_text[page.lang] %}
       {% if page.lang == 'zh-CN' %}
@@ -104,7 +150,6 @@
           class="navbar-link {% if page.url == '/cn/learning.html' %}active{% endif %}">{{ ui.learning }}</a></li>
       <li class="navbar-item"><a href="/cn/about.html"
           class="navbar-link {% if page.url == '/cn/about.html' %}active{% endif %}">{{ ui.about }}</a></li>
-      <!-- <li class="navbar-item"><a href="/cn/tools.html" class="navbar-link {% if page.url == '/cn/tools.html' %}active{% endif %}">{{ ui.tools }}</a></li> -->
       {% else %}
       <li class="navbar-item"><a href="/index.html"
           class="navbar-link {% if page.url == '/index.html' %}active{% endif %}">{{ ui.home }}</a></li>
@@ -115,7 +160,6 @@
           class="navbar-link {% if page.url == '/learning.html' %}active{% endif %}">{{ ui.learning }}</a></li>
       <li class="navbar-item"><a href="/about.html"
           class="navbar-link {% if page.url == '/about.html' %}active{% endif %}">{{ ui.about }}</a></li>
-      <!-- <li class="navbar-item"><a href="/tools.html" class="navbar-link {% if page.url == '/tools.html' %}active{% endif %}">{{ ui.tools }}</a></li> -->
       {% endif %}
     </ul>
   </div>
