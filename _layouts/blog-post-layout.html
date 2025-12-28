@@ -14,7 +14,8 @@
     </script>
     <style>
         /* Immediate dark mode styles for html element to prevent flash */
-        html.dark-mode, .dark-mode body {
+        html.dark-mode,
+        .dark-mode body {
             background-color: #1a1a2e;
         }
 
@@ -45,16 +46,21 @@
             /* Offset for navbar */
             max-height: calc(100vh - 120px);
             overflow-y: auto;
-            padding-right: 15px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
         }
 
         .toc-sticky h4 {
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #64748b;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .toc-list {
@@ -256,8 +262,14 @@
             border-bottom-color: #334155;
         }
 
+        .dark-mode .toc-sticky {
+            background-color: #16213e;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
         .dark-mode .toc-sticky h4 {
             color: #94a3b8;
+            border-bottom-color: #334155;
         }
 
         .dark-mode .toc-list {
@@ -396,12 +408,12 @@
             padding-bottom: 20px;
         }
 
-        
 
-            100% {
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transform: scale(1);
-            }
+
+        100% {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: scale(1);
+        }
         }
     </style>
 </head>
@@ -418,7 +430,8 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
         <svg id="light-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
