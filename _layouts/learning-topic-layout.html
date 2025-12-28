@@ -8,14 +8,6 @@
         rel="stylesheet">
 
     <style>
-        html {
-            background-color: #f1f5f9;
-        }
-
-        html.dark-mode {
-            background-color: #1a1a2e;
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -346,11 +338,10 @@
         }
 
         /* View Transitions API */
-        /* View Transitions API */
         ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation: none !important;
-            mix-blend-mode: normal !important;
+            animation: none;
+            mix-blend-mode: normal;
         }
 
         ::view-transition-old(root) {
@@ -491,19 +482,15 @@
 
             if (savedMode === 'true') {
                 document.body.classList.add('dark-mode');
-                document.documentElement.classList.add('dark-mode');
                 darkModeToggle.textContent = '☀️';
             }
 
             darkModeToggle.addEventListener('click', function (e) {
-                if (darkModeToggle.classList.contains('animating')) return;
-
                 darkModeToggle.classList.add('animating');
                 setTimeout(() => darkModeToggle.classList.remove('animating'), 600);
 
                 if (!document.startViewTransition) {
                     document.body.classList.toggle('dark-mode');
-                    document.documentElement.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
                     darkModeToggle.textContent = isDark ? '☀️' : '🌙';
@@ -519,7 +506,6 @@
 
                 const transition = document.startViewTransition(() => {
                     document.body.classList.toggle('dark-mode');
-                    document.documentElement.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
                     darkModeToggle.textContent = isDark ? '☀️' : '🌙';

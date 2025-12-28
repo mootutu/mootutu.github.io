@@ -5,14 +5,6 @@
     <meta charset="utf-8">
     <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
     <style>
-        html {
-            background-color: #f1f5f9;
-        }
-
-        html.dark-mode {
-            background-color: #1a1a2e;
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -178,8 +170,8 @@
         /* View Transitions API */
         ::view-transition-old(root),
         ::view-transition-new(root) {
-            animation: none !important;
-            mix-blend-mode: normal !important;
+            animation: none;
+            mix-blend-mode: normal;
         }
 
         ::view-transition-old(root) {
@@ -293,20 +285,16 @@
 
             if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
-                document.documentElement.classList.add('dark-mode');
                 darkIcon.style.display = 'none';
                 lightIcon.style.display = 'block';
             }
 
             darkModeToggle.addEventListener('click', function (e) {
-                if (darkModeToggle.classList.contains('animating')) return;
-
                 darkModeToggle.classList.add('animating');
                 setTimeout(() => darkModeToggle.classList.remove('animating'), 600);
 
                 if (!document.startViewTransition) {
                     document.body.classList.toggle('dark-mode');
-                    document.documentElement.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
                     darkIcon.style.display = isDark ? 'none' : 'block';
@@ -323,7 +311,6 @@
 
                 const transition = document.startViewTransition(() => {
                     document.body.classList.toggle('dark-mode');
-                    document.documentElement.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
                     darkIcon.style.display = isDark ? 'none' : 'block';
