@@ -367,44 +367,7 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
     }
 
-    /* Dark Mode Transition Overlay */
-    /* View Transitions API */
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation: none;
-      mix-blend-mode: normal;
-    }
-
-    ::view-transition-old(root) {
-      z-index: 1;
-    }
-
-    ::view-transition-new(root) {
-      z-index: 9999;
-    }
-
-    .dark-mode::view-transition-old(root) {
-      z-index: 9999;
-    }
-
-    .dark-mode::view-transition-new(root) {
-      z-index: 1;
-    }
-
-    #dark-mode-toggle.animating {
-      animation: pulse-glow 0.6s ease-out;
-    }
-
-    @keyframes pulse-glow {
-      0% {
-        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
-        transform: scale(1);
-      }
-
-      50% {
-        box-shadow: 0 0 20px 10px rgba(37, 99, 235, 0.3);
-        transform: scale(1.1);
-      }
+    
 
       100% {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -501,52 +464,14 @@
             darkIcon.style.display = 'none';
             lightIcon.style.display = 'block';
           }
-          darkModeToggle.addEventListener('click', function (e) {
-            darkModeToggle.classList.add('animating');
-            setTimeout(() => darkModeToggle.classList.remove('animating'), 600);
-
-            if (!document.startViewTransition) {
-              document.documentElement.classList.toggle('dark-mode');
-              document.body.classList.toggle('dark-mode');
-              const isDark = document.body.classList.contains('dark-mode');
-              localStorage.setItem('darkMode', isDark);
-              darkIcon.style.display = isDark ? 'none' : 'block';
-              lightIcon.style.display = isDark ? 'block' : 'none';
-              return;
-            }
-
-            const x = e.clientX;
-            const y = e.clientY;
-            const endRadius = Math.hypot(
-              Math.max(x, window.innerWidth - x),
-              Math.max(y, window.innerHeight - y)
-            );
-
-            const transition = document.startViewTransition(() => {
-              document.documentElement.classList.toggle('dark-mode');
-              document.body.classList.toggle('dark-mode');
-              const isDark = document.body.classList.contains('dark-mode');
-              localStorage.setItem('darkMode', isDark);
-              darkIcon.style.display = isDark ? 'none' : 'block';
-              lightIcon.style.display = isDark ? 'block' : 'none';
+          darkModeToggle.addEventListener('click', function () {
+                // Simple toggle - just switch classes
+                document.documentElement.classList.toggle('dark-mode');
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                darkModeToggle.textContent = isDark ? '☀️' : '🌙';
             });
-
-            transition.ready.then(() => {
-              document.documentElement.animate(
-                {
-                  clipPath: [
-                    `circle(0px at ${x}px ${y}px)`,
-                    `circle(${endRadius}px at ${x}px ${y}px)`,
-                  ],
-                },
-                {
-                  duration: 500,
-                  easing: 'ease-in',
-                  pseudoElement: '::view-transition-new(root)',
-                }
-              );
-            });
-          });
 
           // TOC Generation
           const tocContainer = document.getElementById('dynamic-toc');
