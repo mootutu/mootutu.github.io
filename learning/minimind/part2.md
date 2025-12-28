@@ -168,7 +168,7 @@ After rotation (rounded):
 In RoPE, each pair of dimensions corresponds to a fixed rotation frequency, defined as:
 
 $$
-\text{freqs}_i = \frac{1}{\text{rope\_base}^{\frac{2i}{\text{dim}}}}
+\text{freqs}_i = \frac{1}{\text{rope_base}^{\frac{2i}{\text{dim}}}}
 $$
 
 From this formula, it can be seen that as the dimension index $i$ increases, the rotation frequency gradually decreases: low-dimensional parts correspond to higher rotation frequencies, and high-dimensional parts correspond to lower rotation frequencies.
@@ -202,14 +202,14 @@ $$
 \lambda_i = \frac{2\pi}{\text{freqs}[i]}
 $$
 
-When the wavelength corresponding to a certain dimension is less than or close to the maximum context length seen during the training phase (denoted as $\text{original\_max}$), it implies that phase repetition has already started to occur for that dimension within the training range; and in longer sequences, this repetition will be further aggravated, causing aliasing of far and near positional information.
+When the wavelength corresponding to a certain dimension is less than or close to the maximum context length seen during the training phase (denoted as $\text{original_max}$), it implies that phase repetition has already started to occur for that dimension within the training range; and in longer sequences, this repetition will be further aggravated, causing aliasing of far and near positional information.
 
 Based on this observation, YaRN determines which dimensions are "unsafe" in long sequence scenarios by comparing the wavelength with the maximum context length during training.
 
 Therefore, we define a split dimension:
 
 $$
-\text{corr\_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original\_max} \right\}
+\text{corr_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original_max} \right\}
 $$
 
 Dimensions before this are considered high-frequency (short wavelength) parts, which are prone to aliasing in long sequences; while dimensions after this belong to low-frequency (long wavelength) parts, which are more stable for long-distance information.
@@ -240,10 +240,10 @@ $$
 \begin{cases}
 \displaystyle
 \frac{\beta_i \cdot s - \beta_i + 1}{\beta_i + s},
-& i < \text{corr\_dim} \quad \text{(High freq / Short wavelength, Complex scaling)} \\[10pt]
+& i < \text{corr_dim} \quad \text{(High freq / Short wavelength, Complex scaling)} \\[10pt]
 \displaystyle
 \frac{1}{s},
-& i \ge \text{corr\_dim} \quad \text{(Low freq / Long wavelength, Simple scaling)}
+& i \ge \text{corr_dim} \quad \text{(Low freq / Long wavelength, Simple scaling)}
 \end{cases}
 $$
 

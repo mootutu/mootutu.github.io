@@ -200,7 +200,7 @@ $$m\theta_0 = 2 \times 0.1 = 0.2 \text{ rad}$$
 RoPE 中每一对维度都会对应一个固定的旋转频率，其定义为：
 
 $$
-\text{freqs}_i = \frac{1}{\text{rope\_base}^{\frac{2i}{\text{dim}}}}
+\text{freqs}_i = \frac{1}{\text{rope_base}^{\frac{2i}{\text{dim}}}}
 $$
 
 从这个公式可以看出，随着维度索引 $i$ 的增大，旋转频率会逐渐减小：低维部分对应较高的旋转频率，高维部分对应较低的旋转频率。
@@ -236,14 +236,14 @@ $$
 \lambda_i = \frac{2\pi}{\text{freqs}[i]}
 $$
 
-当某个维度对应的波长小于或接近模型在训练阶段见过的最大上下文长度（记为 $\text{original\_max}$）时，说明在训练范围内，该维度已经开始出现相位重复；而在更长的序列中，这种重复会进一步加剧，从而导致远近位置信息发生混叠。
+当某个维度对应的波长小于或接近模型在训练阶段见过的最大上下文长度（记为 $\text{original_max}$）时，说明在训练范围内，该维度已经开始出现相位重复；而在更长的序列中，这种重复会进一步加剧，从而导致远近位置信息发生混叠。
 
 基于这一观察，YaRN 通过比较波长与训练时的最大上下文长度，来判断哪些维度在长序列场景下是“不安全的”。
 
 因此，我们定义一个分界维度：
 
 $$
-\text{corr\_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original\_max} \right\}
+\text{corr_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original_max} \right\}
 $$
 
 在此之前的维度被视为高频（短波长）部分，容易在长序列下产生混叠；而之后的维度则属于低频（长波长）部分，对长距离信息更加稳定。
@@ -278,10 +278,10 @@ $$
 \begin{cases}
 \displaystyle
 \frac{\beta_i \cdot s - \beta_i + 1}{\beta_i + s},
-& i < \text{corr\_dim} \quad \text{(高频 / 短波长，复杂缩放)} \\[10pt]
+& i < \text{corr_dim} \quad \text{(高频 / 短波长，复杂缩放)} \\[10pt]
 \displaystyle
 \frac{1}{s},
-& i \ge \text{corr\_dim} \quad \text{(低频 / 长波长，简单缩放)}
+& i \ge \text{corr_dim} \quad \text{(低频 / 长波长，简单缩放)}
 \end{cases}
 $$
 
