@@ -19,9 +19,9 @@ permalink: /search.json
 "tags" : "{{ doc.tags | join: ', ' }}",
 "url" : "{{ site.baseurl }}{{ doc.url }}",
 "date" : "{{ doc.date | date: '%B %-d, %Y' }}",
-"content" : "{% if doc.description %}{{ doc.description | strip_html | strip_newlines | escape }}{% elsif doc.intro %}{{
-doc.intro | strip_html | strip_newlines | escape }}{% else %}{{ doc.content | strip_html | strip_newlines | escape |
-truncatewords: 50 }}{% endif %}"
+"content" : {% if doc.description %}{{ doc.description | strip_html | strip_newlines | jsonify }}{% elsif doc.intro %}{{
+doc.intro | strip_html | strip_newlines | jsonify }}{% else %}{{ doc.content | strip_html | strip_newlines |
+truncatewords: 50 | jsonify }}{% endif %}
 } {% unless forloop.last %},{% endunless %}
 {% endfor %}
 ]
