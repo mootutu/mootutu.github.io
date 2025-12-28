@@ -203,7 +203,7 @@ $$
 \text{freqs}_i = \frac{1}{\text{rope_base}^{\frac{2i}{\text{dim}}}}
 $$
 
-从这个公式可以看出，随着维度索引 $i$ 的增大，旋转频率会逐渐减小：低维部分对应较高的旋转频率，高维部分对应较低的旋转频率。
+从这个公式可以看出，随着维度索引 $i$ 的增大，旋转频率会逐渐减小：低维部分对应较高的旋转频率，高维部分对应较低的旋转频率。这里需要注意的是，RoPE 中的“维度”并不是随意的索引，而是对应着一组从高频到低频的多尺度旋转基，用于同时编码短距离与长距离的相对位置信息。
 
 在序列长度不太长的情况（比如 4096）下，这样的频率分布通常是没有问题的。但当我们把上下文长度拉得很长（比如超过模型训练时见过的最大长度 4096， 如5000）时，就会出现问题。
 
@@ -223,7 +223,7 @@ YaRN 的核心思想并不是简单地整体缩放 RoPE 的频率，而是根据
 
 **第一步：确定需要调整的维度范围**
 
-我们可以通过波长来判断某个维度是否已经“超出了模型原本能够理解的上下文范围”。
+我们可以通过波长来判断某个维度是否已经“超出了模型原本能够理解的上下文范围”。由于 RoPE 中每个维度对应的旋转本质上是一个周期函数，不同维度对相对位置的“可区分范围”是不同的。如果某个维度在训练长度范围内已经完成了一次或多次完整旋转，那么该维度在更长序列下将不可避免地发生相位重复，从而导致不同距离映射到相同表示。
 
 直观来看，在 RoPE 中，每一个维度实际上都在用一个**周期性的旋转**来编码位置信息。对于第 $i$ 个维度，位置 $m$ 对应的旋转角度可以写成：
 $$
@@ -246,9 +246,9 @@ $$
 \text{corr_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original_max} \right\}
 $$
 
-在此之前的维度被视为高频（短波长）部分，容易在长序列下产生混叠；而之后的维度则属于低频（长波长）部分，对长距离信息更加稳定。
+这里的 $\text{corr_dim}$（correction dimension）表示第一个在训练上下文长度范围内仍未发生相位重复的维度索引，用于作为高频（不稳定）与低频（相对稳定）维度之间的分界点。
 
-
+在此之前的维度被视为高频（短波长）部分，容易在长序列下产生混叠；而之后的维度则属于低频（长波长）部分，对长距离信息更加稳定。由于高频维度对应的波长较短，在训练阶段就已经开始出现相位重复，因此在长上下文场景下最容易引发位置混叠；相比之下，低频维度对长距离信息更加稳定。YaRN 的设计正是基于这一观察，对高频维度施加更强的校正，而尽量保持低频维度的原有结构。
 
 **第二步：为不同维度计算插值权重**
 
@@ -292,3 +292,148 @@ $$
 $$
 
 通过这种方式，YaRN 在保证长距离位置信息可区分性的同时，尽量减少对原有 RoPE 表达能力的破坏。
+
+# 2.3 代码实现
+
+下面我们提供 RoPE 及其 YaRN 扩展的 PyTorch 实现代码。这段代码展示了如何预计算频率基以及如何将旋转位置编码应用于查询（Query）和键（Key）。
+
+## 2.3.1 预计算频率（`precompute_freqs_cis`）
+
+这个函数的主要目的是为了预先计算好所有位置所需的 $\sin$ 和 $\cos$ 矩阵，以便在后续的 `apply` 阶段直接查表使用。它可以分为两个阶段：标准 RoPE 的频率计算和 YaRN 的修正计算。
+
+**1. 标准 RoPE 频率计算**
+首先，根据 RoPE 的定义计算基础频率 $\theta_i$。代码中对应的是：
+```python
+freqs = 1.0 / rope_base ** torch.arange(0, dim, 2)[: dim // 2].float() / dim
+```
+这里有一个细节：RoPE 是两两一组维度的旋转，所以频率数量只有 `dim // 2` 个。生成的 `freqs` 对应了公式中的 $\theta_i$ 序列，从高频（低索引）到低频（高索引）排列。
+
+**2. YaRN 修正 (如果需扩展上下文)**
+这部分逻辑对应论文中的核心算法：
+*   **寻找 `corr_dim`**：代码通过 `next(...)` 寻找第一个满足 `wavelength > original_max` 的维度索引。这个索引将维度划分为“高频不安全区”和“低频安全区”。
+*   **计算平滑因子 `beta`**：利用 `power` 变量，生成一个从 `beta_slow` 到 `beta_fast` 过渡的系数，用于平滑高低频的边界。
+*   **计算缩放因子 `scale`**：
+    *   对于 **高频部分** (`i < corr_dim`)：使用插值公式 `(beta * factor - beta + 1) / (beta * factor)` 进行较复杂的缩放，以解决相位混叠。
+    *   对于 **低频部分** (`i >= corr_dim`)：直接使用 `1.0 / factor` 进行简单的线性缩放，因为这些维度在长距离下依然相对稳定。
+*   最后执行 `freqs = freqs * scale` 完成频率修正。
+
+**3. 生成完整的位置编码表**
+得到修正后的频率后，需要将其扩展到具体的序列长度 `end` 上。使用 `torch.outer` 将时间步 $t$ 与频率 $\theta$ 相乘，得到 $m\theta$ 矩阵。最后通过 `torch.cat` 拼接两份相同的 cos/sin，以匹配 `head_dim` 的形状（因为 RoPE 实现中通常将 $x, y$ 当作 $x, x, ..., y, y$ 或者交错处理，这里代码采用的是拼接方式匹配 hidden states）。
+
+## 2.3.2 应用旋转（`apply_rotary_pos_emb`）
+
+这个函数负责将预计算好的频率真正作用到 Query 和 Key 上。核心在于如何高效地实现二维向量的旋转操作。
+
+**1. `rotate_half` 的作用**
+根据复数旋转公式：
+$$
+(x + iy) e^{i\theta} = (x\cos\theta - y\sin\theta) + i(x\sin\theta + y\cos\theta)
+$$
+实部为 $x\cos\theta - y\sin\theta$，虚部为 $y\cos\theta + x\sin\theta$。
+代码中的实现采用了实数矩阵运算的技巧。`q` 和 `k` 的最后一维包含成对的 $(x, y)$。
+`rotate_half(x)` 函数实现了将向量 $(x, y)$ 变为 $(-y, x)$ 的操作：
+```python
+def rotate_half(x):
+    # 将后半部分移到前面并取反，前半部分移到后面
+    return torch.cat((-x[..., x.shape[-1] // 2 :], x[..., : x.shape[-1] // 2]), dim=-1)
+```
+这对应着公式中与 $\sin\theta$ 相乘项的符号变换。
+
+**2. 最终的旋转公式**
+结合 `precompute_freqs_cis` 返回的 `cos` 和 `sin`，代码执行了如下运算：
+```python
+q_embed = (q * cos) + (rotate_half(q) * sin)
+```
+我们可以验证其正确性：
+*   第一项 `q * cos` 提供了 $x\cos\theta$ 和 $y\cos\theta$。
+*   第二项 `rotate_half(q) * sin` 提供了 $-y\sin\theta$ 和 $x\sin\theta$。
+两者相加正好得到：
+*   前一半维度：$x\cos\theta - y\sin\theta$ （旋转后的实部/x坐标）
+*   后一半维度：$y\cos\theta + x\sin\theta$ （旋转后的虚部/y坐标）
+
+这样就完成了一次完整的旋转位置编码注入。
+
+## 2.3.3 完整实现
+
+```python
+def precompute_freqs_cis(
+    dim: int,
+    end: int = int(32 * 1024),
+    rope_base: float = 1e6,
+    rope_scaling: Optional[dict] = None,
+):
+"""
+预计算旋转位置编码（RoPE）的频率。
+
+参数:
+    dim (int): 维度。
+    end (int, 可选): 推入的序列长度，默认值为 32768。
+    rope_base (float, 可选): 基础频率，默认值为 1e6。
+    rope_scaling (dict, 可选): 缩放参数，用于 YaRN 缩放，默认值为 None。
+
+返回:
+    freqs_cos (torch.Tensor): 余弦频率，形状为 (end, dim // 2)。
+    freqs_sin (torch.Tensor): 正弦频率，形状为 (end, dim // 2)。
+"""
+    # 写出最初的 RoPE 式子
+    """
+    freqs_i = \frac{1}{rope_base^{\frac{2i}{dim}}}
+    两两旋转： freqs 这里是 i，而指数那里是 2i，因为是两两一组进行旋转
+    每个频率对应两个维度
+    """
+    freqs = 1.0 / rope_base ** torch.arange(0, dim, 2)[: dim // 2].float()/dim # 由于是两两一组进行旋转，所以以 2 为步长
+
+    # YaRN
+    if rope_scaling is not None:
+        orig_max, factor, beta_fast, beta_slow = (
+            rope_scaling.get("original_max_position_embeddings", 2048),
+            rope_scaling.get("factor", 4),
+            rope_scaling.get("beta_fast", 4),
+            rope_scaling.get("beta_slow", 1),
+        )
+
+        # 计算 corr_dim：从 0 开始，找第一个满足 波长 > 训练最大长度 的维度索引 i，也就是需要修正的维度，公式里面的 min 指的是最靠前的。为什么要找最靠前的？
+        corr_dim = next((i for i in range(dim // 2) if 2 * math.pi / freqs[i] > orig_max), dim // 2)
+
+        # 计算 power
+        power = torch.arange(0, dim//2, device=freqs.device).float() / max(dim//2 - 1, 1)
+
+        # 计算 beta
+        beta = beta_slow + (beta_fast - beta_slow) * power
+
+        # 计算 scale
+        scale = torch.where(
+            torch.arange(0, dim//2, device=freqs.device).float() < corr_dim,
+            (beta * factor - beta + 1)/beta * factor,
+            1.0 / factor
+        )
+
+        # 应用 scale
+        freqs = freqs * scale
+    # 生成位置索引，与频率相乘
+    t = torch.arange(end, device=freqs.device).float()
+    freqs = torch.outer(t, freqs).float() # [end, dim//2] 的矩阵
+
+    # 返回一个 cos 和 sin
+    freqs_cos = torch.cat((freqs.cos(), freqs.cos()), dim=-1)
+    freqs_sin = torch.cat((freqs.sin(), freqs.sin()), dim=-1)
+    return freqs_cos, freqs_sin
+
+def apply_rotary_pos_emb(q, k, cos, sin, unsqueeze_dim=1):
+
+    # 实数域上的旋转：[a, b] => [-b, a]
+    def rotate_half(x):
+        # x.shape[-1] 取最后一个维度的中点
+        # [-x[..., x.shape[-1] //2:] 取后半部分
+        # [x[..., :x.shape[-1] //2] 取前半部分
+        return torch.cat([-x[..., x.shape[-1] // 2:], x[..., :x.shape[-1] // 2]], dim=-1)
+    
+    # 应用旋转位置编码
+    # x_rotated = x  * cos + rotate_half(x) * sin
+    # unsqueeze 用于后续的维度扩展
+    # 计算 q_embed, k_embed
+    q_embed = (q * cos.unsqueeze(unsqueeze_dim)) + (rotate_half(q) * sin.unsqueeze(unsqueeze_dim))
+    k_embed = (k * cos.unsqueeze(unsqueeze_dim)) + (rotate_half(k) * sin.unsqueeze(unsqueeze_dim))
+
+    return q_embed, k_embed
+```

@@ -171,7 +171,7 @@ $$
 \text{freqs}_i = \frac{1}{\text{rope_base}^{\frac{2i}{\text{dim}}}}
 $$
 
-From this formula, it can be seen that as the dimension index $i$ increases, the rotation frequency gradually decreases: low-dimensional parts correspond to higher rotation frequencies, and high-dimensional parts correspond to lower rotation frequencies.
+From this formula, it can be seen that as the dimension index $i$ increases, the rotation frequency gradually decreases: low-dimensional parts correspond to higher rotation frequencies, and high-dimensional parts correspond to lower rotation frequencies. It is important to note here that the "dimensions" in RoPE are not arbitrary indices, but correspond to a set of multi-scale rotation bases ranging from high to low frequencies, used to simultaneously encode both short-range and long-range relative positional information.
 
 When the sequence length is not too long (e.g., 4096), such a frequency distribution is usually fine. But when we stretch the context length very long (e.g., exceeding the maximum length seen during model training, such as 5000), problems arise.
 
@@ -189,7 +189,7 @@ The actual calculation process can be divided into the following steps.
 
 **Step 1: Determine the Range of Dimensions to Adjust**
 
-We can use the wavelength to judge whether a dimension has "exceeded the context range that the model can originally understand".
+We can use the wavelength to judge whether a dimension has "exceeded the context range that the model can originally understand". Since the rotation corresponding to each dimension in RoPE is essentially a periodic function, the "distinguishable range" of relative positions differs across dimensions. If a dimension has already completed one or more full rotations within the training length, that dimension will inevitably experience phase repetition in longer sequences, causing different distances to map to the same representation.
 
 Intuitively, in RoPE, each dimension is actually using a **periodic rotation** to encode positional information. For the $i$-th dimension, the rotation angle corresponding to position $m$ can be written as:
 $$
@@ -212,7 +212,9 @@ $$
 \text{corr_dim} = \min \left\{ i \mid \frac{2\pi}{\text{freqs}[i]} > \text{original_max} \right\}
 $$
 
-Dimensions before this are considered high-frequency (short wavelength) parts, which are prone to aliasing in long sequences; while dimensions after this belong to low-frequency (long wavelength) parts, which are more stable for long-distance information.
+Here, $\text{corr_dim}$ (correction dimension) represents the first dimension index that has not undergone phase repetition within the training context length, serving as a boundary between high-frequency (unstable) and low-frequency (relatively stable) dimensions.
+
+Dimensions before this are considered high-frequency (short wavelength) parts, which are prone to aliasing in long sequences; while dimensions after this belong to low-frequency (long wavelength) parts, which are more stable for long-distance information. Since high-frequency dimensions correspond to shorter wavelengths, phase repetition begins to appear even during the training phase, making them most susceptible to positional aliasing in long-context scenarios; in contrast, low-frequency dimensions are more stable for long-range information. The design of YaRN is based on this observation, applying stronger correction to high-frequency dimensions while preserving the original structure of low-frequency dimensions as much as possible.
 
 **Step 2: Calculate Interpolation Weights for Different Dimensions**
 
@@ -254,3 +256,154 @@ $$
 $$
 
 In this way, YaRN minimizes the damage to the original RoPE expressive ability while ensuring the distinguishability of long-distance positional information.
+
+# 2.3 Code Implementation
+
+Below, we provide a PyTorch implementation of RoPE with YaRN scaling support. This code demonstrates how to precompute the frequency basis and apply the rotary embedding to queries and keys.
+
+## 2.3.1 Precomputing Frequencies (`precompute_freqs_cis`)
+
+The main purpose of this function is to precompute the $\sin$ and $\cos$ matrices needed for all positions, allowing for direct lookups during the subsequent `apply` phase. It can be divided into two stages: standard RoPE frequency calculation and YaRN correction.
+
+**1. Standard RoPE Frequency Calculation**
+First, calculate the base frequencies $\theta_i$ according to the RoPE definition. The corresponding code is:
+```python
+freqs = 1.0 / rope_base ** torch.arange(0, dim, 2)[: dim // 2].float() / dim
+```
+A detail here: RoPE rotates dimensions in pairs, so there are only `dim // 2` frequencies. The generated `freqs` correspond to the sequence of $\theta_i$, arranged from high frequency (low index) to low frequency (high index).
+
+**2. YaRN Correction (if context extension is needed)**
+This part corresponds to the core algorithm in the paper:
+*   **Finding `corr_dim`**: The code uses `next(...)` to find the first dimension index satisfying `wavelength > original_max`. This index splits the dimensions into a "high-frequency unsafe zone" and a "low-frequency safe zone".
+*   **Calculating smooth factor `beta`**: Using the `power` variable, a coefficient transitioning from `beta_slow` to `beta_fast` is generated to smooth the boundary between high and low frequencies.
+*   **Calculating scaling factor `scale`**:
+    *   For the **high-frequency part** (`i < corr_dim`): Use the interpolation formula `(beta * factor - beta + 1) / (beta * factor)` for more complex scaling to resolve phase aliasing.
+    *   For the **low-frequency part** (`i >= corr_dim`): Directly use `1.0 / factor` for simple linear scaling, as these dimensions remain relatively stable over long distances.
+*   Finally, execute `freqs = freqs * scale` to complete the frequency correction.
+
+**3. Generating the Full Position Encoding Table**
+After obtaining the corrected frequencies, they need to be expanded to the specific sequence length `end`. Use `torch.outer` to multiply the time steps $t$ with frequencies $\theta$ to obtain the $m\theta$ matrix. Finally, use `torch.cat` to concatenate two identical copies of cos/sin to match the shape of `head_dim` (since RoPE implementations typically treat $x, y$ as either $x, x, ..., y, y$ or interleaved; this code uses concatenation to match the hidden states).
+
+## 2.3.2 Applying Rotation (`apply_rotary_pos_emb`)
+
+This function is responsible for applying the precomputed frequencies to the Query and Key. The core lies in how to efficiently implement the 2D vector rotation operation.
+
+**1. The Role of `rotate_half`**
+According to the complex rotation formula:
+$$
+(x + iy) e^{i\theta} = (x\cos\theta - y\sin\theta) + i(x\sin\theta + y\cos\theta)
+$$
+The real part is $x\cos\theta - y\sin\theta$, and the imaginary part is $y\cos\theta + x\sin\theta$.
+The implementation in the code uses real matrix operations. The last dimension of `q` and `k` contains pairs of $(x, y)$.
+The `rotate_half(x)` function transforms the vector $(x, y)$ into $(-y, x)$:
+```python
+def rotate_half(x):
+    # Move the second half to the front and negate it, move the first half to the back
+    return torch.cat((-x[..., x.shape[-1] // 2 :], x[..., : x.shape[-1] // 2]), dim=-1)
+```
+This corresponds to the sign change in the $\sin\theta$ term in the formula.
+
+**2. The Final Rotation Formula**
+Combining the `cos` and `sin` returned by `precompute_freqs_cis`, the code executes the following operation:
+```python
+q_embed = (q * cos) + (rotate_half(q) * sin)
+```
+We can verify its correctness:
+*   The first term `q * cos` provides $x\cos\theta$ and $y\cos\theta$.
+*   The second term `rotate_half(q) * sin` provides $-y\sin\theta$ and $x\sin\theta$.
+Adding them together gives exactly:
+*   First half of dimensions: $x\cos\theta - y\sin\theta$ (Rotated Real part / x-coordinate)
+*   Second half of dimensions: $y\cos\theta + x\sin\theta$ (Rotated Imaginary part / y-coordinate)
+
+This completes a full injection of rotary position embeddings.
+
+## 2.3.3 Full Implementation
+
+```python
+import torch
+import math
+from typing import Optional
+
+def precompute_freqs_cis(
+    dim: int,
+    end: int = int(32 * 1024),
+    rope_base: float = 1e6,
+    rope_scaling: Optional[dict] = None,
+):
+    """
+    Precomputes frequency cis (cos + i sin) for RoPE.
+
+    Args:
+        dim (int): The dimension size.
+        end (int, optional): The maximum sequence length (context window). Defaults to 32768.
+        rope_base (float, optional): The base frequency. Defaults to 1e6.
+        rope_scaling (dict, optional): Scaling parameters for YaRN. Defaults to None.
+
+    Returns:
+        freqs_cos (torch.Tensor): Cosine part of the frequencies, shape (end, dim // 2).
+        freqs_sin (torch.Tensor): Sine part of the frequencies, shape (end, dim // 2).
+    """
+    # Calculate initial RoPE frequencies
+    # Formula: freqs_i = 1 / rope_base^(2i/dim)
+    # The exponent is 2i because values are rotated in pairs (dim // 2 pairs)
+    freqs = 1.0 / (rope_base ** (torch.arange(0, dim, 2)[: dim // 2].float() / dim))
+
+    # Apply YaRN scaling if configured
+    if rope_scaling is not None:
+        orig_max = rope_scaling.get("original_max_position_embeddings", 2048)
+        factor = rope_scaling.get("factor", 4)
+        beta_fast = rope_scaling.get("beta_fast", 4)
+        beta_slow = rope_scaling.get("beta_slow", 1)
+
+        # Calculate corr_dim: The first dimension index where wavelength > training max length
+        # 'min' in the formula corresponds to finding the first such index here.
+        corr_dim = next((i for i in range(dim // 2) if 2 * math.pi / freqs[i] > orig_max), dim // 2)
+
+        # Calculate interpolation weight 'power'
+        power = torch.arange(0, dim // 2, device=freqs.device).float() / max(dim // 2 - 1, 1)
+
+        # Calculate beta (smooth transition factor)
+        beta = beta_slow + (beta_fast - beta_slow) * power
+
+        # Calculate scaling factor 'scale' for each dimension
+        scale = torch.where(
+            torch.arange(0, dim // 2, device=freqs.device).float() < corr_dim,
+            (beta * factor - beta + 1) / (beta * factor), # High frequency / Short wavelength
+            1.0 / factor                                  # Low frequency / Long wavelength
+        )
+
+        # Apply scale to frequencies
+        freqs = freqs * scale
+
+    # Generate position indices and compute outer product with frequencies
+    # Resulting shape: [end, dim//2]
+    t = torch.arange(end, device=freqs.device).float()
+    freqs = torch.outer(t, freqs).float()
+
+    # Concatenate to match head_dim shape (cos, cos) and (sin, sin)
+    freqs_cos = torch.cat((freqs.cos(), freqs.cos()), dim=-1)
+    freqs_sin = torch.cat((freqs.sin(), freqs.sin()), dim=-1)
+    return freqs_cos, freqs_sin
+
+def apply_rotary_pos_emb(q, k, cos, sin, unsqueeze_dim=1):
+    """
+    Applies RoPE to query and key vectors.
+    """
+    
+    # Helper function: [a, b] -> [-b, a] implementation
+    # It splits the last dimension into two halves
+    def rotate_half(x):
+        x1 = x[..., : x.shape[-1] // 2]
+        x2 = x[..., x.shape[-1] // 2 :]
+        return torch.cat((-x2, x1), dim=-1)
+
+    # Apply the rotation:
+    # x_rotated = x * cos + rotate_half(x) * sin
+    # unsqueeze_dim is used to align dimensions for broadcasting (e.g. sequence length)
+    q_embed = (q * cos.unsqueeze(unsqueeze_dim)) + (rotate_half(q) * sin.unsqueeze(unsqueeze_dim))
+    k_embed = (k * cos.unsqueeze(unsqueeze_dim)) + (rotate_half(k) * sin.unsqueeze(unsqueeze_dim))
+
+    return q_embed, k_embed
+```
+
+
