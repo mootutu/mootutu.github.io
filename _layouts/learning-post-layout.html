@@ -19,23 +19,24 @@
             background-color: #1a1a2e;
         }
 
-        .blog-wrapper {
+        /* Page layout: TOC card | Content card */
+        .page-layout {
             display: flex;
-            gap: 40px;
-            max-width: 100%;
-            margin: 0 auto;
-            position: relative;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 30px auto;
             padding: 0 20px;
+            align-items: flex-start;
         }
 
         .blog-sidebar {
             flex-shrink: 0;
             display: none;
             /* Hidden by default on small screens */
-            width: 200px;
+            width: 240px;
         }
 
-        .blog-main {
+        .content-wrapper {
             flex: 1;
             min-width: 0;
         }
@@ -119,14 +120,19 @@
 
         /* Fallback for smaller screens */
         @media (max-width: 1279px) {
-            .blog-wrapper {
+            .page-layout {
                 display: block;
                 max-width: 100%;
-                margin: 0 auto;
+                margin: 30px auto;
+                padding: 0 20px;
             }
 
             .blog-sidebar {
                 display: none;
+            }
+
+            .wrapper {
+                margin: 0 auto;
             }
         }
 
@@ -361,7 +367,7 @@
         /* Layout Overrides */
         .wrapper {
             max-width: 1100px;
-            margin: 30px auto;
+            margin: 0;
             padding: 40px 60px;
             width: auto;
             background-color: #fff;
@@ -409,18 +415,19 @@
         {% if page.lang == 'zh-CN' %}EN{% else %}中{% endif %}
     </a>
 
-    <div class="wrapper">
-        <section>
+    <div class="page-layout">
+        <!-- TOC Sidebar (outside wrapper) -->
+        <aside class="blog-sidebar">
+            <div class="toc-sticky">
+                <h4>Table of Contents</h4>
+                <div id="dynamic-toc"></div>
+            </div>
+        </aside>
 
-            <div class="blog-wrapper">
-                <aside class="blog-sidebar">
-                    <div class="toc-sticky">
-                        <h4>Table of Contents</h4>
-                        <div id="dynamic-toc"></div>
-                    </div>
-                </aside>
-
-                <main class="blog-main">
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <div class="wrapper">
+                <section>
                     <a href="{{ page.topic_url }}" class="back-link">
                         {% if page.lang == 'zh-CN' %}← 返回目录{% else %}← Back to Topic{% endif %}
                     </a>
@@ -445,7 +452,9 @@
             <div class="post-content">
                 {{ content }}
             </div>
-            </main>
+            </section>
+        </div>
+    </div>
     </div>
 
     <!-- Back to Top Button -->
@@ -531,9 +540,6 @@
             });
         });
     </script>
-
-    </section>
-    </div>
 </body>
 
 </html>
