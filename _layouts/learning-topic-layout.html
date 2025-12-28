@@ -8,14 +8,17 @@
         rel="stylesheet">
     <script>
         // Apply dark mode immediately to prevent flash
-        if (localStorage.getItem('darkMode') === 'true') {
+        // Check localStorage first, then system preference
+        const localDarkMode = localStorage.getItem('darkMode');
+        if (localDarkMode === 'true' || (localDarkMode === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark-mode');
         }
     </script>
 
     <style>
         /* Immediate dark mode styles for html element to prevent flash */
-        html.dark-mode, .dark-mode body {
+        html.dark-mode,
+        .dark-mode body {
             background-color: #1a1a2e;
         }
 
@@ -349,7 +352,8 @@
             color: #1a1a2e;
         }
 
-        .dark-mode.dark-mode</style>
+        .dark-mode.dark-mode
+    </style>
 </head>
 
 <body>
@@ -364,7 +368,8 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
         <svg id="light-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -464,23 +469,36 @@
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             const darkIcon = document.getElementById('dark-icon');
             const lightIcon = document.getElementById('light-icon');
+            const htmlEl = document.documentElement;
+            const bodyEl = document.body;
 
-            // Apply dark mode class to body (html already has it from head script)
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-                darkIcon.style.display = 'none';
-                lightIcon.style.display = 'block';
+            // Function to update UI based on current state
+            function updateThemeUI(isDark) {
+                if (isDark) {
+                    htmlEl.classList.add('dark-mode');
+                    bodyEl.classList.add('dark-mode');
+                    darkIcon.style.display = 'none';
+                    lightIcon.style.display = 'block';
+                } else {
+                    htmlEl.classList.remove('dark-mode');
+                    bodyEl.classList.remove('dark-mode');
+                    darkIcon.style.display = 'block';
+                    lightIcon.style.display = 'none';
+                }
             }
 
+            // Initial check (consistent with head script)
+            const localDarkMode = localStorage.getItem('darkMode');
+            const systemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDarkMode = localDarkMode === 'true' || (localDarkMode === null && systemDarkMode);
+
+            updateThemeUI(isDarkMode);
+
+            // Toggle event
             darkModeToggle.addEventListener('click', function () {
-                // Simple toggle - just switch classes
-                document.documentElement.classList.toggle('dark-mode');
-                document.body.classList.toggle('dark-mode');
-                const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('darkMode', isDark);
-                darkIcon.style.display = isDark ? 'none' : 'block';
-                lightIcon.style.display = isDark ? 'block' : 'none';
+                isDarkMode = !isDarkMode;
+                updateThemeUI(isDarkMode);
+                localStorage.setItem('darkMode', isDarkMode);
             });
         });
     </script>
