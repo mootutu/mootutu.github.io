@@ -3,11 +3,16 @@ layout: null
 permalink: /search.json
 ---
 [
-{% assign search_pages = site.pages | where_exp: "item", "item.layout == 'blog-post-layout' or item.layout ==
-'learning-post-layout' or item.layout == 'learning-topic-layout'" %}
-{% assign all_docs = site.posts | concat: search_pages %}
-{% for doc in all_docs %}
-{% if doc.title %}
+{% assign blog_pages = site.pages | where: "layout", "blog-post-layout" %}
+{% assign learning_pages = site.pages | where: "layout", "learning-post-layout" %}
+{% assign topic_pages = site.pages | where: "layout", "learning-topic-layout" %}
+
+{% assign pages_to_index = blog_pages | concat: learning_pages | concat: topic_pages %}
+{% assign all_docs = site.posts | concat: pages_to_index %}
+
+{% assign valid_docs = all_docs | where_exp: "doc", "doc.title != nil" %}
+
+{% for doc in valid_docs %}
 {
 "title" : "{{ doc.title | escape }}",
 "category" : "{{ doc.category }}",
@@ -18,6 +23,5 @@ permalink: /search.json
 doc.intro | strip_html | strip_newlines | escape }}{% else %}{{ doc.content | strip_html | strip_newlines | escape |
 truncatewords: 50 }}{% endif %}"
 } {% unless forloop.last %},{% endunless %}
-{% endif %}
 {% endfor %}
 ]
