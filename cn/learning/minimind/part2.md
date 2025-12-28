@@ -4,7 +4,7 @@ title: "2 位置编码 RoPE&YaRN"
 date: 2025-12-26
 lang: zh-CN
 topic_url: /cn/learning/minimind.html
-translate_url: /learning/minimind/day2.html
+translate_url: /learning/minimind/part2.html
 mathjax: true
 ---
 
@@ -102,9 +102,9 @@ $$
 
 其中：
 
-\- $q_m, k_m, v_m \in \mathbb{R}^{d}$
+- $q_m, k_m, v_m \in \mathbb{R}^{d}$
 
-\- $d$ 是该 head 的维度（head_dim）
+- $d$ 是该 head 的维度（head_dim）
 
 ### 2.2.3 RoPE 对 Q/K 的“旋转”是怎么做的
 
@@ -116,13 +116,13 @@ $$
 
 两两成对分组：
 
-\- 第 0 组：$(q_{m,0}, q_{m,1})$
+- 第 0 组：$(q_{m,0}, q_{m,1})$
 
-\- 第 1 组：$(q_{m,2}, q_{m,3})$
+- 第 1 组：$(q_{m,2}, q_{m,3})$
 
-\- 第 2 组：$(q_{m,4}, q_{m,5})$
+- 第 2 组：$(q_{m,4}, q_{m,5})$
 
-\- 第 3 组：$(q_{m,6}, q_{m,7})$
+- 第 3 组：$(q_{m,6}, q_{m,7})$
 
 对 $k_m$ 同理。
 
@@ -170,11 +170,11 @@ $$
 
 假设在某个 head 的第 0 个 pair 上（仅示意）：
 
-\- 原始 $q$ 的 pair：$(x, y) = (0.5, -1.0)$
+- 原始 $q$ 的 pair：$(x, y) = (0.5, -1.0)$
 
-\- 原始 $k$ 的 pair：$(x, y) = (1.2, 0.3)$
+- 原始 $k$ 的 pair：$(x, y) = (1.2, 0.3)$
 
-\- 该 pair 的频率：$\theta_0 = 0.1$
+- 该 pair 的频率：$\theta_0 = 0.1$
 
 那么旋转角度为：
 
@@ -182,9 +182,9 @@ $$m\theta_0 = 2 \times 0.1 = 0.2 \text{ rad}$$
 
 旋转后（四舍五入）：
 
-\- $q' \approx (0.6887, -0.8807)$
+- $q' \approx (0.6887, -0.8807)$
 
-\- $k' \approx (1.1165, 0.5324)$
+- $k' \approx (1.1165, 0.5324)$
 
 **注意：这只是 Q/K 的一个 2D 片段；实际会对所有 pair、所有 head 都做同样操作，只是每个 pair 的 $\theta_i$ 不同。**
 
