@@ -3,14 +3,21 @@ layout: null
 permalink: /search.json
 ---
 [
-{% for post in site.posts %}
+{% assign search_pages = site.pages | where_exp: "item", "item.layout == 'blog-post-layout' or item.layout ==
+'learning-post-layout' or item.layout == 'learning-topic-layout'" %}
+{% assign all_docs = site.posts | concat: search_pages %}
+{% for doc in all_docs %}
+{% if doc.title %}
 {
-"title" : "{{ post.title | escape }}",
-"category" : "{{ post.category }}",
-"tags" : "{{ post.tags | join: ', ' }}",
-"url" : "{{ site.baseurl }}{{ post.url }}",
-"date" : "{{ post.date | date: '%B %-d, %Y' }}",
-"content" : "{{ post.content | strip_html | strip_newlines | escape | truncatewords: 50 }}"
+"title" : "{{ doc.title | escape }}",
+"category" : "{{ doc.category }}",
+"tags" : "{{ doc.tags | join: ', ' }}",
+"url" : "{{ site.baseurl }}{{ doc.url }}",
+"date" : "{{ doc.date | date: '%B %-d, %Y' }}",
+"content" : "{% if doc.description %}{{ doc.description | strip_html | strip_newlines | escape }}{% elsif doc.intro %}{{
+doc.intro | strip_html | strip_newlines | escape }}{% else %}{{ doc.content | strip_html | strip_newlines | escape |
+truncatewords: 50 }}{% endif %}"
 } {% unless forloop.last %},{% endunless %}
+{% endif %}
 {% endfor %}
 ]
