@@ -395,9 +395,13 @@
       }
 
       const results = searchData.filter(item => {
-        return item.title.toLowerCase().includes(query) ||
-          item.content.toLowerCase().includes(query) ||
-          (item.tags && item.tags.toLowerCase().includes(query));
+        const inTitle = item.title.toLowerCase().includes(query);
+        const inTags = item.tags && item.tags.toLowerCase().includes(query);
+        // Only search content if query is long enough to be specific (>= 4 chars)
+        // This prevents short substrings like "ma" matching "macOS" in the body
+        const inContent = query.length >= 4 && item.content.toLowerCase().includes(query);
+
+        return inTitle || inTags || inContent;
       }).slice(0, 5); // Limit to 5 results
 
       displayResults(results);
