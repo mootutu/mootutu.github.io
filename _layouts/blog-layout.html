@@ -15,7 +15,8 @@
 
   <style>
     /* Immediate dark mode styles for html element to prevent flash */
-    html.dark-mode, .dark-mode body {
+    html.dark-mode,
+    .dark-mode body {
       background-color: #1a1a2e;
     }
 
@@ -367,12 +368,12 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
     }
 
-    
 
-      100% {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transform: scale(1);
-      }
+
+    100% {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: scale(1);
+    }
     }
 
     section {
@@ -465,13 +466,14 @@
             lightIcon.style.display = 'block';
           }
           darkModeToggle.addEventListener('click', function () {
-                // Simple toggle - just switch classes
-                document.documentElement.classList.toggle('dark-mode');
-                document.body.classList.toggle('dark-mode');
-                const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('darkMode', isDark);
-                darkModeToggle.textContent = isDark ? '☀️' : '🌙';
-            });
+            // Simple toggle - just switch classes
+            document.documentElement.classList.toggle('dark-mode');
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            darkIcon.style.display = isDark ? 'none' : 'block';
+            lightIcon.style.display = isDark ? 'block' : 'none';
+          });
 
           // TOC Generation
           const tocContainer = document.getElementById('dynamic-toc');
