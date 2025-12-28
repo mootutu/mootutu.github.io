@@ -8,7 +8,12 @@ translate_url: /learning/minimind/part2.html
 mathjax: true
 ---
 
-## 2.1 RoPE (Rotary Positional Embedding)
+
+本节我们来聊一聊大语言模型（LLM）中常用的几种位置编码方法，重点放在 **旋转位置编码（RoPE）** 以及它在长上下文场景下的一个重要扩展 —— **YaRN**。
+
+我们会先从直觉出发，看看 RoPE 是如何通过在复平面中对向量进行旋转，把“相对位置”自然地融入到注意力计算中的；然后再进一步讨论，当序列长度超过模型训练时见过的范围时，原始 RoPE 会遇到哪些问题，以及 YaRN 是如何通过对不同频率进行动态调整，来让模型更稳定地处理超长上下文的。
+
+# 2.1 RoPE (Rotary Positional Embedding)
 
 假设有两个二维向量 $\mathbf{q}$ 与 $\mathbf{k}$，分别表示  **query**  向量与  **key**  向量：
 
@@ -82,11 +87,11 @@ $$\text{score}(m, n) = \frac{(q'_m)^\top (k'_n)}{\sqrt{d}}$$
 
 因为 $q$ 和 $k$ 都带着各自位置的旋转角（$m\theta$、$n\theta$），因此点积会自然编码 相对位置信息（与 $m-n$ 强相关）。
 
-## 2.2 RoPE 的实际应用
+# 2.2 RoPE 的实际应用
 
 RoPE 不是直接旋转词向量 embedding，而是在注意力里对每个位置的 Query (Q)、Key (K) 做旋转（通常 Value (V) 不旋转）。
 
-### 2.2.2 从隐藏状态到 Q/K/V
+## 2.2.2 从隐藏状态到 Q/K/V
 
 在某一层 Transformer 中，每个位置都会有一个隐藏状态向量：
 
@@ -106,7 +111,7 @@ $$
 
 - $d$ 是该 head 的维度（head_dim）
 
-### 2.2.3 RoPE 对 Q/K 的“旋转”是怎么做的
+## 2.2.3 RoPE 对 Q/K 的“旋转”是怎么做的
 
 将 head_dim 按 2 维一组拆开，假设 $d = 8$，则：
 
@@ -160,7 +165,7 @@ x \\ y
 \end{bmatrix}
 $$
 
-### 2.2.4 一个例子（只演示某个 pair）
+## 2.2.4 一个例子（只演示某个 pair）
 
 以一句话为例：
 
@@ -188,9 +193,9 @@ $$m\theta_0 = 2 \times 0.1 = 0.2 \text{ rad}$$
 
 **注意：这只是 Q/K 的一个 2D 片段；实际会对所有 pair、所有 head 都做同样操作，只是每个 pair 的 $\theta_i$ 不同。**
 
-## 2.2 YaRN (Yet another RoPE extensioN method)
+# 2.2 YaRN (Yet another RoPE extensioN method)
 
-### 2.2.1 为什么要引入 YaRN 呢？
+## 2.2.1 为什么要引入 YaRN 呢？
 
 RoPE 中每一对维度都会对应一个固定的旋转频率，其定义为：
 
@@ -206,7 +211,7 @@ $$
 
 一旦出现这种情况，模型在注意力计算中就很难区分「这是一个很远的 token」还是「这是一个比较近的 token」，远近关系被混淆，最终会影响模型在长上下文场景下的训练稳定性和效果。这也是为什么原始 RoPE 在长序列外推时容易出现性能下降的问题。
 
-### 2.2.3 YaRN
+## 2.2.3 YaRN
 
 YaRN 的核心思想并不是简单地整体缩放 RoPE 的频率，而是根据不同维度所对应的“波长”，对高频和低频部分采用不同的缩放策略。
 
