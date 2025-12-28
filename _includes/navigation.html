@@ -206,6 +206,7 @@
     border: 1px solid rgba(0, 0, 0, 0.05);
     max-height: 400px;
     overflow-y: auto;
+    overscroll-behavior: contain;
     z-index: 1001;
   }
 
@@ -360,11 +361,15 @@
     const searchResults = document.getElementById('search-results');
     let searchData = [];
 
+    // Detect current page language
+    const currentLang = document.documentElement.lang || (window.location.pathname.includes('/cn/') ? 'zh-CN' : 'en');
+
     // Fetch search data
     fetch('/search.json')
       .then(response => response.json())
       .then(data => {
-        searchData = data;
+        // Filter by current language
+        searchData = data.filter(item => item.lang === currentLang);
       })
       .catch(error => console.error('Error fetching search data:', error));
 

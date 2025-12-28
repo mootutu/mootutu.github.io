@@ -19,6 +19,7 @@ permalink: /search.json
 "tags" : "{{ doc.tags | join: ', ' }}",
 "url" : "{{ site.baseurl }}{{ doc.url }}",
 "date" : "{{ doc.date | date: '%B %-d, %Y' }}",
+"lang" : "{% if doc.lang %}{{ doc.lang }}{% elsif doc.url contains '/cn/' %}zh-CN{% else %}en{% endif %}",
 "content" : {% if doc.description %}{{ doc.description | strip_html | strip_newlines | jsonify }}{% elsif doc.intro %}{{
 doc.intro | strip_html | strip_newlines | jsonify }}{% else %}{{ doc.content | strip_html | strip_newlines |
 truncatewords: 50 | jsonify }}{% endif %}
