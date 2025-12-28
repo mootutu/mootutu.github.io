@@ -34,6 +34,10 @@
             display: none;
             /* Hidden by default on small screens */
             width: 240px;
+            position: sticky;
+            top: 100px;
+            align-self: flex-start;
+            max-height: calc(100vh - 120px);
         }
 
         .content-wrapper {
@@ -42,11 +46,8 @@
         }
 
         .toc-sticky {
-            position: sticky;
-            top: 100px;
-            /* Offset for navbar */
-            max-height: calc(100vh - 120px);
             overflow-y: auto;
+            max-height: calc(100vh - 140px);
             padding: 20px;
             background-color: #fff;
             border-radius: 12px;
