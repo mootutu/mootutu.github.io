@@ -13,7 +13,7 @@ In this section, we take a closer look at several commonly used positional encod
 
 We will start from an intuitive perspective, exploring how RoPE encodes relative positions by rotating vectors in the complex plane and seamlessly integrating this information into the attention mechanism. We will then discuss the limitations that arise when sequence lengths exceed those seen during training, and how YaRN addresses these issues by dynamically adjusting rotation frequencies, enabling the model to handle much longer contexts more reliably.
 
-# 2.1 RoPE (Rotary Positional Embedding)
+## 2.1 RoPE (Rotary Positional Embedding)
 
 Assume there are two 2D vectors $\mathbf{q}$ and $\mathbf{k}$, representing the **query** vector and **key** vector respectively:
 
@@ -72,11 +72,11 @@ $$\text{score}(m, n) = \frac{(q'_m)^\top (k'_n)}{\sqrt{d}}$$
 
 Because $q$ and $k$ both carry the rotation angles of their respective positions ($m\theta$, $n\theta$), the dot product naturally encodes relative positional information (strongly correlated with $m-n$).
 
-# 2.2 Practical Application of RoPE
+## 2.2 Practical Application of RoPE
 
 RoPE does not directly rotate the word vector embedding, but rotates the Query (Q) and Key (K) at each position in the attention mechanism (Value (V) is usually not rotated).
 
-## 2.2.2 From Hidden State to Q/K/V
+### 2.2.2 From Hidden State to Q/K/V
 
 In a certain Transformer layer, each position has a hidden state vector:
 
@@ -95,7 +95,7 @@ Where:
 - $q_m, k_m, v_m \in \mathbb{R}^{d}$
 - $d$ is the dimension of the head (head_dim)
 
-## 2.2.3 How RoPE "Rotates" Q/K
+### 2.2.3 How RoPE "Rotates" Q/K
 
 Split `head_dim` into groups of 2. Assuming $d = 8$:
 
@@ -136,7 +136,7 @@ x \\ y
 \end{bmatrix}
 $$
 
-## 2.2.4 An Example (Demonstrating a Single Pair)
+### 2.2.4 An Example (Demonstrating a Single Pair)
 
 Take a sentence as an example:
 
@@ -161,9 +161,9 @@ After rotation (rounded):
 
 **Note: This is just a 2D fragment of Q/K; in practice, the same operation is performed for all pairs and all heads, only the $\theta_i$ for each pair is different.**
 
-# 2.2 YaRN (Yet another RoPE extensioN method)
+## 2.2 YaRN (Yet another RoPE extensioN method)
 
-## 2.2.1 Why Introduce YaRN?
+### 2.2.1 Why Introduce YaRN?
 
 In RoPE, each pair of dimensions corresponds to a fixed rotation frequency, defined as:
 
@@ -179,7 +179,7 @@ Intuitively, for high-frequency dimensions, when the relative position becomes v
 
 Once this happens, it becomes difficult for the model to distinguish in the attention calculation whether "this is a very distant token" or "this is a relatively close token". The distance relationship becomes confused, which ultimately affects the training stability and performance of the model in long context scenarios. This is also why the original RoPE tends to suffer from performance degradation during long sequence extrapolation.
 
-## 2.2.3 YaRN
+### 2.2.3 YaRN
 
 The core idea of YaRN is not simply to scale the RoPE frequency as a whole, but to adopt different scaling strategies for high-frequency and low-frequency parts according to the "wavelength" corresponding to different dimensions.
 
@@ -257,11 +257,11 @@ $$
 
 In this way, YaRN minimizes the damage to the original RoPE expressive ability while ensuring the distinguishability of long-distance positional information.
 
-# 2.3 Code Implementation
+## 2.3 Code Implementation
 
 Below, we provide a PyTorch implementation of RoPE with YaRN scaling support. This code demonstrates how to precompute the frequency basis and apply the rotary embedding to queries and keys.
 
-## 2.3.1 Precomputing Frequencies (`precompute_freqs_cis`)
+### 2.3.1 Precomputing Frequencies (`precompute_freqs_cis`)
 
 The main purpose of this function is to precompute the $\sin$ and $\cos$ matrices needed for all positions, allowing for direct lookups during the subsequent `apply` phase. It can be divided into two stages: standard RoPE frequency calculation and YaRN correction.
 
@@ -284,7 +284,7 @@ This part corresponds to the core algorithm in the paper:
 **3. Generating the Full Position Encoding Table**
 After obtaining the corrected frequencies, they need to be expanded to the specific sequence length `end`. Use `torch.outer` to multiply the time steps $t$ with frequencies $\theta$ to obtain the $m\theta$ matrix. Finally, use `torch.cat` to concatenate two identical copies of cos/sin to match the shape of `head_dim` (since RoPE implementations typically treat $x, y$ as either $x, x, ..., y, y$ or interleaved; this code uses concatenation to match the hidden states).
 
-## 2.3.2 Applying Rotation (`apply_rotary_pos_emb`)
+### 2.3.2 Applying Rotation (`apply_rotary_pos_emb`)
 
 This function is responsible for applying the precomputed frequencies to the Query and Key. The core lies in how to efficiently implement the 2D vector rotation operation.
 
@@ -317,7 +317,7 @@ Adding them together gives exactly:
 
 This completes a full injection of rotary position embeddings.
 
-## 2.3.3 Full Implementation
+### 2.3.3 Full Implementation
 
 ```python
 import torch

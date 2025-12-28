@@ -13,7 +13,7 @@ mathjax: true
 
 我们会先从直觉出发，看看 RoPE 是如何通过在复平面中对向量进行旋转，把“相对位置”自然地融入到注意力计算中的；然后再进一步讨论，当序列长度超过模型训练时见过的范围时，原始 RoPE 会遇到哪些问题，以及 YaRN 是如何通过对不同频率进行动态调整，来让模型更稳定地处理超长上下文的。
 
-# 2.1 RoPE (Rotary Positional Embedding)
+## 2.1 RoPE (Rotary Positional Embedding)
 
 假设有两个二维向量 $\mathbf{q}$ 与 $\mathbf{k}$，分别表示  **query**  向量与  **key**  向量：
 
@@ -87,11 +87,11 @@ $$\text{score}(m, n) = \frac{(q'_m)^\top (k'_n)}{\sqrt{d}}$$
 
 因为 $q$ 和 $k$ 都带着各自位置的旋转角（$m\theta$、$n\theta$），因此点积会自然编码 相对位置信息（与 $m-n$ 强相关）。
 
-# 2.2 RoPE 的实际应用
+## 2.2 RoPE 的实际应用
 
 RoPE 不是直接旋转词向量 embedding，而是在注意力里对每个位置的 Query (Q)、Key (K) 做旋转（通常 Value (V) 不旋转）。
 
-## 2.2.2 从隐藏状态到 Q/K/V
+### 2.2.2 从隐藏状态到 Q/K/V
 
 在某一层 Transformer 中，每个位置都会有一个隐藏状态向量：
 
@@ -111,7 +111,7 @@ $$
 
 - $d$ 是该 head 的维度（head_dim）
 
-## 2.2.3 RoPE 对 Q/K 的“旋转”是怎么做的
+### 2.2.3 RoPE 对 Q/K 的“旋转”是怎么做的
 
 将 head_dim 按 2 维一组拆开，假设 $d = 8$，则：
 
@@ -165,7 +165,7 @@ x \\ y
 \end{bmatrix}
 $$
 
-## 2.2.4 一个例子（只演示某个 pair）
+### 2.2.4 一个例子（只演示某个 pair）
 
 以一句话为例：
 
@@ -193,9 +193,9 @@ $$m\theta_0 = 2 \times 0.1 = 0.2 \text{ rad}$$
 
 **注意：这只是 Q/K 的一个 2D 片段；实际会对所有 pair、所有 head 都做同样操作，只是每个 pair 的 $\theta_i$ 不同。**
 
-# 2.2 YaRN (Yet another RoPE extensioN method)
+## 2.2 YaRN (Yet another RoPE extensioN method)
 
-## 2.2.1 为什么要引入 YaRN 呢？
+### 2.2.1 为什么要引入 YaRN 呢？
 
 RoPE 中每一对维度都会对应一个固定的旋转频率，其定义为：
 
@@ -211,7 +211,7 @@ $$
 
 一旦出现这种情况，模型在注意力计算中就很难区分「这是一个很远的 token」还是「这是一个比较近的 token」，远近关系被混淆，最终会影响模型在长上下文场景下的训练稳定性和效果。这也是为什么原始 RoPE 在长序列外推时容易出现性能下降的问题。
 
-## 2.2.3 YaRN
+### 2.2.3 YaRN
 
 YaRN 的核心思想并不是简单地整体缩放 RoPE 的频率，而是根据不同维度所对应的“波长”，对高频和低频部分采用不同的缩放策略。
 
@@ -293,11 +293,11 @@ $$
 
 通过这种方式，YaRN 在保证长距离位置信息可区分性的同时，尽量减少对原有 RoPE 表达能力的破坏。
 
-# 2.3 代码实现
+## 2.3 代码实现
 
 下面我们提供 RoPE 及其 YaRN 扩展的 PyTorch 实现代码。这段代码展示了如何预计算频率基以及如何将旋转位置编码应用于查询（Query）和键（Key）。
 
-## 2.3.1 预计算频率（`precompute_freqs_cis`）
+### 2.3.1 预计算频率（`precompute_freqs_cis`）
 
 这个函数的主要目的是为了预先计算好所有位置所需的 $\sin$ 和 $\cos$ 矩阵，以便在后续的 `apply` 阶段直接查表使用。它可以分为两个阶段：标准 RoPE 的频率计算和 YaRN 的修正计算。
 
@@ -320,7 +320,7 @@ freqs = 1.0 / rope_base ** torch.arange(0, dim, 2)[: dim // 2].float() / dim
 **3. 生成完整的位置编码表**
 得到修正后的频率后，需要将其扩展到具体的序列长度 `end` 上。使用 `torch.outer` 将时间步 $t$ 与频率 $\theta$ 相乘，得到 $m\theta$ 矩阵。最后通过 `torch.cat` 拼接两份相同的 cos/sin，以匹配 `head_dim` 的形状（因为 RoPE 实现中通常将 $x, y$ 当作 $x, x, ..., y, y$ 或者交错处理，这里代码采用的是拼接方式匹配 hidden states）。
 
-## 2.3.2 应用旋转（`apply_rotary_pos_emb`）
+### 2.3.2 应用旋转（`apply_rotary_pos_emb`）
 
 这个函数负责将预计算好的频率真正作用到 Query 和 Key 上。核心在于如何高效地实现二维向量的旋转操作。
 
@@ -353,7 +353,7 @@ q_embed = (q * cos) + (rotate_half(q) * sin)
 
 这样就完成了一次完整的旋转位置编码注入。
 
-## 2.3.3 完整实现
+### 2.3.3 完整实现
 
 ```python
 def precompute_freqs_cis(
