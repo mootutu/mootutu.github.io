@@ -6,8 +6,19 @@
     <link rel="icon" href="/assets/images/nailong.ico" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+    <script>
+        // Apply dark mode immediately to prevent flash
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
 
     <style>
+        /* Immediate dark mode styles for html element to prevent flash */
+        html.dark-mode {
+            background-color: #1a1a2e;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -266,6 +277,7 @@
         }
 
         /* Dark Mode Styles */
+        html.dark-mode,
         body.dark-mode {
             background-color: #1a1a2e;
         }
@@ -480,7 +492,9 @@
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             const savedMode = localStorage.getItem('darkMode');
 
+            // Apply dark mode class to body (html already has it from head script)
             if (savedMode === 'true') {
+                document.documentElement.classList.add('dark-mode');
                 document.body.classList.add('dark-mode');
                 darkModeToggle.textContent = '☀️';
             }
@@ -490,6 +504,7 @@
                 setTimeout(() => darkModeToggle.classList.remove('animating'), 600);
 
                 if (!document.startViewTransition) {
+                    document.documentElement.classList.toggle('dark-mode');
                     document.body.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
@@ -505,6 +520,7 @@
                 );
 
                 const transition = document.startViewTransition(() => {
+                    document.documentElement.classList.toggle('dark-mode');
                     document.body.classList.toggle('dark-mode');
                     const isDark = document.body.classList.contains('dark-mode');
                     localStorage.setItem('darkMode', isDark);
