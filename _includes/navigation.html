@@ -159,6 +159,159 @@
     color: #60a5fa;
     background-color: rgba(96, 165, 250, 0.15);
   }
+
+  /* Search Bar Styles */
+  .search-container {
+    position: relative;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    padding: 0.5rem 1rem 0.5rem 2.2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    font-size: 0.9rem;
+    width: 160px;
+    transition: all 0.3s ease;
+    color: #4a5568;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0.6rem center;
+    background-size: 1rem;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: #fff;
+    width: 200px;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+    padding: 0.5rem;
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1001;
+  }
+
+  .search-results.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .search-result-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .search-result-item:hover {
+    background-color: #f1f5f9;
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .search-result-title {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .search-result-excerpt {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dark-mode .search-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+  }
+
+  .dark-mode .search-input:focus {
+    background-color: rgba(30, 41, 59, 0.95);
+    border-color: #60a5fa;
+  }
+
+  .dark-mode .search-results {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .dark-mode .search-result-item {
+    color: #cbd5e1;
+  }
+
+  .dark-mode .search-result-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #60a5fa;
+  }
+
+  /* Responsive Search */
+  @media (max-width: 768px) {
+    .search-container {
+      margin-left: 0;
+      width: 100%;
+      margin-top: 10px;
+      order: 10;
+    }
+
+    .search-input {
+      width: 100%;
+    }
+
+    .search-input:focus {
+      width: 100%;
+    }
+
+    .search-results {
+      width: 100%;
+      right: auto;
+      left: 0;
+    }
+  }
 </style>
 
 <nav class="navbar">
@@ -189,6 +342,78 @@
       <li class="navbar-item"><a href="/about.html"
           class="navbar-link {% if page.url == '/about.html' %}active{% endif %}">{{ ui.about }}</a></li>
       {% endif %}
+      <li class="navbar-item">
+        <div class="search-container">
+          <input type="text" id="search-input" class="search-input" placeholder="{{ ui.search_placeholder }}"
+            aria-label="Search">
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    let searchData = [];
+
+    // Fetch search data
+    fetch('/search.json')
+      .then(response => response.json())
+      .then(data => {
+        searchData = data;
+      })
+      .catch(error => console.error('Error fetching search data:', error));
+
+    // Handle input
+    searchInput.addEventListener('input', function (e) {
+      const query = e.target.value.toLowerCase().trim();
+
+      if (query.length < 2) {
+        searchResults.classList.remove('active');
+        return;
+      }
+
+      const results = searchData.filter(item => {
+        return item.title.toLowerCase().includes(query) ||
+          item.content.toLowerCase().includes(query) ||
+          (item.tags && item.tags.toLowerCase().includes(query));
+      }).slice(0, 5); // Limit to 5 results
+
+      displayResults(results);
+    });
+
+    // Display results
+    function displayResults(results) {
+      if (results.length > 0) {
+        const html = results.map(item => `
+          <a href="${item.url}" class="search-result-item">
+            <span class="search-result-title">${item.title}</span>
+            <span class="search-result-excerpt">${item.content}...</span>
+          </a>
+        `).join('');
+        searchResults.innerHTML = html;
+      } else {
+        searchResults.innerHTML = `<div class="no-results">{{ ui.no_results }}</div>`;
+      }
+      searchResults.classList.add('active');
+    }
+
+    // Close on click outside
+    document.addEventListener('click', function (e) {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.classList.remove('active');
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        searchResults.classList.remove('active');
+        searchInput.blur();
+      }
+    });
+  });
+</script>

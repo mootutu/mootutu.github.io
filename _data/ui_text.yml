@@ -12,6 +12,8 @@ en:
   reading_time: "Reading Time"
   minutes: "min"
   category: "Category"
+  search_placeholder: "Search..."
+  no_results: "No results found"
 
 zh-CN:
   home: 首页
@@ -27,3 +29,5 @@ zh-CN:
   reading_time: "阅读时长"
   minutes: "分钟"
   category: "分类"
+  search_placeholder: "搜索..."
+  no_results: "未找到相关结果"
