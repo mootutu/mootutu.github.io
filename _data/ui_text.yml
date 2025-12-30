@@ -5,6 +5,7 @@ en:
   about: About
   tools: Tools
   language_name: 中文
+  language_url: /cn/index.html
   bio_include: bio.html
   back_to_blog: "← Back to Blog List"
   author: "Author"
@@ -22,6 +23,7 @@ zh-CN:
   about: 关于
   tools: 工具记录
   language_name: English
+  language_url: /index.html
   bio_include: bio-cn.html
   back_to_blog: "← 返回博客列表"
   author: "作者"
