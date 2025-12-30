@@ -1,0 +1,123 @@
+---
+layout: blog-post-layout
+title: "Modern Python Development Environment Setup Guide"
+date: 2025-12-30
+author: "Weiqin Wang"
+category: "Technical Tutorial"
+lang: en
+translate_url: /cn/blog/posts/modernizing-python.html
+---
+
+<div class="blog-content">
+    <p>With the rapid evolution of the Python ecosystem, many traditional tools (like pip, virtualenv, flake8) are being
+        replaced by more modern and efficient alternatives. This article introduces a modern Python development setup
+        designed to improve efficiency, code quality, and performance.</p>
+
+    <h2 id="ide-setup">1. Foundation: IDE</h2>
+
+    <h3 id="vscode-config">1.1 VS Code Extensions and Configuration</h3>
+    <p>VS Code is currently the most popular tool for Python development. First, download it from the <a
+            href="https://code.visualstudio.com/" target="_blank">official VS Code website</a>.</p>
+
+    <p><strong>Configuration Tip</strong>: It is recommended to uncheck the following options to avoid conflicts with
+        modern tools:</p>
+    <figure class="image">
+        <img src="/assets/images/posts/modernizing-python/image.png" alt="VS Code Config Suggestion">
+        <figcaption>Recommended to uncheck these options</figcaption>
+    </figure>
+
+    <p><strong>Recommended Extensions</strong>: Install these for the best experience:</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <img src="/assets/images/posts/modernizing-python/image 1.png" style="width: 340px;" alt="Python Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 2.png" style="width: 340px;" alt="Ruff Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 3.png" style="width: 340px;" alt="Pylance Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 4.png" style="width: 340px;" alt="Jupyter Plugin">
+    </div>
+
+    <h3 id="ai-tools">1.2 AI Programming Tools</h3>
+    <ul>
+        <li><strong>Cursor</strong>: A smart editor with deep AI integration. Highly recommended.</li>
+        <li><strong>Trae</strong>: An AI programming tool developed by ByteDance, currently in active development.</li>
+    </ul>
+
+    <h2 id="uv-setup">2. Infrastructure: uv</h2>
+    <h3 id="uv-intro">2.1 Introduction to uv</h3>
+    <p><code>uv</code> is an extremely fast Python package <strong>installer and resolver</strong>, written in Rust. It
+        serves as a high-performance replacement for <code>pip</code> and <code>pip-tools</code>.</p>
+
+    <p><strong>Installation</strong> (via curl):</p>
+    <pre><code># macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+
+    <h2 id="ruff-setup">3. Standards: Ruff</h2>
+    <h3 id="ruff-intro">3.1 Introduction to Ruff</h3>
+    <p><code>Ruff</code> is a blazing fast Python Linter and Formatter. It replaces Flake8, isort, and Black, but runs
+        10~100x faster.</p>
+
+    <h3 id="ruff-config">3.2 pyproject.toml Example</h3>
+    <p>Modern Python projects use <code>pyproject.toml</code> for configuration. Here is a typical setup:</p>
+
+    <pre><code>[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_project"
+version = "0.1.0"
+description = "A modern Python project"
+dependencies = []
+requires-python = ">=3.10"
+
+# ==============================
+# 🛠️ Ruff Config (Lint + Format)
+# ==============================
+[tool.ruff]
+preview = true
+target-version = "py310"
+fix = true
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F", "I", "UP", "C4", "TID", "ARG", "PTH"
+]
+ignore = ["E501", "D"]
+
+[tool.ruff.format]
+quote-style = 'single'
+indent-width = 4</code></pre>
+
+    <h2 id="rich-setup">4. Experience: Rich</h2>
+    <h3 id="rich-intro">4.1 Terminal Enhancements</h3>
+    <p><code>Rich</code> makes terminal output beautiful. It supports colors, tables, progress bars, and Markdown
+        rendering.</p>
+
+    <p><strong>Example (Better Tracebacks)</strong>:</p>
+    <pre><code>from rich.traceback import install
+install()
+
+def faulty_function():
+    result = 1 / 0
+    return result
+
+faulty_function()</code></pre>
+    <p>With <code>Rich</code>, you'll get a clear, detailed error report with variable values and code context.</p>
+
+    <h2 id="summary">5. Conclusion</h2>
+    <p>Combining <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> + <strong>Rich</strong>
+        provides a fast, standardized environment for modern Python development.</p>
+
+    <p style="font-size: 0.9rem; color: #666; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+        Source: <a
+            href="https://www.bilibili.com/video/BV1xk1eBQEUB/?spm_id_from=333.1387.homepage.video_card.click&vd_source=1f7bffd8d4ba342390189a24b36e567e"
+            target="_blank">【Python/uv】迈向AI的第零步！现代化Python工具指南</a> (Author: 木乔_Mokio)
+    </p>
+
+    <div class="blog-tags">
+        <a href="#" class="blog-tag">Python</a>
+        <a href="#" class="blog-tag">uv</a>
+        <a href="#" class="blog-tag">Ruff</a>
+        <a href="#" class="blog-tag">IDE</a>
+        <a href="#" class="blog-tag">Modern Tech</a>
+    </div>
+</div>

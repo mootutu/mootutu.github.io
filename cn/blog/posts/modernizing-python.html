@@ -1,0 +1,124 @@
+---
+layout: blog-post-layout
+title: "现代化 Python 开发环境配置指南"
+date: 2025-12-30
+author: "王伟钦"
+category: "技术教程"
+lang: zh-CN
+translate_url: /blog/posts/modernizing-python.html
+---
+
+<div class="blog-content">
+    <p>随着 Python 生态的快速演进，许多传统的工具（如 pip, virtualenv, flake8）正逐渐被更现代、更高效的工具所取代。本文将介绍一套现代化的 Python
+        开发环境配置方案，旨在提升开发效率、代码质量和运行性能。</p>
+
+    <h2 id="ide-setup">1. 基础：IDE</h2>
+
+    <h3 id="vscode-config">1.1 VS Code 及其插件与配置</h3>
+    <p>VS Code 是目前最流行的 Python 开发工具。首先，建议前往 <a href="https://code.visualstudio.com/" target="_blank">VS Code 官网</a> 下载安装。
+    </p>
+
+    <p><strong>配置建议</strong>：建议去掉以下勾选，以避免与现代工具冲突：</p>
+    <figure class="image">
+        <img src="/assets/images/posts/modernizing-python/image.png" alt="VS Code 配置建议">
+        <figcaption>建议去掉相关勾选</figcaption>
+    </figure>
+
+    <p><strong>推荐插件</strong>：安装以下插件以获得最佳开发体验：</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <img src="/assets/images/posts/modernizing-python/image 1.png" style="width: 340px;" alt="Python Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 2.png" style="width: 340px;" alt="Ruff Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 3.png" style="width: 340px;" alt="Pylance Plugin">
+        <img src="/assets/images/posts/modernizing-python/image 4.png" style="width: 340px;" alt="Jupyter Plugin">
+    </div>
+
+    <h3 id="ai-tools">1.2 AI 编程工具</h3>
+    <ul>
+        <li><strong>Cursor</strong>：深度集成 AI 的智能编辑器，配置与 VS Code 兼容，强烈推荐。</li>
+        <li><strong>Trae</strong>：字节跳动研发的国内 AI 编程工具，目前功能迭代中。</li>
+    </ul>
+
+    <h2 id="uv-setup">2. 底层：uv</h2>
+    <h3 id="uv-intro">2.1 uv 简介</h3>
+    <p><code>uv</code> 是一个速度极快的 Python 包<strong>安装器和解析器</strong>，由 <code>Ruff</code> 的作者 <strong>Charlie Marsh</strong>
+        开发。它可以看作是 <code>pip</code> 和 <code>pip-tools</code> 的高性能替代品，旨在彻底解决 Python 包管理的速度问题。</p>
+
+    <p><strong>安装方法</strong>（推荐使用 curl）：</p>
+    <pre><code># macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+
+    <h2 id="ruff-setup">3. 规范：Ruff</h2>
+    <h3 id="ruff-intro">3.1 Ruff 简介</h3>
+    <p><code>Ruff</code> 是一个极速的 Python Linter 和 Formatter，用 Rust 编写。它几乎涵盖了 Flake8、isort、Black 等工具的所有功能，但速度快了 10~100 倍。
+    </p>
+
+    <h3 id="ruff-config">3.2 pyproject.toml 配置示例</h3>
+    <p>现代 Python 项目推荐使用 <code>pyproject.toml</code> 进行统一配置。以下是一个集成了 Ruff、Pyright 等工具的典型配置：</p>
+
+    <pre><code>[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_project"
+version = "0.1.0"
+description = "A modern Python project"
+dependencies = []
+requires-python = ">=3.10"
+
+# ==============================
+# 🛠️ Ruff 配置（Lint + Format）
+# ==============================
+[tool.ruff]
+preview = true
+target-version = "py310"
+fix = true
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F", "I", "UP", "C4", "TID", "ARG", "PTH"
+]
+ignore = ["E501", "D"]
+
+[tool.ruff.format]
+quote-style = 'single'
+indent-width = 4</code></pre>
+
+    <h2 id="rich-setup">4. 体验：Rich</h2>
+    <h3 id="rich-intro">4.1 终端美化与增强</h3>
+    <p><code>Rich</code> 能够极大地改善命令行应用的开发体验。它可以让你的终端输出具有高亮颜色、表格、进度条甚至 Markdown 渲染。</p>
+
+    <p><strong>安装与使用</strong>：</p>
+    <pre><code>pip install rich</code></pre>
+
+    <p>示例代码（增强错误报告）：</p>
+    <pre><code>from rich.traceback import install
+install()
+
+def faulty_function():
+    result = 1 / 0
+    return result
+
+faulty_function()</code></pre>
+    <p>运行上述代码后，你将看到一个清晰、带变量值和代码上下文的错误报告，极大地缩短了调试时间。</p>
+
+    <h2 id="summary">5. 总结</h2>
+    <p>通过组合使用 <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> +
+        <strong>Rich</strong>，我们可以构建一个既快速又标准化的现代 Python 开发环境。这些工具不仅提高了代码质量，更重要的是在日常开发、安装依赖和调试问题时节省了大量时间。
+    </p>
+
+    <p style="font-size: 0.9rem; color: #666; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+        搬运自：<a
+            href="https://www.bilibili.com/video/BV1xk1eBQEUB/?spm_id_from=333.1387.homepage.video_card.click&vd_source=1f7bffd8d4ba342390189a24b36e567e"
+            target="_blank">【Python/uv】迈向AI的第零步！现代化Python工具指南</a>（作者：木乔_Mokio）
+    </p>
+
+    <div class="blog-tags">
+        <a href="#" class="blog-tag">Python</a>
+        <a href="#" class="blog-tag">uv</a>
+        <a href="#" class="blog-tag">Ruff</a>
+        <a href="#" class="blog-tag">IDE</a>
+        <a href="#" class="blog-tag">技术教程</a>
+    </div>
+</div>

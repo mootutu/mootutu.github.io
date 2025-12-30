@@ -1,0 +1,1101 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>现代化Python</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d92088f-2600-81c4-ad4b-c045d24ce3db" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🐍</span></div><h1 class="page-title" dir="auto">现代化Python</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">基础：ide</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">vscode及其插件与配置</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-815c-b8b9-df8a5288c63e" class=""><a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8154-9aa8-c6e53c7f2dd4" class="">这个配置去掉勾选</p></div><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-8117-a10f-dfcff8da3b94" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image.png"><img style="width:653.9453125px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8176-92d1-ebcd94047152" class="">下载后，安装以下插件即可</p></div><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-81c2-85d3-f8184a30ece0" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%201.png"><img style="width:342.625px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%201.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-81e2-b831-ffb4c1cfca2b" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%202.png"><img style="width:342.6458435058594px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%202.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-81bf-975f-f10817bef659" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%203.png"><img style="width:342.6458435058594px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%203.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-81ce-8ae0-e6dc1d4c0ef4" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%204.png"><img style="width:342.63543701171875px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%204.png"/></a></figure></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0">AI编程工具</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-8170-8be5-ff4e45d32207" class="">cursor，配置同vscode（强烈推荐）</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8117-a686-f7a83c790212" class="">trae，字节研发的国内ai编程工具（有点拉）</p></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">底层：uv</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">介绍</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-8194-802b-ef19dea6ade1" class=""><code>uv</code> 是一个速度极快的 Python 包<strong>安装器和解析器</strong>，由 <code>Ruff</code> 的作者<strong> Charlie Marsh </strong>开发，并由 Astral 公司提供支持。你可以把它看作是 <code>pip</code> 和 <code>pip-tools</code> 的一个<strong>高性能替代品</strong>。它旨在解决 Python 包管理中长期存在的<strong>速度和性能</strong>问题。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-819d-9e96-c0e46e64a700" class="">如果你的系统上还没有 <code>uv</code>，先安装它。推荐使用 curl。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-819c-9a47-f9792ba61642" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all"># 在 macOS / Linux 上推荐
+curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8128-9531-d6cb40fab63c" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all"># 1. 创建并进入项目目录
+mkdir my-python-project
+cd my-python-project
+
+# 2. 使用 uv 创建虚拟环境 (它会默认创建在 .venv 目录)
+uv venv
+
+# 3. 激活虚拟环境
+source .venv/bin/activate
+# Windows 用户: .venv\Scripts\activate</code></pre></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">为什么会出现uv</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8105-a51b-fd0e709ee4bd" class="">1. 统一的工具链 (Unified Toolchain)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8108-bb0b-d1b8504cf565" class=""><code>uv</code> 的核心理念是将过去分散的多个工具整合为一。在 <code>uv</code> 出现之前，一个典型的 Python 项目可能需要：</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818c-94f6-d6acf48002bf" class="bulleted-list"><li style="list-style-type:disc"><code>python -m venv .venv</code>：创建虚拟环境</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8158-a2b1-cb63a1e29a9e" class="bulleted-list"><li style="list-style-type:disc"><code>pip</code>：安装包</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81cb-a3d1-c1f6f1f8a7dd" class="bulleted-list"><li style="list-style-type:disc"><code>pip-tools</code>：从 <code>requirements.in</code> 解析和锁定依赖到 <code>requirements.txt</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-815d-b960-d8a73e00325f" class="bulleted-list"><li style="list-style-type:disc"><code>pipx</code>：安装和管理全局命令行工具</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81da-a0af-df4260f94dcf" class=""><code><strong>uv</strong></code><strong> 将以上所有功能整合到了一个二进制文件中</strong>，你可以用 <code>uv venv</code>, <code>uv pip install</code>, <code>uv pip compile</code>, <code>uv tool install</code> 等子命令完成所有操作。这大大简化了工具管理和项目配置。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81c4-8c0a-ff9244b86b68" class="">2. 全局缓存 (Global Cache)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8196-869f-c0a548d38edf" class="">这是 <code>uv</code> 速度的终极秘诀。当你第一次安装一个包（例如 <code>pandas==2.2.0</code>）时，<code>uv</code> 会：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-814c-948e-d1d2d98f42f5" class="numbered-list" start="1"><li>下载 wheel 文件。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8191-aa19-c5ec0fb65a3c" class="numbered-list" start="2"><li>将其解压到一个<strong>全局共享的、与版本和平台相关的缓存目录</strong>中。</li></ol></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-815a-b1c4-c29c8afe426c" class="">当你再次在<strong>任何项目</strong>中安装同一个版本的 <code>pandas</code> 时，<code>uv</code> 不会重新下载或解压，而是直接从缓存中创建硬链接（或在不支持的系统上进行复制）到你的虚拟环境。这个过程几乎是瞬时的。</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d9-b4e4-dd0baab7f947" class="bulleted-list"><li style="list-style-type:disc"><strong>关键点</strong>：缓存是全局的，所有由 <code>uv</code> 管理的项目共享这份福利。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ce-bef3-f708a0c27423" class="bulleted-list"><li style="list-style-type:disc"><strong>相关命令</strong>：<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81de-991c-e71485a04fbf" class="bulleted-list"><li style="list-style-type:circle"><code>uv cache dir</code>：查看缓存目录的位置。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8109-8820-cd3a96cfba7a" class="bulleted-list"><li style="list-style-type:circle"><code>uv cache clean</code>：清空缓存。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8129-8ca3-ea8c4e13f328" class="">3. 高性能解析器 (High-Performance Resolver)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-817f-85db-e2a7edf2a104" class="">依赖解析是找出所有包（包括子依赖）的兼容版本集合的过程。<code>pip</code> 的传统解析器较慢，尤其是在依赖关系复杂时。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-815a-9bd2-dd408495558a" class=""><code>uv</code> 使用一个用 Rust 编写的高性能解析器，其特点是：</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81fa-a4c3-d442ef9c673b" class="bulleted-list"><li style="list-style-type:disc"><strong>大规模并行</strong>：它会同时获取所有顶层依赖的元数据。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8156-8e8e-f828b167a534" class="bulleted-list"><li style="list-style-type:disc"><strong>高效的版本选择算法</strong>：能非常迅速地找到满足所有约束条件的版本组合。</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81f4-b8b1-f88928338711" class="">这意味着，即使你有复杂的 <code>pyproject.toml</code> 或 <code>requirements.in</code> 文件，<code>uv pip compile</code> 也能在极短的时间内生成一个精确的、可复现的 <code>requirements.txt</code> 锁定文件。</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">常用操作</summary><div class="indented"><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-818c-9568-e529c9d421c8" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">uv venv                     # 创建环境
+uv venv my-env -p 3.11      # 指定环境名字和python版本
+uv venv -p python@3.11 # 使用 python3.11 创建 .venv
+source .venv/bin/activate   # 激活环境 (此步仍然需要)
+uv init # 初始化uv项目
+uv pip install # 装包
+uv add # 为项目加包
+uv sync # 如果有拉取一个uv的项目，直接sync即可配置好环境
+uv pip freeze &gt; requirements.txt # 生成一个包含所有已安装包及其精确版本的列表，格式与 pip freeze 的输出相同，常用于生成 requirements.txt 文件</code></pre></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">进阶内容</summary><div class="indented"><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8153-bb0d-e93210bbd705" class="numbered-list" start="1"><li>依赖解析与锁定<div style="display:contents" dir="auto"><p id="2d92088f-2600-81e2-863c-dd82a72fa56d" class="">代替pip-tools，从一个 <code>requirements.in</code> 文件生成一个锁定的 <code>requirements.txt</code>。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8113-955a-cea6ee72c716" class=""><code>uv pip compile </code><code><a href="http://requirements.in/">requirements.in</a></code><code> -o requirements.txt</code></p></div></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8145-bed6-d28ef32883df" class="numbered-list" start="2"><li>全局工具安装<div style="display:contents" dir="auto"><p id="2d92088f-2600-813f-a064-c047b42c65e6" class="">代替pipx</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ae-8120-e76bb8816b45" class="bulleted-list"><li style="list-style-type:disc"><strong>安装工具</strong>：Bash<div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81e2-b26e-c6ee609e8a60" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">uv tool install ruff # 安装 ruff
+uv tool install black --python python3.11 # 为其指定python版本</code></pre></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81f6-a71b-feb4b75b5653" class="bulleted-list"><li style="list-style-type:disc"><strong>管理工具</strong>：Bash<div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81d0-974a-fdc345caa9f6" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">uv tool list         # 列出所有已安装的工具
+uv tool uninstall ruff # 卸载工具
+uv tool run black .  # 在不激活环境的情况下运行工具</code></pre></div></li></ul></div></li></ol></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">必知必会：pyproject.toml</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8110-86cf-ef399701667c" class="">一、<code>pyproject.toml</code> 是什么？</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81a5-9996-cd9864c222f9" class=""><code>pyproject.toml</code> 是一个由 <a href="https://peps.python.org/pep-0518/">PEP 518</a> 引入并由后续多个 PEP 扩展的、<strong>统一的 Python 项目配置文件</strong>。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8180-a904-e4cc718f94f1" class="">它的核心目标是解决过去配置混乱的问题。在它出现之前，一个项目可能同时包含 <code>setup.py</code>, <code>setup.cfg</code>, <code>requirements.txt</code>, <code>MANIFEST.in</code>, 以及各种工具的配置文件（如 <code>.flake8</code>, <code>.coveragerc</code>, <code>mypy.ini</code> 等）。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-814e-b4a8-cf52c7ab8ca2" class=""><code>pyproject.toml</code> 使用 <a href="https://toml.io/cn/">TOML</a> 格式，旨在成为这些配置的<strong>唯一入口和最终归宿</strong>，让项目结构更清晰、更标准化。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8148-b17d-c3ebb82d7fcd" class="">二、它解决了什么核心问题？</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81ca-b651-fab11ef32836" class="">它主要解决了 <code>setup.py</code> 时代的两个痛点：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8157-994d-dddf26e7a855" class="numbered-list" start="1"><li><strong>静态元数据的缺失</strong>：<code>setup.py</code> 是一个可执行的 Python 脚本。这意味着，如果不运行它，你无法确定构建项目需要哪些依赖（即 &quot;build-time dependencies&quot;）。这就产生了一个“先有鸡还是先有蛋”的悖论：我需要安装构建依赖才能运行 <code>setup.py</code>，但我需要运行 <code>setup.py</code> 才能知道要安装哪些构建依赖。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-811f-bfed-f19b81dc8fc9" class="numbered-list" start="2"><li><strong>配置分散</strong>：如上所述，项目配置散落在十几个不同的文件中，难以管理。</li></ol></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-810f-8776-d5ddc1adcd27" class=""><code>pyproject.toml</code> 通过一个<strong>静态的、声明性的文件</strong>解决了这两个问题。打包工具（如 <code>pip</code> 或 <code>uv</code>）可以先读取这个文件，了解构建需求，安装好构建依赖，然后再进行项目的实际构建和打包。</p></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8127-927d-fd706fc9b716"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8161-a708-c32398ec10de" class="">三、<code>pyproject.toml</code> 的结构</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-818e-9715-c8a139272883" class="">文件由多个“表”（table）组成，每个表用 <code>[table_name]</code> 表示。主要分为三大类：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81df-b488-ce363cc29798" class="numbered-list" start="1"><li><code>[build-system]</code>：定义项目的构建系统。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-811d-b9c7-df5a7e647862" class="numbered-list" start="2"><li><code>[project]</code>：定义项目的核心元数据（包名、版本、依赖等）。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8181-9efb-fdb1644a4bcd" class="numbered-list" start="3"><li><code>[tool.*]</code>：用于配置各种第三方工具（如 <code>uv</code>, <code>ruff</code>, <code>mypy</code>, <code>pytest</code> 等）。</li></ol></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81eb-ad74-ed318fd3a650" class="">下面我们详细讲解每个部分。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81cc-a7c6-dc83f0ec4cc0" class="">1. <code>[build-system]</code> 表（可分发包时强制）</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8166-9576-d701fc6adbc0" class="">它告诉打包工具（如 <code>pip</code>）如何构建你的项目。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81fe-b7f5-c880cf2298d6" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all"># pyproject.toml
+
+[build-system]
+# --- 声明构建项目本身所需要的依赖 ---
+requires = [&quot;setuptools&gt;=61.0&quot;] 
+# --- 指定用于构建的 Python 后端对象 ---
+build-backend = &quot;setuptools.build_meta&quot;</code></pre></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-817a-afaa-c98a963b66e7" class="bulleted-list"><li style="list-style-type:disc"><code>requires</code>: 一个列表，声明了构建你的包需要哪些依赖。常见的有 <code>setuptools</code>, <code>hatchling</code>, <code>flit_core</code>, <code>poetry-core</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-811e-a262-e88610aa57e0" class="bulleted-list"><li style="list-style-type:disc"><code>build-backend</code>: 一个字符串，指向一个 Python 对象，这个对象知道如何构建你的包（例如，创建 wheel 文件）。</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-81fc-a5fd-e94b7d60c45e" class="">你通常不需要手动编写这个部分。当你使用 hatch new my-app 或 poetry new my-app 等现代工具初始化项目时，它会自动生成。对于一个简单的应用或库，使用 setuptools 或 hatchling 是常见的选择。</blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81b9-bc6e-f82cd337697d" class="">2. <code>[project]</code> 表</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8141-bc3c-f91263256830" class="">这是项目的“身份证”，由 <a href="https://peps.python.org/pep-0621/">PEP 621</a> 标准化，用来替代过去 <code>setup.py</code> 中的大部分 <code>setup()</code> 函数参数。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8160-904a-cbff8d0ce1ee" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[project]
+name = &quot;my-package&quot; # 项目名，发布到PyPI时使用
+version = &quot;0.1.0&quot; # 项目版本
+description = &quot;A short description of my project.&quot; # 项目简短描述
+readme = &quot;README.md&quot; # 指定README文件
+requires-python = &quot;&gt;=3.9&quot; # 要求的Python版本
+license = { file = &quot;LICENSE&quot; } # 指定许可证文件
+
+authors = [ # 作者信息
+  { name = &quot;Your Name&quot;, email = &quot;your.email@example.com&quot; },
+]
+
+keywords = [&quot;packaging&quot;, &quot;python&quot;, &quot;example&quot;] # 项目关键词
+
+# --- 核心依赖，即 install_requires ---
+dependencies = [
+  &quot;httpx&quot;,
+  &quot;rich&gt;=13.0.0&quot;,
+  &#x27;tomli; python_version &lt; &quot;3.11&quot;&#x27;, # 可以包含环境标记
+]
+
+# --- 可选依赖，即 extras_require ---
+[project.optional-dependencies]
+test = [ # &#x27;test&#x27; 依赖组
+  &quot;pytest&quot;,
+  &quot;pytest-cov&quot;,
+]
+dev = [ # &#x27;dev&#x27; 依赖组，可以引用其他组
+  &quot;my-package[test]&quot;, # 包含 &#x27;test&#x27; 组的所有依赖
+  &quot;ruff&quot;,
+  &quot;mypy&quot;,
+]
+
+# --- 命令行脚本入口，即 entry_points.console_scripts ---
+[project.scripts]
+my-cli = &quot;my_package.cli:main&quot;
+
+# --- 项目相关链接 ---
+[project.urls]
+Homepage = &quot;https://github.com/user/my-package&quot;
+Repository = &quot;https://github.com/user/my-package&quot;</code></pre></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-814f-b5a7-e70a8e4d39be" class="">这个表几乎涵盖了所有你需要声明的项目信息，非常清晰和结构化。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8177-8a5a-ded8e3340423" class="">3. <code>[tool.*]</code> 表</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-815d-8924-fd8a04b63d3f" class="">这是 <code>pyproject.toml</code> 最强大的功能之一：<strong>统一配置所有开发工具</strong>。每个工具都可以定义自己的配置表，以 <code>[tool.工具名]</code> 的形式存在。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8144-907a-e6d4b4b54282" class="">这样，你就不再需要 <code>.ruff.toml</code>, <code>mypy.ini</code>, <code>.pytest.ini</code> 等零散的配置文件了。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81ca-a33b-e4deea8e708a" class=""><strong>示例：配置 </strong><code><strong>uv</strong></code><strong>, </strong><code><strong>ruff</strong></code><strong>, 和 </strong><code><strong>mypy</strong></code></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-811c-922c-ed1f8cd33708" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all"># --- uv 的配置 ---
+[tool.uv.pip]
+# 为所有pip命令设置一个额外的索引URL
+extra-index-url = &quot;https://my-private-registry.com/simple&quot; 
+
+# --- ruff (linter/formatter) 的配置 ---
+[tool.ruff]
+line-length = 88 # 设置行长限制
+target-version = &quot;py311&quot; # 设定目标Python版本以应用相应规则
+
+[tool.ruff.lint]
+# 选择要启用的规则集，E=pycodestyle错误, F=pyflakes, I=isort
+select = [&quot;E&quot;, &quot;F&quot;, &quot;I&quot;] 
+# 忽略特定的规则
+ignore = [&quot;E501&quot;] 
+
+[tool.ruff.lint.isort]
+# isort 排序配置
+known-first-party = [&quot;my_package&quot;] 
+
+# --- mypy (type checker) 的配置 ---
+[tool.mypy]
+python_version = &quot;3.11&quot; # 指定Python版本
+warn_return_any = true # 对返回Any类型的函数发出警告
+ignore_missing_imports = true # 忽略找不到模块定义的错误</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8131-8451-edce19c69d39"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8150-8c85-c76dd49c489f" class="">四、完整示例</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8132-881b-d4b0cd51c497" class="">下面是一个结合了所有部分的 <code>pyproject.toml</code> 完整示例，可以作为你新项目的模板。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81eb-b7de-ce2b6498d45a" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all"># pyproject.toml
+
+# 1. 构建系统配置
+[build-system]
+requires = [&quot;hatchling&quot;]
+build-backend = &quot;hatchling.build&quot;
+
+# 2. 项目核心元数据
+[project]
+name = &quot;data-analyzer&quot;
+version = &quot;1.0.0&quot;
+description = &quot;A tool for analyzing data sets.&quot;
+readme = &quot;README.md&quot;
+requires-python = &quot;&gt;=3.9&quot;
+license = { text = &quot;MIT&quot; }
+authors = [{ name = &quot;Data Team&quot;, email = &quot;data@example.com&quot; }]
+
+dependencies = [
+  &quot;pandas&gt;=2.0.0&quot;,
+  &quot;numpy&quot;,
+  &quot;matplotlib&quot;,
+]
+
+[project.optional-dependencies]
+dev = [
+  &quot;pytest&quot;,
+  &quot;ruff&quot;,
+  &quot;uv &gt;= 0.1.0&quot;,
+]
+
+[project.scripts]
+analyze = &quot;data_analyzer.main:run&quot;
+
+[project.urls]
+Repository = &quot;https://github.com/example/data-analyzer&quot;
+
+# 3. 第三方工具配置
+[tool.ruff]
+line-length = 99
+select = [&quot;E&quot;, &quot;F&quot;, &quot;W&quot;, &quot;I&quot;, &quot;N&quot;, &quot;D&quot;]
+ignore = [&quot;D100&quot;, &quot;D104&quot;] # 忽略部分文档字符串规则
+
+[tool.pytest.ini_options]
+minversion = &quot;6.0&quot;
+addopts = &quot;-ra -q&quot;
+testpaths = [
+    &quot;tests&quot;,
+]</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8181-bd0b-ec0ffbcf7f6f" class="">总结</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81fb-85fb-e50ae5dbc4e8" class="bulleted-list"><li style="list-style-type:disc"><code><strong>pyproject.toml</strong></code><strong> 是现代 Python 项目的配置标准。</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8134-8c59-c726e49988c5" class="bulleted-list"><li style="list-style-type:disc">它使用 <strong>TOML</strong> 格式，结构清晰，<strong>声明式</strong>而非可执行。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8177-affa-d83b687ade3b" class="bulleted-list"><li style="list-style-type:disc"><code>[build-system]</code> 定义了<strong>如何构建</strong>项目，解决了 <code>setup.py</code> 的核心痛点。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81c8-a6cc-e2dffb8230c2" class="bulleted-list"><li style="list-style-type:disc"><code>[project]</code> 定义了项目<strong>是什么</strong>，是包的元数据中心。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-812b-8380-e7c52e0d9085" class="bulleted-list"><li style="list-style-type:disc"><code>[tool.*]</code> 允许你将<strong>所有工具链的配置</strong>集中于一处，极大地简化了项目管理。</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8140-820e-d36841987eec" class="">对于任何新启动的 Python 项目，都应优先使用 <code>pyproject.toml</code> 作为唯一的配置文件。</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">和conda的区别</summary><div class="indented"><div style="display:contents" dir="ltr"><figure id="2d92088f-2600-81d8-9162-ff54aa11b9ed" class="image"><a href="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%205.png"><img style="width:403.98114013671875px" src="%E7%8E%B0%E4%BB%A3%E5%8C%96Python/image%205.png"/></a></figure></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8133-b543-d8f48db2ff1d" class=""><strong>总结</strong></h3></div><div style="display:contents" dir="ltr"><table id="2d92088f-2600-814f-8267-e869bf8bea8a" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8142-a427-f75c47612983"><th id="m&gt;:x" class="simple-table-header-color simple-table-header"></th><th id="nTU;" class="simple-table-header-color simple-table-header"></th><th id="RYk\" class="simple-table-header-color simple-table-header"></th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-815d-a9fd-d321c847ae4b"><td id="m&gt;:x" class=""><strong>速度</strong></td><td id="nTU;" class="">⚡ 极快</td><td id="RYk\" class="">慢</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8104-b6c3-f26aed1a552d"><td id="m&gt;:x" class=""><strong>生态</strong></td><td id="nTU;" class="">PyPI（Python 优先）</td><td id="RYk\" class="">conda-forge（跨语言）</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-811c-810b-db2b2923b780"><td id="m&gt;:x" class=""><strong>非 Python 依赖</strong></td><td id="nTU;" class="">❌</td><td id="RYk\" class="">✅</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81fa-b7c1-c5cd688b213c"><td id="m&gt;:x" class=""><strong>CUDA/MKL 优化</strong></td><td id="nTU;" class="">依赖系统</td><td id="RYk\" class="">内置支持</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-818e-a474-f9744803247d"><td id="m&gt;:x" class=""><strong>适合你吗？</strong></td><td id="nTU;" class="">✅ 大多数 AI/仿真项目</td><td id="RYk\" class="">仅当需要 conda 特供包</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-81c4-8261-e8f5bb1b6dee" class="">🚀 趋势：随着 uv、pixi（conda 的 Rust 替代品）等工具出现，纯 Python 项目正快速转向 uv，而 conda 仍主导科学计算重依赖场景。</blockquote></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">最佳实践</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2d92088f-2600-815d-9d4e-e3105d9cb7a7" class="bulleted-list"><li style="list-style-type:disc"><strong>声明 (Declare)</strong>：在一个源文件中（推荐 <code>pyproject.toml</code>）声明你的项目直接依赖。这是你的“依赖源头”。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d0-91d3-dabf3834cf8a" class="bulleted-list"><li style="list-style-type:disc"><strong>锁定 (Lock)</strong>：使用 <code>uv pip compile</code> 将你的声明性依赖解析为一个包含所有包（包括子依赖）精确版本的“锁定文件”（如 <code>requirements.txt</code>）。这个文件保证了环境的可复现性。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8173-b0ef-d33a3dd367d1" class="bulleted-list"><li style="list-style-type:disc"><strong>同步 (Sync)</strong>：使用 <code>uv pip sync</code> 根据锁定文件来安装依赖。这个命令会确保你的虚拟环境与锁定文件<strong>完全一致</strong>，不多也不少</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8182-881e-d487d32ca75c" class="">总结：最佳实践速查表</h3></div><div style="display:contents" dir="ltr"><table id="2d92088f-2600-81af-9065-f647254b981b" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81dc-b5eb-dccc2e9c6d0b"><td id="`RzE" class="">场景</td><td id="]htp" class="">✅ 推荐做法 (Do)</td><td id="dE&gt;j" class="">❌ 避免做法 (Don&#x27;t)</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8111-874e-f909d71efc8f"><td id="`RzE" class=""><strong>依赖声明</strong></td><td id="]htp" class="">在 <code>pyproject.toml</code> 中管理所有依赖。</td><td id="dE&gt;j" class="">使用多个 <code>requirements.in</code> 或直接在 <code>requirements.txt</code> 中手写。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81e8-ba2c-ed7d78ab8538"><td id="`RzE" class=""><strong>安装依赖</strong></td><td id="]htp" class="">使用 <code>uv pip sync -r &lt;lockfile&gt;</code>。</td><td id="dE&gt;j" class="">使用 <code>uv pip install -r &lt;lockfile&gt;</code> 或 <code>uv pip install &lt;package&gt;</code> 直接安装。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81dc-8e4e-da72f3c1f12d"><td id="`RzE" class=""><strong>更新依赖</strong></td><td id="]htp" class="">修改 <code>pyproject.toml</code> -&gt; <code>uv pip compile</code> -&gt; <code>uv pip sync</code>。</td><td id="dE&gt;j" class="">手动修改 <code>requirements.txt</code> 文件。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81e1-bfd3-c0418fd69df9"><td id="`RzE" class=""><strong>环境激活</strong></td><td id="]htp" class="">依赖 <code>uv</code> 的自动发现，或使用 <code>uv run</code>。</td><td id="dE&gt;j" class="">总是先 <code>source .venv/bin/activate</code>。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81ac-892a-c05fb89dc2c8"><td id="`RzE" class=""><strong>全局工具</strong></td><td id="]htp" class="">使用 <code>uv tool install</code>。</td><td id="dE&gt;j" class="">使用 <code>sudo pip install</code> 或 <code>pip install --user</code>。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8162-b9d8-f4a17e4a15a6"><td id="`RzE" class=""><strong>团队协作</strong></td><td id="]htp" class="">将锁定文件 (<code>*.txt</code>) 提交到 Git。</td><td id="dE&gt;j" class="">将 <code>.venv</code> 目录提交到 Git。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8194-bf51-fede5fba71c4"><td id="`RzE" class=""><strong>CI/CD</strong></td><td id="]htp" class="">使用 <code>compile --strict</code> 校验锁定文件，使用 <code>sync</code> 安装。</td><td id="dE&gt;j" class="">在 CI 中运行 <code>pip install</code> 或不校验锁定文件。</td></tr></div></tbody></table></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">语法：Ruff</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">为什么会出现ruff</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-8126-bfd0-fa89ae4679c7" class="">在 Ruff 出现之前，一个标准的项目可能需要配置以下工具：</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81a1-bb87-fe97eab95d79" class="bulleted-list"><li style="list-style-type:disc"><code>Flake8</code>：用于代码风格和逻辑错误检查。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8110-93c0-e50e58ec7204" class="bulleted-list"><li style="list-style-type:disc"><code>pycodestyle</code>, <code>pyflakes</code>：Flake8 的核心插件。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8184-9948-d755c66032e4" class="bulleted-list"><li style="list-style-type:disc"><code>isort</code>：用于 <code>import</code> 语句排序。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81a6-a478-cb5512997b9e" class="bulleted-list"><li style="list-style-type:disc"><code>pylint</code>：更严格的、可配置的 Linter。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-811b-b012-e204e3f1c92e" class="bulleted-list"><li style="list-style-type:disc"><code>pyupgrade</code>：用于自动升级 Python 语法。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8146-8cff-e7571e61b17e" class="bulleted-list"><li style="list-style-type:disc"><code>autoflake</code>：用于移除未使用的导入。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8114-9018-fda6e4378ac0" class="bulleted-list"><li style="list-style-type:disc"><code>black</code>：用于代码格式化。</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81a5-b720-ef82f7afb547" class=""><strong>Ruff 的目标是替代以上所有工具</strong>。你只需要安装和配置 <code>ruff</code> 这一个依赖，就能获得上述大部分功能。这极大地简化了项目的依赖管理和配置文件。</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">介绍</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81b3-a9cb-cdf7312de21b" class="">一、Ruff 是什么？</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81af-b146-c93a5771a24b" class=""><strong>Ruff 是一个用 Rust 编写的、速度极快的 Python Linter 和 Formatter。</strong></p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-816f-a324-d379828fdbfd" class="">它的核心使命是用一个工具<strong>替代</strong>过去 Python 开发中需要安装和配置的<strong>一大堆</strong>零散的工具。它将代码检查（Linting）、代码格式化（Formatting）、导入排序、语法升级等功能全部整合到了一个快如闪电的二进制文件中。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81d4-b537-f0509778b3a1" class="">二、Ruff 的核心优势</h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81c8-ad07-de6f97018c70" class="">1. 极致的速度 (Extreme Speed)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81fd-98ba-c43330f26bc2" class="">这是 Ruff 最引人注目的特点。因为它使用 Rust 编译，而不是作为 Python 脚本运行，所以它避免了 Python 解释器的启动开销，并且能更好地利用多核 CPU 进行并行处理。</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8125-8fbb-e913e00dd508" class="bulleted-list"><li style="list-style-type:disc"><strong>量化对比</strong>：Ruff 的运行速度通常比它所替代的工具（如 Flake8 + 插件、isort、pylint）<strong>快 10 到 100 倍</strong>。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818e-b33b-d9137f93f90d" class="bulleted-list"><li style="list-style-type:disc"><strong>实际影响</strong>：<div style="display:contents" dir="auto"><ul id="2d92088f-2600-818e-b87b-e9685b0e3da6" class="bulleted-list"><li style="list-style-type:circle">在 CI/CD 流程中，代码检查步骤从几分钟缩短到几秒钟。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8124-be61-d64e79785df4" class="bulleted-list"><li style="list-style-type:circle">在本地开发时，无论是手动运行还是在编辑器中保存时自动检查，反馈都是<strong>瞬时</strong>的，毫无延迟感。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81d0-9439-f80cec02be74" class="">2. 内置自动修复 (<code>-fix</code>)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8134-ba01-d496b60a3a99" class="">Ruff 不仅仅能发现问题，它还能自动修复大量问题。它的自动修复功能非常强大且安全，涵盖：</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8186-9b76-d4e53da3be78" class="bulleted-list"><li style="list-style-type:disc">自动排序 <code>import</code> 语句。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8149-98c2-eedb66311ab1" class="bulleted-list"><li style="list-style-type:disc">移除未使用的导入和变量。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81af-b14b-ee16bd494eb0" class="bulleted-list"><li style="list-style-type:disc">将代码自动升级到更现代的 Python 语法。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818e-bf90-f2d42e9fc4ce" class="bulleted-list"><li style="list-style-type:disc">修复许多代码风格问题。</li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8156-8cd3-de776a98ec93"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81a6-96f1-e6878c79ac5b" class="">三、Ruff 的主要功能</h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81d6-a25c-da4dc8ed1757" class="">1. Linter (<code>ruff check</code>)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-811c-8d5b-d105e570acd0" class="">这是 Ruff 的核心功能。它包含了数百条来自各种流行工具的规则，你可以通过规则代码（Rule Code）来选择启用或禁用。</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-810b-a810-d3e576bae8c0" class="bulleted-list"><li style="list-style-type:disc"><strong>规则兼容性</strong>：它的规则代码与传统工具保持一致，方便迁移。例如：<div style="display:contents" dir="auto"><ul id="2d92088f-2600-811b-8da0-dd706fa02cd5" class="bulleted-list"><li style="list-style-type:circle"><code>F</code> 开头：来自 <code>Pyflakes</code> (逻辑错误)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-815d-9893-e962a15af108" class="bulleted-list"><li style="list-style-type:circle"><code>E</code>, <code>W</code> 开头：来自 <code>pycodestyle</code> (代码风格)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8120-9eb4-c6026a0529a3" class="bulleted-list"><li style="list-style-type:circle"><code>I</code> 开头：来自 <code>isort</code> (导入排序)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-816b-bf67-de9573447d9f" class="bulleted-list"><li style="list-style-type:circle"><code>D</code> 开头：来自 <code>pydocstyle</code> (文档字符串)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8104-bba7-ce91f80381bd" class="bulleted-list"><li style="list-style-type:circle"><code>UP</code> 开头：来自 <code>pyupgrade</code> (语法升级)</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-813b-b4b5-fcc106237311" class="bulleted-list"><li style="list-style-type:circle">还有很多来自 <code>pylint</code>, <code>flake8-bugbear</code> 等工具的规则。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-819b-939d-eef786457226" class="">2. Formatter (<code>ruff format</code>)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-817b-bbda-f402143fb3de" class="">这是 Ruff 相对较新的功能，旨在成为 <code>black</code> 的高性能替代品。</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-813f-ad0e-c316e81de893" class="bulleted-list"><li style="list-style-type:disc"><strong>兼容性目标</strong>：它致力于在默认配置下生成与 <code>black</code> 几乎完全相同的输出。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818e-a46e-df1f631eb558" class="bulleted-list"><li style="list-style-type:disc"><strong>性能优势</strong>：同样，<code>ruff format</code> 的速度远超 <code>black</code>。</li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8171-8943-ee9318ccb349"/></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8159-b18f-d986ad39b3db" class=""><strong>Ruff 已经成为现代化 Python 开发的基石。</strong></p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8163-8558-e8827f7be4c4" class="bulleted-list"><li style="list-style-type:disc"><strong>对于新项目</strong>：毫无疑问，应将 Ruff 作为首选的 Linter 和 Formatter。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ad-a166-f909982ba6b1" class="bulleted-list"><li style="list-style-type:disc"><strong>对于现有项目</strong>：从 Flake8/isort/Black 迁移到 Ruff 的过程通常很平滑，带来的性能提升和配置简化是巨大的。</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81bd-81ab-ec30cae3c530" class="">它通过<strong>速度</strong>和<strong>整合</strong>这两个维度，完美解决了 Python 工具链长期以来的痛点，显著提升了开发者的生产力。如果你想让自己的 Python 开发工作流变得更现代、更高效，Ruff 是必学的工具。</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">常用操作</summary><div class="indented"><div style="display:contents" dir="ltr"><table id="2d92088f-2600-810f-9baa-c56c0c4f7057" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81ac-b5f5-e94c64693a48"><td id="Gsr_" class="">任务</td><td id="Vo@a" class="" style="width:302px">命令</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81f6-ba85-cb2e1dd2c2a7"><td id="Gsr_" class=""><strong>格式化我的代码</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff format .</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81fc-9a00-da7a294c57df"><td id="Gsr_" class=""><strong>检查代码问题并自动修复</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff check . --fix</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81d7-b1e6-f03c9529c867"><td id="Gsr_" class=""><strong>在 CI/CD 中验证格式</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff format . --check</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81ba-b389-eccd6239c76d"><td id="Gsr_" class=""><strong>在 CI/CD 中检查代码质量</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff check .</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-818a-acef-df8138eb2215"><td id="Gsr_" class=""><strong>开发时实时检查</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff check . --watch</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-811a-8a43-c10a406e5f66"><td id="Gsr_" class=""><strong>搞不清某条规则是什么意思</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff rule &lt;RULE_CODE&gt;</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8127-996e-f383ffb35892"><td id="Gsr_" class=""><strong>清理缓存</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff cache clean</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-813e-958f-f55159ab728d"><td id="Gsr_" class=""><strong>终极清理</strong></td><td id="Vo@a" class="" style="width:302px"><code>ruff format . &amp;&amp; ruff check . --fix</code></td></tr></div></tbody></table></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">进阶内容</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81dc-b2bc-ffaf73ede741" class="">1. <strong>启用预览功能（Preview Features）</strong></h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-810e-867b-c191aa63b829" class="">Ruff 的许多强大功能（如类型感知 lint、更智能的自动修复）目前处于 <strong>preview 模式</strong>，需显式启用：</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81ae-947c-ff2a208f6824" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff]
+preview = true
+</code></pre></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81df-8439-e8f634b8529f" class="">或命令行启用：</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-811d-b155-c9e608a2d522" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff check --preview .
+ruff format --preview .
+</code></pre></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-8149-b4ec-e7a4fb584e1b" class="">💡 建议：在新项目中开启 preview = true，以获得最新规则和修复能力（Ruff 团队保证 preview 功能稳定可用）。</blockquote></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8192-8a9e-e88566794344"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81bd-803c-faa1926d47c2" class="">2. <strong>类型感知 Lint（Type-Aware Linting）</strong></h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-811e-9027-ed178a0ce69c" class="">Ruff 在 preview 模式下支持<strong>轻量级类型推断</strong>，用于增强规则判断（如冗余 isinstance、不可达代码等）。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81a2-b85f-de503f36a909" class="">要求：</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81db-943b-db1b55d8f301" class="bulleted-list"><li style="list-style-type:disc">无需安装 mypy 或 pyright（Ruff 内置简易类型推断）</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-814d-9cb8-c95a81c2e8af" class="bulleted-list"><li style="list-style-type:disc">但若项目已有类型注解，效果更佳</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81b9-bda6-cacda070a54d" class="">示例规则（自动启用）：</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8152-99fc-e0604bd54f51" class="bulleted-list"><li style="list-style-type:disc"><code>RUF014</code>: 冗余的 <code>isinstance(x, str)</code>（当 <code>x: str</code> 已知）</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818d-9846-ca924b172ed6" class="bulleted-list"><li style="list-style-type:disc"><code>RUF015</code>: 无效的 <code>assert isinstance(...)</code>（类型已确定）</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-8123-b91b-dd456c67b649" class="">⚠️ 注意：Ruff 不替代 Pyright/mypy，仅用类型信息增强 lint 规则。建议搭配 Pyright 做完整类型检查。</blockquote></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-813b-8450-e810e75e71d6"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81ce-ab9e-fe112a0f58c9" class="">3. <strong>细粒度规则控制（Per-File / Per-Line）</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81f2-9ff9-dd5c1e56e40f" class="">(a) 忽略特定文件/目录</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8195-b0db-d484bb59d0bf" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff.lint]
+extend-exclude = [
+  &quot;migrations/&quot;,
+  &quot;legacy_code.py&quot;,
+  &quot;scripts/temp_*.py&quot;
+]
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81dc-aea5-c09e18fe4e23" class="">(b) 为特定文件启用/禁用规则</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-811b-9b54-de4f97d2165f" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[[tool.ruff.lint.per-file-ignores]]
+&quot;tests/**.py&quot; = [&quot;S101&quot;, &quot;D&quot;]  # 忽略 asserts 和 docstring 规则
+&quot;scripts/*.py&quot; = [&quot;T20&quot;]        # 忽略 print 警告
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8160-bb65-d18c2c07c2d7" class="">(c) 行内忽略（类似 <code># noqa</code>）</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81ef-bc19-ed82d0bf4059" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">x = 1  # noqa: E741  # 允许模糊变量名 &#x27;l&#x27;, &#x27;O&#x27;, &#x27;I&#x27;
+</code></pre></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-813e-a28c-f0009b3ed00b" class="">支持通配符：</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8167-b46b-ccb475121474" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">print(&quot;debug&quot;)  # noqa: T201, T203
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8159-8b4e-c1e5e46cae39"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8110-ac28-eabfaa82eb4f" class="">4. <strong>自定义规则优先级与安全修复</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81dc-9e86-e6e9541eb7ad" class="">(a) 区分“安全”与“不安全”自动修复</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8105-a59b-f9cc7caa9bed" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff]
+fix = true
+unsafe-fixes = false  # 默认不应用可能改变语义的修复
+</code></pre></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8177-9fe2-e5c7c6cf46f1" class="bulleted-list"><li style="list-style-type:disc">安全修复：重命名、格式调整、删除无用导入等</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-818e-a809-f8812010fbce" class="bulleted-list"><li style="list-style-type:disc">不安全修复：修改逻辑（如 <code>==</code> → <code>is</code>）、重写表达式等</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-810b-bbb4-f8abad4ff8bd" class="">🛡️ 在 CI 中建议保持 unsafe-fixes = false，避免意外行为变更。</blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8122-b542-fc96611c589e" class="">(b) 手动运行不安全修复（谨慎）</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81ca-8683-de1c7ed18a75" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff check --fix --unsafe-fixes .
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8177-9c0d-faed72175f37"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-818d-8b7d-fe42a811659d" class="">5. <strong>与编辑器深度集成（VS Code / Neovim / PyCharm）</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8189-a342-f47a8aa75fa4" class="">VS Code 推荐设置（<code>settings.json</code>）：</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8125-94e4-f17dd0c6c4e2" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;python.linting.enabled&quot;: false,
+  &quot;ruff.enable&quot;: true,
+  &quot;ruff.args&quot;: [&quot;--preview&quot;],
+  &quot;editor.formatOnSave&quot;: true,
+  &quot;[python]&quot;: {
+    &quot;editor.defaultFormatter&quot;: &quot;charliermarsh.ruff&quot;
+  }
+}
+</code></pre></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-810d-ab87-c48f95d3a031" class="">✅ 启用后，Ruff 同时提供 linting + formatting，无需 Black 或 Flake8。</blockquote></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8191-a715-e9ac667df099"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8109-9242-cb907e900e2e" class="">6. <strong>性能调优：超大项目加速</strong></h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-813d-9e17-d4f89c432497" class="">Ruff 本身极快，但可进一步优化：</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-814a-9667-d6c368c41352" class="">(a) 使用 <code>-isolated</code> 避免全局配置干扰</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8161-aec3-fe81d64a2601" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff check --isolated --config=pyproject.toml .
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81e7-9932-f8d9fe535b3b" class="">(b) 并行处理（默认已启用，无需操作）</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-813a-b6ba-d4ad48399893" class="">Ruff 自动使用多线程，无需配置。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81ed-94db-e7d09afbeeb0" class="">(c) 缓存（实验性）</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8102-a0c5-f7718f16c0a5" class="">目前 Ruff <strong>无内置缓存</strong>，但可通过 CI 缓存 <code>.ruff_cache</code>（如果未来支持）或依赖文件变更检测。</p></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8169-89c0-d449b3e91283"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81c1-9f42-c1e8e713e818" class="">7. <strong>CI/CD 集成最佳实践</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-811b-bd2f-e2448ffa89e2" class="">GitHub Actions 示例：</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81c3-9418-f88fe3d780fc" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">- name: Run Ruff
+  run: |
+    pip install ruff
+    ruff check . --output-format=github
+    ruff format . --check  # 检查是否已格式化
+</code></pre></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8134-b2f7-eb0f035eae92" class="bulleted-list"><li style="list-style-type:disc"><code>-output-format=github</code>：在 PR 中直接显示注释</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8192-9d46-d483acb9e018" class="bulleted-list"><li style="list-style-type:disc"><code>ruff format --check</code>：确保代码已格式化（不修改文件）</li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-81b6-8777-de5668bd208b"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8160-bcdf-c742895fb35d" class="">8. <strong>迁移现有项目（从 Black + Flake8 + isort）</strong></h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81d9-8c96-c17e0df1ba9d" class="">Ruff 可<strong>一键替代</strong>多个工具：</p></div><div style="display:contents" dir="ltr"><table id="2d92088f-2600-8181-ae83-f2a16b0a569b" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8184-a13c-e445e73261f6"><th id="|e?W" class="simple-table-header-color simple-table-header">原工具</th><th id="}D&lt;v" class="simple-table-header-color simple-table-header">Ruff 对应能力</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-816d-87ae-f2058dcee464"><td id="|e?W" class="">Black</td><td id="}D&lt;v" class=""><code>ruff format</code></td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81fb-8434-efe568c94db4"><td id="|e?W" class="">Flake8</td><td id="}D&lt;v" class=""><code>ruff check</code>（E/W/F）</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8175-8c8b-d5e0929df8a7"><td id="|e?W" class="">isort</td><td id="}D&lt;v" class=""><code>ruff check</code>（I）</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-818e-98d3-f8b87a04d720"><td id="|e?W" class="">pyupgrade</td><td id="}D&lt;v" class=""><code>ruff check</code>（UP）</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81bf-b61b-f759f3a7ea3c"><td id="|e?W" class="">autoflake</td><td id="}D&lt;v" class=""><code>ruff check --fix</code></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-815c-8350-ceac790cd913" class="">迁移步骤：</h3></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-816a-bff5-f7c220925319" class="numbered-list" start="1"><li>安装 Ruff：<code>pip install ruff</code></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-812a-9084-e2a5751d34f0" class="numbered-list" start="2"><li>生成初始配置：<code>ruff migrate</code>（实验性命令，或手动配置）</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81e6-aa03-e3dd5dd291be" class="numbered-list" start="3"><li>一键格式化+修复：<code>ruff check --fix . &amp;&amp; ruff format .</code></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81a2-a2ae-c2f5c8acf8fa" class="numbered-list" start="4"><li>移除旧工具依赖</li></ol></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-81d2-9e67-e9ad9fb736ce"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-816e-a1a5-ce038edcbcbe" class="">9. <strong>高级配置：自定义规则集</strong></h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-818a-8577-df8b876467c2" class="">虽然 Ruff 不支持自定义规则（不像 pylint），但可通过组合现有规则实现类似效果：</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81bf-9222-f198692f66fa" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff.lint]
+# 严格模式：启用所有推荐规则 + 额外规则
+select = [
+  &quot;E&quot;, &quot;W&quot;, &quot;F&quot;,      # pycodestyle + pyflakes
+  &quot;I&quot;,                # isort
+  &quot;UP&quot;,               # pyupgrade
+  &quot;C4&quot;,               # comprehensions
+  &quot;TID&quot;,              # tidy imports
+  &quot;ARG&quot;,              # unused args
+  &quot;PTH&quot;,              # pathlib over os.path
+  &quot;PL&quot;,               # pylint subset (谨慎启用)
+]
+ignore = [
+  &quot;E501&quot;,  # 交给 formatter 处理
+  &quot;PLR0913&quot;, # pylint: too many arguments (按需忽略)
+]
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-819d-8b0b-c632350fc8ba"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81cd-af3c-ce06bd36a3cd" class="">10. <strong>调试与诊断</strong></h3></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81bb-ab41-ca014a942160" class="">查看某条规则的详细信息：</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81a3-b21a-ea2e864da94a" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff rule PLR2004
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81fc-970c-f92a55b97de0" class="">输出所有检测到的问题（含规则代码）：</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81d6-b7f3-dfceac96bbb8" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff check --output-format=full .
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81e8-8c3b-c1b8a189f428" class="">检查配置是否被正确加载：</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-813a-a202-e3bb51a2f9c4" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">ruff config show
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8180-ba70-c0503c90ab97"/></div><div style="display:contents" dir="auto"><h2 id="2d92088f-2600-8138-9116-e2344d68b0db" class="">✅ 总结：Ruff 进阶核心价值</h2></div><div style="display:contents" dir="ltr"><table id="2d92088f-2600-81cd-ab88-d3c4b90ae141" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81d6-a7ba-c0d7080671df"><th id="m_RA" class="simple-table-header-color simple-table-header">能力</th><th id="UK]l" class="simple-table-header-color simple-table-header">说明</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8175-bdf2-dfa8358de86e"><td id="m_RA" class=""><strong>一体化工具链</strong></td><td id="UK]l" class="">替代 Black + Flake8 + isort + pyupgrade</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81e2-a26d-f3243c396db3"><td id="m_RA" class=""><strong>极速性能</strong></td><td id="UK]l" class="">比传统工具快 10–100 倍</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81e6-919b-f0be0672b185"><td id="m_RA" class=""><strong>类型感知 lint</strong></td><td id="UK]l" class="">结合类型信息做智能判断（preview）</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-810c-a395-fc33d97bda29"><td id="m_RA" class=""><strong>安全自动修复</strong></td><td id="UK]l" class="">大量问题可一键修复</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81c8-87c8-cb9c47f53137"><td id="m_RA" class=""><strong>无缝编辑器集成</strong></td><td id="UK]l" class="">VS Code 等原生支持</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8159-b0d2-ef7be258c79a"><td id="m_RA" class=""><strong>严格可配置</strong></td><td id="UK]l" class="">支持 per-file、per-line 精细控制</td></tr></div></tbody></table></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Pyproject.toml配置</summary><div class="indented"><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8190-b85b-d889b2880006" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[build-system]
+requires = [&quot;setuptools&gt;=61.0&quot;, &quot;wheel&quot;]
+build-backend = &quot;setuptools.build_meta&quot;
+
+[project]
+name = &quot;my_project&quot;
+version = &quot;0.1.0&quot;
+description = &quot;A modern Python project&quot;
+dependencies = []
+requires-python = &quot;&gt;=3.10&quot;
+
+# ==============================
+# 🛠️ Ruff 配置（Lint + Format）
+# ==============================
+[tool.ruff]
+# 启用预览功能（含类型感知 lint、新规则、更智能修复）
+preview = true
+
+# 目标 Python 版本（影响规则启用，如 pyupgrade）
+target-version = &quot;py310&quot;
+
+# 自动修复安全问题（CI 中建议开启）
+fix = true
+unsafe-fixes = false  # 不自动应用可能改变语义的修复
+
+# 行长（与 formatter 一致）
+line-length = 88
+
+# 忽略的路径（支持 glob）
+extend-exclude = [
+  &quot;.git&quot;,
+  &quot;__pycache__&quot;,
+  &quot;venv&quot;,
+  &quot;.venv&quot;,
+  &quot;build&quot;,
+  &quot;dist&quot;,
+  &quot;notebooks&quot;,        # Jupyter 笔记本通常不 lint
+]
+
+# ==============================
+# 🔍 Lint 规则配置
+# ==============================
+[tool.ruff.lint]
+# 启用的规则集（按前缀选择）
+# E/W: pycodestyle, F: pyflakes, I: isort,
+# UP: pyupgrade, C4: comprehensions, TID: tidy imports,
+# ARG: unused args, PTH: pathlib, PL: pylint subset
+select = [
+  &quot;E&quot;, &quot;W&quot;, &quot;F&quot;,
+  &quot;I&quot;,
+  &quot;UP&quot;,
+  &quot;C4&quot;,
+  &quot;TID&quot;,
+  &quot;ARG&quot;,
+  &quot;PTH&quot;,
+  # &quot;PL&quot;,  # pylint 规则较严格，按需启用
+]
+
+# 忽略的规则
+ignore = [
+  &quot;E501&quot;,  # 行长交给 formatter 处理
+  &quot;D&quot;,     # 忽略 docstring 规则（可用 pydoclint 替代）
+]
+
+# 每文件忽略规则
+[[tool.ruff.lint.per-file-ignores]]
+&quot;tests/**.py&quot; = [&quot;S101&quot;, &quot;ARG&quot;, &quot;PLR0913&quot;]  # 允许 assert、忽略未使用参数、多参数
+&quot;scripts/*.py&quot; = [&quot;T20&quot;]                     # 允许 print（脚本调试用）
+
+# ==============================
+# 🧹 isort 配置（Ruff 内置）
+# ==============================
+[tool.ruff.lint.isort]
+# 已知的一等包（会放在 import 分组顶部）
+known-first-party = [&quot;my_project&quot;]
+# 合并 from ... import (a, b) → from ... import a, b
+combine-as-imports = true
+# 强制按字母排序
+force-sort-within-sections = true
+
+# ==============================
+# ✨ Formatter 配置（替代 Black）
+# ==============================
+[tool.ruff.format]
+# 启用预览格式特性（如字符串规范化）
+preview = true
+# 使用单引号
+quote-style = &quot;single&quot;
+# 不在尾随逗号后换行（兼容 Black）
+skip-magic-trailing-comma = false
+# 行长与 lint 一致
+line-length = 88
+# 缩进宽度
+indent-width = 4
+
+# ==============================
+# 🔤 Pyright 配置（类型检查，与 Ruff 互补）
+# ==============================
+[tool.pyright]
+typeCheckingMode = &quot;basic&quot;
+pythonVersion = &quot;3.10&quot;
+include = [&quot;src&quot;, &quot;tests&quot;]
+exclude = [
+  &quot;**/node_modules&quot;,
+  &quot;**/__pycache__&quot;,
+  &quot;.venv&quot;,
+  &quot;venv&quot;,
+  &quot;build&quot;,
+  &quot;dist&quot;,
+  &quot;notebooks&quot;,
+]
+reportMissingTypeStubs = &quot;none&quot;
+reportUnusedImport = &quot;warning&quot;
+reportUnusedVariable = &quot;warning&quot;</code></pre></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">最佳实践</summary><div class="indented"><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81dc-b01b-c19e5f30628c" class="numbered-list" start="1"><li><strong>统一使用 </strong><code><strong>pyproject.toml</strong></code><strong> 进行配置</strong><br/>放弃所有独立的配置文件（如 <code>.isort.cfg</code>, <code>.flake8</code>），将 Ruff 的所有配置集中在 <code>pyproject.toml</code> 的 <code>[tool.ruff]</code> 表中。这是保证配置清晰、唯一的“事实来源”。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-812b-81cd-e5b7a838beb9" class="numbered-list" start="2"><li><strong>明确目标 Python 版本 (</strong><code><strong>target-version</strong></code><strong>)</strong><br/>这是最重要却也最容易被忽略的配置项。设定它能确保 Ruff 应用的规则（尤其是语法升级相关的规则 <code>UP</code>）与你的项目环境相匹配。Ini, TOML<div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-814c-90e6-c5e7a3f01812" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff]
+target-version = &quot;py311&quot; # 明确项目使用的 Python 版本</code></pre></div></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81f0-976b-ef3ba2f26a2d" class="numbered-list" start="3"><li><strong>从一个稳健的基础规则集开始</strong><br/>不要一开始就想着启用所有规则。一个理智的起点是启用那些被广泛接受、能显著提升代码质量的核心规则集。Ini, TOML<div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81f5-b953-f856ab5e5165" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all">[tool.ruff]
+# E: pycodestyle 错误, F: Pyflakes 逻辑错误, I: isort 导入排序, UP: pyupgrade 语法升级
+select = [&quot;E&quot;, &quot;F&quot;, &quot;I&quot;, &quot;UP&quot;]</code></pre></div></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81cd-86b5-c189ca8fbc44" class="numbered-list" start="4"><li><strong>拥抱自动修复 (</strong><code><strong>-fix</strong></code><strong>)</strong><br/>将 <code>ruff check . --fix</code> 作为你的常规操作。Ruff 的自动修复非常安全可靠，它能帮你处理掉大量琐碎的格式和代码问题，让你专注于业务逻辑。</li></ol></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">类型：Pyright</summary><div class="indented"><div style="display:contents" dir="auto"><h2 id="2d92088f-2600-81f7-9bea-d09ca13c3cb7" class="">🔍 Pyright 简介</h2></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d8-8dbf-d7fbb141da15" class="bulleted-list"><li style="list-style-type:disc"><strong>Pyright</strong> 是由微软开发的 <strong>静态类型检查器</strong>，专门针对 Python 的类型注解（PEP 484, PEP 561 等）。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81be-a1b8-e7d279e1b8b1" class="bulleted-list"><li style="list-style-type:disc"><strong>用 TypeScript 编写</strong>，运行速度非常快（比 <code>mypy</code> 快很多）。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d9-b1ac-c74c2fd78399" class="bulleted-list"><li style="list-style-type:disc">集成在 <strong>VS Code 的 Pylance 插件</strong>里，所以如果你用 VS Code，大概率已经在用 Pyright 了。</li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8109-acbf-f8971c1227c1"/></div><div style="display:contents" dir="auto"><h2 id="2d92088f-2600-8145-b714-dc8b5d1a0ff7" class="">✅ Pyright 特点</h2></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81be-90a0-de4376551805" class="bulleted-list"><li style="list-style-type:disc"><strong>超快</strong> —— 增量分析大项目时比 mypy 快数倍</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8159-8014-d0bf77c356d5" class="bulleted-list"><li style="list-style-type:disc"><strong>类型推断更强</strong> —— 能根据代码上下文自动推导类型</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8167-8544-d015e0ed09dd" class="bulleted-list"><li style="list-style-type:disc"><strong>支持 strict mode</strong> —— 强制要求类型标注，避免漏网之鱼</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d2-858a-c21984fc7299" class="bulleted-list"><li style="list-style-type:disc"><strong>跨平台集成</strong> —— 可单独作为 CLI 工具运行 (<code>pyright</code>)，也能集成到 CI/CD</li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8112-987b-c687520b5ec3"/></div><div style="display:contents" dir="auto"><h2 id="2d92088f-2600-812f-8d44-cecc928725f5" class="">📦 安装</h2></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8190-bbfb-c4cee202c9bf" class="">1. 全局安装（npm 提供）</h3></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81fa-af4f-c7e56770b171" class="code code-wrap"><code class="language-Bash" style="white-space:pre-wrap;word-break:break-all">npm install -g pyright
+</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-815c-a6e9-f59e3232667a" class="">2. 项目内配置</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-819d-aa8e-fc048d06c502" class="">在项目根目录添加 <code>pyrightconfig.json</code>：</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81e5-9669-c448b3fbbe2e" class="code code-wrap"><code class="language-JSON" style="white-space:pre-wrap;word-break:break-all">{
+  &quot;include&quot;: [&quot;src&quot;],
+  &quot;exclude&quot;: [&quot;tests&quot;, &quot;build&quot;],
+  &quot;reportMissingImports&quot;: true,
+  &quot;reportUnusedVariable&quot;: &quot;warning&quot;,
+  &quot;typeCheckingMode&quot;: &quot;strict&quot;
+}
+</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8140-a471-df98b7322425"/></div><div style="display:contents" dir="auto"><h2 id="2d92088f-2600-812e-a0cf-e74ca76908fb" class="">⚖️ Pyright vs Mypy</h2></div><div style="display:contents" dir="ltr"><table id="2d92088f-2600-81c9-9506-dfe15409b6e2" class="simple-table"><thead class="simple-table-header"><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8129-8b6c-c6fb59326dde"><th id="pViJ" class="simple-table-header-color simple-table-header">特性</th><th id="eFn&lt;" class="simple-table-header-color simple-table-header">Pyright</th><th id="QWGv" class="simple-table-header-color simple-table-header">Mypy</th></tr></div></thead><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81b9-9393-d84550141e18"><td id="pViJ" class="">性能</td><td id="eFn&lt;" class="">🚀 极快</td><td id="QWGv" class="">🐢 慢</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8165-a734-d7d13fe80a87"><td id="pViJ" class="">IDE 集成</td><td id="eFn&lt;" class="">VS Code/Pylance 完美集成</td><td id="QWGv" class="">PyCharm 较好</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-819e-8508-dcbb5ca669ac"><td id="pViJ" class="">类型推断</td><td id="eFn&lt;" class="">更智能</td><td id="QWGv" class="">依赖显式注解多</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-818c-8e2b-dc137ee354d0"><td id="pViJ" class="">社区生态</td><td id="eFn&lt;" class="">新但发展快</td><td id="QWGv" class="">历史悠久、兼容性好</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-817d-97b1-df41d2a46160"><td id="pViJ" class="">配置</td><td id="eFn&lt;" class="">简单</td><td id="QWGv" class="">灵活但复杂</td></tr></div></tbody></table></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">守门：pre-commit</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">介绍</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-8148-9d8b-e27d8ad01faf" class="">首先要明白，“pre-commit”这个词有两个含义：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81b2-9190-efdfaba1f6f1" class="numbered-list" start="1"><li><strong>Git 自身的钩子 (Hook)</strong>: Git 本身提供了一种“钩子”机制，允许你在特定的 Git 事件发生时（如提交、推送、变基等）自动执行自定义脚本。<code>pre-commit</code> 就是其中一个钩子，它在你输入 <code>git commit</code> 命令之后，但在你编写提交信息和正式生成 commit 对象<strong>之前</strong>触发。如果这个钩子脚本以非零状态码退出，那么整个 <code>commit</code> 过程就会被中止。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8127-947d-fdc0b93f475b" class="numbered-list" start="2"><li><code><strong>pre-commit</strong></code><strong> 框架 (The Framework)</strong>: 手动管理 <code>.git/hooks/</code> 目录下的这些脚本非常繁琐，尤其是在团队中难以共享和保持一致。因此，一个名为 <code>pre-commit</code> 的 <strong>Python 工具（框架）</strong> 应运而生。<strong>通常我们所说的 </strong><code><strong>pre-commit</strong></code><strong>，指的就是这个框架</strong>。它是一个多语言、跨平台的工具，极大地简化了管理和使用 Git 钩子的过程。</li></ol></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81bd-8b69-c3b98d820d1c" class=""><strong>简单来说：</strong><code><strong>pre-commit</strong></code><strong> 框架利用了 Git 的 </strong><code><strong>pre-commit</strong></code><strong> 钩子功能，并将其变得极其强大和易于管理。</strong></p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">好处</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-8195-ba14-fb2637f27307" class="">它的好处是显而易见的，尤其是在团队协作中：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8145-a3c5-c99bb5d85164" class="numbered-list" start="1"><li><strong>自动化代码质量保障</strong>: 将代码检查（Linting）、格式化（Formatting）等任务从“需要开发者记住去做”变成了“自动强制执行”。再也不会有人忘记运行 <code>ruff</code> 就提交代码了。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81e5-97d4-cce0ca29b9fd" class="numbered-list" start="2"><li><strong>保持团队一致性</strong>: 配置文件（<code>.pre-commit-config.yaml</code>）被提交到版本库中。这保证了团队中的每一个人，以及CI/CD服务器，都使用<strong>完全相同版本</strong>的工具进行检查，避免了“在我电脑上是好的”这种问题。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8117-bc98-e0d7c10a418f" class="numbered-list" start="3"><li><strong>提前发现问题 (Shift Left)</strong>: 它在问题进入代码库<strong>之前</strong>就将其拦截。这远比在 Code Review 阶段或 CI/CD 流程中才发现问题要高效得多，节省了所有人的时间。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81fd-a854-c09b805c37e7" class="numbered-list" start="4"><li><strong>简化新成员的配置</strong>: 新加入的成员不需要手动安装 <code>ruff</code>, <code>black</code>, <code>mypy</code> 等一系列工具。他们只需要安装 <code>pre-commit</code> 这一个工具，然后运行 <code>pre-commit install</code>，整个项目的代码质量工具链就全部自动配置好了</li></ol></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">常用操作</summary><div class="indented"><div style="display:contents" dir="ltr"><table id="2d92088f-2600-8129-9ea1-e1f488e6d487" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-817f-97a9-cec72a756e0b"><td id="?ZLN" class="">操作目的</td><td id="KKV?" class="">常用命令</td><td id="TH:_" class="">说明</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81ac-a0eb-c81c1f79ddc0"><td id="?ZLN" class=""><strong>首次安装钩子</strong></td><td id="KKV?" class=""><code>pre-commit install</code></td><td id="TH:_" class="">每个开发者/每个项目只需一次。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-819c-b70a-c0d948b767a8"><td id="?ZLN" class=""><strong>日常提交</strong></td><td id="KKV?" class=""><code>git commit</code></td><td id="TH:_" class="">自动触发，无需额外命令。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81f2-ab3f-e51e82ca620f"><td id="?ZLN" class=""><strong>检查所有文件</strong></td><td id="KKV?" class=""><code>pre-commit run --all-files</code></td><td id="TH:_" class="">初始化项目或在 CI 中使用。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-811e-a6e1-d3f4e64055c8"><td id="?ZLN" class=""><strong>检查暂存文件</strong></td><td id="KKV?" class=""><code>pre-commit run</code></td><td id="TH:_" class="">手动触发对暂存区的检查。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8172-861f-d860f99e12f3"><td id="?ZLN" class=""><strong>更新工具版本</strong></td><td id="KKV?" class=""><code>pre-commit autoupdate</code></td><td id="TH:_" class="">保持钩子配置为最新。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-8120-adf3-e3db0ff60743"><td id="?ZLN" class=""><strong>修复损坏的环境</strong></td><td id="KKV?" class=""><code>pre-commit clean</code></td><td id="TH:_" class="">清理缓存，解决疑难杂症。</td></tr></div><div style="display:contents" dir="ltr"><tr id="2d92088f-2600-81e7-aeac-daadcd863c70"><td id="?ZLN" class=""><strong>紧急时跳过检查</strong></td><td id="KKV?" class=""><code>git commit --no-verify</code></td><td id="TH:_" class=""><strong>谨慎使用！</strong> 临时绕过钩子。</td></tr></div></tbody></table></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">.pre-commit-config.yaml</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-812a-86ad-f9cfa8b7700d" class="">一、文件的核心作用</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8121-b527-c14f875fb804" class=""><code>.pre-commit-config.yaml</code> 是一个使用 <a href="https://yaml.org/">YAML</a> 格式的<strong>声明式配置文件</strong>。它的核心作用是告诉 <code>pre-commit</code> 框架以下三件事：</p></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-8164-aba0-d7c9eba23085" class="numbered-list" start="1"><li><strong>从哪里 (Where)</strong>: 从哪个代码仓库（通常是 GitHub repo）获取要运行的工具。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-815e-aaa8-c2b43e1cbc99" class="numbered-list" start="2"><li><strong>是什么 (What)</strong>: 要运行的具体是哪个钩子（hook）。</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2d92088f-2600-81d4-ad2e-dad2a9fdb937" class="numbered-list" start="3"><li><strong>怎么做 (How)</strong>: 以何种方式、带何种参数来运行这个钩子。</li></ol></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-8155-8ac8-da7321240e73"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81d3-814c-c53b34fe2026" class="">二、文件的顶级结构</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-814c-961a-e2870564733b" class="">这个文件的顶层是一个键值对映射。虽然有一些全局配置项，但<strong>最重要的、占了99%内容的是 </strong><code><strong>repos</strong></code><strong> 列表</strong>。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-81b3-bf72-cf5d8bcee5b4" class="code code-wrap"><code class="language-TOML" style="white-space:pre-wrap;word-break:break-all"># 全局设置，不常用，但可以了解
+# default_language_version:
+#     python: python3.11 # 为所有 python 钩子设置默认版本
+# default_stages: [commit] # 钩子默认在哪些阶段运行
+
+# 核心内容：一个包含多个仓库配置的列表
+repos:
+  # ... 第一个仓库的配置 ...
+  # ... 第二个仓库的配置 ...
+  # ... 等等 ...</code></pre></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8141-aa0a-eca2cfad76cf" class="">我们将重点讲解 <code>repos</code> 列表中的内容。</p></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-81f1-abfa-cf537e5c9ee7"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8100-8bd6-dffc687b1e22" class="">三、<code>repos</code>：核心配置块</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81c5-997e-fbe2edc84fe8" class=""><code>repos</code> 是一个列表（list），列表中的每一项都是一个独立的仓库配置。每个仓库配置都是一个映射（map），包含以下关键字段：</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-811d-ad89-e2a2e2c532e7" class="bulleted-list"><li style="list-style-type:disc"><code>repo</code>: (必需) 包含钩子的代码仓库地址。通常是一个 GitHub URL。<code>pre-commit</code> 会克隆这个仓库来获取钩子。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8129-8d17-f6e866b82d26" class="bulleted-list"><li style="list-style-type:disc"><code>rev</code>: (必需) 指定要使用的仓库的 Git 修订版本。<strong>这极其重要！</strong> 必须使用一个<strong>固定</strong>的版本号（如 <code>v4.6.0</code>）或 commit hash，而<strong>不应</strong>使用分支名（如 <code>main</code>）。这保证了团队中每个人使用的工具版本完全一致，从而保证了可复现性。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ff-a959-c72bc772c375" class="bulleted-list"><li style="list-style-type:disc"><code>hooks</code>: (必需) 一个列表，定义了你希望从这个 <code>repo</code> 中启用哪些钩子。</li></ul></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81f7-87f4-ea5c6c24002b" class=""><strong>示例结构</strong>:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8178-be70-d215509ff84a" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all">repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks # 仓库地址
+    rev: v4.6.0 # 固定的版本
+    hooks: # 从这个仓库中选择要使用的钩子
+      - id: trailing-whitespace
+      - id: end-of-file-fixer</code></pre></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-818d-a120-f7027aa58b99"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8136-b9d9-c1bb4d8b4c6b" class="">四、<code>hooks</code>：定义单个钩子</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81fe-8420-f1fe091d480b" class=""><code>hooks</code> 列表中的每一项都是一个独立的钩子配置，它定义了具体要执行的操作。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81a2-8422-c78fcfb751e2" class="">a. 必需字段</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8179-aac9-c8ef884391b4" class="bulleted-list"><li style="list-style-type:disc"><code>id</code>: (必需) 钩子的唯一标识符。这个 <code>id</code> 必须是在你引用的 <code>repo</code> 的 <code>.pre-commit-hooks.yaml</code> 文件中已经定义好的。</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8117-80b8-e2e87fd6f6d4" class="">b. 常用可选字段 (用于自定义)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8111-909d-ef149fd32ad5" class="">这些字段提供了强大的自定义能力，让你能精确控制钩子的行为。</p></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8139-be77-cfd9b9724588" class="bulleted-list"><li style="list-style-type:disc"><code>args</code>: 传递给钩子脚本的额外命令行参数列表。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-811b-8038-ca4b8f15249a" class="bulleted-list"><li style="list-style-type:circle"><strong>示例</strong>: <code>args: [--fix]</code> 会在运行 <code>ruff</code> 时自动尝试修复问题。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81a1-9cd1-c3b123a63c67" class="bulleted-list"><li style="list-style-type:disc"><code>files</code>: 一个正则表达式，用于<strong>只对匹配此模式的文件</strong>运行钩子。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-8176-902f-cc8338e11dd5" class="bulleted-list"><li style="list-style-type:circle"><strong>示例</strong>: <code>files: \.pyi?$</code> 只对 <code>.py</code> 和 <code>.pyi</code> 文件运行。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8186-8cb2-f510a200dca4" class="bulleted-list"><li style="list-style-type:disc"><code>exclude</code>: 一个正则表达式，用于<strong>排除</strong>匹配此模式的文件。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81b1-a736-e061cf9e428d" class="bulleted-list"><li style="list-style-type:circle"><strong>示例</strong>: <code>exclude: |/auto_generated/.*|/migrations/.*</code> 排除自动生成和数据库迁移目录下的文件。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81cf-b78e-dbed70b7c42d" class="bulleted-list"><li style="list-style-type:disc"><code>types</code>: 一个文件类型列表，用于根据 <code>pre-commit</code> 内置的类型定义来筛选文件。这通常比写正则表达式更简单。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-8130-95d3-dc562efeeb06" class="bulleted-list"><li style="list-style-type:circle"><strong>示例</strong>: <code>types: [python, yaml, json]</code></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-813e-91f4-dfdc38cff1cb" class="bulleted-list"><li style="list-style-type:circle">常见的类型有 <code>python</code>, <code>text</code>, <code>yaml</code>, <code>json</code>, <code>markdown</code>, <code>jupyter</code> 等。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-811b-9614-f143d0c9f954" class="bulleted-list"><li style="list-style-type:disc"><code>name</code>: 覆盖钩子的默认显示名称，使其在运行时输出更具描述性。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ef-9ac2-d320cdc02a40" class="bulleted-list"><li style="list-style-type:disc"><code>stages</code>: 一个列表，用于指定此钩子只在特定的 Git 阶段运行。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81b8-8987-c43d8c8d3577" class="bulleted-list"><li style="list-style-type:circle"><strong>示例</strong>: <code>stages: [pre-push]</code> 表示此钩子只在 <code>git push</code> 前运行，而在 <code>git commit</code> 时跳过。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-81ab-9c3f-f52378fcf006"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81c6-875f-d372cd6ec0be" class="">五、一个完整的示例与解析</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8136-aa31-f5c9dac61a38" class="">下面是一个功能完备、适用于现代 Python 项目的 <code>.pre-commit-config.yaml</code> 配置文件，并附上解析。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-8174-bba7-c85cb18fac1a" class="code code-wrap"><code class="language-YAML" style="white-space:pre-wrap;word-break:break-all"># .pre-commit-config.yaml
+
+# 最小的 pre-commit 版本要求，可选
+minimum_pre_commit_version: &#x27;2.9.0&#x27;
+
+
+repos:
+-   # 仓库 1: pre-commit 官方提供的通用钩子
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace # 移除行尾多余空格
+    -   id: end-of-file-fixer # 保证文件末尾有空行
+    -   id: check-yaml # 检查 YAML 文件语法
+        # types: [yaml] 会自动应用到 .yml 和 .yaml 文件
+    -   id: check-json # 检查 JSON 文件语法
+    -   id: check-toml # 检查 TOML 文件语法
+    -   id: check-added-large-files # 防止提交大于 5MB 的大文件
+        args: [&#x27;--maxkb=5120&#x27;]
+
+-   # 仓库 2: Ruff - 高性能的 Linter 和 Formatter
+    repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+    -   id: ruff
+        # 使用 args 开启自动修复功能
+        args: [--fix]
+    -   id: ruff-format
+      
+-  # 仓库 0: 防止密钥泄露的trufflehog
+    repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.77.1
+    hooks:
+    -   id: trufflehog
+        name: TruffleHog - Scan for secrets
+        # 如果有误报，可以在代码旁用 #trufflehog:ignore 注释掉
+
+
+-   # 仓库 3: 一个本地钩子，用于运行项目自身的 Mypy
+    repo: local
+    hooks:
+    -   id: mypy
+        name: mypy # 自定义显示名称
+        entry: mypy . # 要执行的命令
+        language: system # 使用系统/当前虚拟环境中的 Python 和依赖
+        types: [python] # 只对 python 文件运行
+        # 传递给 mypy 的额外参数
+        args: [&quot;--ignore-missing-imports&quot;]
+        # 在运行 mypy 前，确保项目依赖已安装
+        require_serial: true</code></pre></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81a2-b86f-fcf96a015eff" class="">解析:</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-812d-b9fe-e267fbe300ed" class="bulleted-list"><li style="list-style-type:disc"><strong>第一个 </strong><code><strong>repo</strong></code><strong> (</strong><code><strong>pre-commit-hooks</strong></code><strong>)</strong>: 引入了一系列与语言无关的、通用的文件检查工具，是任何项目的良好起点。我们还通过 <code>args</code> 自定义了大文件的阈值。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81fd-9cf1-cbaee26918d7" class="bulleted-list"><li style="list-style-type:disc"><strong>第二个 </strong><code><strong>repo</strong></code><strong> (</strong><code><strong>ruff-pre-commit</strong></code><strong>)</strong>: 引入了 <code>ruff</code>。我们配置了 <code>ruff</code> 钩子自动进行修复 (<code>-fix</code>)，并单独配置了 <code>ruff-format</code> 钩子用于格式化。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81ae-942e-e7cc4f403753" class="bulleted-list"><li style="list-style-type:disc"><strong>第三个 </strong><code><strong>repo</strong></code><strong> (</strong><code><strong>local</strong></code><strong>)</strong>: 这是一个<strong>特殊</strong>的仓库类型。<code>repo: local</code> 表示这个钩子运行的命令不是来自远程克隆的仓库，而是<strong>直接来自你本地的开发环境</strong>。<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81e9-9e16-c9188074ee63" class="bulleted-list"><li style="list-style-type:circle"><code>entry</code>: 定义了要执行的命令。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8125-bd60-faa4dfc95ff4" class="bulleted-list"><li style="list-style-type:circle"><code>language: system</code>: 告诉 <code>pre-commit</code> 不要为这个钩子创建隔离环境，而是直接使用当前激活的虚拟环境（或系统环境）中的 <code>mypy</code>。这对于需要访问项目依赖（如 <code>mypy</code> 需要知道 <code>pandas</code> 的类型信息）的工具至关重要。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8150-a84d-cd65f59aa97d" class="bulleted-list"><li style="list-style-type:circle"><code>require_serial: true</code>: 确保此钩子在其他钩子运行后串行执行，有时可用于解决依赖问题。</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><hr id="2d92088f-2600-81cb-9e3a-fbd85760b847"/></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8148-ba2e-fcab8d97b8b7" class="">总结</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-815b-a894-deae35bfc561" class=""><code>.pre-commit-config.yaml</code> 是一个强大而灵活的配置文件。掌握它的核心结构 (<code>repos</code> -&gt; <code>hooks</code> -&gt; <code>id</code>) 和常用的自定义选项 (<code>args</code>, <code>types</code>, <code>files</code> 等)，你就可以为你的项目量身打造一套自动化、高度一致的代码质量保障体系。一个好的配置文件是项目工程化的重要体现，也是团队协作的润滑剂。</p></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0">美化：rich</summary><div class="indented"><div style="display:contents" dir="auto"><p id="2d92088f-2600-81d1-8572-c7c693762584" class=""><code>rich</code> 是一个用于在终端中创建富文本和精美格式化输出的 Python 库。它可以让你的命令行界面（CLI）应用程序变得更加美观和易于阅读，不再是单调的黑白文本。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-815f-a6f0-fa087ec7f57c" class=""><code>rich</code> 的核心优势</h3></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81e1-a4c0-e8d93ae9d384" class="bulleted-list"><li style="list-style-type:disc"><strong>易用性</strong>：<code>rich</code> 的 API 设计非常直观和 “Pythonic”，很容易上手。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81b1-840b-dadc283457bb" class="bulleted-list"><li style="list-style-type:disc"><strong>功能强大</strong>：支持颜色、样式、表格、进度条、Markdown、语法高亮、漂亮的 Traceback 等多种功能。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81bf-ade4-ff57431f9a64" class="bulleted-list"><li style="list-style-type:disc"><strong>跨平台</strong>：在 Windows, macOS 和 Linux 上表现良好。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8110-8507-e18d4d294dfc" class="bulleted-list"><li style="list-style-type:disc"><strong>自动化</strong>：能自动检测终端宽度并换行，智能处理文本溢出。</li></ul></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-815e-a41f-f7d3a6e3c611" class="">安装</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81fd-90e0-fbcd635b2380" class="">安装 <code>rich</code> 非常简单，使用 pip 即可：</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-811e-a426-c95fb2a4f8ef" class=""><code>uv pip install rich</code></p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8159-8379-f0b551f743c1" class="">核心功能详解</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8169-b398-fef3ace74ba1" class=""><code>rich</code> 的功能非常丰富，下面我们来逐一介绍其最常用和最强大的几个功能，并附上代码示例。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-811f-92b3-fab90caa6767" class="">1. Console 对象与 <code>print</code> 函数</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8120-a4f1-c83f4014fd15" class=""><code>rich</code> 的核心是 <code>Console</code> 对象。你可以用它来代替 Python 内置的 <code>print</code> 函数，以输出带样式的内容。<code>rich</code> 也提供了一个可直接导入的 <code>print</code> 函数，它在背后为你创建了一个 <code>Console</code> 对象。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81a1-9d88-f242b872fd95" class=""><strong>示例：彩色和带样式的文本</strong></p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-817e-bed7-eb65c875d318" class="">你可以使用类似 BBCode 的标记语法来轻松添加样式。</p></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-818f-9b66-e9904e964a78" class="">代码解释:<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81fc-ad1a-d399ffd5c324" class="bulleted-list"><li style="list-style-type:disc"><code>Console()</code> 创建一个控制台对象。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8141-9d6b-c2409c3a4ecf" class="bulleted-list"><li style="list-style-type:disc"><code>console.print()</code> 是 <code>rich</code> 版的 <code>print</code>。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8179-8047-f45503f17d7b" class="bulleted-list"><li style="list-style-type:disc"><code>[style]...[/style]</code> 是 <code>rich</code> 的标记语法，用于包裹你想要添加样式的文本。常见的样式有 <code>bold</code>, <code>italic</code>, <code>underline</code>, <code>strike</code> (删除线)，以及各种颜色（如 <code>red</code>, <code>green</code>, <code>blue</code>, <code>magenta</code> 等）。</li></ul></div></blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8167-b21c-da62ba54db65" class="">2. 精美的表格 (Table)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8175-b31a-ec4d931e2ce0" class="">在终端中手动创建对齐的表格是一件很痛苦的事，但 <code>rich</code> 的 <code>Table</code> 类让这一切变得异常简单。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81a3-a25b-dee4d5f27538" class=""><strong>示例：创建一个数据表格</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-812c-b2cd-dce1262e616f" class="">代码解释:<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81e2-87e9-c28cb611bee9" class="bulleted-list"><li style="list-style-type:disc"><code>Table(title=&quot;...&quot;)</code> 创建一个带标题的表格。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8190-9309-c66cab8aee05" class="bulleted-list"><li style="list-style-type:disc"><code>table.add_column(...)</code> 定义每一列的标题和样式。<code>justify</code> 控制对齐方式，<code>style</code> 控制颜色。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8120-b5b2-eb358e56adcd" class="bulleted-list"><li style="list-style-type:disc"><code>table.add_row(...)</code> 添加一行数据。<code>rich</code> 会自动处理对齐和宽度。</li></ul></div></blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81c7-bc35-ef8f9d3d1e77" class="">3. 进度条 (Progress)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8180-bcc7-c819caeb7f8b" class="">对于长时间运行的任务，提供一个进度条可以极大地提升用户体验。<code>rich</code> 的进度条不仅美观，而且易于集成。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8134-8cb8-fcc57e9e2c6c" class=""><strong>示例：显示任务进度</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-813d-889f-fc6a51e5b6fc" class="">代码解释:<div style="display:contents" dir="auto"><ul id="2d92088f-2600-81d9-a04e-f801e8cbdbf5" class="bulleted-list"><li style="list-style-type:disc"><code>with Progress() as progress:</code> 创建一个进度条上下文管理器，任务结束后会自动清理。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8176-bd1e-eea82bd60985" class="bulleted-list"><li style="list-style-type:disc"><code>progress.add_task(...)</code> 添加一个新的跟踪任务，并设置其总大小（<code>total</code>）。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-8125-aa87-e38cf3090ef5" class="bulleted-list"><li style="list-style-type:disc"><code>progress.update(task_id, advance=...)</code> 更新指定任务的进度。</li></ul></div></blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8156-8ad4-d40db8ca7423" class="">4. Markdown 渲染</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8123-bdd4-ceac85f62261" class="">你甚至可以在终端里直接渲染 Markdown 文本，<code>rich</code> 会将其转换为格式化的输出。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8192-a154-f35a00885a2c" class=""><strong>示例：在终端显示 Markdown</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-8161-9989-c330310b1cc6" class="">代码解释:<div style="display:contents" dir="auto"><ul id="2d92088f-2600-8130-b925-e1b0826a6d83" class="bulleted-list"><li style="list-style-type:disc">只需将 Markdown 格式的字符串传递给 <code>Markdown</code> 类，然后打印它即可。<code>rich</code> 会解析标题、列表、引用等元素并应用合适的样式。</li></ul></div></blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-81a0-822b-ee050ca2cea2" class="">5. 语法高亮 (Syntax)</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8196-a029-d046c48529f8" class=""><code>rich</code> 可以对代码进行语法高亮显示，支持多种语言。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81e5-a053-f59672434df7" class=""><strong>示例：高亮显示 Python 代码</strong></p></div><div style="display:contents" dir="auto"><blockquote id="2d92088f-2600-81d3-99f7-c1e1e40f9d1a" class="">代码解释:<div style="display:contents" dir="auto"><ul id="2d92088f-2600-8183-9a50-cdb28e0760a1" class="bulleted-list"><li style="list-style-type:disc"><code>Syntax()</code> 需要三个主要参数：代码字符串、语言名称（如 <code>&quot;python&quot;</code>, <code>&quot;javascript&quot;</code>）、主题（<code>theme</code>）。</li></ul></div><div style="display:contents" dir="auto"><ul id="2d92088f-2600-81b5-a280-d2a5a36b26d4" class="bulleted-list"><li style="list-style-type:disc"><code>line_numbers=True</code> 可以显示行号。</li></ul></div></blockquote></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-811e-b27e-ec703ff38c31" class="">6. 漂亮的 Traceback</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8195-9c90-d1108f5745b5" class="">当程序出错时，Python 默认的 Traceback 信息虽然完整，但可读性较差。<code>rich</code> 可以自动格式化这些错误信息，使其更加清晰易读。</p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-81e9-9abd-e12f7a72b890" class=""><strong>示例：美化错误追踪信息</strong></p></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-812e-8c8d-e11f729ad2ed" class="">只需导入 <code>rich.traceback</code>，它就会自动接管。</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2d92088f-2600-812f-9d0a-ca2c9560c8fe" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">from rich.traceback import install
+
+install()
+
+# 下面这段代码会故意触发一个错误
+def faulty_function():
+    result = 1 / 0
+    return result
+
+faulty_function()</code></pre></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-8104-81ab-c50ffa18bfd6" class="">运行这段代码，你将看到一个经过语法高亮、代码上下文清晰、变量值明确的错误报告，定位问题会快得多。</p></div><div style="display:contents" dir="auto"><h3 id="2d92088f-2600-8132-8610-cc8386e12b71" class="">总结</h3></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-816d-8be3-d35659f565cd" class=""><code>rich</code> 是一个现代化、功能全面且易于使用的 Python 库，它极大地改善了命令行应用的开发体验和最终用户的视觉体验。无论你是想为你的脚本添加一些简单的彩色输出，还是构建一个复杂的、专业的 CLI 工具，<code>rich</code> 都是一个非常值得学习和使用的选择。它通过提供表格、进度条、Markdown 等高级组件，让你能够专注于应用逻辑，而不是纠结于终端的显示细节。</p></div></div></details></div><div style="display:contents" dir="auto"><p id="2d92088f-2600-814a-820f-ccb72f9ae8eb" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
