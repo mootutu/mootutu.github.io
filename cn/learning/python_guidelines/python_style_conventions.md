@@ -27,7 +27,7 @@ mathjax: false
 
 应该利用 Python 的 [圆括号, 中括号和花括号的隐式续行 (implicit line joining)](https://docs.python.org/2/reference/lexical_analysis.html#implicit-line-joining) . 如有需要, 你可以在表达式外围添加一对括号. 
 
-正确:
+**✅ 正确**:
 
 ```python
 foo_bar(self, width, height, color='黑', design=None, x='foo',
@@ -47,7 +47,7 @@ with (
     place_order(eggs, beans, spam, beans)
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 if width == 0 and height == 0 and \
@@ -71,7 +71,7 @@ x = ('这是一个很长很长很长很长很长很长'
 
 最好在最外层的语法结构上分行. 如果你需要多次换行, 应该在同一层语法结构上换行.
 
-正确:
+**✅ 正确**:
 
 ```python
 bridgekeeper.answer(
@@ -88,7 +88,7 @@ bridgekeeper.answer(
    use_tabs()
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 bridgekeeper.answer(name="亚瑟", quest=questlib.find(
@@ -104,14 +104,14 @@ if (config is None or 'editor.language' not in config or config[
 
 必要时, 注释中的长 URL 可以独立成行.
 
-正确:
+**✅ 正确**:
 
 ```python
 # 详情参见
 # https://www.example.com/us/developer/documentation/api/content/v2.0/csv_file_name_extension_full_specification.html
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 # 详情参见
@@ -130,7 +130,7 @@ if (config is None or 'editor.language' not in config or config[
 
 可以把元组 (tuple) 括起来, 但不强制. 不要在返回语句或条件语句中使用括号, 除非用于隐式续行 or 表示元组.
 
-正确:
+**✅ 正确**:
 
 ```python    
 if foo: 
@@ -149,7 +149,7 @@ return (spam, beans)
 for (x, y) in dict.items(): ...
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 if (x):
@@ -167,7 +167,7 @@ return (foo)
 
 不要使用制表符. 使用隐式续行时, 应该把括起来的元素垂直对齐(参见 [行宽](#line_length) 章节的示例), 或者添加4个空格的悬挂缩进. 右括号 (圆括号, 方括号或花括号) 可以置于表达式结尾或者另起一行. 另起一行时右括号应该和左括号所在的那一行缩进相同.
 
-正确:
+**✅ 正确**:
 
 ```python
 # 与左括号对齐.
@@ -210,7 +210,7 @@ foo = {
 }
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 # 首行不能有元素.
@@ -379,7 +379,7 @@ if i & (i-1) == 0:  # 如果 i 是 0 或者 2 的整数次幂, 则为真.
 
 > 💡 **提示**: 应该用 [f-string](https://docs.python.org/zh-cn/3/reference/lexical_analysis.html#f-strings)、 `%` 运算符或 `format` 方法来格式化字符串.
 
-正确:
+**✅ 正确**:
 
 ```python
 x = f'名称: {name}; 分数: {n}'
@@ -389,7 +389,7 @@ x = '名称: %s; 分数: %d' % (name, n)
 x = a + b
 ```
 
-错误:
+**❌ 错误**:
 
 ```python
 x = first + ', ' + second

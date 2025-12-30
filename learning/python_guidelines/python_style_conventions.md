@@ -27,7 +27,7 @@ Do not use backslashes for [explicit line continuation](https://docs.python.org/
 
 Make use of Python's [implicit line joining](https://docs.python.org/2/reference/lexical_analysis.html#implicit-line-joining) inside parentheses, brackets and braces. If necessary, you can add an extra pair of parentheses around an expression.
 
-Correct:
+**✅ Correct**:
 
 ```python
 foo_bar(self, width, height, color='black', design=None, x='foo',
@@ -47,7 +47,7 @@ with (
     place_order(eggs, beans, spam, beans)
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 if width == 0 and height == 0 and \
@@ -71,7 +71,7 @@ x = ('This will build a very long long '
 
 Prefer to break at the highest possible syntactic level. If you must break a line more than once, try to keep the subsequent breaks at the same syntactic level.
 
-Correct:
+**✅ Correct**:
 
 ```python
 bridgekeeper.answer(
@@ -88,7 +88,7 @@ bridgekeeper.answer(
    use_tabs()
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 bridgekeeper.answer(name="Arthur", quest=questlib.find(
@@ -104,14 +104,14 @@ if (config is None or 'editor.language' not in config or config[
 
 Long URLs in comments can be on their own line if necessary.
 
-Correct:
+**✅ Correct**:
 
 ```python
 # See
 # https://www.example.com/us/developer/documentation/api/content/v2.0/csv_file_name_extension_full_specification.html
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 # See
@@ -130,7 +130,7 @@ Lines longer than 80 characters are allowed if [Black](https://github.com/psf/bl
 
 It is fine, though not required, to use parentheses around tuples. Do not use them in return statements or conditional statements unless using parentheses for implicit line continuation or to indicate a tuple.
 
-Correct:
+**✅ Correct**:
 
 ```python
 if foo:
@@ -149,7 +149,7 @@ return (spam, beans)
 for (x, y) in dict.items(): ...
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 if (x):
@@ -167,7 +167,7 @@ return (foo)
 
 Never use tabs. For implicit line continuation, you should either align wrapped elements vertically (see [Line Length](#line_length) for examples), or use a 4-space hanging indent. The closing brace/bracket/parenthesis can either be placed at the end of the expression or on a separate line. If on a separate line, it should have the same indentation as the line that started the opening one.
 
-Correct:
+**✅ Correct**:
 
 ```python
 # Aligned with opening delimiter.
@@ -210,7 +210,7 @@ foo = {
 }
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 # Stuff on first line forbidden.
@@ -386,7 +386,7 @@ if i & (i-1) == 0:  # True if i is 0 or a power of two.
 
 > 💡 **Tip**: Use [f-strings](https://docs.python.org/zh-cn/3/reference/lexical_analysis.html#f-strings), the `%` operator, or the `format` method for formatting strings.
 
-Correct:
+**✅ Correct**:
 
 ```python
 x = f'name: {name}; score: {n}'
@@ -396,7 +396,7 @@ x = 'name: %s; score: %d' % (name, n)
 x = a + b
 ```
 
-Incorrect:
+**❌ Incorrect**:
 
 ```python
 x = first + ', ' + second
