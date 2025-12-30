@@ -7,6 +7,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/pygment_trac.css">
+    <!-- Prism.js Premium Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        /* Custom Prism overrides for premium feel */
+        code[class*="language-"],
+        pre[class*="language-"] {
+            font-family: 'Fira Code', monospace !important;
+            font-size: 0.95rem !important;
+            text-shadow: none !important;
+        }
+
+        pre[class*="language-"] {
+            background: #1e293b !important;
+            margin: 1.5em 0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        :not(pre)>code[class*="language-"] {
+            background: #f1f5f9 !important;
+            color: #e11d48 !important;
+            padding: 0.2em 0.4em !important;
+            border-radius: 6px !important;
+        }
+
+        .dark-mode :not(pre)>code[class*="language-"] {
+            background: #1e293b !important;
+            color: #f472b6 !important;
+        }
+    </style>
     <script>
         // Apply dark mode immediately to prevent flash
         if (localStorage.getItem('theme_preference') === 'dark') {
@@ -632,6 +663,12 @@
             });
         });
     </script>
+    <!-- Prism.js Core & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-toml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 </body>
 
 </html>

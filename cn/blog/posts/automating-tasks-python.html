@@ -34,20 +34,20 @@ translate_url: /blog/posts/automating-tasks-python.html
     <li>设置虚拟环境：<code>python -m venv venv</code></li>
     <li>激活虚拟环境：</li>
   </ol>
-  <pre><code># Windows
+  <pre><code class="language-bash"># Windows
 venv\Scripts\activate
 
 # macOS/Linux
 source venv/bin/activate</code></pre>
   <p>安装常用的自动化库：</p>
-  <pre><code>pip install requests beautifulsoup4 selenium</code></pre>
+  <pre><code class="language-bash">pip install requests beautifulsoup4 selenium</code></pre>
 
   <h2 id="file-operations">2. 文件系统操作</h2>
   <p>文件操作是自动化中最常见的任务之一，Python 的 <code>os</code> 和 <code>shutil</code> 库提供了强大的文件操作功能。</p>
 
   <h3 id="reading-writing">2.1 读取和写入文件</h3>
   <p>读取和写入文件是基本的文件操作：</p>
-  <pre><code># 读取文件
+  <pre><code class="language-python"># 读取文件
 with open('example.txt', 'r') as f:
     content = f.read()
     print(content)
@@ -62,7 +62,7 @@ with open('output.txt', 'a') as f:
 
   <h3 id="file-management">2.2 文件管理</h3>
   <p>可以使用 <code>os</code> 和 <code>shutil</code> 库进行文件和目录管理：</p>
-  <pre><code>import os
+  <pre><code class="language-python">import os
 import shutil
 
 # 创建目录
@@ -89,7 +89,7 @@ tshutil.rmtree('directory_to_delete')</code></pre>
 
   <h3 id="beautifulsoup">3.1 使用 BeautifulSoup 进行网页爬取</h3>
   <p>BeautifulSoup 是一个用于解析 HTML 和 XML 文档的库，常用于网页爬取：</p>
-  <pre><code>import requests
+  <pre><code class="language-python">import requests
 from bs4 import BeautifulSoup
 
 # 发送请求
@@ -108,7 +108,7 @@ print(f"段落数量: {len(paragraphs)}")</code></pre>
 
   <h3 id="selenium">3.2 使用 Selenium 进行浏览器自动化</h3>
   <p>Selenium 可以模拟人类在浏览器中的操作，用于自动化复杂的网页交互：</p>
-  <pre><code>from selenium import webdriver
+  <pre><code class="language-python">from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 # 初始化浏览器
@@ -133,7 +133,7 @@ driver.quit()</code></pre>
   <p>以下是一些实用的 Python 自动化示例：</p>
 
   <h3>4.1 批量重命名文件</h3>
-  <pre><code>import os
+  <pre><code class="language-python">import os
 
 def rename_files(directory):
     """批量重命名目录中的 JPG 文件"""
@@ -150,7 +150,7 @@ def rename_files(directory):
 rename_files('photos')</code></pre>
 
   <h3>4.2 自动化发送邮件</h3>
-  <pre><code>import smtplib
+  <pre><code class="language-python">import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 

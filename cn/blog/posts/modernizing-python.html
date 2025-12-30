@@ -44,7 +44,7 @@ translate_url: /blog/posts/modernizing-python.html
         开发。它可以看作是 <code>pip</code> 和 <code>pip-tools</code> 的高性能替代品，旨在彻底解决 Python 包管理的速度问题。</p>
 
     <p><strong>安装方法</strong>（推荐使用 curl）：</p>
-    <pre><code># macOS / Linux
+    <pre><code class="language-bash"># macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
 
     <h2 id="ruff-setup">3. 规范：Ruff</h2>
@@ -55,7 +55,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
     <h3 id="ruff-config">3.2 pyproject.toml 配置示例</h3>
     <p>现代 Python 项目推荐使用 <code>pyproject.toml</code> 进行统一配置。以下是一个集成了 Ruff、Pyright 等工具的典型配置：</p>
 
-    <pre><code>[build-system]
+    <pre><code class="language-toml">[build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
@@ -90,10 +90,10 @@ indent-width = 4</code></pre>
     <p><code>Rich</code> 能够极大地改善命令行应用的开发体验。它可以让你的终端输出具有高亮颜色、表格、进度条甚至 Markdown 渲染。</p>
 
     <p><strong>安装与使用</strong>：</p>
-    <pre><code>pip install rich</code></pre>
+    <pre><code class="language-bash">pip install rich</code></pre>
 
     <p>示例代码（增强错误报告）：</p>
-    <pre><code>from rich.traceback import install
+    <pre><code class="language-python">from rich.traceback import install
 install()
 
 def faulty_function():

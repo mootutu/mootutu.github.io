@@ -46,7 +46,7 @@ translate_url: /cn/blog/posts/modernizing-python.html
         serves as a high-performance replacement for <code>pip</code> and <code>pip-tools</code>.</p>
 
     <p><strong>Installation</strong> (via curl):</p>
-    <pre><code># macOS / Linux
+    <pre><code class="language-bash"># macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
 
     <h2 id="ruff-setup">3. Standards: Ruff</h2>
@@ -57,7 +57,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
     <h3 id="ruff-config">3.2 pyproject.toml Example</h3>
     <p>Modern Python projects use <code>pyproject.toml</code> for configuration. Here is a typical setup:</p>
 
-    <pre><code>[build-system]
+    <pre><code class="language-toml">[build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
@@ -93,7 +93,7 @@ indent-width = 4</code></pre>
         rendering.</p>
 
     <p><strong>Example (Better Tracebacks)</strong>:</p>
-    <pre><code>from rich.traceback import install
+    <pre><code class="language-python">from rich.traceback import install
 install()
 
 def faulty_function():
