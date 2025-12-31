@@ -28,3 +28,11 @@ plugins:
 collections:
   - proc
   - jour
+
+# Exclude docs directory from Jekyll processing
+exclude:
+  - docs
+  - README.md
+  - MAINTENANCE.md
+  - ADDING_POSTS.md
+  - ADDING_POSTS_CN.md
