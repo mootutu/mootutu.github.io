@@ -311,4 +311,13 @@ ls _site/
 
 ---
 
-[← 上一篇：维护检查清单](./13-checklist.md) | [返回目录](./README.md) | [附录 →](./appendix/templates.md)
+<div class="doc-nav">
+  <a href="./13-checklist.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 维护检查清单</span>
+  </a>
+  <a href="./appendix/templates.md" class="doc-nav-card next">
+    <span class="doc-nav-label">附录</span>
+    <span class="doc-nav-title">模板文件 →</span>
+  </a>
+</div>

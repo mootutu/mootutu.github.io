@@ -286,4 +286,13 @@ git commit -m "style: Improve mobile navigation"
 
 ---
 
-[← 上一篇：部署与发布](./11-deployment.md) | [返回目录](./README.md) | [下一篇：维护检查清单 →](./13-checklist.md)
+<div class="doc-nav">
+  <a href="./11-deployment.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 部署与发布</span>
+  </a>
+  <a href="./13-checklist.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">维护检查清单 →</span>
+  </a>
+</div>

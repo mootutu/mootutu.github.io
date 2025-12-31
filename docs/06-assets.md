@@ -265,4 +265,13 @@ assets/bibtex/
 
 ---
 
-[← 上一篇：双语内容维护](./05-bilingual.md) | [返回目录](./README.md) | [下一篇：个人信息维护 →](./07-personal-info.md)
+<div class="doc-nav">
+  <a href="./05-bilingual.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 双语内容维护</span>
+  </a>
+  <a href="./07-personal-info.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">个人信息维护 →</span>
+  </a>
+</div>

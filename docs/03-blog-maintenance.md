@@ -366,4 +366,13 @@ assets/images/posts/
 
 ---
 
-[← 上一篇：快速开始](./02-quickstart.md) | [返回目录](./README.md) | [下一篇：学习内容维护 →](./04-learning-maintenance.md)
+<div class="doc-nav">
+  <a href="./02-quickstart.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 快速开始</span>
+  </a>
+  <a href="./04-learning-maintenance.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">学习内容维护 →</span>
+  </a>
+</div>

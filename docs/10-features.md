@@ -391,4 +391,13 @@ function toggleAvatar() {
 
 ---
 
-[← 上一篇：配置文件](./09-config.md) | [返回目录](./README.md) | [下一篇：部署与发布 →](./11-deployment.md)
+<div class="doc-nav">
+  <a href="./09-config.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 配置文件</span>
+  </a>
+  <a href="./11-deployment.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">部署与发布 →</span>
+  </a>
+</div>

@@ -240,4 +240,13 @@
 
 ---
 
-[← 上一篇：命名规范汇总](./12-naming.md) | [返回目录](./README.md) | [下一篇：常见问题FAQ →](./14-faq.md)
+<div class="doc-nav">
+  <a href="./12-naming.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 命名规范汇总</span>
+  </a>
+  <a href="./14-faq.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">常见问题FAQ →</span>
+  </a>
+</div>

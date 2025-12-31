@@ -272,4 +272,13 @@ jobs:
 
 ---
 
-[← 上一篇：特殊功能](./10-features.md) | [返回目录](./README.md) | [下一篇：命名规范汇总 →](./12-naming.md)
+<div class="doc-nav">
+  <a href="./10-features.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 特殊功能</span>
+  </a>
+  <a href="./12-naming.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">命名规范汇总 →</span>
+  </a>
+</div>

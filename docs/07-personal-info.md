@@ -305,4 +305,13 @@ assets/images/ggbond.ico
 
 ---
 
-[← 上一篇：静态资源管理](./06-assets.md) | [返回目录](./README.md) | [下一篇：布局与组件 →](./08-layouts.md)
+<div class="doc-nav">
+  <a href="./06-assets.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 静态资源管理</span>
+  </a>
+  <a href="./08-layouts.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">布局与组件 →</span>
+  </a>
+</div>

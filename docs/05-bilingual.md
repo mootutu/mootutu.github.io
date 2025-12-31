@@ -271,4 +271,13 @@ cn/blog/posts/git-basics.html     # 中文（同名）
 
 ---
 
-[← 上一篇：学习内容维护](./04-learning-maintenance.md) | [返回目录](./README.md) | [下一篇：静态资源管理 →](./06-assets.md)
+<div class="doc-nav">
+  <a href="./04-learning-maintenance.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 学习内容维护</span>
+  </a>
+  <a href="./06-assets.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">静态资源管理 →</span>
+  </a>
+</div>

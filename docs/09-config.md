@@ -278,4 +278,13 @@ host: 0.0.0.0  # 允许局域网访问
 
 ---
 
-[← 上一篇：布局与组件](./08-layouts.md) | [返回目录](./README.md) | [下一篇：特殊功能 →](./10-features.md)
+<div class="doc-nav">
+  <a href="./08-layouts.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 布局与组件</span>
+  </a>
+  <a href="./10-features.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">特殊功能 →</span>
+  </a>
+</div>

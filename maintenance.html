@@ -176,6 +176,65 @@ layout: null
         .content a:hover { text-decoration: underline; }
         .content hr { border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0; }
 
+        /* 文档导航卡片 */
+        .doc-nav {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .doc-nav-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            text-decoration: none !important;
+            color: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .doc-nav-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+            text-decoration: none !important;
+        }
+
+        .doc-nav-card.prev { text-align: left; }
+        .doc-nav-card.next { text-align: right; }
+
+        .doc-nav-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-nav-card.prev .doc-nav-title { justify-content: flex-start; }
+        .doc-nav-card.next .doc-nav-title { justify-content: flex-end; }
+
+        .doc-nav-card:hover .doc-nav-title { color: #667eea; }
+
+        .doc-nav-placeholder {
+            flex: 1;
+        }
+
         /* 加载状态 */
         .loading {
             display: flex;

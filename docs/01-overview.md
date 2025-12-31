@@ -202,4 +202,12 @@ mootutu.github.io/
 
 ---
 
-[返回目录](./README.md) | [下一篇：快速开始 →](./02-quickstart.md)
+---
+
+<div class="doc-nav">
+  <div class="doc-nav-placeholder"></div>
+  <a href="./02-quickstart.md" class="doc-nav-card next">
+    <span class="doc-nav-label">下一篇</span>
+    <span class="doc-nav-title">快速开始 →</span>
+  </a>
+</div>

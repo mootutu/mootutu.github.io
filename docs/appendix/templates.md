@@ -255,4 +255,13 @@ translate_url: /cn/learning/your-topic.html
 
 ---
 
-[返回目录](../README.md) | [速查表 →](./cheatsheet.md)
+<div class="doc-nav">
+  <a href="../14-faq.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 常见问题FAQ</span>
+  </a>
+  <a href="./cheatsheet.md" class="doc-nav-card next">
+    <span class="doc-nav-label">附录</span>
+    <span class="doc-nav-title">速查表 →</span>
+  </a>
+</div>

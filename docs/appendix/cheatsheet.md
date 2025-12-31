@@ -222,4 +222,10 @@ code here
 
 ---
 
-[← 模板文件](./templates.md) | [返回目录](../README.md)
+<div class="doc-nav">
+  <a href="./templates.md" class="doc-nav-card prev">
+    <span class="doc-nav-label">上一篇</span>
+    <span class="doc-nav-title">← 模板文件</span>
+  </a>
+  <div class="doc-nav-placeholder"></div>
+</div>
