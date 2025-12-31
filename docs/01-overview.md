@@ -202,4 +202,4 @@ mootutu.github.io/
 
 ---
 
-[返回目录](./README.md) | [下一篇：快速开始 →](./02-快速开始.md)
+[返回目录](./README.md) | [下一篇：快速开始 →](./02-quickstart.md)

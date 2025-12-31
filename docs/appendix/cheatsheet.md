@@ -222,4 +222,4 @@ code here
 
 ---
 
-[← 模板文件](./模板文件.md) | [返回目录](../README.md)
+[← 模板文件](./templates.md) | [返回目录](../README.md)

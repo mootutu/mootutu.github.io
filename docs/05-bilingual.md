@@ -271,4 +271,4 @@ cn/blog/posts/git-basics.html     # 中文（同名）
 
 ---
 
-[← 上一篇：学习内容维护](./04-学习内容维护.md) | [返回目录](./README.md) | [下一篇：静态资源管理 →](./06-静态资源管理.md)
+[← 上一篇：学习内容维护](./04-learning-maintenance.md) | [返回目录](./README.md) | [下一篇：静态资源管理 →](./06-assets.md)

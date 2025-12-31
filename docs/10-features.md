@@ -391,4 +391,4 @@ function toggleAvatar() {
 
 ---
 
-[← 上一篇：配置文件](./09-配置文件.md) | [返回目录](./README.md) | [下一篇：部署与发布 →](./11-部署与发布.md)
+[← 上一篇：配置文件](./09-config.md) | [返回目录](./README.md) | [下一篇：部署与发布 →](./11-deployment.md)

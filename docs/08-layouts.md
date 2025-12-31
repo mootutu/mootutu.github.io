@@ -331,4 +331,4 @@ cp _layouts/target-layout.html _layouts/target-layout.html.bak
 
 ---
 
-[← 上一篇：个人信息维护](./07-个人信息维护.md) | [返回目录](./README.md) | [下一篇：配置文件 →](./09-配置文件.md)
+[← 上一篇：个人信息维护](./07-personal-info.md) | [返回目录](./README.md) | [下一篇：配置文件 →](./09-config.md)

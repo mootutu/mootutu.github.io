@@ -311,4 +311,4 @@ ls _site/
 
 ---
 
-[← 上一篇：维护检查清单](./13-维护检查清单.md) | [返回目录](./README.md) | [附录 →](./appendix/模板文件.md)
+[← 上一篇：维护检查清单](./13-checklist.md) | [返回目录](./README.md) | [附录 →](./appendix/templates.md)

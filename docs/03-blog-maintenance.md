@@ -307,7 +307,7 @@ git push
 
 ### 卡片模板
 
-完整的文章卡片模板见 [附录-模板文件](./appendix/模板文件.md#博客索引卡片模板)
+完整的文章卡片模板见 [附录-模板文件](./appendix/templates.md#博客索引卡片模板)
 
 ---
 
@@ -366,4 +366,4 @@ assets/images/posts/
 
 ---
 
-[← 上一篇：快速开始](./02-快速开始.md) | [返回目录](./README.md) | [下一篇：学习内容维护 →](./04-学习内容维护.md)
+[← 上一篇：快速开始](./02-quickstart.md) | [返回目录](./README.md) | [下一篇：学习内容维护 →](./04-learning-maintenance.md)

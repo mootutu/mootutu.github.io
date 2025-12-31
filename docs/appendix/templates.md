@@ -255,4 +255,4 @@ translate_url: /cn/learning/your-topic.html
 
 ---
 
-[返回目录](../README.md) | [速查表 →](./速查表.md)
+[返回目录](../README.md) | [速查表 →](./cheatsheet.md)

@@ -286,4 +286,4 @@ git commit -m "style: Improve mobile navigation"
 
 ---
 
-[← 上一篇：部署与发布](./11-部署与发布.md) | [返回目录](./README.md) | [下一篇：维护检查清单 →](./13-维护检查清单.md)
+[← 上一篇：部署与发布](./11-deployment.md) | [返回目录](./README.md) | [下一篇：维护检查清单 →](./13-checklist.md)
