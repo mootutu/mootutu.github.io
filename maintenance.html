@@ -8,6 +8,15 @@ layout: null
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page Not Found</title>
     <link rel="icon" type="image/x-icon" href="/assets/images/ggbond.ico">
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -35,6 +44,8 @@ layout: null
             font-size: 8rem;
             font-weight: 700;
             text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            cursor: default;
+            user-select: none;
         }
 
         .fake-404 p {
@@ -60,110 +71,169 @@ layout: null
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        /* 隐藏的真实内容 */
-        .real-content {
+        /* 主内容容器 */
+        .main-container {
             display: none;
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
             background: white;
             border-radius: 20px;
-            padding: 40px;
-            max-width: 900px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             animation: slideUp 0.5s ease;
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .real-content h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: #764ba2;
+        /* 左侧导航 */
+        .sidebar {
+            width: 280px;
+            height: 100%;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            float: left;
         }
 
-        .real-content .subtitle {
-            color: #666;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .doc-section {
-            margin-bottom: 2rem;
-        }
-
-        .doc-section h2 {
-            font-size: 1.1rem;
-            color: #444;
-            margin-bottom: 1rem;
-            padding-left: 10px;
-            border-left: 3px solid #764ba2;
-        }
-
-        .doc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 12px;
-        }
-
-        .doc-link {
-            display: block;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            text-decoration: none;
-            color: #333;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .doc-link:hover {
-            background: #667eea;
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: translateX(5px);
         }
 
-        .doc-link .title {
-            font-weight: 600;
-            margin-bottom: 4px;
+        .sidebar-header h1 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
         }
 
-        .doc-link .desc {
+        .sidebar-header p {
             font-size: 0.85rem;
-            opacity: 0.7;
+            opacity: 0.9;
         }
 
-        /* Konami 提示动画 */
-        .konami-hint {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
+        .nav-section {
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-section-title {
+            padding: 0 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: block;
             padding: 10px 20px;
-            border-radius: 20px;
+            color: #475569;
+            text-decoration: none;
             font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
-        .konami-hint.show {
-            opacity: 1;
+        .nav-link:hover {
+            background: #e2e8f0;
+            color: #1e293b;
         }
 
-        /* 解锁成功动画 */
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* 右侧内容区 */
+        .content {
+            margin-left: 280px;
+            height: 100%;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .content h1 { font-size: 2rem; margin-bottom: 1rem; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        .content h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #334155; }
+        .content h3 { font-size: 1.2rem; margin: 1.5rem 0 0.75rem; color: #475569; }
+        .content p { margin: 1rem 0; line-height: 1.8; color: #475569; }
+        .content ul, .content ol { margin: 1rem 0; padding-left: 2rem; }
+        .content li { margin: 0.5rem 0; line-height: 1.6; }
+        .content code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        .content pre { background: #1e293b; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
+        .content pre code { background: none; padding: 0; color: #e2e8f0; }
+        .content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .content th, .content td { border: 1px solid #e2e8f0; padding: 10px 15px; text-align: left; }
+        .content th { background: #f8fafc; font-weight: 600; }
+        .content blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; color: #64748b; }
+        .content a { color: #667eea; text-decoration: none; }
+        .content a:hover { text-decoration: underline; }
+        .content hr { border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0; }
+
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #94a3b8;
+        }
+
+        .loading::after {
+            content: '';
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 输入序列显示 - 默认隐藏 */
+        .input-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            gap: 5px;
+            z-index: 1000;
+        }
+
+        .input-display.show {
+            display: flex;
+        }
+
+        .input-display .key {
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .input-display .key.active {
+            background: rgba(255,255,255,0.9);
+            color: #764ba2;
+            transform: scale(1.1);
+        }
+
+        /* 解锁闪光效果 */
         .unlock-flash {
             position: fixed;
             top: 0;
@@ -186,152 +256,106 @@ layout: null
             100% { opacity: 0; }
         }
 
-        /* 输入序列显示 */
-        .input-display {
+        /* 提示 */
+        .hint {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 5px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
             opacity: 0;
             transition: opacity 0.3s;
+            z-index: 1000;
         }
 
-        .input-display.show {
+        .hint.show {
             opacity: 1;
         }
 
-        .input-display .key {
-            width: 30px;
-            height: 30px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: white;
-            transition: all 0.2s;
-        }
-
-        .input-display .key.active {
-            background: rgba(255,255,255,0.9);
-            color: #764ba2;
-            transform: scale(1.1);
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+                float: none;
+            }
+            .content {
+                margin-left: 0;
+                height: auto;
+                padding: 20px;
+            }
+            .main-container {
+                flex-direction: column;
+                height: auto;
+                max-height: 95vh;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 假的 404 页面 -->
     <div class="fake-404" id="fake404">
-        <h1>404</h1>
+        <h1 id="title404">404</h1>
         <p>Oops! The page you're looking for doesn't exist.</p>
         <a href="/">← Back to Home</a>
     </div>
 
-    <!-- 隐藏的真实内容 -->
-    <div class="real-content" id="realContent">
-        <h1>🔧 维护文档中心</h1>
-        <p class="subtitle">mootutu.github.io 仓库维护手册 - 适用于新维护者快速上手</p>
+    <!-- 主内容容器 -->
+    <div class="main-container" id="mainContainer">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>维护文档</h1>
+                <p>mootutu.github.io</p>
+            </div>
 
-        <div class="doc-section">
-            <h2>📚 基础入门</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/01-overview.md" target="_blank" class="doc-link">
-                    <div class="title">01 项目概述</div>
-                    <div class="desc">项目简介、技术栈、目录结构</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/02-quickstart.md" target="_blank" class="doc-link">
-                    <div class="title">02 快速开始</div>
-                    <div class="desc">本地环境、常用操作速查</div>
-                </a>
+            <div class="nav-section">
+                <div class="nav-section-title">基础入门</div>
+                <a class="nav-link" data-doc="01-overview">01 项目概述</a>
+                <a class="nav-link" data-doc="02-quickstart">02 快速开始</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">内容维护</div>
+                <a class="nav-link" data-doc="03-blog-maintenance">03 博客文章维护</a>
+                <a class="nav-link" data-doc="04-learning-maintenance">04 学习内容维护</a>
+                <a class="nav-link" data-doc="05-bilingual">05 双语内容维护</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">资源与信息</div>
+                <a class="nav-link" data-doc="06-assets">06 静态资源管理</a>
+                <a class="nav-link" data-doc="07-personal-info">07 个人信息维护</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">技术参考</div>
+                <a class="nav-link" data-doc="08-layouts">08 布局与组件</a>
+                <a class="nav-link" data-doc="09-config">09 配置文件</a>
+                <a class="nav-link" data-doc="10-features">10 特殊功能</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">部署与规范</div>
+                <a class="nav-link" data-doc="11-deployment">11 部署与发布</a>
+                <a class="nav-link" data-doc="12-naming">12 命名规范汇总</a>
+                <a class="nav-link" data-doc="13-checklist">13 维护检查清单</a>
+                <a class="nav-link" data-doc="14-faq">14 常见问题</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">附录</div>
+                <a class="nav-link" data-doc="appendix/templates">模板文件</a>
+                <a class="nav-link" data-doc="appendix/cheatsheet">速查表</a>
             </div>
         </div>
 
-        <div class="doc-section">
-            <h2>✍️ 内容维护</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/03-blog-maintenance.md" target="_blank" class="doc-link">
-                    <div class="title">03 博客文章维护</div>
-                    <div class="desc">Blog Post 增删改流程</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/04-learning-maintenance.md" target="_blank" class="doc-link">
-                    <div class="title">04 学习内容维护</div>
-                    <div class="desc">Learning Topic/Post 维护</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/05-bilingual.md" target="_blank" class="doc-link">
-                    <div class="title">05 双语内容维护</div>
-                    <div class="desc">双语架构、翻译链接</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="doc-section">
-            <h2>🎨 资源与信息</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/06-assets.md" target="_blank" class="doc-link">
-                    <div class="title">06 静态资源管理</div>
-                    <div class="desc">图片、CSS、JS 规范</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/07-personal-info.md" target="_blank" class="doc-link">
-                    <div class="title">07 个人信息维护</div>
-                    <div class="desc">简介、头像、出版物</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="doc-section">
-            <h2>⚙️ 技术参考</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/08-layouts.md" target="_blank" class="doc-link">
-                    <div class="title">08 布局与组件</div>
-                    <div class="desc">_layouts / _includes</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/09-config.md" target="_blank" class="doc-link">
-                    <div class="title">09 配置文件</div>
-                    <div class="desc">_config.yml、ui_text</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/10-features.md" target="_blank" class="doc-link">
-                    <div class="title">10 特殊功能</div>
-                    <div class="desc">搜索、暗黑模式、TOC</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="doc-section">
-            <h2>🚀 部署与规范</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/11-deployment.md" target="_blank" class="doc-link">
-                    <div class="title">11 部署与发布</div>
-                    <div class="desc">GitHub Pages 部署</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/12-naming.md" target="_blank" class="doc-link">
-                    <div class="title">12 命名规范汇总</div>
-                    <div class="desc">文件、目录命名约定</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/13-checklist.md" target="_blank" class="doc-link">
-                    <div class="title">13 维护检查清单</div>
-                    <div class="desc">新增/提交/发布清单</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/14-faq.md" target="_blank" class="doc-link">
-                    <div class="title">14 常见问题 FAQ</div>
-                    <div class="desc">常见问题与解决</div>
-                </a>
-            </div>
-        </div>
-
-        <div class="doc-section">
-            <h2>📎 附录</h2>
-            <div class="doc-grid">
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/appendix/templates.md" target="_blank" class="doc-link">
-                    <div class="title">模板文件</div>
-                    <div class="desc">博客、学习文章模板</div>
-                </a>
-                <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/appendix/cheatsheet.md" target="_blank" class="doc-link">
-                    <div class="title">速查表</div>
-                    <div class="desc">Front Matter、命令速查</div>
-                </a>
-            </div>
+        <div class="content" id="docContent">
+            <div class="loading">加载中</div>
         </div>
     </div>
 
@@ -352,11 +376,11 @@ layout: null
     <!-- 解锁闪光效果 -->
     <div class="unlock-flash" id="unlockFlash"></div>
 
-    <!-- Konami 提示 -->
-    <div class="konami-hint" id="konamiHint"></div>
+    <!-- 提示 -->
+    <div class="hint" id="hint"></div>
 
     <script>
-        // Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
+        // ========== Konami Code 检测 ==========
         const konamiCode = [
             'ArrowUp', 'ArrowUp',
             'ArrowDown', 'ArrowDown',
@@ -367,60 +391,51 @@ layout: null
 
         let inputSequence = [];
         let hintTimeout;
-
         const inputDisplay = document.getElementById('inputDisplay');
         const keys = inputDisplay.querySelectorAll('.key');
 
         function updateKeyDisplay() {
             keys.forEach((key, index) => {
-                if (index < inputSequence.length) {
-                    key.classList.add('active');
-                } else {
-                    key.classList.remove('active');
-                }
+                key.classList.toggle('active', index < inputSequence.length);
             });
         }
 
         function showHint(message) {
-            const hint = document.getElementById('konamiHint');
+            const hint = document.getElementById('hint');
             hint.textContent = message;
             hint.classList.add('show');
-
             clearTimeout(hintTimeout);
-            hintTimeout = setTimeout(() => {
-                hint.classList.remove('show');
-            }, 2000);
+            hintTimeout = setTimeout(() => hint.classList.remove('show'), 2000);
         }
 
         function unlock() {
-            // 闪光效果
             const flash = document.getElementById('unlockFlash');
             flash.classList.add('flash');
 
             setTimeout(() => {
                 flash.classList.remove('flash');
-                // 隐藏 404，显示真实内容
                 document.getElementById('fake404').style.display = 'none';
-                document.getElementById('realContent').style.display = 'block';
+                document.getElementById('mainContainer').style.display = 'block';
                 inputDisplay.style.display = 'none';
 
-                // 改变背景
-                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                // 加载第一个文档
+                loadDoc('01-overview');
             }, 250);
         }
 
         document.addEventListener('keydown', (e) => {
-            // 显示输入指示器
-            inputDisplay.classList.add('show');
-
-            // 检查输入
             const expectedKey = konamiCode[inputSequence.length];
 
             if (e.code === expectedKey) {
                 inputSequence.push(e.code);
+
+                // 只有开始输入正确序列后才显示进度条
+                if (inputSequence.length === 1) {
+                    inputDisplay.classList.add('show');
+                }
+
                 updateKeyDisplay();
 
-                // 检查是否完成
                 if (inputSequence.length === konamiCode.length) {
                     showHint('🎉 解锁成功!');
                     unlock();
@@ -430,29 +445,23 @@ layout: null
                 if (inputSequence.length > 0) {
                     inputSequence = [];
                     updateKeyDisplay();
+                    inputDisplay.classList.remove('show');
 
                     // 如果按下的是序列的第一个键，重新开始
                     if (e.code === konamiCode[0]) {
                         inputSequence.push(e.code);
+                        inputDisplay.classList.add('show');
                         updateKeyDisplay();
                     }
                 }
             }
-
-            // 5秒无输入后隐藏指示器
-            clearTimeout(window.hideDisplayTimeout);
-            window.hideDisplayTimeout = setTimeout(() => {
-                if (inputSequence.length === 0) {
-                    inputDisplay.classList.remove('show');
-                }
-            }, 5000);
         });
 
         // 彩蛋：连续点击 404 数字 7 次也可以解锁
         let clickCount = 0;
         let clickTimeout;
 
-        document.querySelector('.fake-404 h1').addEventListener('click', () => {
+        document.getElementById('title404').addEventListener('click', () => {
             clickCount++;
             clearTimeout(clickTimeout);
 
@@ -461,10 +470,74 @@ layout: null
                 unlock();
                 clickCount = 0;
             } else {
-                clickTimeout = setTimeout(() => {
-                    clickCount = 0;
-                }, 2000);
+                clickTimeout = setTimeout(() => clickCount = 0, 2000);
             }
+        });
+
+        // ========== 文档加载 ==========
+        const docContent = document.getElementById('docContent');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // 配置 marked
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (Prism.languages[lang]) {
+                    return Prism.highlight(code, Prism.languages[lang], lang);
+                }
+                return code;
+            },
+            breaks: true,
+            gfm: true
+        });
+
+        async function loadDoc(docName) {
+            // 更新导航高亮
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.doc === docName);
+            });
+
+            // 显示加载状态
+            docContent.innerHTML = '<div class="loading">加载中</div>';
+
+            try {
+                // 从 GitHub raw 获取 Markdown 文件
+                const url = `https://raw.githubusercontent.com/mootutu/mootutu.github.io/main/docs/${docName}.md`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error('文档加载失败');
+                }
+
+                const markdown = await response.text();
+
+                // 渲染 Markdown
+                docContent.innerHTML = marked.parse(markdown);
+
+                // 重新高亮代码块
+                Prism.highlightAll();
+
+                // 滚动到顶部
+                docContent.scrollTop = 0;
+
+            } catch (error) {
+                docContent.innerHTML = `
+                    <h1>加载失败</h1>
+                    <p>无法加载文档：${docName}</p>
+                    <p style="color: #94a3b8;">错误信息：${error.message}</p>
+                    <p style="margin-top: 2rem;">
+                        <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/${docName}.md" target="_blank">
+                            在 GitHub 上查看 →
+                        </a>
+                    </p>
+                `;
+            }
+        }
+
+        // 绑定导航点击事件
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                loadDoc(link.dataset.doc);
+            });
         });
     </script>
 </body>

@@ -322,8 +322,10 @@
     <a href="{% if page.lang == 'zh-CN' %}/cn/index.html{% else %}/index.html{% endif %}" class="navbar-brand">Weiqin
       Wang</a>
 
-    <!-- Center GIF -->
-    <img src="/assets/images/bocchi.gif" alt="bocchi" style="height: 40px; border-radius: 4px; object-fit: contain;">
+    <!-- Center GIF - Secret entrance to maintenance page -->
+    <a href="/maintenance.html" style="display: flex; align-items: center;">
+      <img src="/assets/images/bocchi.gif" alt="bocchi" style="height: 40px; border-radius: 4px; object-fit: contain; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
 
     <ul class="navbar-menu">
       {% assign ui = site.data.ui_text[page.lang] %}
