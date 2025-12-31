@@ -539,6 +539,26 @@ layout: null
                 loadDoc(link.dataset.doc);
             });
         });
+
+        // 拦截文档内容中的 .md 链接点击
+        docContent.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href || !href.endsWith('.md')) return;
+
+            e.preventDefault();
+
+            // 解析文档名称
+            // 处理 ./02-quickstart.md, ../README.md, ./appendix/templates.md 等格式
+            let docName = href
+                .replace(/^\.\//, '')      // 移除 ./
+                .replace(/^\.\.\//, '')    // 移除 ../
+                .replace(/\.md$/, '');     // 移除 .md
+
+            loadDoc(docName);
+        });
     </script>
 </body>
 </html>
