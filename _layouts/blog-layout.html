@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="/assets/images/ggbond.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
@@ -235,6 +236,53 @@
       transform: translateY(-3px);
       background-color: #1d4ed8;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      .blog-wrapper {
+        padding: 0 10px;
+        gap: 20px;
+      }
+
+      .blog-content {
+        padding: 20px 15px;
+      }
+
+      #back-to-top,
+      #lang-switcher,
+      #dark-mode-toggle {
+        width: 42px;
+        height: 42px;
+        right: 15px;
+        font-size: 16px;
+      }
+
+      #back-to-top { bottom: 20px; }
+      #lang-switcher { bottom: 72px; font-size: 12px; }
+      #dark-mode-toggle { bottom: 124px; font-size: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .blog-wrapper {
+        padding: 0 8px;
+      }
+
+      .blog-content {
+        padding: 15px 12px;
+      }
+
+      #back-to-top,
+      #lang-switcher,
+      #dark-mode-toggle {
+        width: 38px;
+        height: 38px;
+        right: 10px;
+      }
+
+      #back-to-top { bottom: 15px; }
+      #lang-switcher { bottom: 60px; font-size: 11px; }
+      #dark-mode-toggle { bottom: 105px; font-size: 14px; }
     }
 
     /* Dark Mode Styles */

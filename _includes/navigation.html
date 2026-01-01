@@ -122,14 +122,97 @@
     }
 
     .navbar-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: rgba(248, 250, 252, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      flex-direction: column;
+      padding: 15px 20px;
       gap: 8px;
-      flex-wrap: wrap;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .navbar-menu.active {
+      display: flex;
+    }
+
+    .navbar-item {
+      width: 100%;
     }
 
     .navbar-link {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
+      display: block;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      text-align: center;
     }
+
+    .search-container {
+      width: 100%;
+      margin: 10px 0 0 0;
+    }
+
+    .search-input {
+      width: 100%;
+    }
+  }
+
+  /* Hamburger Menu Button */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+  }
+
+  .hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: #4a5568;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+
+    .navbar-container {
+      position: relative;
+    }
+  }
+
+  .dark-mode .hamburger span {
+    background-color: #e2e8f0;
+  }
+
+  .dark-mode .navbar-menu {
+    background-color: rgba(22, 33, 62, 0.98);
   }
 
   /* Dark Mode Styles for Navigation */
@@ -327,7 +410,14 @@
       <img src="/assets/images/bocchi.gif" alt="bocchi" style="height: 40px; border-radius: 4px; object-fit: contain; cursor: pointer; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
     </a>
 
-    <ul class="navbar-menu">
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul class="navbar-menu" id="navbar-menu">
       {% assign ui = site.data.ui_text[page.lang] %}
       {% if page.lang == 'zh-CN' %}
       <li class="navbar-item"><a href="/cn/index.html"
@@ -365,6 +455,33 @@
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
     let searchData = [];
+
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navbarMenu = document.getElementById('navbar-menu');
+
+    if (hamburger && navbarMenu) {
+      hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        navbarMenu.classList.toggle('active');
+      });
+
+      // Close menu when clicking a link
+      navbarMenu.querySelectorAll('.navbar-link').forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navbarMenu.classList.remove('active');
+        });
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navbarMenu.contains(e.target)) {
+          hamburger.classList.remove('active');
+          navbarMenu.classList.remove('active');
+        }
+      });
+    }
 
     // Detect current page language
     const currentLang = document.documentElement.lang || (window.location.pathname.includes('/cn/') ? 'zh-CN' : 'en');
