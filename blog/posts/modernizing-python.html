@@ -13,6 +13,7 @@ translate_url: /cn/blog/posts/modernizing-python.html
         replaced by more modern and efficient alternatives. This article introduces a modern Python development setup
         designed to improve efficiency, code quality, and performance.</p>
 
+    <!-- ==================== IDE Section ==================== -->
     <h2 id="ide-setup">1. Foundation: IDE</h2>
 
     <h3 id="vscode-config">1.1 VS Code Extensions and Configuration</h3>
@@ -36,27 +37,560 @@ translate_url: /cn/blog/posts/modernizing-python.html
 
     <h3 id="ai-tools">1.2 AI Programming Tools</h3>
     <ul>
-        <li><strong>Cursor</strong>: A smart editor with deep AI integration. Highly recommended.</li>
+        <li><strong>Cursor</strong>: A smart editor with deep AI integration. Configuration is compatible with VS Code. <strong>Highly recommended</strong>.</li>
         <li><strong>Trae</strong>: An AI programming tool developed by ByteDance, currently in active development.</li>
     </ul>
 
+    <!-- ==================== UV Section ==================== -->
     <h2 id="uv-setup">2. Infrastructure: uv</h2>
-    <h3 id="uv-intro">2.1 Introduction to uv</h3>
-    <p><code>uv</code> is an extremely fast Python package <strong>installer and resolver</strong>, written in Rust. It
-        serves as a high-performance replacement for <code>pip</code> and <code>pip-tools</code>.</p>
 
-    <p><strong>Installation</strong> (via curl):</p>
+    <h3 id="uv-intro">2.1 Introduction to uv</h3>
+    <p><code>uv</code> is an extremely fast Python package <strong>installer and resolver</strong>, developed by <strong>Charlie Marsh</strong>,
+        the creator of <code>Ruff</code>, and backed by Astral. Think of it as a <strong>high-performance replacement</strong> for <code>pip</code> and <code>pip-tools</code>, designed to solve the long-standing <strong>speed and performance</strong> issues in Python package management.</p>
+
+    <p><strong>Installation</strong> (via curl recommended):</p>
     <pre><code class="language-bash"># macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
 
+    <p><strong>Quick Start</strong>:</p>
+    <pre><code class="language-bash"># 1. Create and enter project directory
+mkdir my-python-project
+cd my-python-project
+
+# 2. Create virtual environment with uv (defaults to .venv directory)
+uv venv
+
+# 3. Activate the virtual environment
+source .venv/bin/activate
+# Windows users: .venv\Scripts\activate</code></pre>
+
+    <h3 id="uv-why">2.2 Why uv Emerged</h3>
+
+    <h4>1. Unified Toolchain</h4>
+    <p><code>uv</code>'s core philosophy is to consolidate multiple scattered tools into one. Before <code>uv</code>, a typical Python project might need:</p>
+    <ul>
+        <li><code>python -m venv .venv</code>: Create virtual environments</li>
+        <li><code>pip</code>: Install packages</li>
+        <li><code>pip-tools</code>: Resolve and lock dependencies from <code>requirements.in</code> to <code>requirements.txt</code></li>
+        <li><code>pipx</code>: Install and manage global CLI tools</li>
+    </ul>
+    <p><strong><code>uv</code> integrates all these features into a single binary</strong>. You can use <code>uv venv</code>, <code>uv pip install</code>, <code>uv pip compile</code>, <code>uv tool install</code> and other subcommands to accomplish everything. This greatly simplifies tool management and project configuration.</p>
+
+    <h4>2. Global Cache</h4>
+    <p>This is the ultimate secret to <code>uv</code>'s speed. When you first install a package (e.g., <code>pandas==2.2.0</code>), <code>uv</code> will:</p>
+    <ol>
+        <li>Download the wheel file.</li>
+        <li>Extract it to a <strong>globally shared, version and platform-specific cache directory</strong>.</li>
+    </ol>
+    <p>When you install the same version of <code>pandas</code> again in <strong>any project</strong>, <code>uv</code> won't re-download or extract. Instead, it creates hard links (or copies on unsupported systems) from the cache to your virtual environment. This process is nearly instantaneous.</p>
+    <ul>
+        <li><strong>Key Point</strong>: The cache is global, benefiting all <code>uv</code>-managed projects.</li>
+        <li><strong>Related Commands</strong>:
+            <ul>
+                <li><code>uv cache dir</code>: View cache directory location.</li>
+                <li><code>uv cache clean</code>: Clear the cache.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3. High-Performance Resolver</h4>
+    <p>Dependency resolution finds compatible version sets for all packages including sub-dependencies. <code>pip</code>'s traditional resolver is slow, especially with complex dependencies.</p>
+    <p><code>uv</code> uses a high-performance Rust-based resolver with these characteristics:</p>
+    <ul>
+        <li><strong>Massive Parallelism</strong>: Fetches metadata for all top-level dependencies simultaneously.</li>
+        <li><strong>Efficient Version Selection</strong>: Quickly finds version combinations satisfying all constraints.</li>
+    </ul>
+    <p>This means even with complex <code>pyproject.toml</code> or <code>requirements.in</code> files, <code>uv pip compile</code> generates precise, reproducible <code>requirements.txt</code> lock files in minimal time.</p>
+
+    <h3 id="uv-commands">2.3 Common Operations</h3>
+    <pre><code class="language-bash">uv venv                     # Create environment
+uv venv my-env -p 3.11      # Specify environment name and Python version
+uv venv -p python@3.11      # Use python3.11 to create .venv
+source .venv/bin/activate   # Activate environment (still required)
+uv init                     # Initialize uv project
+uv pip install              # Install packages
+uv add                      # Add packages to project
+uv sync                     # If pulling a uv project, sync to set up environment
+uv pip freeze > requirements.txt # Generate list of installed packages with exact versions</code></pre>
+
+    <h3 id="uv-advanced">2.4 Advanced Usage</h3>
+
+    <h4>1. Dependency Resolution and Locking</h4>
+    <p>Replace pip-tools by generating a locked <code>requirements.txt</code> from <code>requirements.in</code>.</p>
+    <pre><code class="language-bash">uv pip compile requirements.in -o requirements.txt</code></pre>
+
+    <h4>2. Global Tool Installation</h4>
+    <p>Replace pipx:</p>
+    <pre><code class="language-bash"># Install tools
+uv tool install ruff
+uv tool install black --python python3.11  # Specify Python version
+
+# Manage tools
+uv tool list         # List all installed tools
+uv tool uninstall ruff # Uninstall tool
+uv tool run black .  # Run tool without activating environment</code></pre>
+
+    <h3 id="pyproject-toml">2.5 Essential Knowledge: pyproject.toml</h3>
+
+    <h4>What is pyproject.toml?</h4>
+    <p><code>pyproject.toml</code> is a <strong>unified Python project configuration file</strong> introduced by <a href="https://peps.python.org/pep-0518/" target="_blank">PEP 518</a> and extended by subsequent PEPs.</p>
+    <p>Its core goal is to solve configuration chaos. Before it, a project might contain <code>setup.py</code>, <code>setup.cfg</code>, <code>requirements.txt</code>, <code>MANIFEST.in</code>, and various tool config files (<code>.flake8</code>, <code>.coveragerc</code>, <code>mypy.ini</code>, etc.).</p>
+    <p><code>pyproject.toml</code> uses <a href="https://toml.io/en/" target="_blank">TOML</a> format, aiming to be the <strong>single entry point</strong> for all configurations, making project structure cleaner and more standardized.</p>
+
+    <h4>What Problems Does It Solve?</h4>
+    <p>It mainly solves two pain points from the <code>setup.py</code> era:</p>
+    <ol>
+        <li><strong>Missing Static Metadata</strong>: <code>setup.py</code> is an executable Python script. Without running it, you can't determine build-time dependencies. This creates a chicken-and-egg paradox.</li>
+        <li><strong>Scattered Configuration</strong>: Project configs spread across dozens of files, hard to manage.</li>
+    </ol>
+    <p><code>pyproject.toml</code> solves both with a <strong>static, declarative file</strong>.</p>
+
+    <h4>Structure of pyproject.toml</h4>
+    <p>The file consists of multiple "tables" denoted by <code>[table_name]</code>. Three main categories:</p>
+    <ol>
+        <li><code>[build-system]</code>: Defines the project's build system.</li>
+        <li><code>[project]</code>: Defines core metadata (package name, version, dependencies, etc.).</li>
+        <li><code>[tool.*]</code>: Configures third-party tools (<code>uv</code>, <code>ruff</code>, <code>mypy</code>, <code>pytest</code>, etc.).</li>
+    </ol>
+
+    <h4>1. [build-system] Table</h4>
+    <p>Tells packaging tools (like <code>pip</code>) how to build your project.</p>
+    <pre><code class="language-toml">[build-system]
+# --- Declare build-time dependencies ---
+requires = ["setuptools>=61.0"]
+# --- Specify the build backend ---
+build-backend = "setuptools.build_meta"</code></pre>
+    <ul>
+        <li><code>requires</code>: Dependencies needed to build your package. Common ones: <code>setuptools</code>, <code>hatchling</code>, <code>flit_core</code>, <code>poetry-core</code>.</li>
+        <li><code>build-backend</code>: Python object that knows how to build your package.</li>
+    </ul>
+
+    <h4>2. [project] Table</h4>
+    <p>The project's "ID card", standardized by <a href="https://peps.python.org/pep-0621/" target="_blank">PEP 621</a>.</p>
+    <pre><code class="language-toml">[project]
+name = "my-package"
+version = "0.1.0"
+description = "A short description of my project."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+
+authors = [
+  { name = "Your Name", email = "your.email@example.com" },
+]
+
+keywords = ["packaging", "python", "example"]
+
+# --- Core dependencies ---
+dependencies = [
+  "httpx",
+  "rich>=13.0.0",
+  'tomli; python_version < "3.11"',
+]
+
+# --- Optional dependencies ---
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+dev = [
+  "my-package[test]",
+  "ruff",
+  "mypy",
+]
+
+# --- CLI script entry points ---
+[project.scripts]
+my-cli = "my_package.cli:main"
+
+# --- Project URLs ---
+[project.urls]
+Homepage = "https://github.com/user/my-package"
+Repository = "https://github.com/user/my-package"</code></pre>
+
+    <h4>3. [tool.*] Tables</h4>
+    <p>One of <code>pyproject.toml</code>'s most powerful features: <strong>unified configuration for all development tools</strong>. Each tool defines its own table as <code>[tool.toolname]</code>.</p>
+    <pre><code class="language-toml"># --- uv configuration ---
+[tool.uv.pip]
+extra-index-url = "https://my-private-registry.com/simple"
+
+# --- ruff (linter/formatter) configuration ---
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["my_package"]
+
+# --- mypy (type checker) configuration ---
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+ignore_missing_imports = true</code></pre>
+
+    <h4>Complete Example</h4>
+    <pre><code class="language-toml"># pyproject.toml
+
+# 1. Build system configuration
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# 2. Project core metadata
+[project]
+name = "data-analyzer"
+version = "1.0.0"
+description = "A tool for analyzing data sets."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Data Team", email = "data@example.com" }]
+
+dependencies = [
+  "pandas>=2.0.0",
+  "numpy",
+  "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+  "uv >= 0.1.0",
+]
+
+[project.scripts]
+analyze = "data_analyzer.main:run"
+
+[project.urls]
+Repository = "https://github.com/example/data-analyzer"
+
+# 3. Third-party tool configuration
+[tool.ruff]
+line-length = 99
+select = ["E", "F", "W", "I", "N", "D"]
+ignore = ["D100", "D104"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]</code></pre>
+
+    <h4>Summary</h4>
+    <ul>
+        <li><code><strong>pyproject.toml</strong></code><strong> is the modern Python project configuration standard.</strong></li>
+        <li>Uses <strong>TOML</strong> format, clear structure, <strong>declarative</strong> rather than executable.</li>
+        <li><code>[build-system]</code> defines <strong>how to build</strong> the project.</li>
+        <li><code>[project]</code> defines <strong>what the project is</strong>, the metadata center.</li>
+        <li><code>[tool.*]</code> lets you <strong>centralize all toolchain configuration</strong>.</li>
+    </ul>
+    <p>For any new Python project, prioritize using <code>pyproject.toml</code> as the sole configuration file.</p>
+
+    <h3 id="uv-vs-conda">2.6 uv vs Conda</h3>
+    <figure class="image">
+        <img src="/assets/images/posts/modernizing-python/image-5.png" alt="uv vs conda">
+    </figure>
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>uv</th>
+                <th>Conda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Speed</strong></td>
+                <td>⚡ Extremely fast</td>
+                <td>Slow</td>
+            </tr>
+            <tr>
+                <td><strong>Ecosystem</strong></td>
+                <td>PyPI (Python-first)</td>
+                <td>conda-forge (cross-language)</td>
+            </tr>
+            <tr>
+                <td><strong>Non-Python Dependencies</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>CUDA/MKL Optimization</strong></td>
+                <td>System-dependent</td>
+                <td>Built-in support</td>
+            </tr>
+            <tr>
+                <td><strong>Right for you?</strong></td>
+                <td>✅ Most AI/simulation projects</td>
+                <td>Only when needing conda-exclusive packages</td>
+            </tr>
+        </tbody>
+    </table>
+    <blockquote>
+        🚀 Trend: With tools like uv and pixi (Rust-based conda alternative) emerging, pure Python projects are rapidly shifting to uv, while conda still dominates scientific computing with heavy dependencies.
+    </blockquote>
+
+    <h3 id="uv-best-practices">2.7 Best Practices</h3>
+    <ul>
+        <li><strong>Declare</strong>: Declare direct dependencies in a source file (recommend <code>pyproject.toml</code>). This is your "dependency source of truth".</li>
+        <li><strong>Lock</strong>: Use <code>uv pip compile</code> to resolve declarative dependencies into a lock file containing all packages with exact versions.</li>
+        <li><strong>Sync</strong>: Use <code>uv pip sync</code> to install dependencies from the lock file. This ensures your virtual environment is <strong>exactly consistent</strong> with the lock file.</li>
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>✅ Recommended</th>
+                <th>❌ Avoid</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Dependency Declaration</strong></td>
+                <td>Manage all dependencies in <code>pyproject.toml</code></td>
+                <td>Multiple <code>requirements.in</code> or manual editing</td>
+            </tr>
+            <tr>
+                <td><strong>Install Dependencies</strong></td>
+                <td>Use <code>uv pip sync -r &lt;lockfile&gt;</code></td>
+                <td>Use <code>pip install -r</code> directly</td>
+            </tr>
+            <tr>
+                <td><strong>Update Dependencies</strong></td>
+                <td>Modify <code>pyproject.toml</code> → <code>uv pip compile</code> → <code>uv pip sync</code></td>
+                <td>Manually edit <code>requirements.txt</code></td>
+            </tr>
+            <tr>
+                <td><strong>Global Tools</strong></td>
+                <td>Use <code>uv tool install</code></td>
+                <td>Use <code>sudo pip install</code> or <code>pip install --user</code></td>
+            </tr>
+            <tr>
+                <td><strong>Team Collaboration</strong></td>
+                <td>Commit lock files (<code>*.txt</code>) to Git</td>
+                <td>Commit <code>.venv</code> directory to Git</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ==================== Ruff Section ==================== -->
     <h2 id="ruff-setup">3. Standards: Ruff</h2>
-    <h3 id="ruff-intro">3.1 Introduction to Ruff</h3>
-    <p><code>Ruff</code> is a blazing fast Python Linter and Formatter. It replaces Flake8, isort, and Black, but runs
-        10~100x faster.</p>
 
-    <h3 id="ruff-config">3.2 pyproject.toml Example</h3>
-    <p>Modern Python projects use <code>pyproject.toml</code> for configuration. Here is a typical setup:</p>
+    <h3 id="ruff-why">3.1 Why Ruff Emerged</h3>
+    <p>Before Ruff, a standard project might need these tools:</p>
+    <ul>
+        <li><code>Flake8</code>: Code style and logic error checking.</li>
+        <li><code>pycodestyle</code>, <code>pyflakes</code>: Flake8's core plugins.</li>
+        <li><code>isort</code>: Import statement sorting.</li>
+        <li><code>pylint</code>: Stricter, configurable linter.</li>
+        <li><code>pyupgrade</code>: Auto-upgrade Python syntax.</li>
+        <li><code>autoflake</code>: Remove unused imports.</li>
+        <li><code>black</code>: Code formatting.</li>
+    </ul>
+    <p><strong>Ruff aims to replace all of the above</strong>. Install and configure just <code>ruff</code> to get most of these features. This greatly simplifies dependency management and configuration.</p>
 
+    <h3 id="ruff-intro">3.2 Introduction to Ruff</h3>
+    <p><strong>Ruff is a blazing fast Python Linter and Formatter written in Rust.</strong></p>
+    <p>Its core mission is to <strong>replace</strong> the scattered tools Python developers previously had to install and configure. It integrates linting, formatting, import sorting, and syntax upgrades into a single lightning-fast binary.</p>
+
+    <h4>Core Advantages</h4>
+    <p><strong>1. Extreme Speed</strong></p>
+    <p>Ruff's most notable feature. Being Rust-compiled rather than Python-interpreted avoids interpreter startup overhead and better utilizes multi-core CPUs for parallel processing.</p>
+    <ul>
+        <li><strong>Quantified</strong>: Ruff typically runs <strong>10 to 100 times faster</strong> than tools it replaces (Flake8 + plugins, isort, pylint).</li>
+        <li><strong>Practical Impact</strong>:
+            <ul>
+                <li>In CI/CD, code checking shrinks from minutes to seconds.</li>
+                <li>In local development, feedback is <strong>instantaneous</strong> with no delay.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>2. Built-in Auto-fix (<code>--fix</code>)</strong></p>
+    <p>Ruff doesn't just find problems—it auto-fixes many. Its auto-fix is powerful and safe:</p>
+    <ul>
+        <li>Auto-sort <code>import</code> statements.</li>
+        <li>Remove unused imports and variables.</li>
+        <li>Auto-upgrade to modern Python syntax.</li>
+        <li>Fix many code style issues.</li>
+    </ul>
+
+    <h4>Main Features</h4>
+    <p><strong>1. Linter (<code>ruff check</code>)</strong></p>
+    <p>Ruff's core feature. Contains hundreds of rules from popular tools, selectable by rule codes.</p>
+    <ul>
+        <li><code>F</code> prefix: From <code>Pyflakes</code> (logic errors)</li>
+        <li><code>E</code>, <code>W</code> prefix: From <code>pycodestyle</code> (code style)</li>
+        <li><code>I</code> prefix: From <code>isort</code> (import sorting)</li>
+        <li><code>D</code> prefix: From <code>pydocstyle</code> (docstrings)</li>
+        <li><code>UP</code> prefix: From <code>pyupgrade</code> (syntax upgrades)</li>
+    </ul>
+
+    <p><strong>2. Formatter (<code>ruff format</code>)</strong></p>
+    <p>A newer feature, designed as a high-performance <code>black</code> replacement.</p>
+    <ul>
+        <li><strong>Compatibility Goal</strong>: Produces output nearly identical to <code>black</code> with default config.</li>
+        <li><strong>Performance</strong>: <code>ruff format</code> is much faster than <code>black</code>.</li>
+    </ul>
+
+    <h3 id="ruff-commands">3.3 Common Operations</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Command</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Format my code</strong></td>
+                <td><code>ruff format .</code></td>
+            </tr>
+            <tr>
+                <td><strong>Check code and auto-fix</strong></td>
+                <td><code>ruff check . --fix</code></td>
+            </tr>
+            <tr>
+                <td><strong>Verify formatting in CI/CD</strong></td>
+                <td><code>ruff format . --check</code></td>
+            </tr>
+            <tr>
+                <td><strong>Check code quality in CI/CD</strong></td>
+                <td><code>ruff check .</code></td>
+            </tr>
+            <tr>
+                <td><strong>Real-time checking during dev</strong></td>
+                <td><code>ruff check . --watch</code></td>
+            </tr>
+            <tr>
+                <td><strong>Understand a rule</strong></td>
+                <td><code>ruff rule &lt;RULE_CODE&gt;</code></td>
+            </tr>
+            <tr>
+                <td><strong>Clean cache</strong></td>
+                <td><code>ruff cache clean</code></td>
+            </tr>
+            <tr>
+                <td><strong>Ultimate cleanup</strong></td>
+                <td><code>ruff format . && ruff check . --fix</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="ruff-advanced">3.4 Advanced Usage</h3>
+
+    <h4>1. Enable Preview Features</h4>
+    <p>Many powerful Ruff features are in <strong>preview mode</strong>, requiring explicit enabling:</p>
+    <pre><code class="language-toml">[tool.ruff]
+preview = true</code></pre>
+    <p>Or via command line:</p>
+    <pre><code class="language-bash">ruff check --preview .
+ruff format --preview .</code></pre>
+    <blockquote>💡 Tip: Enable preview = true for new projects to get latest rules and fixes.</blockquote>
+
+    <h4>2. Type-Aware Linting</h4>
+    <p>Ruff in preview mode supports <strong>lightweight type inference</strong> to enhance rule judgment.</p>
+    <ul>
+        <li><code>RUF014</code>: Redundant <code>isinstance(x, str)</code> (when <code>x: str</code> is known)</li>
+        <li><code>RUF015</code>: Invalid <code>assert isinstance(...)</code> (type already determined)</li>
+    </ul>
+    <blockquote>⚠️ Note: Ruff doesn't replace Pyright/mypy, only uses type info to enhance lint rules. Pair with Pyright for complete type checking.</blockquote>
+
+    <h4>3. Fine-grained Rule Control (Per-File / Per-Line)</h4>
+    <p><strong>(a) Ignore Specific Files/Directories</strong></p>
+    <pre><code class="language-toml">[tool.ruff.lint]
+extend-exclude = [
+  "migrations/",
+  "legacy_code.py",
+  "scripts/temp_*.py"
+]</code></pre>
+
+    <p><strong>(b) Enable/Disable Rules Per File</strong></p>
+    <pre><code class="language-toml">[[tool.ruff.lint.per-file-ignores]]
+"tests/**.py" = ["S101", "D"]  # Ignore asserts and docstring rules
+"scripts/*.py" = ["T20"]       # Ignore print warnings</code></pre>
+
+    <p><strong>(c) Inline Ignore</strong></p>
+    <pre><code class="language-python">x = 1  # noqa: E741  # Allow ambiguous variable names 'l', 'O', 'I'
+print("debug")  # noqa: T201, T203</code></pre>
+
+    <h4>4. Custom Rule Priority and Safe Fixes</h4>
+    <pre><code class="language-toml">[tool.ruff]
+fix = true
+unsafe-fixes = false  # Don't apply fixes that might change semantics</code></pre>
+    <ul>
+        <li>Safe fixes: Renaming, format adjustments, removing unused imports, etc.</li>
+        <li>Unsafe fixes: Logic changes (like <code>==</code> → <code>is</code>), rewriting expressions, etc.</li>
+    </ul>
+    <blockquote>🛡️ Keep unsafe-fixes = false in CI to avoid unexpected behavior changes.</blockquote>
+
+    <h4>5. Deep Editor Integration (VS Code)</h4>
+    <p>Recommended VS Code settings (<code>settings.json</code>):</p>
+    <pre><code class="language-json">{
+  "python.linting.enabled": false,
+  "ruff.enable": true,
+  "ruff.args": ["--preview"],
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
+}</code></pre>
+    <blockquote>✅ With this, Ruff provides both linting + formatting—no need for Black or Flake8.</blockquote>
+
+    <h4>6. CI/CD Integration Best Practices</h4>
+    <p>GitHub Actions example:</p>
+    <pre><code class="language-yaml">- name: Run Ruff
+  run: |
+    pip install ruff
+    ruff check . --output-format=github
+    ruff format . --check  # Verify formatting</code></pre>
+    <ul>
+        <li><code>--output-format=github</code>: Show annotations directly in PRs</li>
+        <li><code>ruff format --check</code>: Ensure code is formatted (without modifying files)</li>
+    </ul>
+
+    <h4>7. Migrating Existing Projects (from Black + Flake8 + isort)</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Original Tool</th>
+                <th>Ruff Equivalent</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Black</td>
+                <td><code>ruff format</code></td>
+            </tr>
+            <tr>
+                <td>Flake8</td>
+                <td><code>ruff check</code> (E/W/F)</td>
+            </tr>
+            <tr>
+                <td>isort</td>
+                <td><code>ruff check</code> (I)</td>
+            </tr>
+            <tr>
+                <td>pyupgrade</td>
+                <td><code>ruff check</code> (UP)</td>
+            </tr>
+            <tr>
+                <td>autoflake</td>
+                <td><code>ruff check --fix</code></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>Migration Steps:</strong></p>
+    <ol>
+        <li>Install Ruff: <code>pip install ruff</code></li>
+        <li>Generate initial config: <code>ruff migrate</code> (experimental, or configure manually)</li>
+        <li>One-command format+fix: <code>ruff check --fix . && ruff format .</code></li>
+        <li>Remove old tool dependencies</li>
+    </ol>
+
+    <h3 id="ruff-config">3.5 pyproject.toml Configuration</h3>
     <pre><code class="language-toml">[build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -75,37 +609,425 @@ requires-python = ">=3.10"
 preview = true
 target-version = "py310"
 fix = true
+unsafe-fixes = false
 line-length = 88
 
+extend-exclude = [
+  ".git",
+  "__pycache__",
+  "venv",
+  ".venv",
+  "build",
+  "dist",
+  "notebooks",
+]
+
+# ==============================
+# 🔍 Lint Rules Config
+# ==============================
 [tool.ruff.lint]
 select = [
-  "E", "W", "F", "I", "UP", "C4", "TID", "ARG", "PTH"
+  "E", "W", "F",
+  "I",
+  "UP",
+  "C4",
+  "TID",
+  "ARG",
+  "PTH",
 ]
-ignore = ["E501", "D"]
 
+ignore = [
+  "E501",
+  "D",
+]
+
+[[tool.ruff.lint.per-file-ignores]]
+"tests/**.py" = ["S101", "ARG", "PLR0913"]
+"scripts/*.py" = ["T20"]
+
+# ==============================
+# 🧹 isort Config (Ruff built-in)
+# ==============================
+[tool.ruff.lint.isort]
+known-first-party = ["my_project"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+# ==============================
+# ✨ Formatter Config (Black replacement)
+# ==============================
 [tool.ruff.format]
-quote-style = 'single'
-indent-width = 4</code></pre>
+preview = true
+quote-style = "single"
+skip-magic-trailing-comma = false
+line-length = 88
+indent-width = 4
 
-    <h2 id="rich-setup">4. Experience: Rich</h2>
-    <h3 id="rich-intro">4.1 Terminal Enhancements</h3>
-    <p><code>Rich</code> makes terminal output beautiful. It supports colors, tables, progress bars, and Markdown
-        rendering.</p>
+# ==============================
+# 🔤 Pyright Config (Type Checking)
+# ==============================
+[tool.pyright]
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+include = ["src", "tests"]
+exclude = [
+  "**/node_modules",
+  "**/__pycache__",
+  ".venv",
+  "venv",
+  "build",
+  "dist",
+  "notebooks",
+]
+reportMissingTypeStubs = "none"
+reportUnusedImport = "warning"
+reportUnusedVariable = "warning"</code></pre>
 
-    <p><strong>Example (Better Tracebacks)</strong>:</p>
+    <h3 id="ruff-best-practices">3.6 Best Practices</h3>
+    <ol>
+        <li><strong>Use <code>pyproject.toml</code> exclusively for configuration</strong><br>
+            Abandon separate config files (<code>.isort.cfg</code>, <code>.flake8</code>). Centralize all Ruff config in <code>[tool.ruff]</code>.</li>
+        <li><strong>Specify target Python version (<code>target-version</code>)</strong><br>
+            The most important yet often overlooked setting. Ensures Ruff applies rules matching your project environment.
+            <pre><code class="language-toml">[tool.ruff]
+target-version = "py311"</code></pre>
+        </li>
+        <li><strong>Start with a solid baseline rule set</strong><br>
+            Don't try to enable everything at once. A sensible starting point includes widely-accepted, high-impact rules.
+            <pre><code class="language-toml">[tool.ruff]
+# E: pycodestyle errors, F: Pyflakes logic errors, I: isort import sorting, UP: pyupgrade syntax upgrades
+select = ["E", "F", "I", "UP"]</code></pre>
+        </li>
+        <li><strong>Embrace auto-fix (<code>--fix</code>)</strong><br>
+            Make <code>ruff check . --fix</code> your standard operation. Ruff's auto-fix is safe and reliable.</li>
+    </ol>
+
+    <!-- ==================== Pyright Section ==================== -->
+    <h2 id="pyright-setup">4. Types: Pyright</h2>
+
+    <h3 id="pyright-intro">4.1 Introduction to Pyright</h3>
+    <ul>
+        <li><strong>Pyright</strong> is a <strong>static type checker</strong> developed by Microsoft, specifically targeting Python's type annotations (PEP 484, PEP 561, etc.).</li>
+        <li><strong>Written in TypeScript</strong>, extremely fast (much faster than <code>mypy</code>).</li>
+        <li>Integrated in <strong>VS Code's Pylance extension</strong>, so if you use VS Code, you're likely already using Pyright.</li>
+    </ul>
+
+    <h3 id="pyright-features">4.2 Pyright Features</h3>
+    <ul>
+        <li><strong>Blazing Fast</strong> — Several times faster than mypy for incremental analysis of large projects</li>
+        <li><strong>Superior Type Inference</strong> — Automatically deduces types from code context</li>
+        <li><strong>Strict Mode Support</strong> — Enforces type annotations, catching stragglers</li>
+        <li><strong>Cross-platform</strong> — Can run standalone as CLI (<code>pyright</code>) or integrate into CI/CD</li>
+    </ul>
+
+    <h3 id="pyright-install">4.3 Installation</h3>
+    <h4>1. Global Installation (via npm)</h4>
+    <pre><code class="language-bash">npm install -g pyright</code></pre>
+
+    <h4>2. Project Configuration</h4>
+    <p>Add <code>pyrightconfig.json</code> to project root:</p>
+    <pre><code class="language-json">{
+  "include": ["src"],
+  "exclude": ["tests", "build"],
+  "reportMissingImports": true,
+  "reportUnusedVariable": "warning",
+  "typeCheckingMode": "strict"
+}</code></pre>
+
+    <h3 id="pyright-vs-mypy">4.4 Pyright vs Mypy</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Pyright</th>
+                <th>Mypy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Performance</td>
+                <td>🚀 Extremely fast</td>
+                <td>🐢 Slow</td>
+            </tr>
+            <tr>
+                <td>IDE Integration</td>
+                <td>Perfect with VS Code/Pylance</td>
+                <td>Better with PyCharm</td>
+            </tr>
+            <tr>
+                <td>Type Inference</td>
+                <td>Smarter</td>
+                <td>Relies more on explicit annotations</td>
+            </tr>
+            <tr>
+                <td>Community</td>
+                <td>Newer but growing fast</td>
+                <td>Established, good compatibility</td>
+            </tr>
+            <tr>
+                <td>Configuration</td>
+                <td>Simple</td>
+                <td>Flexible but complex</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ==================== pre-commit Section ==================== -->
+    <h2 id="precommit-setup">5. Gatekeeper: pre-commit</h2>
+
+    <h3 id="precommit-intro">5.1 Introduction</h3>
+    <p>First, understand that "pre-commit" has two meanings:</p>
+    <ol>
+        <li><strong>Git's Own Hook</strong>: Git provides a "hooks" mechanism allowing custom scripts on specific Git events. <code>pre-commit</code> is one such hook, triggered after <code>git commit</code> but <strong>before</strong> the commit object is created. If the hook script exits with non-zero status, the commit is aborted.</li>
+        <li><strong><code>pre-commit</code> Framework</strong>: A <strong>Python tool (framework)</strong> called <code>pre-commit</code>. <strong>Usually when we say <code>pre-commit</code>, we mean this framework</strong>. It greatly simplifies managing and using Git hooks.</li>
+    </ol>
+    <p><strong>Simply put: The <code>pre-commit</code> framework leverages Git's <code>pre-commit</code> hook feature and makes it extremely powerful and easy to manage.</strong></p>
+
+    <h3 id="precommit-benefits">5.2 Benefits</h3>
+    <ol>
+        <li><strong>Automated Code Quality</strong>: Transforms linting and formatting from "developers must remember to do" to "automatically enforced". No one will forget to run <code>ruff</code> before committing.</li>
+        <li><strong>Team Consistency</strong>: The config file (<code>.pre-commit-config.yaml</code>) is committed to version control. Everyone uses <strong>exactly the same tool versions</strong>.</li>
+        <li><strong>Shift Left</strong>: Catches problems <strong>before</strong> they enter the codebase. Much more efficient than discovering issues during code review or CI/CD.</li>
+        <li><strong>Simplified Onboarding</strong>: New team members don't need to manually install a series of tools. Just install <code>pre-commit</code> and run <code>pre-commit install</code>.</li>
+    </ol>
+
+    <h3 id="precommit-commands">5.3 Common Operations</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Purpose</th>
+                <th>Command</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>First-time hook install</strong></td>
+                <td><code>pre-commit install</code></td>
+                <td>Once per developer/project</td>
+            </tr>
+            <tr>
+                <td><strong>Daily commits</strong></td>
+                <td><code>git commit</code></td>
+                <td>Triggers automatically</td>
+            </tr>
+            <tr>
+                <td><strong>Check all files</strong></td>
+                <td><code>pre-commit run --all-files</code></td>
+                <td>Project init or CI use</td>
+            </tr>
+            <tr>
+                <td><strong>Check staged files</strong></td>
+                <td><code>pre-commit run</code></td>
+                <td>Manual trigger on staging area</td>
+            </tr>
+            <tr>
+                <td><strong>Update tool versions</strong></td>
+                <td><code>pre-commit autoupdate</code></td>
+                <td>Keep hooks current</td>
+            </tr>
+            <tr>
+                <td><strong>Fix broken environment</strong></td>
+                <td><code>pre-commit clean</code></td>
+                <td>Clear cache, solve issues</td>
+            </tr>
+            <tr>
+                <td><strong>Emergency skip</strong></td>
+                <td><code>git commit --no-verify</code></td>
+                <td><strong>Use sparingly!</strong> Bypasses hooks</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="precommit-config">5.4 .pre-commit-config.yaml Configuration</h3>
+
+    <h4>Core Purpose</h4>
+    <p><code>.pre-commit-config.yaml</code> is a <strong>declarative YAML config file</strong> telling the <code>pre-commit</code> framework:</p>
+    <ol>
+        <li><strong>Where</strong>: Which repository to fetch tools from.</li>
+        <li><strong>What</strong>: Which specific hook to run.</li>
+        <li><strong>How</strong>: With what arguments.</li>
+    </ol>
+
+    <h4>Top-level Structure</h4>
+    <pre><code class="language-yaml"># Core content: list of repository configs
+repos:
+  # ... first repo config ...
+  # ... second repo config ...</code></pre>
+
+    <h4>repos: Core Config Block</h4>
+    <p><code>repos</code> is a list. Each repo config contains:</p>
+    <ul>
+        <li><code>repo</code>: (Required) Repository URL containing hooks.</li>
+        <li><code>rev</code>: (Required) Git revision to use. <strong>Must be a fixed version number</strong>.</li>
+        <li><code>hooks</code>: (Required) List defining which hooks to enable from this <code>repo</code>.</li>
+    </ul>
+
+    <h4>Complete Example</h4>
+    <pre><code class="language-yaml"># .pre-commit-config.yaml
+
+minimum_pre_commit_version: '2.9.0'
+
+repos:
+-   # Repo 1: Official pre-commit general hooks
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace      # Remove trailing whitespace
+    -   id: end-of-file-fixer        # Ensure newline at end of file
+    -   id: check-yaml               # Check YAML syntax
+    -   id: check-json               # Check JSON syntax
+    -   id: check-toml               # Check TOML syntax
+    -   id: check-added-large-files  # Prevent large file commits (>5MB)
+        args: ['--maxkb=5120']
+
+-   # Repo 2: Ruff - High-performance Linter and Formatter
+    repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+    -   id: ruff
+        args: [--fix]
+    -   id: ruff-format
+
+-   # Repo 3: TruffleHog - Prevent secret leaks
+    repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.77.1
+    hooks:
+    -   id: trufflehog
+        name: TruffleHog - Scan for secrets
+
+-   # Repo 4: Local hook for project's own Mypy
+    repo: local
+    hooks:
+    -   id: mypy
+        name: mypy
+        entry: mypy .
+        language: system
+        types: [python]
+        args: ["--ignore-missing-imports"]
+        require_serial: true</code></pre>
+
+    <h4>Explanation:</h4>
+    <ul>
+        <li><strong>First <code>repo</code></strong>: Includes language-agnostic, general file checks.</li>
+        <li><strong>Second <code>repo</code></strong>: Includes <code>ruff</code> with auto-fix (<code>--fix</code>).</li>
+        <li><strong>Third <code>repo</code></strong>: Uses TruffleHog to prevent secret leaks.</li>
+        <li><strong>Fourth <code>repo</code> (<code>local</code>)</strong>: <code>repo: local</code> means the hook runs from <strong>local environment</strong>. <code>language: system</code> tells <code>pre-commit</code> to use <code>mypy</code> from the current activated virtual environment.</li>
+    </ul>
+
+    <!-- ==================== Rich Section ==================== -->
+    <h2 id="rich-setup">6. Enhancement: Rich</h2>
+
+    <h3 id="rich-intro">6.1 Introduction to Rich</h3>
+    <p><code>rich</code> is a Python library for creating rich text and beautiful formatted output in terminals. It makes your command-line interface (CLI) applications more attractive and readable.</p>
+
+    <h4>Core Advantages</h4>
+    <ul>
+        <li><strong>Easy to Use</strong>: <code>rich</code>'s API is intuitive and Pythonic, easy to learn.</li>
+        <li><strong>Feature-rich</strong>: Supports colors, styles, tables, progress bars, Markdown, syntax highlighting, beautiful tracebacks, and more.</li>
+        <li><strong>Cross-platform</strong>: Works well on Windows, macOS, and Linux.</li>
+        <li><strong>Automatic</strong>: Auto-detects terminal width and wraps text, intelligently handles overflow.</li>
+    </ul>
+
+    <h3 id="rich-install">6.2 Installation</h3>
+    <pre><code class="language-bash">uv pip install rich</code></pre>
+
+    <h3 id="rich-features">6.3 Core Features</h3>
+
+    <h4>1. Console Object and print Function</h4>
+    <p><code>rich</code>'s core is the <code>Console</code> object. Use BBCode-like markup syntax to easily add styles.</p>
+    <blockquote>
+        <strong>Explanation:</strong>
+        <ul>
+            <li><code>Console()</code> creates a console object.</li>
+            <li><code>console.print()</code> is <code>rich</code>'s version of <code>print</code>.</li>
+            <li><code>[style]...[/style]</code> is <code>rich</code>'s markup syntax for styled text.</li>
+        </ul>
+    </blockquote>
+
+    <h4>2. Beautiful Tables</h4>
+    <p>Creating aligned tables manually in terminals is painful, but <code>rich</code>'s <code>Table</code> class makes it effortless.</p>
+    <blockquote>
+        <strong>Explanation:</strong>
+        <ul>
+            <li><code>Table(title="...")</code> creates a titled table.</li>
+            <li><code>table.add_column(...)</code> defines column headers and styles.</li>
+            <li><code>table.add_row(...)</code> adds data rows. <code>rich</code> handles alignment and width automatically.</li>
+        </ul>
+    </blockquote>
+
+    <h4>3. Progress Bars</h4>
+    <p>For long-running tasks, progress bars greatly improve user experience.</p>
+    <blockquote>
+        <strong>Explanation:</strong>
+        <ul>
+            <li><code>with Progress() as progress:</code> creates a progress bar context manager.</li>
+            <li><code>progress.add_task(...)</code> adds a new tracking task.</li>
+            <li><code>progress.update(task_id, advance=...)</code> updates task progress.</li>
+        </ul>
+    </blockquote>
+
+    <h4>4. Markdown Rendering</h4>
+    <p>Render Markdown text directly in the terminal.</p>
+
+    <h4>5. Syntax Highlighting</h4>
+    <p><code>rich</code> provides syntax highlighting for code in multiple languages.</p>
+
+    <h4>6. Beautiful Tracebacks</h4>
+    <p>When programs error, <code>rich</code> automatically formats error messages for clarity.</p>
     <pre><code class="language-python">from rich.traceback import install
+
 install()
 
+# This code intentionally triggers an error
 def faulty_function():
     result = 1 / 0
     return result
 
 faulty_function()</code></pre>
-    <p>With <code>Rich</code>, you'll get a clear, detailed error report with variable values and code context.</p>
+    <p>Running this code produces a syntax-highlighted, context-clear, variable-showing error report, dramatically speeding up debugging.</p>
 
-    <h2 id="summary">5. Conclusion</h2>
-    <p>Combining <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> + <strong>Rich</strong>
-        provides a fast, standardized environment for modern Python development.</p>
+    <h3 id="rich-summary">6.4 Summary</h3>
+    <p><code>rich</code> is a modern, feature-complete, easy-to-use Python library that dramatically improves CLI development experience and end-user visual experience. Whether adding simple colored output or building complex, professional CLI tools, <code>rich</code> is well worth learning.</p>
+
+    <!-- ==================== Summary Section ==================== -->
+    <h2 id="summary">7. Summary</h2>
+    <p>By combining <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> + <strong>Pyright</strong> + <strong>pre-commit</strong> + <strong>Rich</strong>, we can build a fast, standardized modern Python development environment. These tools not only improve code quality but, more importantly, save significant time in daily development, dependency installation, and debugging.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Capability</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Unified Toolchain</strong></td>
+                <td>uv replaces pip + pip-tools + pipx</td>
+            </tr>
+            <tr>
+                <td><strong>Unified Code Checking</strong></td>
+                <td>Ruff replaces Black + Flake8 + isort + pyupgrade</td>
+            </tr>
+            <tr>
+                <td><strong>Extreme Performance</strong></td>
+                <td>10–100x faster than traditional tools</td>
+            </tr>
+            <tr>
+                <td><strong>Type Checking</strong></td>
+                <td>Pyright provides intelligent type inference</td>
+            </tr>
+            <tr>
+                <td><strong>Automated Gatekeeper</strong></td>
+                <td>pre-commit auto-checks before commits</td>
+            </tr>
+            <tr>
+                <td><strong>Terminal Enhancement</strong></td>
+                <td>Rich makes CLI output professional</td>
+            </tr>
+        </tbody>
+    </table>
 
     <p style="font-size: 0.9rem; color: #666; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
         Source: <a
@@ -117,7 +1039,9 @@ faulty_function()</code></pre>
         <a href="#" class="blog-tag">Python</a>
         <a href="#" class="blog-tag">uv</a>
         <a href="#" class="blog-tag">Ruff</a>
-        <a href="#" class="blog-tag">IDE</a>
+        <a href="#" class="blog-tag">Pyright</a>
+        <a href="#" class="blog-tag">pre-commit</a>
+        <a href="#" class="blog-tag">Rich</a>
         <a href="#" class="blog-tag">Modern Tech</a>
     </div>
 </div>

@@ -12,11 +12,11 @@ translate_url: /blog/posts/modernizing-python.html
     <p>随着 Python 生态的快速演进，许多传统的工具（如 pip, virtualenv, flake8）正逐渐被更现代、更高效的工具所取代。本文将介绍一套现代化的 Python
         开发环境配置方案，旨在提升开发效率、代码质量和运行性能。</p>
 
+    <!-- ==================== IDE 部分 ==================== -->
     <h2 id="ide-setup">1. 基础：IDE</h2>
 
     <h3 id="vscode-config">1.1 VS Code 及其插件与配置</h3>
-    <p>VS Code 是目前最流行的 Python 开发工具。首先，建议前往 <a href="https://code.visualstudio.com/" target="_blank">VS Code 官网</a> 下载安装。
-    </p>
+    <p>VS Code 是目前最流行的 Python 开发工具。首先，建议前往 <a href="https://code.visualstudio.com/" target="_blank">VS Code 官网</a> 下载安装。</p>
 
     <p><strong>配置建议</strong>：建议去掉以下勾选，以避免与现代工具冲突：</p>
     <figure class="image">
@@ -34,27 +34,560 @@ translate_url: /blog/posts/modernizing-python.html
 
     <h3 id="ai-tools">1.2 AI 编程工具</h3>
     <ul>
-        <li><strong>Cursor</strong>：深度集成 AI 的智能编辑器，配置与 VS Code 兼容，强烈推荐。</li>
+        <li><strong>Cursor</strong>：深度集成 AI 的智能编辑器，配置与 VS Code 兼容，<strong>强烈推荐</strong>。</li>
         <li><strong>Trae</strong>：字节跳动研发的国内 AI 编程工具，目前功能迭代中。</li>
     </ul>
 
+    <!-- ==================== UV 部分 ==================== -->
     <h2 id="uv-setup">2. 底层：uv</h2>
+
     <h3 id="uv-intro">2.1 uv 简介</h3>
     <p><code>uv</code> 是一个速度极快的 Python 包<strong>安装器和解析器</strong>，由 <code>Ruff</code> 的作者 <strong>Charlie Marsh</strong>
-        开发。它可以看作是 <code>pip</code> 和 <code>pip-tools</code> 的高性能替代品，旨在彻底解决 Python 包管理的速度问题。</p>
+        开发，并由 Astral 公司提供支持。你可以把它看作是 <code>pip</code> 和 <code>pip-tools</code> 的一个<strong>高性能替代品</strong>，旨在解决 Python 包管理中长期存在的<strong>速度和性能</strong>问题。</p>
 
     <p><strong>安装方法</strong>（推荐使用 curl）：</p>
     <pre><code class="language-bash"># macOS / Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
 
-    <h2 id="ruff-setup">3. 规范：Ruff</h2>
-    <h3 id="ruff-intro">3.1 Ruff 简介</h3>
-    <p><code>Ruff</code> 是一个极速的 Python Linter 和 Formatter，用 Rust 编写。它几乎涵盖了 Flake8、isort、Black 等工具的所有功能，但速度快了 10~100 倍。
-    </p>
+    <p><strong>快速开始</strong>：</p>
+    <pre><code class="language-bash"># 1. 创建并进入项目目录
+mkdir my-python-project
+cd my-python-project
 
-    <h3 id="ruff-config">3.2 pyproject.toml 配置示例</h3>
-    <p>现代 Python 项目推荐使用 <code>pyproject.toml</code> 进行统一配置。以下是一个集成了 Ruff、Pyright 等工具的典型配置：</p>
+# 2. 使用 uv 创建虚拟环境 (它会默认创建在 .venv 目录)
+uv venv
 
+# 3. 激活虚拟环境
+source .venv/bin/activate
+# Windows 用户: .venv\Scripts\activate</code></pre>
+
+    <h3 id="uv-why">2.2 为什么会出现 uv</h3>
+
+    <h4>1. 统一的工具链 (Unified Toolchain)</h4>
+    <p><code>uv</code> 的核心理念是将过去分散的多个工具整合为一。在 <code>uv</code> 出现之前，一个典型的 Python 项目可能需要：</p>
+    <ul>
+        <li><code>python -m venv .venv</code>：创建虚拟环境</li>
+        <li><code>pip</code>：安装包</li>
+        <li><code>pip-tools</code>：从 <code>requirements.in</code> 解析和锁定依赖到 <code>requirements.txt</code></li>
+        <li><code>pipx</code>：安装和管理全局命令行工具</li>
+    </ul>
+    <p><strong><code>uv</code> 将以上所有功能整合到了一个二进制文件中</strong>，你可以用 <code>uv venv</code>, <code>uv pip install</code>, <code>uv pip compile</code>, <code>uv tool install</code> 等子命令完成所有操作。这大大简化了工具管理和项目配置。</p>
+
+    <h4>2. 全局缓存 (Global Cache)</h4>
+    <p>这是 <code>uv</code> 速度的终极秘诀。当你第一次安装一个包（例如 <code>pandas==2.2.0</code>）时，<code>uv</code> 会：</p>
+    <ol>
+        <li>下载 wheel 文件。</li>
+        <li>将其解压到一个<strong>全局共享的、与版本和平台相关的缓存目录</strong>中。</li>
+    </ol>
+    <p>当你再次在<strong>任何项目</strong>中安装同一个版本的 <code>pandas</code> 时，<code>uv</code> 不会重新下载或解压，而是直接从缓存中创建硬链接（或在不支持的系统上进行复制）到你的虚拟环境。这个过程几乎是瞬时的。</p>
+    <ul>
+        <li><strong>关键点</strong>：缓存是全局的，所有由 <code>uv</code> 管理的项目共享这份福利。</li>
+        <li><strong>相关命令</strong>：
+            <ul>
+                <li><code>uv cache dir</code>：查看缓存目录的位置。</li>
+                <li><code>uv cache clean</code>：清空缓存。</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h4>3. 高性能解析器 (High-Performance Resolver)</h4>
+    <p>依赖解析是找出所有包（包括子依赖）的兼容版本集合的过程。<code>pip</code> 的传统解析器较慢，尤其是在依赖关系复杂时。</p>
+    <p><code>uv</code> 使用一个用 Rust 编写的高性能解析器，其特点是：</p>
+    <ul>
+        <li><strong>大规模并行</strong>：它会同时获取所有顶层依赖的元数据。</li>
+        <li><strong>高效的版本选择算法</strong>：能非常迅速地找到满足所有约束条件的版本组合。</li>
+    </ul>
+    <p>这意味着，即使你有复杂的 <code>pyproject.toml</code> 或 <code>requirements.in</code> 文件，<code>uv pip compile</code> 也能在极短的时间内生成一个精确的、可复现的 <code>requirements.txt</code> 锁定文件。</p>
+
+    <h3 id="uv-commands">2.3 常用操作</h3>
+    <pre><code class="language-bash">uv venv                     # 创建环境
+uv venv my-env -p 3.11      # 指定环境名字和python版本
+uv venv -p python@3.11      # 使用 python3.11 创建 .venv
+source .venv/bin/activate   # 激活环境 (此步仍然需要)
+uv init                     # 初始化uv项目
+uv pip install              # 装包
+uv add                      # 为项目加包
+uv sync                     # 如果有拉取一个uv的项目，直接sync即可配置好环境
+uv pip freeze > requirements.txt # 生成包含所有已安装包及其精确版本的列表</code></pre>
+
+    <h3 id="uv-advanced">2.4 进阶内容</h3>
+
+    <h4>1. 依赖解析与锁定</h4>
+    <p>代替 pip-tools，从一个 <code>requirements.in</code> 文件生成一个锁定的 <code>requirements.txt</code>。</p>
+    <pre><code class="language-bash">uv pip compile requirements.in -o requirements.txt</code></pre>
+
+    <h4>2. 全局工具安装</h4>
+    <p>代替 pipx：</p>
+    <pre><code class="language-bash"># 安装工具
+uv tool install ruff
+uv tool install black --python python3.11  # 指定python版本
+
+# 管理工具
+uv tool list         # 列出所有已安装的工具
+uv tool uninstall ruff # 卸载工具
+uv tool run black .  # 在不激活环境的情况下运行工具</code></pre>
+
+    <h3 id="pyproject-toml">2.5 必知必会：pyproject.toml</h3>
+
+    <h4>一、pyproject.toml 是什么？</h4>
+    <p><code>pyproject.toml</code> 是一个由 <a href="https://peps.python.org/pep-0518/" target="_blank">PEP 518</a> 引入并由后续多个 PEP 扩展的、<strong>统一的 Python 项目配置文件</strong>。</p>
+    <p>它的核心目标是解决过去配置混乱的问题。在它出现之前，一个项目可能同时包含 <code>setup.py</code>, <code>setup.cfg</code>, <code>requirements.txt</code>, <code>MANIFEST.in</code>, 以及各种工具的配置文件（如 <code>.flake8</code>, <code>.coveragerc</code>, <code>mypy.ini</code> 等）。</p>
+    <p><code>pyproject.toml</code> 使用 <a href="https://toml.io/cn/" target="_blank">TOML</a> 格式，旨在成为这些配置的<strong>唯一入口和最终归宿</strong>，让项目结构更清晰、更标准化。</p>
+
+    <h4>二、它解决了什么核心问题？</h4>
+    <p>它主要解决了 <code>setup.py</code> 时代的两个痛点：</p>
+    <ol>
+        <li><strong>静态元数据的缺失</strong>：<code>setup.py</code> 是一个可执行的 Python 脚本。这意味着，如果不运行它，你无法确定构建项目需要哪些依赖（即 "build-time dependencies"）。这就产生了一个"先有鸡还是先有蛋"的悖论。</li>
+        <li><strong>配置分散</strong>：项目配置散落在十几个不同的文件中，难以管理。</li>
+    </ol>
+    <p><code>pyproject.toml</code> 通过一个<strong>静态的、声明性的文件</strong>解决了这两个问题。</p>
+
+    <h4>三、pyproject.toml 的结构</h4>
+    <p>文件由多个"表"（table）组成，每个表用 <code>[table_name]</code> 表示。主要分为三大类：</p>
+    <ol>
+        <li><code>[build-system]</code>：定义项目的构建系统。</li>
+        <li><code>[project]</code>：定义项目的核心元数据（包名、版本、依赖等）。</li>
+        <li><code>[tool.*]</code>：用于配置各种第三方工具（如 <code>uv</code>, <code>ruff</code>, <code>mypy</code>, <code>pytest</code> 等）。</li>
+    </ol>
+
+    <h4>1. [build-system] 表</h4>
+    <p>它告诉打包工具（如 <code>pip</code>）如何构建你的项目。</p>
+    <pre><code class="language-toml">[build-system]
+# --- 声明构建项目本身所需要的依赖 ---
+requires = ["setuptools>=61.0"]
+# --- 指定用于构建的 Python 后端对象 ---
+build-backend = "setuptools.build_meta"</code></pre>
+    <ul>
+        <li><code>requires</code>: 声明了构建你的包需要哪些依赖。常见的有 <code>setuptools</code>, <code>hatchling</code>, <code>flit_core</code>, <code>poetry-core</code>。</li>
+        <li><code>build-backend</code>: 指向一个 Python 对象，这个对象知道如何构建你的包。</li>
+    </ul>
+
+    <h4>2. [project] 表</h4>
+    <p>这是项目的"身份证"，由 <a href="https://peps.python.org/pep-0621/" target="_blank">PEP 621</a> 标准化。</p>
+    <pre><code class="language-toml">[project]
+name = "my-package"
+version = "0.1.0"
+description = "A short description of my project."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+
+authors = [
+  { name = "Your Name", email = "your.email@example.com" },
+]
+
+keywords = ["packaging", "python", "example"]
+
+# --- 核心依赖 ---
+dependencies = [
+  "httpx",
+  "rich>=13.0.0",
+  'tomli; python_version < "3.11"',
+]
+
+# --- 可选依赖 ---
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+dev = [
+  "my-package[test]",
+  "ruff",
+  "mypy",
+]
+
+# --- 命令行脚本入口 ---
+[project.scripts]
+my-cli = "my_package.cli:main"
+
+# --- 项目相关链接 ---
+[project.urls]
+Homepage = "https://github.com/user/my-package"
+Repository = "https://github.com/user/my-package"</code></pre>
+
+    <h4>3. [tool.*] 表</h4>
+    <p>这是 <code>pyproject.toml</code> 最强大的功能之一：<strong>统一配置所有开发工具</strong>。每个工具都可以定义自己的配置表，以 <code>[tool.工具名]</code> 的形式存在。</p>
+    <pre><code class="language-toml"># --- uv 的配置 ---
+[tool.uv.pip]
+extra-index-url = "https://my-private-registry.com/simple"
+
+# --- ruff (linter/formatter) 的配置 ---
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["my_package"]
+
+# --- mypy (type checker) 的配置 ---
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+ignore_missing_imports = true</code></pre>
+
+    <h4>四、完整示例</h4>
+    <pre><code class="language-toml"># pyproject.toml
+
+# 1. 构建系统配置
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# 2. 项目核心元数据
+[project]
+name = "data-analyzer"
+version = "1.0.0"
+description = "A tool for analyzing data sets."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Data Team", email = "data@example.com" }]
+
+dependencies = [
+  "pandas>=2.0.0",
+  "numpy",
+  "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+  "uv >= 0.1.0",
+]
+
+[project.scripts]
+analyze = "data_analyzer.main:run"
+
+[project.urls]
+Repository = "https://github.com/example/data-analyzer"
+
+# 3. 第三方工具配置
+[tool.ruff]
+line-length = 99
+select = ["E", "F", "W", "I", "N", "D"]
+ignore = ["D100", "D104"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]</code></pre>
+
+    <h4>总结</h4>
+    <ul>
+        <li><code><strong>pyproject.toml</strong></code><strong> 是现代 Python 项目的配置标准。</strong></li>
+        <li>它使用 <strong>TOML</strong> 格式，结构清晰，<strong>声明式</strong>而非可执行。</li>
+        <li><code>[build-system]</code> 定义了<strong>如何构建</strong>项目。</li>
+        <li><code>[project]</code> 定义了项目<strong>是什么</strong>，是包的元数据中心。</li>
+        <li><code>[tool.*]</code> 允许你将<strong>所有工具链的配置</strong>集中于一处。</li>
+    </ul>
+    <p>对于任何新启动的 Python 项目，都应优先使用 <code>pyproject.toml</code> 作为唯一的配置文件。</p>
+
+    <h3 id="uv-vs-conda">2.6 和 Conda 的区别</h3>
+    <figure class="image">
+        <img src="/assets/images/posts/modernizing-python/image-5.png" alt="uv vs conda">
+    </figure>
+    <table>
+        <thead>
+            <tr>
+                <th>特性</th>
+                <th>uv</th>
+                <th>Conda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>速度</strong></td>
+                <td>⚡ 极快</td>
+                <td>慢</td>
+            </tr>
+            <tr>
+                <td><strong>生态</strong></td>
+                <td>PyPI（Python 优先）</td>
+                <td>conda-forge（跨语言）</td>
+            </tr>
+            <tr>
+                <td><strong>非 Python 依赖</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td><strong>CUDA/MKL 优化</strong></td>
+                <td>依赖系统</td>
+                <td>内置支持</td>
+            </tr>
+            <tr>
+                <td><strong>适合你吗？</strong></td>
+                <td>✅ 大多数 AI/仿真项目</td>
+                <td>仅当需要 conda 特供包</td>
+            </tr>
+        </tbody>
+    </table>
+    <blockquote>
+        🚀 趋势：随着 uv、pixi（conda 的 Rust 替代品）等工具出现，纯 Python 项目正快速转向 uv，而 conda 仍主导科学计算重依赖场景。
+    </blockquote>
+
+    <h3 id="uv-best-practices">2.7 最佳实践</h3>
+    <ul>
+        <li><strong>声明 (Declare)</strong>：在一个源文件中（推荐 <code>pyproject.toml</code>）声明你的项目直接依赖。这是你的"依赖源头"。</li>
+        <li><strong>锁定 (Lock)</strong>：使用 <code>uv pip compile</code> 将你的声明性依赖解析为一个包含所有包（包括子依赖）精确版本的"锁定文件"。</li>
+        <li><strong>同步 (Sync)</strong>：使用 <code>uv pip sync</code> 根据锁定文件来安装依赖。这个命令会确保你的虚拟环境与锁定文件<strong>完全一致</strong>。</li>
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>场景</th>
+                <th>✅ 推荐做法</th>
+                <th>❌ 避免做法</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>依赖声明</strong></td>
+                <td>在 <code>pyproject.toml</code> 中管理所有依赖</td>
+                <td>使用多个 <code>requirements.in</code> 或直接手写</td>
+            </tr>
+            <tr>
+                <td><strong>安装依赖</strong></td>
+                <td>使用 <code>uv pip sync -r &lt;lockfile&gt;</code></td>
+                <td>使用 <code>pip install -r</code> 直接安装</td>
+            </tr>
+            <tr>
+                <td><strong>更新依赖</strong></td>
+                <td>修改 <code>pyproject.toml</code> → <code>uv pip compile</code> → <code>uv pip sync</code></td>
+                <td>手动修改 <code>requirements.txt</code></td>
+            </tr>
+            <tr>
+                <td><strong>全局工具</strong></td>
+                <td>使用 <code>uv tool install</code></td>
+                <td>使用 <code>sudo pip install</code> 或 <code>pip install --user</code></td>
+            </tr>
+            <tr>
+                <td><strong>团队协作</strong></td>
+                <td>将锁定文件 (<code>*.txt</code>) 提交到 Git</td>
+                <td>将 <code>.venv</code> 目录提交到 Git</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ==================== Ruff 部分 ==================== -->
+    <h2 id="ruff-setup">3. 语法：Ruff</h2>
+
+    <h3 id="ruff-why">3.1 为什么会出现 Ruff</h3>
+    <p>在 Ruff 出现之前，一个标准的项目可能需要配置以下工具：</p>
+    <ul>
+        <li><code>Flake8</code>：用于代码风格和逻辑错误检查。</li>
+        <li><code>pycodestyle</code>, <code>pyflakes</code>：Flake8 的核心插件。</li>
+        <li><code>isort</code>：用于 <code>import</code> 语句排序。</li>
+        <li><code>pylint</code>：更严格的、可配置的 Linter。</li>
+        <li><code>pyupgrade</code>：用于自动升级 Python 语法。</li>
+        <li><code>autoflake</code>：用于移除未使用的导入。</li>
+        <li><code>black</code>：用于代码格式化。</li>
+    </ul>
+    <p><strong>Ruff 的目标是替代以上所有工具</strong>。你只需要安装和配置 <code>ruff</code> 这一个依赖，就能获得上述大部分功能。这极大地简化了项目的依赖管理和配置文件。</p>
+
+    <h3 id="ruff-intro">3.2 Ruff 简介</h3>
+    <p><strong>Ruff 是一个用 Rust 编写的、速度极快的 Python Linter 和 Formatter。</strong></p>
+    <p>它的核心使命是用一个工具<strong>替代</strong>过去 Python 开发中需要安装和配置的<strong>一大堆</strong>零散的工具。它将代码检查（Linting）、代码格式化（Formatting）、导入排序、语法升级等功能全部整合到了一个快如闪电的二进制文件中。</p>
+
+    <h4>核心优势</h4>
+    <p><strong>1. 极致的速度 (Extreme Speed)</strong></p>
+    <p>这是 Ruff 最引人注目的特点。因为它使用 Rust 编译，而不是作为 Python 脚本运行，所以它避免了 Python 解释器的启动开销，并且能更好地利用多核 CPU 进行并行处理。</p>
+    <ul>
+        <li><strong>量化对比</strong>：Ruff 的运行速度通常比它所替代的工具（如 Flake8 + 插件、isort、pylint）<strong>快 10 到 100 倍</strong>。</li>
+        <li><strong>实际影响</strong>：
+            <ul>
+                <li>在 CI/CD 流程中，代码检查步骤从几分钟缩短到几秒钟。</li>
+                <li>在本地开发时，反馈都是<strong>瞬时</strong>的，毫无延迟感。</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><strong>2. 内置自动修复 (<code>--fix</code>)</strong></p>
+    <p>Ruff 不仅仅能发现问题，它还能自动修复大量问题。它的自动修复功能非常强大且安全，涵盖：</p>
+    <ul>
+        <li>自动排序 <code>import</code> 语句。</li>
+        <li>移除未使用的导入和变量。</li>
+        <li>将代码自动升级到更现代的 Python 语法。</li>
+        <li>修复许多代码风格问题。</li>
+    </ul>
+
+    <h4>主要功能</h4>
+    <p><strong>1. Linter (<code>ruff check</code>)</strong></p>
+    <p>这是 Ruff 的核心功能。它包含了数百条来自各种流行工具的规则，你可以通过规则代码来选择启用或禁用。</p>
+    <ul>
+        <li><code>F</code> 开头：来自 <code>Pyflakes</code> (逻辑错误)</li>
+        <li><code>E</code>, <code>W</code> 开头：来自 <code>pycodestyle</code> (代码风格)</li>
+        <li><code>I</code> 开头：来自 <code>isort</code> (导入排序)</li>
+        <li><code>D</code> 开头：来自 <code>pydocstyle</code> (文档字符串)</li>
+        <li><code>UP</code> 开头：来自 <code>pyupgrade</code> (语法升级)</li>
+    </ul>
+
+    <p><strong>2. Formatter (<code>ruff format</code>)</strong></p>
+    <p>这是 Ruff 相对较新的功能，旨在成为 <code>black</code> 的高性能替代品。</p>
+    <ul>
+        <li><strong>兼容性目标</strong>：它致力于在默认配置下生成与 <code>black</code> 几乎完全相同的输出。</li>
+        <li><strong>性能优势</strong>：同样，<code>ruff format</code> 的速度远超 <code>black</code>。</li>
+    </ul>
+
+    <h3 id="ruff-commands">3.3 常用操作</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>任务</th>
+                <th>命令</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>格式化我的代码</strong></td>
+                <td><code>ruff format .</code></td>
+            </tr>
+            <tr>
+                <td><strong>检查代码问题并自动修复</strong></td>
+                <td><code>ruff check . --fix</code></td>
+            </tr>
+            <tr>
+                <td><strong>在 CI/CD 中验证格式</strong></td>
+                <td><code>ruff format . --check</code></td>
+            </tr>
+            <tr>
+                <td><strong>在 CI/CD 中检查代码质量</strong></td>
+                <td><code>ruff check .</code></td>
+            </tr>
+            <tr>
+                <td><strong>开发时实时检查</strong></td>
+                <td><code>ruff check . --watch</code></td>
+            </tr>
+            <tr>
+                <td><strong>搞不清某条规则是什么意思</strong></td>
+                <td><code>ruff rule &lt;RULE_CODE&gt;</code></td>
+            </tr>
+            <tr>
+                <td><strong>清理缓存</strong></td>
+                <td><code>ruff cache clean</code></td>
+            </tr>
+            <tr>
+                <td><strong>终极清理</strong></td>
+                <td><code>ruff format . && ruff check . --fix</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="ruff-advanced">3.4 进阶内容</h3>
+
+    <h4>1. 启用预览功能（Preview Features）</h4>
+    <p>Ruff 的许多强大功能目前处于 <strong>preview 模式</strong>，需显式启用：</p>
+    <pre><code class="language-toml">[tool.ruff]
+preview = true</code></pre>
+    <p>或命令行启用：</p>
+    <pre><code class="language-bash">ruff check --preview .
+ruff format --preview .</code></pre>
+    <blockquote>💡 建议：在新项目中开启 preview = true，以获得最新规则和修复能力。</blockquote>
+
+    <h4>2. 类型感知 Lint（Type-Aware Linting）</h4>
+    <p>Ruff 在 preview 模式下支持<strong>轻量级类型推断</strong>，用于增强规则判断。</p>
+    <ul>
+        <li><code>RUF014</code>: 冗余的 <code>isinstance(x, str)</code>（当 <code>x: str</code> 已知）</li>
+        <li><code>RUF015</code>: 无效的 <code>assert isinstance(...)</code>（类型已确定）</li>
+    </ul>
+    <blockquote>⚠️ 注意：Ruff 不替代 Pyright/mypy，仅用类型信息增强 lint 规则。建议搭配 Pyright 做完整类型检查。</blockquote>
+
+    <h4>3. 细粒度规则控制（Per-File / Per-Line）</h4>
+    <p><strong>(a) 忽略特定文件/目录</strong></p>
+    <pre><code class="language-toml">[tool.ruff.lint]
+extend-exclude = [
+  "migrations/",
+  "legacy_code.py",
+  "scripts/temp_*.py"
+]</code></pre>
+
+    <p><strong>(b) 为特定文件启用/禁用规则</strong></p>
+    <pre><code class="language-toml">[[tool.ruff.lint.per-file-ignores]]
+"tests/**.py" = ["S101", "D"]  # 忽略 asserts 和 docstring 规则
+"scripts/*.py" = ["T20"]       # 忽略 print 警告</code></pre>
+
+    <p><strong>(c) 行内忽略</strong></p>
+    <pre><code class="language-python">x = 1  # noqa: E741  # 允许模糊变量名 'l', 'O', 'I'
+print("debug")  # noqa: T201, T203</code></pre>
+
+    <h4>4. 自定义规则优先级与安全修复</h4>
+    <pre><code class="language-toml">[tool.ruff]
+fix = true
+unsafe-fixes = false  # 默认不应用可能改变语义的修复</code></pre>
+    <ul>
+        <li>安全修复：重命名、格式调整、删除无用导入等</li>
+        <li>不安全修复：修改逻辑（如 <code>==</code> → <code>is</code>）、重写表达式等</li>
+    </ul>
+    <blockquote>🛡️ 在 CI 中建议保持 unsafe-fixes = false，避免意外行为变更。</blockquote>
+
+    <h4>5. 与编辑器深度集成（VS Code）</h4>
+    <p>推荐 VS Code 设置（<code>settings.json</code>）：</p>
+    <pre><code class="language-json">{
+  "python.linting.enabled": false,
+  "ruff.enable": true,
+  "ruff.args": ["--preview"],
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
+}</code></pre>
+    <blockquote>✅ 启用后，Ruff 同时提供 linting + formatting，无需 Black 或 Flake8。</blockquote>
+
+    <h4>6. CI/CD 集成最佳实践</h4>
+    <p>GitHub Actions 示例：</p>
+    <pre><code class="language-yaml">- name: Run Ruff
+  run: |
+    pip install ruff
+    ruff check . --output-format=github
+    ruff format . --check  # 检查是否已格式化</code></pre>
+    <ul>
+        <li><code>--output-format=github</code>：在 PR 中直接显示注释</li>
+        <li><code>ruff format --check</code>：确保代码已格式化（不修改文件）</li>
+    </ul>
+
+    <h4>7. 迁移现有项目（从 Black + Flake8 + isort）</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>原工具</th>
+                <th>Ruff 对应能力</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Black</td>
+                <td><code>ruff format</code></td>
+            </tr>
+            <tr>
+                <td>Flake8</td>
+                <td><code>ruff check</code>（E/W/F）</td>
+            </tr>
+            <tr>
+                <td>isort</td>
+                <td><code>ruff check</code>（I）</td>
+            </tr>
+            <tr>
+                <td>pyupgrade</td>
+                <td><code>ruff check</code>（UP）</td>
+            </tr>
+            <tr>
+                <td>autoflake</td>
+                <td><code>ruff check --fix</code></td>
+            </tr>
+        </tbody>
+    </table>
+    <p><strong>迁移步骤：</strong></p>
+    <ol>
+        <li>安装 Ruff：<code>pip install ruff</code></li>
+        <li>生成初始配置：<code>ruff migrate</code>（实验性命令，或手动配置）</li>
+        <li>一键格式化+修复：<code>ruff check --fix . && ruff format .</code></li>
+        <li>移除旧工具依赖</li>
+    </ol>
+
+    <h3 id="ruff-config">3.5 pyproject.toml 配置</h3>
     <pre><code class="language-toml">[build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -73,40 +606,425 @@ requires-python = ">=3.10"
 preview = true
 target-version = "py310"
 fix = true
+unsafe-fixes = false
 line-length = 88
 
+extend-exclude = [
+  ".git",
+  "__pycache__",
+  "venv",
+  ".venv",
+  "build",
+  "dist",
+  "notebooks",
+]
+
+# ==============================
+# 🔍 Lint 规则配置
+# ==============================
 [tool.ruff.lint]
 select = [
-  "E", "W", "F", "I", "UP", "C4", "TID", "ARG", "PTH"
+  "E", "W", "F",
+  "I",
+  "UP",
+  "C4",
+  "TID",
+  "ARG",
+  "PTH",
 ]
-ignore = ["E501", "D"]
 
+ignore = [
+  "E501",
+  "D",
+]
+
+[[tool.ruff.lint.per-file-ignores]]
+"tests/**.py" = ["S101", "ARG", "PLR0913"]
+"scripts/*.py" = ["T20"]
+
+# ==============================
+# 🧹 isort 配置（Ruff 内置）
+# ==============================
+[tool.ruff.lint.isort]
+known-first-party = ["my_project"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+# ==============================
+# ✨ Formatter 配置（替代 Black）
+# ==============================
 [tool.ruff.format]
-quote-style = 'single'
-indent-width = 4</code></pre>
+preview = true
+quote-style = "single"
+skip-magic-trailing-comma = false
+line-length = 88
+indent-width = 4
 
-    <h2 id="rich-setup">4. 体验：Rich</h2>
-    <h3 id="rich-intro">4.1 终端美化与增强</h3>
-    <p><code>Rich</code> 能够极大地改善命令行应用的开发体验。它可以让你的终端输出具有高亮颜色、表格、进度条甚至 Markdown 渲染。</p>
+# ==============================
+# 🔤 Pyright 配置（类型检查）
+# ==============================
+[tool.pyright]
+typeCheckingMode = "basic"
+pythonVersion = "3.10"
+include = ["src", "tests"]
+exclude = [
+  "**/node_modules",
+  "**/__pycache__",
+  ".venv",
+  "venv",
+  "build",
+  "dist",
+  "notebooks",
+]
+reportMissingTypeStubs = "none"
+reportUnusedImport = "warning"
+reportUnusedVariable = "warning"</code></pre>
 
-    <p><strong>安装与使用</strong>：</p>
-    <pre><code class="language-bash">pip install rich</code></pre>
+    <h3 id="ruff-best-practices">3.6 最佳实践</h3>
+    <ol>
+        <li><strong>统一使用 <code>pyproject.toml</code> 进行配置</strong><br>
+            放弃所有独立的配置文件（如 <code>.isort.cfg</code>, <code>.flake8</code>），将 Ruff 的所有配置集中在 <code>pyproject.toml</code> 的 <code>[tool.ruff]</code> 表中。</li>
+        <li><strong>明确目标 Python 版本 (<code>target-version</code>)</strong><br>
+            这是最重要却也最容易被忽略的配置项。设定它能确保 Ruff 应用的规则与你的项目环境相匹配。
+            <pre><code class="language-toml">[tool.ruff]
+target-version = "py311"</code></pre>
+        </li>
+        <li><strong>从一个稳健的基础规则集开始</strong><br>
+            不要一开始就想着启用所有规则。一个理智的起点是启用那些被广泛接受、能显著提升代码质量的核心规则集。
+            <pre><code class="language-toml">[tool.ruff]
+# E: pycodestyle 错误, F: Pyflakes 逻辑错误, I: isort 导入排序, UP: pyupgrade 语法升级
+select = ["E", "F", "I", "UP"]</code></pre>
+        </li>
+        <li><strong>拥抱自动修复 (<code>--fix</code>)</strong><br>
+            将 <code>ruff check . --fix</code> 作为你的常规操作。Ruff 的自动修复非常安全可靠。</li>
+    </ol>
 
-    <p>示例代码（增强错误报告）：</p>
+    <!-- ==================== Pyright 部分 ==================== -->
+    <h2 id="pyright-setup">4. 类型：Pyright</h2>
+
+    <h3 id="pyright-intro">4.1 Pyright 简介</h3>
+    <ul>
+        <li><strong>Pyright</strong> 是由微软开发的 <strong>静态类型检查器</strong>，专门针对 Python 的类型注解（PEP 484, PEP 561 等）。</li>
+        <li><strong>用 TypeScript 编写</strong>，运行速度非常快（比 <code>mypy</code> 快很多）。</li>
+        <li>集成在 <strong>VS Code 的 Pylance 插件</strong>里，所以如果你用 VS Code，大概率已经在用 Pyright 了。</li>
+    </ul>
+
+    <h3 id="pyright-features">4.2 Pyright 特点</h3>
+    <ul>
+        <li><strong>超快</strong> —— 增量分析大项目时比 mypy 快数倍</li>
+        <li><strong>类型推断更强</strong> —— 能根据代码上下文自动推导类型</li>
+        <li><strong>支持 strict mode</strong> —— 强制要求类型标注，避免漏网之鱼</li>
+        <li><strong>跨平台集成</strong> —— 可单独作为 CLI 工具运行 (<code>pyright</code>)，也能集成到 CI/CD</li>
+    </ul>
+
+    <h3 id="pyright-install">4.3 安装</h3>
+    <h4>1. 全局安装（npm 提供）</h4>
+    <pre><code class="language-bash">npm install -g pyright</code></pre>
+
+    <h4>2. 项目内配置</h4>
+    <p>在项目根目录添加 <code>pyrightconfig.json</code>：</p>
+    <pre><code class="language-json">{
+  "include": ["src"],
+  "exclude": ["tests", "build"],
+  "reportMissingImports": true,
+  "reportUnusedVariable": "warning",
+  "typeCheckingMode": "strict"
+}</code></pre>
+
+    <h3 id="pyright-vs-mypy">4.4 Pyright vs Mypy</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>特性</th>
+                <th>Pyright</th>
+                <th>Mypy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>性能</td>
+                <td>🚀 极快</td>
+                <td>🐢 慢</td>
+            </tr>
+            <tr>
+                <td>IDE 集成</td>
+                <td>VS Code/Pylance 完美集成</td>
+                <td>PyCharm 较好</td>
+            </tr>
+            <tr>
+                <td>类型推断</td>
+                <td>更智能</td>
+                <td>依赖显式注解多</td>
+            </tr>
+            <tr>
+                <td>社区生态</td>
+                <td>新但发展快</td>
+                <td>历史悠久、兼容性好</td>
+            </tr>
+            <tr>
+                <td>配置</td>
+                <td>简单</td>
+                <td>灵活但复杂</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ==================== pre-commit 部分 ==================== -->
+    <h2 id="precommit-setup">5. 守门：pre-commit</h2>
+
+    <h3 id="precommit-intro">5.1 介绍</h3>
+    <p>首先要明白，"pre-commit"这个词有两个含义：</p>
+    <ol>
+        <li><strong>Git 自身的钩子 (Hook)</strong>: Git 本身提供了一种"钩子"机制，允许你在特定的 Git 事件发生时自动执行自定义脚本。<code>pre-commit</code> 就是其中一个钩子，它在你输入 <code>git commit</code> 命令之后，但在正式生成 commit 对象<strong>之前</strong>触发。如果这个钩子脚本以非零状态码退出，那么整个 <code>commit</code> 过程就会被中止。</li>
+        <li><code><strong>pre-commit</strong></code><strong> 框架</strong>: 一个名为 <code>pre-commit</code> 的 <strong>Python 工具（框架）</strong>。<strong>通常我们所说的 <code>pre-commit</code>，指的就是这个框架</strong>。它极大地简化了管理和使用 Git 钩子的过程。</li>
+    </ol>
+    <p><strong>简单来说：<code>pre-commit</code> 框架利用了 Git 的 <code>pre-commit</code> 钩子功能，并将其变得极其强大和易于管理。</strong></p>
+
+    <h3 id="precommit-benefits">5.2 好处</h3>
+    <ol>
+        <li><strong>自动化代码质量保障</strong>: 将代码检查（Linting）、格式化（Formatting）等任务从"需要开发者记住去做"变成了"自动强制执行"。再也不会有人忘记运行 <code>ruff</code> 就提交代码了。</li>
+        <li><strong>保持团队一致性</strong>: 配置文件（<code>.pre-commit-config.yaml</code>）被提交到版本库中。这保证了团队中的每一个人都使用<strong>完全相同版本</strong>的工具进行检查。</li>
+        <li><strong>提前发现问题 (Shift Left)</strong>: 它在问题进入代码库<strong>之前</strong>就将其拦截。这远比在 Code Review 阶段或 CI/CD 流程中才发现问题要高效得多。</li>
+        <li><strong>简化新成员的配置</strong>: 新加入的成员不需要手动安装一系列工具。他们只需要安装 <code>pre-commit</code> 这一个工具，然后运行 <code>pre-commit install</code>。</li>
+    </ol>
+
+    <h3 id="precommit-commands">5.3 常用操作</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>操作目的</th>
+                <th>常用命令</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>首次安装钩子</strong></td>
+                <td><code>pre-commit install</code></td>
+                <td>每个开发者/每个项目只需一次</td>
+            </tr>
+            <tr>
+                <td><strong>日常提交</strong></td>
+                <td><code>git commit</code></td>
+                <td>自动触发，无需额外命令</td>
+            </tr>
+            <tr>
+                <td><strong>检查所有文件</strong></td>
+                <td><code>pre-commit run --all-files</code></td>
+                <td>初始化项目或在 CI 中使用</td>
+            </tr>
+            <tr>
+                <td><strong>检查暂存文件</strong></td>
+                <td><code>pre-commit run</code></td>
+                <td>手动触发对暂存区的检查</td>
+            </tr>
+            <tr>
+                <td><strong>更新工具版本</strong></td>
+                <td><code>pre-commit autoupdate</code></td>
+                <td>保持钩子配置为最新</td>
+            </tr>
+            <tr>
+                <td><strong>修复损坏的环境</strong></td>
+                <td><code>pre-commit clean</code></td>
+                <td>清理缓存，解决疑难杂症</td>
+            </tr>
+            <tr>
+                <td><strong>紧急时跳过检查</strong></td>
+                <td><code>git commit --no-verify</code></td>
+                <td><strong>谨慎使用！</strong> 临时绕过钩子</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 id="precommit-config">5.4 .pre-commit-config.yaml 配置</h3>
+
+    <h4>一、文件的核心作用</h4>
+    <p><code>.pre-commit-config.yaml</code> 是一个使用 YAML 格式的<strong>声明式配置文件</strong>。它的核心作用是告诉 <code>pre-commit</code> 框架：</p>
+    <ol>
+        <li><strong>从哪里 (Where)</strong>: 从哪个代码仓库获取要运行的工具。</li>
+        <li><strong>是什么 (What)</strong>: 要运行的具体是哪个钩子（hook）。</li>
+        <li><strong>怎么做 (How)</strong>: 以何种方式、带何种参数来运行这个钩子。</li>
+    </ol>
+
+    <h4>二、文件的顶级结构</h4>
+    <pre><code class="language-yaml"># 最核心的内容：一个包含多个仓库配置的列表
+repos:
+  # ... 第一个仓库的配置 ...
+  # ... 第二个仓库的配置 ...</code></pre>
+
+    <h4>三、repos：核心配置块</h4>
+    <p><code>repos</code> 是一个列表，每个仓库配置包含以下关键字段：</p>
+    <ul>
+        <li><code>repo</code>: (必需) 包含钩子的代码仓库地址。</li>
+        <li><code>rev</code>: (必需) 指定要使用的仓库的 Git 修订版本。<strong>必须使用一个固定的版本号</strong>。</li>
+        <li><code>hooks</code>: (必需) 一个列表，定义了你希望从这个 <code>repo</code> 中启用哪些钩子。</li>
+    </ul>
+
+    <h4>四、完整示例</h4>
+    <pre><code class="language-yaml"># .pre-commit-config.yaml
+
+minimum_pre_commit_version: '2.9.0'
+
+repos:
+-   # 仓库 1: pre-commit 官方提供的通用钩子
+    repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+    -   id: trailing-whitespace      # 移除行尾多余空格
+    -   id: end-of-file-fixer        # 保证文件末尾有空行
+    -   id: check-yaml               # 检查 YAML 文件语法
+    -   id: check-json               # 检查 JSON 文件语法
+    -   id: check-toml               # 检查 TOML 文件语法
+    -   id: check-added-large-files  # 防止提交大于 5MB 的大文件
+        args: ['--maxkb=5120']
+
+-   # 仓库 2: Ruff - 高性能的 Linter 和 Formatter
+    repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+    -   id: ruff
+        args: [--fix]
+    -   id: ruff-format
+
+-   # 仓库 3: 防止密钥泄露的 trufflehog
+    repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.77.1
+    hooks:
+    -   id: trufflehog
+        name: TruffleHog - Scan for secrets
+
+-   # 仓库 4: 本地钩子，用于运行项目自身的 Mypy
+    repo: local
+    hooks:
+    -   id: mypy
+        name: mypy
+        entry: mypy .
+        language: system
+        types: [python]
+        args: ["--ignore-missing-imports"]
+        require_serial: true</code></pre>
+
+    <h4>解析：</h4>
+    <ul>
+        <li><strong>第一个 <code>repo</code></strong>: 引入了一系列与语言无关的、通用的文件检查工具。</li>
+        <li><strong>第二个 <code>repo</code></strong>: 引入了 <code>ruff</code>，配置了自动修复 (<code>--fix</code>)。</li>
+        <li><strong>第三个 <code>repo</code></strong>: 使用 TruffleHog 防止密钥泄露。</li>
+        <li><strong>第四个 <code>repo</code> (<code>local</code>)</strong>: <code>repo: local</code> 表示这个钩子运行的命令来自<strong>本地环境</strong>。<code>language: system</code> 告诉 <code>pre-commit</code> 直接使用当前激活的虚拟环境中的 <code>mypy</code>。</li>
+    </ul>
+
+    <!-- ==================== Rich 部分 ==================== -->
+    <h2 id="rich-setup">6. 美化：Rich</h2>
+
+    <h3 id="rich-intro">6.1 Rich 简介</h3>
+    <p><code>rich</code> 是一个用于在终端中创建富文本和精美格式化输出的 Python 库。它可以让你的命令行界面（CLI）应用程序变得更加美观和易于阅读。</p>
+
+    <h4>核心优势</h4>
+    <ul>
+        <li><strong>易用性</strong>：<code>rich</code> 的 API 设计非常直观和 "Pythonic"，很容易上手。</li>
+        <li><strong>功能强大</strong>：支持颜色、样式、表格、进度条、Markdown、语法高亮、漂亮的 Traceback 等多种功能。</li>
+        <li><strong>跨平台</strong>：在 Windows, macOS 和 Linux 上表现良好。</li>
+        <li><strong>自动化</strong>：能自动检测终端宽度并换行，智能处理文本溢出。</li>
+    </ul>
+
+    <h3 id="rich-install">6.2 安装</h3>
+    <pre><code class="language-bash">uv pip install rich</code></pre>
+
+    <h3 id="rich-features">6.3 核心功能详解</h3>
+
+    <h4>1. Console 对象与 print 函数</h4>
+    <p><code>rich</code> 的核心是 <code>Console</code> 对象。你可以使用类似 BBCode 的标记语法来轻松添加样式。</p>
+    <blockquote>
+        <strong>代码解释:</strong>
+        <ul>
+            <li><code>Console()</code> 创建一个控制台对象。</li>
+            <li><code>console.print()</code> 是 <code>rich</code> 版的 <code>print</code>。</li>
+            <li><code>[style]...[/style]</code> 是 <code>rich</code> 的标记语法，用于包裹你想要添加样式的文本。</li>
+        </ul>
+    </blockquote>
+
+    <h4>2. 精美的表格 (Table)</h4>
+    <p>在终端中手动创建对齐的表格是一件很痛苦的事，但 <code>rich</code> 的 <code>Table</code> 类让这一切变得异常简单。</p>
+    <blockquote>
+        <strong>代码解释:</strong>
+        <ul>
+            <li><code>Table(title="...")</code> 创建一个带标题的表格。</li>
+            <li><code>table.add_column(...)</code> 定义每一列的标题和样式。</li>
+            <li><code>table.add_row(...)</code> 添加一行数据。<code>rich</code> 会自动处理对齐和宽度。</li>
+        </ul>
+    </blockquote>
+
+    <h4>3. 进度条 (Progress)</h4>
+    <p>对于长时间运行的任务，提供一个进度条可以极大地提升用户体验。</p>
+    <blockquote>
+        <strong>代码解释:</strong>
+        <ul>
+            <li><code>with Progress() as progress:</code> 创建一个进度条上下文管理器。</li>
+            <li><code>progress.add_task(...)</code> 添加一个新的跟踪任务。</li>
+            <li><code>progress.update(task_id, advance=...)</code> 更新指定任务的进度。</li>
+        </ul>
+    </blockquote>
+
+    <h4>4. Markdown 渲染</h4>
+    <p>你甚至可以在终端里直接渲染 Markdown 文本。</p>
+
+    <h4>5. 语法高亮 (Syntax)</h4>
+    <p><code>rich</code> 可以对代码进行语法高亮显示，支持多种语言。</p>
+
+    <h4>6. 漂亮的 Traceback</h4>
+    <p>当程序出错时，<code>rich</code> 可以自动格式化这些错误信息，使其更加清晰易读。</p>
     <pre><code class="language-python">from rich.traceback import install
+
 install()
 
+# 下面这段代码会故意触发一个错误
 def faulty_function():
     result = 1 / 0
     return result
 
 faulty_function()</code></pre>
-    <p>运行上述代码后，你将看到一个清晰、带变量值和代码上下文的错误报告，极大地缩短了调试时间。</p>
+    <p>运行这段代码，你将看到一个经过语法高亮、代码上下文清晰、变量值明确的错误报告，定位问题会快得多。</p>
 
-    <h2 id="summary">5. 总结</h2>
-    <p>通过组合使用 <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> +
-        <strong>Rich</strong>，我们可以构建一个既快速又标准化的现代 Python 开发环境。这些工具不仅提高了代码质量，更重要的是在日常开发、安装依赖和调试问题时节省了大量时间。
-    </p>
+    <h3 id="rich-summary">6.4 总结</h3>
+    <p><code>rich</code> 是一个现代化、功能全面且易于使用的 Python 库，它极大地改善了命令行应用的开发体验和最终用户的视觉体验。无论你是想为你的脚本添加一些简单的彩色输出，还是构建一个复杂的、专业的 CLI 工具，<code>rich</code> 都是一个非常值得学习和使用的选择。</p>
+
+    <!-- ==================== 总结部分 ==================== -->
+    <h2 id="summary">7. 总结</h2>
+    <p>通过组合使用 <strong>VS Code/Cursor</strong> + <strong>uv</strong> + <strong>Ruff</strong> + <strong>Pyright</strong> + <strong>pre-commit</strong> + <strong>Rich</strong>，我们可以构建一个既快速又标准化的现代 Python 开发环境。这些工具不仅提高了代码质量，更重要的是在日常开发、安装依赖和调试问题时节省了大量时间。</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>能力</th>
+                <th>说明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>一体化工具链</strong></td>
+                <td>uv 替代 pip + pip-tools + pipx</td>
+            </tr>
+            <tr>
+                <td><strong>统一代码检查</strong></td>
+                <td>Ruff 替代 Black + Flake8 + isort + pyupgrade</td>
+            </tr>
+            <tr>
+                <td><strong>极速性能</strong></td>
+                <td>比传统工具快 10–100 倍</td>
+            </tr>
+            <tr>
+                <td><strong>类型检查</strong></td>
+                <td>Pyright 提供智能类型推断</td>
+            </tr>
+            <tr>
+                <td><strong>自动化守门</strong></td>
+                <td>pre-commit 在提交前自动检查</td>
+            </tr>
+            <tr>
+                <td><strong>终端美化</strong></td>
+                <td>Rich 让 CLI 输出更专业</td>
+            </tr>
+        </tbody>
+    </table>
 
     <p style="font-size: 0.9rem; color: #666; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
         搬运自：<a
@@ -118,7 +1036,9 @@ faulty_function()</code></pre>
         <a href="#" class="blog-tag">Python</a>
         <a href="#" class="blog-tag">uv</a>
         <a href="#" class="blog-tag">Ruff</a>
-        <a href="#" class="blog-tag">IDE</a>
+        <a href="#" class="blog-tag">Pyright</a>
+        <a href="#" class="blog-tag">pre-commit</a>
+        <a href="#" class="blog-tag">Rich</a>
         <a href="#" class="blog-tag">技术教程</a>
     </div>
 </div>
