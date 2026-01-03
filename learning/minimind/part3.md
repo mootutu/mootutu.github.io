@@ -109,8 +109,6 @@ Depending on the source of Q, K, V, Attention is divided into two types:
 
 **Cross-Attention**: One sequence attends to another. The typical application is machine translation where the Decoder attends to the Encoder's output. The Decoder uses its own tokens as Query to find relevant information from the Encoder's output (Key and Value).
 
----
-
 ## 3.2 Multi-Head Attention (MHA)
 
 ### Why Multiple Heads?
@@ -258,8 +256,6 @@ This "division of labor" is automatically learned by the model, requiring no man
 
 **Costs**: Parameters and computation increase with the number of heads. More importantly, during **inference**, a serious memory bottleneck emerges — the KV Cache problem.
 
----
-
 ## 3.3 Inference Bottleneck: KV Cache
 
 ### Characteristics of Autoregressive Generation
@@ -393,8 +389,6 @@ Where:
 - $D$ = head_dim
 - bytes_per_element = 2 (fp16) or 4 (fp32)
 
----
-
 ## 3.4 Multi-Query Attention (MQA)
 
 ### Core Idea
@@ -422,8 +416,6 @@ $$
 **Advantages**: KV Cache reduced to $1/h$ of original. For a 32-head model, memory usage drops to 1/32.
 
 **Disadvantages**: All heads are forced to use the same K and V for attention computation, **limiting expressive power** and potentially degrading model quality.
-
----
 
 ## 3.5 Grouped Query Attention (GQA)
 
@@ -460,8 +452,6 @@ GQA achieves a good balance between **inference efficiency** and **model quality
 - KV Cache reduced to $g/h$ (e.g., with $g=4, h=32$, reduced to 1/8)
 - Quality loss is minimal, close to original MHA
 
----
-
 ## 3.6 Comparison Summary
 
 | Method | Q Heads | K/V Heads | KV Cache Size | Model Quality | Representative Models |
@@ -473,8 +463,6 @@ GQA achieves a good balance between **inference efficiency** and **model quality
 **One-sentence summary**:
 
 > MHA prioritizes expressive power, MQA prioritizes maximum efficiency, and GQA finds a practical balance between the two — by sharing KV across groups, it trades a small quality cost for significant inference speedup.
-
----
 
 ## Supplementary: ResNet (Residual Network)
 
@@ -489,8 +477,6 @@ This leads to two core challenges:
 2. **Gradient propagation problem**: In very deep networks, gradients tend to vanish during backpropagation
 
 ResNet's key insight is: instead of learning the target function directly, let the network learn "the difference between the target function and the input" — this is what we call the **residual**.
-
----
 
 ### 3.1 Why Is Residual Learning Easier for Function Fitting?
 
@@ -519,8 +505,6 @@ Imagine you need to paint a picture:
 - **Residual way**: First print a reference image on the canvas, then only paint "the parts that need modification"
 
 If the reference image is already close to the target, the residual approach requires minimal changes; if the gap is large, it won't be worse either. This is the "lower bound guarantee" of residual learning.
-
----
 
 ### 3.2 The Significance of Residual Structure for Gradient Propagation
 
@@ -578,13 +562,9 @@ Imagine a game of telephone:
 - **Traditional network**: Each person can only pass the message to the next person; after 50 passes, the message is severely distorted
 - **Residual network**: Besides passing messages, everyone has a direct phone line to the source, ensuring critical information isn't lost
 
----
-
 ### 3.3 Summary
 
 > **ResNet learns "residuals" instead of "targets", which both reduces optimization difficulty (identity mapping only requires F=0) and provides a direct path for gradients (the +1 term), making it possible to train extremely deep networks.**
-
----
 
 ## 3.7 Code Implementation
 
