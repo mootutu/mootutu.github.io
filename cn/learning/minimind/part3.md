@@ -1,6 +1,6 @@
 ---
 layout: learning-post-layout
-title: "3 Attention"
+title: "3 注意力机制"
 date: 2025-12-26
 lang: zh-CN
 topic_url: /cn/learning/minimind.html

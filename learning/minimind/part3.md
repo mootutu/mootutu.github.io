@@ -1,6 +1,6 @@
 ---
 layout: learning-post-layout
-title: "3 Attention"
+title: "3 Attention Mechanism "
 date: 2025-12-26
 lang: en
 topic_url: /learning/minimind.html
