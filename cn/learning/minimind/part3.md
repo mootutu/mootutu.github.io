@@ -228,18 +228,18 @@ output = output @ W_O
 在实践中，通常有：
 
 $$
-d_k = d_v = \text{head\_dim} = \frac{d_{\text{model}}}{n_{\text{heads}}}
+d_k = d_v = \text{head_dim} = \frac{d_{\text{model}}}{n_{\text{heads}}}
 $$
 
 例如，对于 $d_{\text{model}} = 768$，$n_{\text{heads}} = 12$：
 
 $$
-\text{head\_dim} = \frac{768}{12} = 64
+\text{head_dim} = \frac{768}{12} = 64
 $$
 
 **为什么这样设计？**
 
-1. **保持计算量不变**：总参数量 $n_{\text{heads}} \times d_{\text{model}} \times \text{head\_dim} = d_{\text{model}}^2$，与单头相同
+1. **保持计算量不变**：总参数量 $n_{\text{heads}} \times d_{\text{model}} \times \text{head_dim} = d_{\text{model}}^2$，与单头相同
 2. **允许并行计算**：所有头可以同时计算
 3. **权衡表达能力和效率**：更多的头意味着更多的注意力模式，但每个头的维度更低
 
@@ -314,7 +314,7 @@ Step 3: 计算 K_3, V_3，缓存；复用 K_1, V_1, K_2, V_2
 KV Cache 的大小为：
 
 $$
-\text{KV Cache Size} = 2 \times \text{层数} \times \text{头数} \times \text{序列长度} \times \text{head\_dim}
+\text{KV Cache Size} = 2 \times \text{层数} \times \text{头数} \times \text{序列长度} \times \text{head_dim}
 $$
 
 对于一个典型的 LLM（如 LLaMA-7B，32 层，32 头，head_dim=128，序列长度 4096）：
@@ -444,7 +444,7 @@ KV Cache 结构:
 **显存占用公式**（详细版）：
 
 $$
-\text{Memory} = 2 \times L \times B \times H \times S \times D \times \text{bytes\_per\_element}
+\text{Memory} = 2 \times L \times B \times H \times S \times D \times \text{bytes_per_element}
 $$
 
 其中：
@@ -662,7 +662,7 @@ GQA 实现的核心在于 `repeat_kv` 函数。该函数负责扩展 K 和 V 张
 - $h$ 个 Query 头（例如 32 个）
 - $g$ 个 Key/Value 头（例如 4 个）
 
-每个 KV 头需要服务 $h/g$ 个 Query 头（例如 8 个 Query 头共享 1 个 KV 头）。`repeat_kv` 函数通过将每个 KV 头重复 $n\_rep = h/g$ 次来实现这一点。
+每个 KV 头需要服务 $h/g$ 个 Query 头（例如 8 个 Query 头共享 1 个 KV 头）。`repeat_kv` 函数通过将每个 KV 头重复 $n_rep = h/g$ 次来实现这一点。
 
 **实现细节**
 

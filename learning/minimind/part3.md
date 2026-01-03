@@ -207,18 +207,18 @@ These two approaches are mathematically equivalent, but approach 2 leverages the
 In practice, we typically have:
 
 $$
-d_k = d_v = \text{head\_dim} = \frac{d_{\text{model}}}{n_{\text{heads}}}
+d_k = d_v = \text{head_dim} = \frac{d_{\text{model}}}{n_{\text{heads}}}
 $$
 
 For example, with $d_{\text{model}} = 768$, $n_{\text{heads}} = 12$:
 
 $$
-\text{head\_dim} = \frac{768}{12} = 64
+\text{head_dim} = \frac{768}{12} = 64
 $$
 
 **Why this design?**
 
-1. **Constant computation**: Total parameters $n_{\text{heads}} \times d_{\text{model}} \times \text{head\_dim} = d_{\text{model}}^2$, same as single head
+1. **Constant computation**: Total parameters $n_{\text{heads}} \times d_{\text{model}} \times \text{head_dim} = d_{\text{model}}^2$, same as single head
 2. **Parallel computation**: All heads can compute simultaneously
 3. **Trade-off between expressiveness and efficiency**: More heads means more attention patterns, but lower dimension per head
 
@@ -293,7 +293,7 @@ Step 3: Compute K_3, V_3, cache; reuse K_1, V_1, K_2, V_2
 KV Cache size is:
 
 $$
-\text{KV Cache Size} = 2 \times \text{layers} \times \text{heads} \times \text{seq\_length} \times \text{head\_dim}
+\text{KV Cache Size} = 2 \times \text{layers} \times \text{heads} \times \text{seq_length} \times \text{head_dim}
 $$
 
 For a typical LLM (e.g., LLaMA-7B with 32 layers, 32 heads, head_dim=128, sequence length 4096):
@@ -382,7 +382,7 @@ In practice, KV Cache is typically organized as follows:
 **Detailed memory formula**:
 
 $$
-\text{Memory} = 2 \times L \times B \times H \times S \times D \times \text{bytes\_per\_element}
+\text{Memory} = 2 \times L \times B \times H \times S \times D \times \text{bytes_per_element}
 $$
 
 Where:
@@ -600,7 +600,7 @@ In GQA, we have:
 - $h$ Query heads (e.g., 32)
 - $g$ Key/Value heads (e.g., 4)
 
-Each KV head needs to serve $h/g$ Query heads (e.g., 8 Query heads share 1 KV head). The `repeat_kv` function achieves this by repeating each KV head $n\_rep = h/g$ times.
+Each KV head needs to serve $h/g$ Query heads (e.g., 8 Query heads share 1 KV head). The `repeat_kv` function achieves this by repeating each KV head $n_rep = h/g$ times.
 
 **Implementation Details**
 
