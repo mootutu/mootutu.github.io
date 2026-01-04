@@ -1,0 +1,10 @@
+{% assign topics = site.pages | where: "layout", "learning-topic-layout" | where: "lang", page.lang | sort: "order" %}
+
+<div class="learning-topics">
+  {% for topic in topics %}
+  <a href="{{ topic.url | relative_url }}" class="topic-card">
+    <div class="topic-title">{{ topic.title }}</div>
+    <div class="topic-desc">{{ topic.description }}</div>
+  </a>
+  {% endfor %}
+</div>

@@ -3,6 +3,8 @@ layout: learning-post-layout
 title: "2 Positional Encoding RoPE&YaRN"
 date: 2025-12-26
 lang: en
+topic: minimind
+order: 2
 topic_url: /learning/minimind.html
 translate_url: /cn/learning/minimind/part2.html
 mathjax: true
@@ -405,5 +407,4 @@ def apply_rotary_pos_emb(q, k, cos, sin, unsqueeze_dim=1):
 
     return q_embed, k_embed
 ```
-
 

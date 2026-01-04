@@ -3,8 +3,10 @@ layout: learning-post-layout
 title: "Python 风格规范"
 date: 2025-12-30
 lang: zh-CN
+topic: python
+order: 2
 topic_url: /cn/learning/python.html
-translate_url: /learning/python/style_conventions.html
+translate_url: /learning/python_guidelines/python_style_conventions.html
 mathjax: false
 ---
 

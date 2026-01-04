@@ -19,6 +19,10 @@ title: "Your Article Title Here"
 date: 2025-12-31
 author: "Weiqin Wang"
 category: "Technical Tutorial"
+excerpt: "Short summary shown on the blog index."
+tags: ["Tag1", "Tag2"]
+reading_time: "6 minutes"
+cover_image: /assets/images/covers/your-article-name.png
 lang: en
 translate_url: /cn/blog/posts/your-article-name.html
 ---
@@ -84,6 +88,8 @@ layout: learning-post-layout
 title: "Your Article Title Here"
 date: 2025-12-31
 lang: en
+topic: topic-name
+order: 1
 topic_url: /learning/topic-name.html
 translate_url: /cn/learning/topic-name/your-article.html
 mathjax: false
@@ -131,77 +137,37 @@ def hello():
 ```html
 ---
 layout: learning-topic-layout
+title: "Your Topic Name 🔥"
+description: "主题描述文字，说明这个学习主题包含什么内容。"
+topic: your-topic
+order: 3
 lang: en
 translate_url: /cn/learning/your-topic.html
 ---
-
-<div class="learning-header">
-    <h1 class="learning-title">Your Topic Name 🔥</h1>
-    <p class="learning-subtitle">
-        主题描述文字，说明这个学习主题包含什么内容。
-    </p>
-</div>
-
-<div class="learning-entries">
-    <a href="/learning/your-topic/article-1.html" class="entry-link">Article 1 Title</a>
-    <a href="/learning/your-topic/article-2.html" class="entry-link">Article 2 Title</a>
-    <a href="/learning/your-topic/article-3.html" class="entry-link">Article 3 Title</a>
-</div>
 ```
 
 ---
 
 ## 博客索引卡片模板
 
-### 文件位置
+### 说明
 
-添加到：`blog.html` 的 `<div class="blog-posts">` 内
+博客索引页自动生成，无需手动添加卡片。请在文章 Front Matter 中补全卡片字段：
 
-### 完整模板
-
-```html
-<!-- 新文章 - 添加到列表最前面 -->
-<article class="blog-post">
-  <div class="blog-post-content">
-    <h2 class="blog-post-title">
-      <a href="/blog/posts/your-article-name.html">Your Article Title</a>
-    </h2>
-    <div class="blog-post-meta">
-      <span>Published: December 31, 2025</span>
-      <span>Reading Time: 8 minutes</span>
-    </div>
-    <p class="blog-post-excerpt">
-      文章摘要，1-2 句话概括文章内容。这段文字会显示在博客列表页面。
-    </p>
-    <div class="blog-post-tags">
-      <a href="#" class="blog-tag">Tag1</a>
-      <a href="#" class="blog-tag">Tag2</a>
-      <a href="#" class="blog-tag">Tag3</a>
-    </div>
-    <a href="/blog/posts/your-article-name.html" class="read-more">Read More</a>
-  </div>
-  <div class="blog-post-image">
-    <img src="/assets/images/covers/your-article-name.png" alt="Your Article Title">
-  </div>
-</article>
+```yaml
+excerpt: "文章摘要，1-2 句话概括文章内容。"
+tags: ["Tag1", "Tag2", "Tag3"]
+reading_time: "8 minutes"
+cover_image: /assets/images/covers/your-article-name.png
 ```
 
 ---
 
 ## 学习主题卡片模板
 
-### 文件位置
+### 说明
 
-添加到：`learning.html` 的 `<div class="learning-topics">` 内
-
-### 完整模板
-
-```html
-<a href="/learning/your-topic.html" class="topic-card">
-    <div class="topic-title">Your Topic Name 🔥</div>
-    <div class="topic-desc">主题描述，说明这个主题包含什么内容。</div>
-</a>
-```
+学习主题卡片由主题页 Front Matter 自动生成，无需手动添加。
 
 ---
 
@@ -209,39 +175,25 @@ translate_url: /cn/learning/your-topic.html
 
 ### 文件位置
 
-添加到：`index.html` 的 Publications 部分
+添加到：`_data/publications.yml`
 
 ### 完整模板
 
-```html
-<!-- 新出版物 -->
-<div class="publication">
-    <div class="pub-title">
-        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank">
-            Paper Title: A Comprehensive Study
-        </a>
-    </div>
-    <div class="pub-authors">
-        <strong>Weiqin Wang</strong>, Coauthor One, Coauthor Two
-    </div>
-    <div class="pub-venue">
-        Conference Name (CONF), 2025
-    </div>
-    <div class="pub-links">
-        <a href="https://arxiv.org/pdf/xxxx.xxxxx.pdf" target="_blank">[PDF]</a>
-        <a href="javascript:void(0)" onclick="showBibtex('wang2025paper')">[bib]</a>
-    </div>
-</div>
-
-<!-- BibTeX 内容（添加到页面底部的 bibtex 区域） -->
-<div id="wang2025paper" class="bibtex-content" style="display:none;">
-    <pre>@inproceedings{wang2025paper,
-  title={Paper Title: A Comprehensive Study},
-  author={Wang, Weiqin and One, Coauthor and Two, Coauthor},
-  booktitle={Conference Name},
-  year={2025}
-}</pre>
-</div>
+```yaml
+- id: wang2025paper
+  title:
+    en: "Paper Title: A Comprehensive Study"
+    zh: "Paper Title: A Comprehensive Study"
+  authors:
+    en: "<b>Weiqin Wang</b>, Coauthor One, Coauthor Two"
+    zh: "<b>王伟钦</b>, 合作者一, 合作者二"
+  venue:
+    en: "Conference Name (CONF), 2025"
+    zh: "Conference Name (CONF), 2025"
+  links:
+    - label: pdf
+      url: https://arxiv.org/pdf/xxxx.xxxxx.pdf
+  bib: /assets/bibtex/wang2025paper.bib
 ```
 
 ---

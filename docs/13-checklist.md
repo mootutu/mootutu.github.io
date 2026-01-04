@@ -35,9 +35,7 @@
 
 ### 索引阶段
 
-- [ ] 英文博客列表已更新（`blog.html`）
-- [ ] 中文博客列表已更新（`cn/blog.html`）
-- [ ] 新文章卡片添加在列表最前面
+- [ ] Front Matter 中摘要/标签/封面等字段已填写
 
 ### 验证阶段
 
@@ -75,11 +73,7 @@
 
 ### 索引阶段
 
-- [ ] 主题索引页已更新
-  - 英文：`learning/topic.html`
-  - 中文：`cn/learning/topic.html`
-
-- [ ] 链接使用 `.html` 扩展名（即使源文件是 `.md`）
+- [ ] `topic` 和 `order` 已设置（英文/中文一致）
 
 ### 验证阶段
 
@@ -109,14 +103,7 @@
 
 ### 索引阶段
 
-- [ ] 学习主页已更新
-  - 英文：`learning.html`
-  - 中文：`cn/learning.html`
-
-- [ ] 主题卡片信息正确
-  - [ ] 标题
-  - [ ] 描述
-  - [ ] 链接
+- [ ] 主题页 Front Matter 已填写（title/description/topic/order）
 
 ---
 
@@ -137,8 +124,8 @@
 ### 更新出版物
 
 - [ ] BibTeX 文件已添加（`assets/bibtex/`）
-- [ ] 英文首页已更新（`index.html`）
-- [ ] 中文首页已更新（`cn/index.html`）
+- [ ] 数据文件已更新（`_data/publications.yml`）
+- [ ] 英文/中文首页渲染正常
 - [ ] BibTeX 模态框内容正确
 - [ ] PDF 链接有效
 

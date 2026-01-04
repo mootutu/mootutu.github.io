@@ -15,39 +15,18 @@
 1.  **更新 Front Matter（文件头部信息）**：
     *   `title`: 文章标题。
     *   `date`: 日期，格式 YYYY-MM-DD。
+    *   `author`: 作者姓名。
+    *   `category`: 分类。
+    *   `excerpt`: 博客列表摘要。
+    *   `tags`: 标签列表。
+    *   `reading_time`: 阅读时长（例如 `6 分钟`）。
+    *   `cover_image`: 封面图路径（位于 `/assets/images/covers/`）。
     *   `lang`: 英文填 `en`，中文填 `zh-CN`。
     *   `translate_url`: 对应翻译版本的链接（例如：`/cn/blog/posts/my-new-post.html`）。
 2.  **编写内容**：在第二个 `---` 下方编写 HTML 内容。
 
-### 步骤 3：更新索引页 (`blog.html`)
-由于博客索引页是手动维护的，你必须将新文章添加到 `blog.html`（中文版对应 `cn/blog.html`）中。
-
-1.  打开 `blog.html`。
-2.  找到 `.blog-posts` div。
-3.  在列表顶部添加一个新的 `<article>` 块：
-    ```html
-    <article class="blog-post">
-      <div class="blog-post-content">
-        <h2 class="blog-post-title"><a href="/blog/posts/your-filename.html">文章标题</a></h2>
-        <div class="blog-post-meta">
-          <span>发布于: 年 月 日</span>
-          <span>阅读时间: X 分钟</span>
-        </div>
-        <p class="blog-post-excerpt">
-          文章内容的简短摘要...
-        </p>
-        <div class="blog-post-tags">
-          <a href="#" class="blog-tag">标签1</a>
-          <a href="#" class="blog-tag">标签2</a>
-        </div>
-        <a href="/blog/posts/your-filename.html" class="read-more">阅读更多</a>
-      </div>
-      <div class="blog-post-image">
-        <!-- 请确保已将封面图片添加到 /assets/images/covers/ 目录 -->
-        <img src="/assets/images/covers/your-cover-image.png" alt="文章标题">
-      </div>
-    </article>
-    ```
+### 步骤 3：索引自动更新
+博客索引页会根据 Front Matter 自动生成，无需手动编辑 `blog.html` 或 `cn/blog.html`。
 
 ---
 
@@ -66,20 +45,15 @@
     *   `title`: 文章标题。
     *   `date`: 日期 YYYY-MM-DD。
     *   `lang`: `en` 或 `zh-CN`。
+    *   `topic`: 主题 key（如 `minimind`）。
+    *   `order`: 显示顺序（数字）。
     *   `topic_url`: 主题索引页的链接（例如：`/learning/minimind.html`）。
     *   `translate_url`: 对应翻译版本的链接。
     *   `mathjax`: 如果使用数学公式，请设为 `true`。
 2.  **编写内容**：使用 Markdown 语法编写。
 
-### 步骤 3：更新主题索引页
-你必须在相应的主题 HTML 文件中添加新文章的链接。
-
-1.  打开主题文件（例如：`learning/minimind.html` 或 `cn/learning/minimind.html`）。
-2.  找到包含 `class="learning-entries"` 的容器。
-3.  添加一个新链接：
-    ```html
-    <a href="/learning/minimind/your-filename.html" class="entry-link">文章标题</a>
-    ```
+### 步骤 3：主题页自动更新
+主题页会根据 `topic` 和 `order` 自动生成文章列表，无需手动添加链接。
 
 ## 3. 本地预览
 在本地运行网站以验证更改：

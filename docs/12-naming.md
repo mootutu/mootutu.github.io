@@ -121,6 +121,10 @@ title: "文章标题"               # 字符串，用引号包裹
 date: 2025-12-31               # 日期格式 YYYY-MM-DD
 author: "作者名"                # 字符串
 category: "分类名"              # 字符串
+excerpt: "列表摘要"             # 字符串
+tags: ["Tag1", "Tag2"]          # 标签数组
+reading_time: "8 minutes"       # 显示用时长
+cover_image: /assets/images/covers/xxx.png # 封面图路径
 lang: en                        # en 或 zh-CN
 translate_url: /cn/blog/posts/xxx.html  # 绝对路径
 ---
@@ -134,6 +138,8 @@ layout: learning-post-layout    # 固定值
 title: "文章标题"               # 字符串
 date: 2025-12-31               # 日期格式
 lang: en                        # en 或 zh-CN
+topic: topic-name               # 主题 key
+order: 1                        # 排序数字
 topic_url: /learning/topic.html # 所属主题页面
 translate_url: /cn/learning/xxx.html  # 翻译版本
 mathjax: false                  # 可选，是否启用数学公式
@@ -145,6 +151,10 @@ mathjax: false                  # 可选，是否启用数学公式
 ```yaml
 ---
 layout: learning-topic-layout   # 固定值
+title: "Topic Title"            # 主题标题
+description: "简短描述"         # 主题描述
+topic: topic-name               # 主题 key
+order: 1                        # 主题排序
 lang: en                        # en 或 zh-CN
 translate_url: /cn/learning/topic.html  # 翻译版本
 ---
@@ -160,6 +170,8 @@ translate_url: /cn/learning/topic.html  # 翻译版本
 | `translate_url` | 绝对路径，以 `/` 开头 |
 | `topic_url` | 绝对路径，以 `/` 开头 |
 | `mathjax` | 布尔值 `true` 或 `false` |
+| `topic` | 主题 key（小写、连字符） |
+| `order` | 数字排序，越小越靠前 |
 
 ---
 

@@ -1,0 +1,29 @@
+- id: wang2025beyond
+  title:
+    en: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
+    zh: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
+  authors:
+    en: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
+    zh: "<b>王伟钦</b>, 王祎乐, 陈柯豪, 黄慧."
+  venue:
+    en: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
+    zh: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
+  links:
+    - label: arxiv
+      url: https://arxiv.org/abs/2512.15146
+  bib: /assets/bibtex/wang2025beyond.bib
+
+- id: wang2025ranked
+  title:
+    en: "Ranked Voting based Self-Consistency of Large Language Models."
+    zh: "Ranked Voting based Self-Consistency of Large Language Models."
+  authors:
+    en: "<b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
+    zh: "<b>王伟钦</b>, 王祎乐, 黄慧."
+  venue:
+    en: "In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025"
+    zh: "In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025"
+  links:
+    - label: pdf
+      url: https://aclanthology.org/2025.findings-acl.744.pdf
+  bib: /assets/bibtex/wang2025ranked.bib

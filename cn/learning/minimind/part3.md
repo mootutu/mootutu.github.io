@@ -1,11 +1,14 @@
 ---
 layout: learning-post-layout
 title: "3 注意力机制"
-date: 2025-12-26
+date: 2025-12-27
 lang: zh-CN
+topic: minimind
+order: 3
 topic_url: /cn/learning/minimind.html
 translate_url: /learning/minimind/part3.html
 mathjax: true
+---
 本章我们将深入理解注意力机制（Attention），并梳理从 **MHA（Multi-Head Attention）** 到 **MQA（Multi-Query Attention）** 再到 **GQA（Grouped Query Attention）** 的演进脉络。这条演进路线的核心动机是：**如何在保持模型质量的同时，降低推理阶段的显存占用和计算开销**。
 
 ## 3.1 Attention 的本质：Query、Key、Value

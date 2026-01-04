@@ -46,8 +46,8 @@ learning/
 cn/learning/
 ├── python.html
 ├── python_guidelines/
-│   ├── python_style_conventions.html
-│   └── python_language_conventions.html
+│   ├── python_style_conventions.md
+│   └── python_language_conventions.md
 ├── minimind.html
 └── minimind/
 ```
@@ -63,21 +63,13 @@ cn/learning/
 ```html
 ---
 layout: learning-topic-layout
+title: "Python Guidelines 🐍"
+description: "主题描述文字..."
+topic: python
+order: 1
 lang: en
 translate_url: /cn/learning/python.html
 ---
-
-<div class="learning-header">
-    <h1 class="learning-title">Python Guidelines 🐍</h1>
-    <p class="learning-subtitle">
-        主题描述文字...
-    </p>
-</div>
-
-<div class="learning-entries">
-    <a href="/learning/python_guidelines/article1.html" class="entry-link">文章标题 1</a>
-    <a href="/learning/python_guidelines/article2.html" class="entry-link">文章标题 2</a>
-</div>
 ```
 
 ### 4.3.2 新增学习主题
@@ -89,20 +81,13 @@ translate_url: /cn/learning/python.html
 ```html
 ---
 layout: learning-topic-layout
+title: "New Topic Name 🔥"
+description: "主题描述..."
+topic: new-topic
+order: 3
 lang: en
 translate_url: /cn/learning/new-topic.html
 ---
-
-<div class="learning-header">
-    <h1 class="learning-title">New Topic Name 🔥</h1>
-    <p class="learning-subtitle">
-        主题描述...
-    </p>
-</div>
-
-<div class="learning-entries">
-    <!-- 文章链接将在这里添加 -->
-</div>
 ```
 
 #### 步骤 2：创建文章目录
@@ -112,21 +97,10 @@ mkdir learning/new_topic
 mkdir cn/learning/new_topic
 ```
 
-#### 步骤 3：更新学习主页
-
-编辑 `learning.html`，在 `<div class="learning-topics">` 中添加：
-
-```html
-<a href="/learning/new-topic.html" class="topic-card">
-    <div class="topic-title">New Topic Name 🔥</div>
-    <div class="topic-desc">主题简短描述</div>
-</a>
-```
-
-#### 步骤 4：创建中文版本
+#### 步骤 3：创建中文版本
 
 - 创建 `cn/learning/new-topic.html`
-- 更新 `cn/learning.html`
+- 填写中文 `title`/`description`/`topic`/`order`
 
 ---
 
@@ -140,6 +114,8 @@ layout: learning-post-layout
 title: "文章标题"
 date: 2025-12-31
 lang: en
+topic: python
+order: 1
 topic_url: /learning/python.html
 translate_url: /cn/learning/python_guidelines/article.html
 mathjax: false
@@ -152,6 +128,8 @@ mathjax: false
 | `title` | 是 | 文章标题 |
 | `date` | 是 | 发布日期 |
 | `lang` | 是 | `en` 或 `zh-CN` |
+| `topic` | 是 | 主题 key（如 `minimind`） |
+| `order` | 是 | 文章排序（数字） |
 | `topic_url` | 是 | 所属主题页面的 URL |
 | `translate_url` | 是 | 翻译版本 URL |
 | `mathjax` | 否 | 是否启用数学公式，默认 `false` |
@@ -173,6 +151,8 @@ layout: learning-post-layout
 title: "New Article Title"
 date: 2025-12-31
 lang: en
+topic: topic-name
+order: 1
 topic_url: /learning/topic-name.html
 translate_url: /cn/learning/topic_name/new-article.html
 mathjax: false
@@ -202,25 +182,12 @@ def hello():
 
 **注意**：Markdown 文件会被 Jekyll 自动转换为 HTML。
 
-#### 步骤 4：更新主题索引页
-
-编辑主题页面（如 `learning/python.html`），添加文章链接：
-
-```html
-<div class="learning-entries">
-    <a href="/learning/python_guidelines/new-article.html" class="entry-link">New Article Title</a>
-    <!-- 注意：Markdown 文件的链接使用 .html 扩展名 -->
-</div>
-```
-
-> ⚠️ **重要**：即使原文件是 `.md`，链接也要写成 `.html`！
-
-#### 步骤 5：创建中文版本
+#### 步骤 4：创建中文版本
 
 - 创建 `cn/learning/topic_name/new-article.md`
-- 更新 `cn/learning/topic-name.html`
+- 设置 `topic` 和 `order` 与英文一致
 
-#### 步骤 6：本地预览
+#### 步骤 5：本地预览
 
 ```bash
 jekyll serve
@@ -242,9 +209,7 @@ jekyll serve
    rm cn/learning/topic_name/article.md
    ```
 
-2. 从主题索引页删除链接
-
-3. 提交更改
+2. 提交更改
 
 ---
 
@@ -330,19 +295,7 @@ $$
 
 ## 4.8 学习主页维护（learning.html）
 
-### 文件位置
-
-- 英文：`/learning.html`
-- 中文：`/cn/learning.html`
-
-### 主题卡片模板
-
-```html
-<a href="/learning/topic-name.html" class="topic-card">
-    <div class="topic-title">Topic Name 🔥</div>
-    <div class="topic-desc">简短描述，说明这个主题包含什么内容</div>
-</a>
-```
+学习主页会根据主题页的 Front Matter 自动生成卡片，无需手动编辑 `learning.html` 或 `cn/learning.html`。
 
 ---
 

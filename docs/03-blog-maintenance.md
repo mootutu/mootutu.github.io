@@ -71,6 +71,10 @@ title: "文章标题"
 date: 2025-12-31
 author: "Weiqin Wang"
 category: "Technical Tutorial"
+excerpt: "文章在博客列表中的简短摘要"
+tags: ["Tag1", "Tag2"]
+reading_time: "8 minutes"
+cover_image: /assets/images/covers/your-article-name.png
 lang: en
 translate_url: /cn/blog/posts/article-name.html
 ---
@@ -85,6 +89,10 @@ translate_url: /cn/blog/posts/article-name.html
 | `date` | 是 | 发布日期，格式 `YYYY-MM-DD` | `2025-12-31` |
 | `author` | 是 | 作者名称 | `"Weiqin Wang"` |
 | `category` | 是 | 文章分类 | `"Technical Tutorial"` |
+| `excerpt` | 是 | 博客列表摘要 | `"Short summary"` |
+| `tags` | 是 | 标签列表 | `["Python", "Tooling"]` |
+| `reading_time` | 是 | 阅读时长展示 | `"8 minutes"` |
+| `cover_image` | 是 | 封面图路径 | `/assets/images/covers/article.png` |
 | `lang` | 是 | 语言代码：`en` 或 `zh-CN` | `en` |
 | `translate_url` | 是 | 对应翻译版本的 URL | `/cn/blog/posts/git-basics.html` |
 
@@ -117,6 +125,10 @@ title: "Your Article Title"
 date: 2025-12-31
 author: "Weiqin Wang"
 category: "Technical Tutorial"
+excerpt: "Short summary shown on the blog index."
+tags: ["Tag1", "Tag2"]
+reading_time: "8 minutes"
+cover_image: /assets/images/covers/your-article-name.png
 lang: en
 translate_url: /cn/blog/posts/your-article-name.html
 ---
@@ -177,37 +189,9 @@ translate_url: /cn/blog/posts/your-article-name.html
 
 **命名必须与文章文件名一致！**
 
-### 步骤 7：更新博客索引页（重要！）
+### 步骤 7：索引页自动更新
 
-打开 `blog.html`，在 `<div class="blog-posts">` 下面添加文章卡片：
-
-```html
-<!-- 新文章 -->
-<article class="blog-post">
-  <div class="blog-post-content">
-    <h2 class="blog-post-title">
-      <a href="/blog/posts/your-article-name.html">Your Article Title</a>
-    </h2>
-    <div class="blog-post-meta">
-      <span>Published: December 31, 2025</span>
-      <span>Reading Time: 8 minutes</span>
-    </div>
-    <p class="blog-post-excerpt">
-      文章简短描述，1-2 句话概括文章内容...
-    </p>
-    <div class="blog-post-tags">
-      <a href="#" class="blog-tag">Tag1</a>
-      <a href="#" class="blog-tag">Tag2</a>
-    </div>
-    <a href="/blog/posts/your-article-name.html" class="read-more">Read More</a>
-  </div>
-  <div class="blog-post-image">
-    <img src="/assets/images/covers/your-article-name.png" alt="Your Article Title">
-  </div>
-</article>
-```
-
-> ⚠️ **注意**：新文章应添加到列表的**最前面**（最新的在上面）
+博客索引页会根据 Front Matter 自动生成，无需手动编辑 `blog.html` 或 `cn/blog.html`。
 
 ### 步骤 8：创建中文版本
 
@@ -215,7 +199,6 @@ translate_url: /cn/blog/posts/your-article-name.html
 - 文件放入 `cn/blog/posts/` 目录
 - 修改 `lang: zh-CN`
 - 修改 `translate_url` 指向英文版本
-- 更新 `cn/blog.html`
 
 ### 步骤 9：本地预览
 
@@ -248,8 +231,7 @@ git push
 如需修改标题、日期、分类等：
 
 1. 修改文章的 Front Matter
-2. 同步修改 `blog.html` 中的卡片信息
-3. 同步修改中文版本
+2. 同步修改中文版本
 
 ### 更新文章图片
 
@@ -276,9 +258,7 @@ git push
    rm -rf assets/images/posts/article-to-delete/
    ```
 
-4. 从 `blog.html` 和 `cn/blog.html` 中删除对应的卡片
-
-5. 提交更改
+4. 提交更改
    ```bash
    git add .
    git commit -m "chore: Remove blog post 'xxx'"
@@ -287,31 +267,7 @@ git push
 
 ---
 
-## 3.8 博客索引页维护（blog.html）
-
-### 文件位置
-
-- 英文：`/blog.html`
-- 中文：`/cn/blog.html`
-
-### 结构说明
-
-```html
-<div class="blog-posts">
-  <!-- 文章卡片从这里开始，最新的在最上面 -->
-  <article class="blog-post">...</article>
-  <article class="blog-post">...</article>
-  <article class="blog-post">...</article>
-</div>
-```
-
-### 卡片模板
-
-完整的文章卡片模板见 [附录-模板文件](./appendix/templates.md#博客索引卡片模板)
-
----
-
-## 3.9 封面图规范
+## 3.8 封面图规范
 
 ### 存放位置
 
@@ -340,7 +296,7 @@ assets/images/covers/
 
 ---
 
-## 3.10 文章内图片规范
+## 3.9 文章内图片规范
 
 ### 存放位置
 

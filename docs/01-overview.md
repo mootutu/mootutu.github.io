@@ -168,15 +168,15 @@ mootutu.github.io/
 | `_config.yml` | Jekyll 主配置，定义站点元数据、插件、集合 |
 | `_data/ui_text.yml` | 多语言 UI 文本（导航栏、按钮、标签等） |
 
-### 索引页面（需手动维护）
+### 索引页面（自动生成）
 
 | 文件 | 说明 |
 |------|------|
-| `blog.html` | 英文博客列表，新增博客后必须更新 |
-| `cn/blog.html` | 中文博客列表 |
-| `learning.html` | 英文学习主题列表，新增主题后必须更新 |
-| `cn/learning.html` | 中文学习主题列表 |
-| `learning/python.html` | Python 主题索引，新增文章后必须更新 |
+| `blog.html` | 英文博客列表（自动生成） |
+| `cn/blog.html` | 中文博客列表（自动生成） |
+| `learning.html` | 英文学习主题列表（自动生成） |
+| `cn/learning.html` | 中文学习主题列表（自动生成） |
+| `learning/python.html` | Python 主题索引（自动生成） |
 
 ### 组件文件
 
@@ -197,8 +197,8 @@ mootutu.github.io/
 | **布局** | `blog-post-layout` | `learning-topic-layout` | `learning-post-layout` |
 | **存放位置** | `/blog/posts/` | `/learning/` | `/learning/{topic}/` |
 | **需要封面图** | 是 | 否 | 否 |
-| **Front Matter** | title, date, author, category, lang, translate_url | lang, translate_url | title, date, lang, topic_url, translate_url, mathjax |
-| **索引维护** | 更新 `blog.html` | 更新 `learning.html` | 更新主题页面 |
+| **Front Matter** | title, date, author, category, excerpt, tags, reading_time, cover_image, lang, translate_url | title, description, topic, order, lang, translate_url | title, date, topic, order, lang, topic_url, translate_url, mathjax |
+| **索引维护** | 自动生成 | 自动生成 | 自动生成 |
 
 ---
 

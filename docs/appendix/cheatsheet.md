@@ -200,13 +200,13 @@ code here
 
 ---
 
-## 需手动更新的文件
+## 需手动更新的内容
 
 | 操作 | 需更新 |
 |------|--------|
-| 新增博客 | `blog.html`, `cn/blog.html` |
-| 新增主题 | `learning.html`, `cn/learning.html` |
-| 新增学习文章 | 主题索引页 |
+| 新增博客 | Front Matter（摘要/标签/封面图） |
+| 新增主题 | 主题页 Front Matter（title/description/topic/order） |
+| 新增学习文章 | Front Matter（topic/order） |
 | 新增中文版本 | 英文页的 `translate_url` |
 
 ---

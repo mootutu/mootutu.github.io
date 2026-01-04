@@ -1,0 +1,19 @@
+{% assign lang = page.lang | default: "en" %}
+<div class="publication-list">
+  {% for pub in site.data.publications %}
+  {% assign title = pub.title[lang] | default: pub.title.en %}
+  {% assign authors = pub.authors[lang] | default: pub.authors.en %}
+  {% assign venue = pub.venue[lang] | default: pub.venue.en %}
+  <p><b><u>{{ title }}</u></b>
+    {% for link in pub.links %}
+    [<a href="{{ link.url }}" target="_blank">{{ link.label }}</a>]
+    {% endfor %}
+    {% if pub.bib %}
+    [<a href="javascript:void(0);" onclick="openBibModal('{{ pub.bib }}')">bib</a>]
+    {% endif %}
+    <br />
+    &nbsp;&nbsp; &nbsp; {{ authors }} <br />
+    &nbsp;&nbsp; &nbsp; {{ venue }}
+  </p>
+  {% endfor %}
+</div>

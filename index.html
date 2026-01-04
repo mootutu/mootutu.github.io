@@ -78,38 +78,9 @@ translate_url: /cn/index.html
 <h2>Publications 📄</h2> <!-- 论文 -->
 (<b>*</b> equal contribution, <b>#</b> corresponding author)
 
-<div class="publication-list">
-  <p><b><u>Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement
-        Learning.</u></b> [<a href="https://arxiv.org/abs/2512.15146" target="_blank">arxiv</a>][<a
-      href="javascript:void(0);" onclick="openBibModal('/assets/bibtex/wang2025beyond.bib')">bib</a>] <br />
-    &nbsp;&nbsp; &nbsp; <b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang. <br />
-    &nbsp;&nbsp; &nbsp; <i>arXiv preprint arXiv:2512.15146</i>, 2025
-  </p>
+{% include publications.html %}
 
-  <p><b><u>Ranked Voting based Self-Consistency of Large Language Models.</u></b> [<a
-      href="https://aclanthology.org/2025.findings-acl.744.pdf" target="_blank">pdf</a>][<a href="javascript:void(0);"
-      onclick="openBibModal('/assets/bibtex/wang2025ranked.bib')">bib</a>] <br />
-    &nbsp;&nbsp; &nbsp; <b>Weiqin Wang</b>, Yile Wang, and Hui Huang. <br />
-    &nbsp;&nbsp; &nbsp; In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL
-      Findings</b>), 2025
-  </p>
-</div>
-
-<!-- 
-  模板：如何添加新的论文条目
-  复制下面的 <li>...</li> 代码块，并修改相应内容即可。
-  确保将新的BibTeX文件放置在 bibtex/ 文件夹下，并更新链接。
--->
-<!--
-<li>
-  <b><u>[在此处填写您的论文标题]</u></b> 
-  [<a href="[在此处填写arXiv链接，例如：https://arxiv.org/abs/xxxx.xxxxx]" target="_blank">arxiv</a>]
-  [<a href="javascript:void(0);" onclick="openBibModal('bibtex/[在此处填写您的BibTeX文件名，例如：yourpaper202X.bib]')">bib</a>] 
-  <br/>
-  &nbsp;&nbsp; &nbsp; [在此处填写作者，例如：<b>您的名字</b>, 合作者1, 合作者2.] <br/>
-  &nbsp;&nbsp; &nbsp; [在此处填写发表信息，例如：Proceedings of the Conference on Neural Information Processing Systems (<b>NeurIPS</b>) 202X]
-</li>
--->
+<!-- Publications are rendered from _data/publications.yml -->
 
 <hr>
 <h2>Award 🏆</h2> <!-- 奖项 -->

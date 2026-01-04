@@ -3,6 +3,8 @@ layout: learning-post-layout
 title: "Python 语言规范"
 date: 2025-12-30
 lang: zh-CN
+topic: python
+order: 1
 topic_url: /cn/learning/python.html
 translate_url: /learning/python_guidelines/python_language_conventions.html
 mathjax: false

@@ -53,14 +53,13 @@ http://localhost:4000
 cp _templates/blog_post_template.html blog/posts/my-new-post.html
 
 # 2. 编辑文章内容
-# - 修改 Front Matter（title, date, author, category, lang, translate_url）
+# - 修改 Front Matter（title, date, author, category, excerpt, tags, reading_time, cover_image, lang, translate_url）
 # - 编写 HTML 正文
 
 # 3. 添加封面图
 # 将图片放入 assets/images/covers/my-new-post.png
 
-# 4. 更新博客索引（重要！）
-# 编辑 blog.html，在 <div class="blog-posts"> 最前面添加文章卡片
+# 4. 索引自动更新（无需手动改 blog.html）
 
 # 5. 创建中文版本（如需要）
 # 重复以上步骤，文件放入 cn/ 目录
@@ -76,8 +75,7 @@ cp _templates/learning_post_template.md learning/python_guidelines/my-topic.md
 # - 修改 Front Matter
 # - 使用 Markdown 编写正文
 
-# 3. 更新主题索引页（重要！）
-# 编辑 learning/python.html，添加文章链接
+# 3. 设置 topic/order（用于自动生成索引）
 
 # 4. 创建中文版本（如需要）
 ```
@@ -96,8 +94,8 @@ _includes/bio-cn.html   # 中文简介
 # 1. 添加 BibTeX 文件
 assets/bibtex/author2025title.bib
 
-# 2. 更新首页
-# 编辑 index.html 和 cn/index.html，在 Publications 部分添加条目
+# 2. 更新数据文件
+# 编辑 _data/publications.yml 添加新条目
 ```
 
 ### 提交更改
@@ -137,6 +135,10 @@ git push origin main
    date: 2025-12-31
    author: "Weiqin Wang"
    category: "Technical Tutorial"
+   excerpt: "Short summary shown on the blog index."
+   tags: ["Tag1", "Tag2"]
+   reading_time: "6 minutes"
+   cover_image: /assets/images/covers/my-first-post.png
    lang: en
    translate_url: /cn/blog/posts/my-first-post.html
    ---
@@ -151,9 +153,7 @@ git push origin main
    - 准备一张正方形图片
    - 保存为 `assets/images/covers/my-first-post.png`
 
-5. **更新博客列表** ⚠️ 容易遗漏！
-   - 打开 `blog.html`
-   - 在 `<div class="blog-posts">` 下面添加文章卡片（参考现有文章）
+5. **完善 Front Matter**（摘要/标签/封面图等）
 
 6. **本地预览**
    ```bash
@@ -183,15 +183,15 @@ git push origin main
 
 ---
 
-## 2.4 必须手动维护的文件清单
+## 2.4 必须补全的信息清单
 
-> ⚠️ 以下文件不会自动更新，每次新增内容时必须手动维护！
+> ⚠️ 以下信息不会自动补全，每次新增内容时必须手动填写！
 
 | 操作 | 需要更新的文件 |
 |------|----------------|
-| 新增博客文章 | `blog.html`、`cn/blog.html` |
-| 新增学习主题 | `learning.html`、`cn/learning.html` |
-| 新增学习文章 | 对应的主题索引页（如 `learning/python.html`） |
+| 新增博客文章 | Front Matter（摘要/标签/封面图） |
+| 新增学习主题 | 主题页 Front Matter（title/description/topic/order） |
+| 新增学习文章 | Front Matter（topic/order） |
 | 新增中文版本 | 英文页面的 `translate_url` 字段 |
 
 ---

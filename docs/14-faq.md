@@ -4,11 +4,11 @@
 
 ### Q: 为什么我新增的文章不显示在列表中？
 
-**原因**：博客列表和学习列表不会自动更新，需要手动维护。
+**原因**：Front Matter 不完整或缺少 `topic`/`order` 等字段。
 
 **解决方法**：
-1. 博客文章：更新 `blog.html`（和 `cn/blog.html`）
-2. 学习文章：更新对应的主题索引页
+1. 博客文章：补齐 `excerpt`、`tags`、`reading_time`、`cover_image`
+2. 学习文章：确保 `topic` 与主题页一致，`order` 为数字
 
 ---
 

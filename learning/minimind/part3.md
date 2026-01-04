@@ -1,8 +1,10 @@
 ---
 layout: learning-post-layout
-title: "3 Attention Mechanism "
-date: 2025-12-26
+title: "3 Attention Mechanism"
+date: 2025-12-27
 lang: en
+topic: minimind
+order: 3
 topic_url: /learning/minimind.html
 translate_url: /cn/learning/minimind/part3.html
 mathjax: true

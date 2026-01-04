@@ -133,7 +133,7 @@ assets/images/posts/
 
 本项目大部分样式直接写在布局文件和页面中（内联 `<style>` 标签），而非独立 CSS 文件：
 
-- 博客列表样式 → `blog.html` 内的 `<style>`
+- 博客列表样式 → `_includes/blog_page_styles.html`
 - 博客文章样式 → `_layouts/blog-post-layout.html`
 - 学习页面样式 → `_layouts/learning-*.html`
 - 导航栏样式 → `_includes/navigation.html`
@@ -235,7 +235,7 @@ assets/bibtex/
 
 1. 创建 `.bib` 文件
 2. 放入 `assets/bibtex/` 目录
-3. 在首页 Publications 部分引用
+3. 在 `_data/publications.yml` 中添加引用
 
 ---
 

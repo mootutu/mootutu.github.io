@@ -137,29 +137,9 @@ assets/images/
 
 ### 出版物位置
 
-出版物信息在首页文件中：
-- 英文：`index.html`
-- 中文：`cn/index.html`
-
-### 出版物结构
-
-```html
-<div class="publication">
-    <div class="pub-title">
-        <a href="论文链接">论文标题</a>
-    </div>
-    <div class="pub-authors">
-        作者列表（粗体标注自己）
-    </div>
-    <div class="pub-venue">
-        发表会议/期刊, 年份
-    </div>
-    <div class="pub-links">
-        <a href="论文PDF链接">[PDF]</a>
-        <a href="javascript:void(0)" onclick="showBibtex('bibtex-id')">[bib]</a>
-    </div>
-</div>
-```
+出版物数据集中在 `_data/publications.yml`，首页通过共享 include 渲染：
+- 英文：首页 `index.html`
+- 中文：首页 `cn/index.html`
 
 ### 添加新出版物步骤
 
@@ -182,46 +162,28 @@ BibTeX 内容示例：
 }
 ```
 
-#### 步骤 2：更新首页
+#### 步骤 2：更新数据文件
 
-编辑 `index.html`，在 Publications 部分添加：
+在 `_data/publications.yml` 添加条目：
 
-```html
-<!-- 新论文 -->
-<div class="publication">
-    <div class="pub-title">
-        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank">
-            Paper Title Here
-        </a>
-    </div>
-    <div class="pub-authors">
-        <strong>Weiqin Wang</strong>, Some Others
-    </div>
-    <div class="pub-venue">
-        Conference Name (CONF), 2025
-    </div>
-    <div class="pub-links">
-        <a href="论文PDF链接" target="_blank">[PDF]</a>
-        <a href="javascript:void(0)" onclick="showBibtex('wang2025newtopic')">[bib]</a>
-    </div>
-</div>
-
-<!-- BibTeX 模态框内容 -->
-<div id="wang2025newtopic" class="bibtex-content" style="display:none;">
-    <pre>@inproceedings{wang2025newtopic,
-  title={Paper Title Here},
-  author={Wang, Weiqin and Others, Some},
-  booktitle={Conference Name},
-  year={2025}
-}</pre>
-</div>
+```yaml
+- id: wang2025newtopic
+  title:
+    en: "Paper Title Here"
+    zh: "Paper Title Here"
+  authors:
+    en: "<b>Weiqin Wang</b>, Some Others"
+    zh: "<b>王伟钦</b>, 合作者"
+  venue:
+    en: "Conference Name (CONF), 2025"
+    zh: "Conference Name (CONF), 2025"
+  links:
+    - label: pdf
+      url: https://example.com/paper.pdf
+  bib: /assets/bibtex/wang2025newtopic.bib
 ```
 
-#### 步骤 3：同步中文版本
-
-在 `cn/index.html` 中添加相同内容（可翻译标题和会议名）。
-
-#### 步骤 4：验证
+#### 步骤 3：验证
 
 1. 本地预览首页
 2. 点击 [bib] 链接检查弹窗

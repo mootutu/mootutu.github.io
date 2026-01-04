@@ -1,0 +1,7 @@
+{% assign entries = site.pages | where: "layout", "learning-post-layout" | where: "lang", page.lang | where: "topic", page.topic | sort: "order" %}
+
+<div class="learning-entries">
+  {% for entry in entries %}
+  <a href="{{ entry.url | relative_url }}" class="entry-link">{{ entry.title }}</a>
+  {% endfor %}
+</div>

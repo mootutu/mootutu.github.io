@@ -91,13 +91,7 @@ translate_url: /blog/posts/git-basics.html
    - 英文文章: translate_url: /cn/blog/posts/new-article.html
    - 中文文章: translate_url: /blog/posts/new-article.html
 
-4. 更新英文索引
-   blog.html
-
-5. 更新中文索引
-   cn/blog.html
-
-6. 添加封面图（共用）
+4. 添加封面图（共用）
    assets/images/covers/new-article.png
 ```
 
@@ -109,8 +103,7 @@ translate_url: /blog/posts/git-basics.html
 - [ ] 中文版本的 `translate_url` 指向英文版本
 - [ ] 英文版本的 `lang` 设为 `en`
 - [ ] 中文版本的 `lang` 设为 `zh-CN`
-- [ ] 英文索引页已更新
-- [ ] 中文索引页已更新
+- [ ] Front Matter 已补全（摘要/标签/封面图）
 
 ---
 

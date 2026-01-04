@@ -3,6 +3,8 @@ layout: learning-post-layout
 title: "2 位置编码 RoPE&YaRN"
 date: 2025-12-26
 lang: zh-CN
+topic: minimind
+order: 2
 topic_url: /cn/learning/minimind.html
 translate_url: /learning/minimind/part2.html
 mathjax: true

@@ -47,9 +47,6 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-collections:
-  - proc
-  - jour
 ```
 
 ### 配置项说明
@@ -61,7 +58,6 @@ collections:
 | `markdown` | `kramdown` | Markdown 解析器 |
 | `theme` | `minima` | 基础主题 |
 | `plugins` | `[jekyll-feed]` | 启用的插件列表 |
-| `collections` | `[proc, jour]` | 自定义集合（会议/期刊论文） |
 
 #### 站点元数据（已注释）
 
