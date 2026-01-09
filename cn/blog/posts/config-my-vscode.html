@@ -1,0 +1,50 @@
+---
+layout: blog-post-layout
+title: "我的 VS Code 个性化配置"
+date: 2026-01-07
+author: "王伟钦"
+category: "工具配置"
+excerpt: "记录我常用的 VS Code 美化与动画配置流程，从毛玻璃到自定义开屏图标。"
+tags: ["VS Code", "插件", "美化"]
+reading_time: "4 分钟"
+cover_image: /assets/images/covers/config-my-vscode.png
+lang: zh-CN
+translate_url: /blog/posts/config-my-vscode.html
+---
+
+<div class="blog-content">
+  <p>这篇文章记录我目前在 VS Code 上的个性化配置流程，包括毛玻璃、动画以及自定义开屏图标。步骤不多，但能让编辑器更有氛围感。</p>
+
+  <h2 id="vscode-vibrancy">1. 开启毛玻璃效果</h2>
+  <p>先安装插件 <a href="https://marketplace.visualstudio.com/items?itemName=illixion.vscode-vibrancy-continued" target="_blank">Vibrancy Continued</a>，然后：</p>
+  <ul>
+    <li>按 <code>Cmd + Shift + P</code> 打开命令面板</li>
+    <li>输入 <code>Enable Vibrancy</code> 并回车</li>
+  </ul>
+
+  <h2 id="vscode-animations">2. 添加动画效果</h2>
+  <p>安装 <a href="https://marketplace.visualstudio.com/items?itemName=BrandonKirbyson.vscode-animations" target="_blank">VSCode Animations</a> 和
+    <a href="https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css" target="_blank">Custom CSS and JS Loader</a>，再执行：</p>
+  <ul>
+    <li>按 <code>Cmd + Shift + P</code></li>
+    <li>输入 <code>Enable Animations</code> 并回车</li>
+  </ul>
+
+  <h2 id="vscode-watermark">3. 自定义开屏图标</h2>
+  <p>我用的是
+    <a href="https://github.com/Aikoyori/ProgrammingVTuberLogos/blob/main/VSCode/VSCode-Thick.png" target="_blank">这个图标</a>，下载后用
+    <a href="https://tool.chinaz.com/tools/imgtobase" target="_blank">图片转 Base64 工具</a> 转码。然后新建一个 <code>user.css</code> 文件，内容如下：</p>
+  <pre><code>.editor-group-watermark .letterpress {
+  background-image: url("base64放这里") !important;
+  opacity: .75;
+  aspect-ratio: 3 / 2 !important;
+}</code></pre>
+
+  <p>接着在 VS Code 的 <code>settings.json</code> 里添加：</p>
+  <pre><code>"vscode_custom_css.imports": [
+  "file:///你的user.css文件的绝对路径/user.css"
+]</code></pre>
+
+  <h2 id="vscode-enable-css">4. 启用自定义 CSS</h2>
+  <p>最后在命令面板输入 <code>Enable Custom CSS and JS</code> 并回车，开屏图标就会生效。</p>
+</div>
