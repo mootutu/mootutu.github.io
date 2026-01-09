@@ -1,10 +1,25 @@
+- id: chen2026sempa
+  title:
+    en: "SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment."
+    zh: "SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment."
+  authors:
+    en: "Ziyang Chen, Zhenxuan Huang, Yile Wang, <b>Weiqin Wang</b>, Lu Yin, and Hui Huang."
+    zh: "Ziyang Chen, Zhenxuan Huang, Yile Wang, <b>Weiqin Wang</b>, Lu Yin, and Hui Huang."
+  venue:
+    en: "<i>arXiv preprint arXiv:2601.05075</i>, 2026"
+    zh: "<i>arXiv preprint arXiv:2601.05075</i>, 2026"
+  links:
+    - label: pdf
+      url: https://arxiv.org/abs/2601.05075
+  bib: /assets/bibtex/chen2026sempa.bib
+
 - id: wang2025beyond
   title:
     en: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
     zh: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
   authors:
     en: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
-    zh: "<b>王伟钦</b>, 王祎乐, 陈柯豪, 黄慧."
+    zh: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
   venue:
     en: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
     zh: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
@@ -19,7 +34,7 @@
     zh: "Ranked Voting based Self-Consistency of Large Language Models."
   authors:
     en: "<b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
-    zh: "<b>王伟钦</b>, 王祎乐, 黄慧."
+    zh: "<b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
   venue:
     en: "In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025"
     zh: "In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025"
