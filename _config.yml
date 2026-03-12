@@ -26,6 +26,10 @@ theme: minima
 plugins:
   - jekyll-feed
 
+# Feature flags
+# Hide the Learning section (nav + search index) without deleting content.
+hide_learning: true
+
 # Exclude docs directory from Jekyll processing
 exclude:
   - docs
