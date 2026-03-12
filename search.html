@@ -4,16 +4,14 @@ permalink: /search.json
 ---
 [
 {% assign blog_pages = site.pages | where: "layout", "blog-post-layout" %}
-{% assign empty = "" | split: "" %}
 {% if site.hide_learning %}
-{% assign learning_pages = empty %}
-{% assign topic_pages = empty %}
+{% assign pages_to_index = blog_pages %}
 {% else %}
 {% assign learning_pages = site.pages | where: "layout", "learning-post-layout" %}
 {% assign topic_pages = site.pages | where: "layout", "learning-topic-layout" %}
+{% assign pages_to_index = blog_pages | concat: learning_pages | concat: topic_pages %}
 {% endif %}
 
-{% assign pages_to_index = blog_pages | concat: learning_pages | concat: topic_pages %}
 {% assign all_docs = site.posts | concat: pages_to_index %}
 
 {% assign valid_docs = all_docs | where_exp: "doc", "doc.title != nil" %}
