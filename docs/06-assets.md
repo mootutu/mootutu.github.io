@@ -25,8 +25,10 @@ assets/
 │   └── webfonts/
 │
 └── bibtex/                 # 论文引用文件
-    ├── wang2025beyond.bib
-    └── wang2025ranked.bib
+    ├── chen2026sempa.bib
+    ├── shen2026anchormem.bib
+    ├── wang2025ranked.bib
+    └── wang2026beyond.bib
 ```
 
 ---
@@ -219,8 +221,10 @@ assets/fontawesome/
 
 ```
 assets/bibtex/
-├── wang2025beyond.bib
-└── wang2025ranked.bib
+├── chen2026sempa.bib
+├── shen2026anchormem.bib
+├── wang2025ranked.bib
+└── wang2026beyond.bib
 ```
 
 ### 命名规则
@@ -229,7 +233,7 @@ assets/bibtex/
 {作者姓}{年份}{关键词}.bib
 ```
 
-示例：`wang2025beyond.bib`
+示例：`wang2026beyond.bib`
 
 ### 添加新 BibTeX
 

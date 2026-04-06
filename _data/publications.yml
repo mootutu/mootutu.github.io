@@ -6,14 +6,14 @@
     en: "Ziyang Chen, Zhenxuan Huang, Yile Wang, <b>Weiqin Wang</b>, Lu Yin, and Hui Huang."
     zh: "Ziyang Chen, Zhenxuan Huang, Yile Wang, <b>Weiqin Wang</b>, Lu Yin, and Hui Huang."
   venue:
-    en: "<i>arXiv preprint arXiv:2601.05075</i>, 2026"
-    zh: "<i>arXiv preprint arXiv:2601.05075</i>, 2026"
+    en: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
+    zh: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
   links:
-    - label: pdf
+    - label: arxiv
       url: https://arxiv.org/abs/2601.05075
   bib: /assets/bibtex/chen2026sempa.bib
 
-- id: wang2025beyond
+- id: wang2026beyond
   title:
     en: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
     zh: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
@@ -21,12 +21,24 @@
     en: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
     zh: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
   venue:
-    en: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
-    zh: "<i>arXiv preprint arXiv:2512.15146</i>, 2025"
+    en: "To appear in Main Conference of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL</b>), 2026"
+    zh: "To appear in Main Conference of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL</b>), 2026"
   links:
     - label: arxiv
       url: https://arxiv.org/abs/2512.15146
-  bib: /assets/bibtex/wang2025beyond.bib
+  bib: /assets/bibtex/wang2026beyond.bib
+
+- id: shen2026anchormem
+  title:
+    en: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models"
+    zh: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models"
+  authors:
+    en: "Zhanyu Shen, Sijie Cheng, Zhicheng Guo, <b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
+    zh: "Zhanyu Shen, Sijie Cheng, Zhicheng Guo, <b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
+  venue:
+    en: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
+    zh: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
+  bib: /assets/bibtex/shen2026anchormem.bib
 
 - id: wang2025ranked
   title:
