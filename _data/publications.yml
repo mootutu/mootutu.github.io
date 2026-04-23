@@ -38,6 +38,9 @@
   venue:
     en: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
     zh: "To appear in Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
+  links:
+    - label: arxiv
+      url: https://arxiv.org/abs/2604.17377
   bib: /assets/bibtex/shen2026anchormem.bib
 
 - id: wang2025ranked
