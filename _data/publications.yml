@@ -30,8 +30,8 @@
 
 - id: shen2026anchormem
   title:
-    en: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models"
-    zh: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models"
+    en: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models."
+    zh: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models."
   authors:
     en: "Zhanyu Shen, Sijie Cheng, Zhicheng Guo, <b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
     zh: "Zhanyu Shen, Sijie Cheng, Zhicheng Guo, <b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
