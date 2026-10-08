@@ -5,6 +5,8 @@
   links:
     - label: arxiv
       url: https://arxiv.org/abs/2609.38070
+    - label: code
+      url: https://github.com/szu-tera/DTC
   bib: /assets/bibtex/li2026probability.bib
 
 - id: zheng2026dysem
