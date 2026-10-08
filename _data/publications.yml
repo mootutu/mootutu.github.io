@@ -1,3 +1,12 @@
+- id: li2026probability
+  title: "Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs."
+  authors: "Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, <b>Weiqing Wang</b>, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, and Hui Huang."
+  venue: "arXiv preprint arXiv:2609.38070, 2026"
+  links:
+    - label: arxiv
+      url: https://arxiv.org/abs/2609.38070
+  bib: /assets/bibtex/li2026probability.bib
+
 - id: zheng2026dysem
   title: "DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity."
   authors: "Kaijie Zheng*, <b>Weiqin Wang*</b>, Yile Wang, and Hui Huang."
