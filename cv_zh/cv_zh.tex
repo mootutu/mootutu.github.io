@@ -1,0 +1,261 @@
+% !TEX program = xelatex
+%
+%Academic CV LaTeX Template (Chinese version)
+% Based on: cv/my_cv.tex
+%
+% Compile with: xelatex cv_zh.tex
+% NOTE: MUST be compiled with XeLaTeX (ctex Chinese support), NOT pdflatex.
+%
+
+\documentclass[a4paper,11pt]{article}
+
+% Package imports
+\usepackage[UTF8, fontset=mac]{ctex}
+\usepackage{latexsym}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{ragged2e}
+\usepackage[empty]{fullpage}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{geometry}
+\usepackage{marvosym}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{fontawesome5}
+
+% Color definitions
+\definecolor{darkblue}{RGB}{0,0,139}
+
+% Page layout
+\setlength{\multicolsep}{0pt}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
+\setlength{\footskip}{5pt} % Addressing fancyhdr warning
+
+% Hyperlink setup (moved after fancyhdr to address warning)
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    filecolor=darkblue,
+    urlcolor=darkblue,
+}
+
+% Custom box settings
+\usepackage[most]{tcolorbox}
+\tcbset{
+    frame code={},
+    center title,
+    left=0pt,
+    right=0pt,
+    top=0pt,
+    bottom=0pt,
+    colback=gray!20,
+    colframe=white,
+    width=\dimexpr\textwidth\relax,
+    enlarge left by=-2mm,
+    boxsep=4pt,
+    arc=0pt,outer arc=0pt,
+}
+
+% URL style
+\urlstyle{same}
+
+% Text alignment
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item{
+    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
+  }
+}
+
+\newcommand{\resumePOR}[3]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}}
+    \end{tabular*}
+    \vspace{-2mm}
+}
+
+\newcommand{\resumeSubheading}[4]{
+\vspace{0.5mm}\item
+    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & \textit{\footnotesize{#4}} \\
+        \textit{\footnotesize{#3}} &  \footnotesize{#2}\\
+    \end{tabular*}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeProject}[4]{
+\vspace{0.5mm}\item
+    \begin{tabularx}{0.98\textwidth}[t]{@{}Xr@{}}
+        \textbf{#1} & \textit{\footnotesize{#3}} \\
+        \footnotesize{\textit{#2}} & \footnotesize{#4}
+    \end{tabularx}
+    \vspace{-2.4mm}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand{\labelitemii}{$\vcenter{\hbox{\tiny$\circ$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm]}
+\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm,itemsep=0mm]}
+
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{2mm}}
+\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\cvsection}[1]{%
+\vspace{2mm}
+\begin{tcolorbox}
+    \textbf{\large #1}
+\end{tcolorbox}
+    \vspace{-4mm}
+}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
+\newcolumntype{C}{>{\centering\arraybackslash}X}%
+
+% Commands for icon sizing and positioning
+\newcommand{\socialicon}[1]{\raisebox{-0.05em}{\resizebox{!}{1em}{#1}}}
+\newcommand{\ieeeicon}[1]{\raisebox{-0.3em}{\resizebox{!}{1.3em}{#1}}}
+
+% Font options (Latin text)
+\newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
+\newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
+\newcommand{\headerfontiii}{\fontfamily{ppl}\selectfont} % Palatino (elegant serif)
+\newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
+\newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
+\newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
+\newcommand{\headerfontvii}{\fontfamily{qhv}\selectfont} % Quasi-Helvetica (another Arial/Calibri alternative)
+\newcommand{\headerfontviii}{\fontfamily{qpl}\selectfont} % Quasi-Palatino (another elegant serif option)
+\newcommand{\headerfontix}{\fontfamily{qtm}\selectfont} % Quasi-Times (another Times New Roman alternative)
+\newcommand{\headerfontx}{\fontfamily{bch}\selectfont} % Charter (clean serif font)
+
+\begin{document}
+\headerfontiii
+
+% Header
+\begin{center}
+    {\Huge\textbf{王伟钦}}
+\end{center}
+\vspace{-4.5mm}
+
+\begin{center}
+    \small
+    {\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}(+86) 187-6005-3825} |
+    \href{mailto:here1swqw@gmail.com}{{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}here1swqw@gmail.com}} |
+    \href{https://mootutu.github.io/}{{\color{black}{\footnotesize\faGlobe}\hspace*{0.13cm}mootutu.github.io}} |
+    {\color{black}{\footnotesize\faWeixin}\hspace*{0.13cm}mootutuu}
+\end{center}
+\vspace{-4.5mm}
+
+\begin{center}
+    \small
+    {\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}广东省深圳市南山区深圳大学沧海校区致腾楼 L6-711
+\end{center}
+
+% \vspace{-4mm}
+\vspace{-2mm}
+
+\section{\textbf{个人简介}}
+\vspace{1mm}
+\small{
+王伟钦，现为深圳大学计算机与软件学院硕士研究生（2025 年推免入学），导师为助理教授 \href{https://ylwangy.github.io/}{王祎乐}。研究方向为大语言模型后训练、测试时拓展与文本表征。
+}
+% \vspace{-1mm}
+\vspace{1mm}
+
+\section{\textbf{教育经历}}
+    \vspace{-0.4mm}
+    \resumeSubHeadingListStart
+
+    \resumeSubheading
+    {深圳大学}{中国，深圳}
+    {计算机科学与技术 硕士在读}{2025.09 -- 2028.06}
+    \text{导师：王祎乐 助理教授}
+
+    \resumeSubheading
+    {福建农林大学}{中国，福州}
+    {计算机科学与技术 工学学士}{2021.09 -- 2025.06}
+    \text{综合排名：1/128；绩点排名：3/128}
+
+    \resumeSubHeadingListEnd
+
+\vspace{-2mm}
+% \vspace{1mm}
+
+\section{\textbf{科研经历}}
+\vspace{-0.4mm}
+  \resumeSubHeadingListStart
+  \resumeSubheading
+      {深圳大学 可视计算研究中心（VCC）}{中国，深圳}
+      {科研实习生}{2024.10 -- 2025.08}
+      \resumeItemListStart
+        \item 师从助理教授 \href{https://ylwangy.github.io/}{王祎乐}。
+        \item 从事大语言模型推理与自洽性（self-consistency）方法相关研究。
+      \resumeItemListEnd
+  \resumeSubheading
+      {深圳大学}{中国，深圳}
+      {《编译原理》课程助教}{2025 春季学期、2026 春季学期}
+  \resumePOR{审稿人}{：ICLR (2027)}{}
+  \resumeSubHeadingListEnd
+
+\vspace{-2mm}
+
+
+\section{\textbf{论文发表}}
+\vspace{-0.4mm}
+\small{(* 同等贡献，\# 通讯作者)}
+\vspace{0.5mm}
+\resumeItemListStart
+  \item Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2609.38070}{Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}. \textit{arXiv Preprint}, 2026. [\href{https://github.com/szu-tera/DTC}{code}]
+  \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2605.29751}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
+  \item Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1858.pdf}{SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/SemPA}{code}]
+  \item \textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang. \href{https://aclanthology.org/2026.acl-long.1727.pdf}{Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}. \textit{In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}, 2026. [\href{https://github.com/szu-tera/SCOPE}{code}]
+  \item Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1736.pdf}{AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/AnchorMem}{code}]
+  \item \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2025.findings-acl.744/}{Ranked Voting based Self-Consistency of Large Language Models}. \textit{In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2025. [\href{https://github.com/szu-tera/RankedVotingSC}{code}]
+\resumeItemListEnd
+
+\vspace{-2mm}
+\section{\textbf{荣誉奖项}}
+    \resumeItemListStart
+    \item 国家奖学金（本科生）
+    \item 国家奖学金（硕士研究生）
+    \item 深圳大学硕士生学业奖学金（特等）
+    \item 福建农林大学本科生学业奖学金（一等）
+    \item 全国大学生数学建模竞赛二等奖
+    \item 美国大学生数学建模竞赛／交叉学科建模竞赛（MCM/ICM）Meritorious Winner（一等奖）
+    \resumeItemListEnd
+
+\vspace{-2mm}
+\section{\textbf{专业技能}}
+\vspace{-0.4mm}
+    \resumeItemListStart
+    \item \textbf{编程与机器学习：}Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
+    \item \textbf{工具：}Linux, Git, Office
+    \item \textbf{语言：}中文（母语）；英语（CET-4: 532；CET-6: 509；具备学术读写与日常交流能力）
+    \resumeItemListEnd
+
+\end{document}

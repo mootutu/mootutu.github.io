@@ -15,3 +15,4 @@ _site/
 *.run.xml
 *.synctex.gz
 *.toc
+*.xdv
