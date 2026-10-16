@@ -11,7 +11,13 @@
 
 % Package imports
 \usepackage[UTF8, fontset=none]{ctex} % fonts configured manually below (labmate's setup)
-\setmainfont{TeX Gyre Pagella} % Palatino clone; XeLaTeX has no TU/ppl, bold/italic would be lost
+\setmainfont{texgyrepagella}[ % Palatino clone, loaded by filename from TeX Live (portable)
+  Extension = .otf,
+  UprightFont = *-regular,
+  BoldFont = *-bold,
+  ItalicFont = *-italic,
+  BoldItalicFont = *-bolditalic,
+]
 % CJK font chain, identical to labmate's Chinese_version.tex:
 % prefers Noto Serif CJK SC / Source Han / PingFang when installed;
 % on Windows resolves to SimSun with AutoFakeBold (fake-bold Song, not SimHei) + AutoFakeSlant
@@ -212,7 +218,7 @@
     {计算机科学与技术 硕士（推免）}{2025.09 -- 2028.06}
     \resumeItemListStart
       \item 研究方向：大语言模型后训练、测试时拓展与文本表征
-      \item 导师：王祎乐 助理教授
+      \item 导师：\href{https://ylwangy.github.io/}{王祎乐} 助理教授
     \resumeItemListEnd
 
     \resumeSubheading
@@ -231,7 +237,7 @@
       {深圳大学 可视计算研究中心（VCC）}{中国，深圳}
       {科研实习生}{2024.10 -- 2025.08}
       \resumeItemListStart
-        \item 师从助理教授 \href{https://ylwangy.github.io/}{王祎乐}。
+        \item 导师：\href{https://ylwangy.github.io/}{王祎乐} 助理教授
         \item 从事大语言模型推理与自洽性（self-consistency）方法相关研究。
       \resumeItemListEnd
   \resumeSubheading
