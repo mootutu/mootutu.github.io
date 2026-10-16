@@ -10,7 +10,23 @@
 \documentclass[a4paper,11pt]{article}
 
 % Package imports
-\usepackage[UTF8, fontset=mac]{ctex}
+\usepackage[UTF8, fontset=none]{ctex} % fonts configured manually below (labmate's setup)
+\setmainfont{TeX Gyre Pagella} % Palatino clone; XeLaTeX has no TU/ppl, bold/italic would be lost
+% CJK font chain, identical to labmate's Chinese_version.tex:
+% prefers Noto Serif CJK SC / Source Han / PingFang when installed;
+% on Windows resolves to SimSun with AutoFakeBold (fake-bold Song, not SimHei) + AutoFakeSlant
+\newcommand{\setchinesefont}{%
+  \IfFontExistsTF{Noto Serif CJK SC}{\setCJKmainfont{Noto Serif CJK SC}}{%
+  \IfFontExistsTF{Noto Sans CJK SC}{\setCJKmainfont{Noto Sans CJK SC}}{%
+  \IfFontExistsTF{Source Han Serif SC}{\setCJKmainfont{Source Han Serif SC}}{%
+  \IfFontExistsTF{Source Han Sans SC}{\setCJKmainfont{Source Han Sans SC}}{%
+  \IfFontExistsTF{PingFang SC}{\setCJKmainfont{PingFang SC}}{%
+  \IfFontExistsTF{Songti SC}{\setCJKmainfont{Songti SC}}{%
+  \IfFontExistsTF{SimSun}{\setCJKmainfont[AutoFakeBold=2.5,AutoFakeSlant=0.2]{SimSun}}{%
+  \IfFontExistsTF{Microsoft YaHei}{\setCJKmainfont[AutoFakeBold=2.5,AutoFakeSlant=0.2]{Microsoft YaHei}}{%
+  }}}}}}}}
+}
+\setchinesefont
 \usepackage{latexsym}
 \usepackage{xcolor}
 \usepackage{float}
@@ -144,7 +160,7 @@
 % Font options (Latin text)
 \newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
 \newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
-\newcommand{\headerfontiii}{\fontfamily{ppl}\selectfont} % Palatino (elegant serif)
+\newcommand{\headerfontiii}{\normalfont} % main font already TeX Gyre Pagella via fontspec
 \newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
 \newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
 \newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
@@ -167,7 +183,7 @@
     {\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}(+86) 187-6005-3825} |
     \href{mailto:here1swqw@gmail.com}{{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}here1swqw@gmail.com}} |
     \href{https://mootutu.github.io/}{{\color{black}{\footnotesize\faGlobe}\hspace*{0.13cm}mootutu.github.io}} |
-    {\color{black}{\footnotesize\faWeixin}\hspace*{0.13cm}mootutuu}
+    \href{https://scholar.google.com/citations?user=JonSUasAAAAJ}{{\color{black}{\footnotesize\faGraduationCap}\hspace*{0.13cm}谷歌学术}}
 \end{center}
 \vspace{-4.5mm}
 
@@ -179,13 +195,13 @@
 % \vspace{-4mm}
 \vspace{-2mm}
 
-\section{\textbf{个人简介}}
-\vspace{1mm}
-\small{
-王伟钦，现为深圳大学计算机与软件学院硕士研究生（2025 年推免入学），导师为助理教授 \href{https://ylwangy.github.io/}{王祎乐}。研究方向为大语言模型后训练、测试时拓展与文本表征。
-}
+% \section{\textbf{个人简介}}
+% \vspace{1mm}
+% \small{
+% 本人现为深圳大学 2025 级推免入学的硕士研究生，研究方向为大语言模型后训练、测试时拓展与文本表征。
+% }
 % \vspace{-1mm}
-\vspace{1mm}
+% \vspace{1mm}
 
 \section{\textbf{教育经历}}
     \vspace{-0.4mm}
@@ -193,13 +209,15 @@
 
     \resumeSubheading
     {深圳大学}{中国，深圳}
-    {计算机科学与技术 硕士在读}{2025.09 -- 2028.06}
-    \text{导师：王祎乐 助理教授}
+    {计算机科学与技术 硕士（推免）}{2025.09 -- 2028.06}
+    \resumeItemListStart
+      \item 研究方向：大语言模型后训练、测试时拓展与文本表征
+      \item 导师：王祎乐 助理教授
+    \resumeItemListEnd
 
     \resumeSubheading
     {福建农林大学}{中国，福州}
     {计算机科学与技术 工学学士}{2021.09 -- 2025.06}
-    \text{综合排名：1/128；绩点排名：3/128}
 
     \resumeSubHeadingListEnd
 
@@ -231,11 +249,41 @@
 \vspace{0.5mm}
 \resumeItemListStart
   \item Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2609.38070}{Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}. \textit{arXiv Preprint}, 2026. [\href{https://github.com/szu-tera/DTC}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}大模型思维链推理能力增强后，评估与校准其推理置信度、量化答案不确定性愈发重要；现有方法多依赖部分关键 token 的概率，但其内在机制仍不清晰。
+      \item \textit{方法：}提出 Divergent Token Confidence（DTC）框架，用同一推理轨迹上两个模型 next-token 分布的 Jensen--Shannon 散度识别“分歧 token”，并统计其数量来估计置信度；无需训练、不改变生成过程，同时支持白盒与黑盒（借助辅助模型）两种设置。
+      \item \textit{表现：}在多个模型家族、六个数学基准上优于基于概率与口头表达的基线；白盒下仅凭计数即把平均期望校准误差降至 13.0\%（标准全序列方法为 32.7\%--42.4\%），黑盒下在 DeepSeek-V3.2 上由 32.1\%--40.2\% 降至 13.7\%--16.3\%。
+    \end{itemize}
   \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2605.29751}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}语义文本相似度（STS）是 NLP 的基础任务。当前基于 LLM 的方法通常固定提取末层隐状态、对所有文本对以固定维度计算相似度，存在两点局限：末层隐状态编码的是通用知识而非纯语义知识；隐层维度普遍很大，为语义表示引入冗余与噪声。
+      \item \textit{方法：}提出免训练框架 DySem，基于“文本核心语义在翻译间保持不变”的直觉，通过多语言共识挖掘 LLM 内部更与语义相关的组件，并放弃静态表示空间，为每对文本构建依赖输入的联合语义集，仅在该共享维度子集上计算相似度。
+      \item \textit{表现：}在七个标准 STS 基准、十种 LLM 上取得最佳/次佳平均成绩，显著优于 AlignedWVA（配对 t 检验 $p=4.4\times10^{-12}$），指令微调模型上平均提升 4.55 分；平均仅约 1000 维或更少即可取得有竞争力的效果。
+    \end{itemize}
   \item Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1858.pdf}{SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/SemPA}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}传统句子表征方法基于非生成式预训练模型做 token 级对比学习；近期基于生成式 LLM 的方法要么依赖固定 prompt 模板（未对模型进一步优化、性能受限），要么改动模型结构（改变内部计算机制、损害生成能力）。
+      \item \textit{方法：}提出 SemPA，通过语义偏好对齐在保留 LLM 生成能力的同时提升句子表征：在复述生成任务上应用句子级直接偏好优化（DPO），使模型学会判别语义等价的句子，并在 Plackett-Luce 模型框架下建立了 DPO 与对比学习的形式化联系。
+      \item \textit{表现：}在语义文本相似度任务及多项 LLM 基准上均取得更好的语义表征，且不牺牲模型固有的生成能力。
+    \end{itemize}
   \item \textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang. \href{https://aclanthology.org/2026.acl-long.1727.pdf}{Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}. \textit{In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}, 2026. [\href{https://github.com/szu-tera/SCOPE}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}测试时强化学习以多数投票结果作为伪标签，降低对标注数据的依赖，是 RLVR 的互补方向；但该投票策略易引发确认偏差、且奖励稀疏，限制了整体性能。
+      \item \textit{方法：}提出框架 SCOPE，将步级置信度融入伪标签估计，优先选择高质量推理路径而非简单计频；并在推理质量与探索多样性之间权衡，把候选输出池动态划分为相互独立的子群，对每个子群重复采样得到局部共识，提供多样化的监督目标以鼓励更广探索。
+      \item \textit{表现：}在多种模型与基准上一致优于近期基线；在挑战性的 AIME 2025 上相对提升 13.1\%，在 AMC 上提升 8.1\%。
+    \end{itemize}
   \item Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1736.pdf}{AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/AnchorMem}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}LLM 虽在复杂任务上表现优异，但在长期交互中仍需记忆系统来利用历史经验。现有方法（如 A-Mem、Mem0）过度依赖频繁改写来组织交互，而对摘要的过度依赖会稀释关键上下文细节、模糊关键检索特征。
+      \item \textit{方法：}受认知科学“普鲁斯特效应”（特定锚点触发整体回忆）启发，提出 AnchorMem，将检索单元与生成上下文解耦：从历史中抽取原子事实作为检索锚点，并保留原始上下文作为不可变上下文；构建带高阶事件连接的关联事件图，把相关事实绑定为共享事件表示。检索时以事实与事件为锚定位相关记忆，再用关联的原始文本块与事件重建上下文。
+      \item \textit{表现：}在 LoCoMo 基准上，跨三种闭源与开源模型显著优于基线，在实现细粒度检索的同时保持交互上下文的完整性。
+    \end{itemize}
   \item \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2025.findings-acl.744/}{Ranked Voting based Self-Consistency of Large Language Models}. \textit{In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2025. [\href{https://github.com/szu-tera/RankedVotingSC}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{背景：}多数投票被视为增强思维链推理的有效方法，即选择不同推理路径中“自洽性”最高的答案；但已有方法每次试验通常只生成单一答案，忽略了其他潜在答案，使这些备选答案在后续投票中被丢弃。
+      \item \textit{方法：}提出在每次推理过程中生成排序答案，并在多条响应的排序答案之间进行排序投票，使整体自洽性更可靠；具体采用即时决胜制、Borda 计数与平均倒数秩三种排序投票方法。
+      \item \textit{表现：}在六个数据集（三个多选题与三个开放式问答）上，使用开源与闭源 LLM 均优于基线，展现出利用排序答案信息、通过排序投票提升推理性能的潜力。
+    \end{itemize}
 \resumeItemListEnd
 
 \vspace{-2mm}
@@ -249,13 +297,13 @@
     \item 美国大学生数学建模竞赛／交叉学科建模竞赛（MCM/ICM）Meritorious Winner（一等奖）
     \resumeItemListEnd
 
-\vspace{-2mm}
-\section{\textbf{专业技能}}
-\vspace{-0.4mm}
-    \resumeItemListStart
-    \item \textbf{编程与机器学习：}Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
-    \item \textbf{工具：}Linux, Git, Office
-    \item \textbf{语言：}中文（母语）；英语（CET-4: 532；CET-6: 509；具备学术读写与日常交流能力）
-    \resumeItemListEnd
+% \vspace{-2mm}
+% \section{\textbf{专业技能}}
+% \vspace{-0.4mm}
+%     \resumeItemListStart
+%     \item \textbf{编程与机器学习：}Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
+%     \item \textbf{工具：}Linux, Git, Office
+%     \item \textbf{语言：}中文（母语）；英语（CET-4: 532；CET-6: 509；具备学术读写与日常交流能力）
+%     \resumeItemListEnd
 
 \end{document}

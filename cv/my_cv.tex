@@ -171,7 +171,7 @@
     {\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}(+86) 187-6005-3825} |
     \href{mailto:here1swqw@gmail.com}{{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}here1swqw@gmail.com}} |
     \href{https://mootutu.github.io/}{{\color{black}{\footnotesize\faGlobe}\hspace*{0.13cm}mootutu.github.io}} |
-    {\color{black}{\footnotesize\faWeixin}\hspace*{0.13cm}mootutuu}
+    \href{https://scholar.google.com/citations?user=JonSUasAAAAJ}{{\color{black}{\footnotesize\faGraduationCap}\hspace*{0.13cm}Google Scholar}}
 \end{center}
 \vspace{-4.5mm}
 
@@ -192,15 +192,15 @@
 % \vspace{-4mm}
 \vspace{-2mm}
 
-\section{\textbf{About}}
-\vspace{1mm}
-\small{
-Weiqin Wang is currently a master's student at the College of Computer Science and Software Engineering, Shenzhen University (admitted through the 2025 recommended exemption program), advised by Assistant Professor \href{https://ylwangy.github.io/}{Yile Wang}. His research interests include LLM post-training, test-time scaling, and text representations.
-}
+% \section{\textbf{About}}
+% \vspace{1mm}
+% \small{
+% I am currently a master's student admitted through the 2025 recommended exemption program. My research interests include LLM post-training, test-time scaling, and text representations.
+% }
 % \vspace{-1mm}
-\vspace{1mm}
+% \vspace{1mm}
 
-        
+
 
 \section{\textbf{Education}}
     \vspace{-0.4mm}
@@ -208,13 +208,15 @@ Weiqin Wang is currently a master's student at the College of Computer Science a
 
     \resumeSubheading
     {Shenzhen University}{Shenzhen, China}
-    {M.Sc. Candidate in Computer Science and Technology}{Sept. 2025 -- June 2028}
-    \text{Advisor: Assistant Prof. \href{https://ylwangy.github.io/}{Yile Wang}}
+    {M.Sc. in Computer Science and Technology (Recommended Exemption)}{Sept. 2025 -- June 2028}
+    \resumeItemListStart
+      \item Research Interests: LLM post-training, test-time scaling, and text representations
+      \item Advisor: Assistant Prof. \href{https://ylwangy.github.io/}{Yile Wang}
+    \resumeItemListEnd
 
     \resumeSubheading
     {Fujian Agriculture and Forestry University}{Fuzhou, China}
     {B.Sc. in Computer Science and Technology}{Sept. 2021 -- June 2025}
-    \text{Overall ranking: 1/128; GPA ranking: 3/128}
 
     \resumeSubHeadingListEnd
 
@@ -246,11 +248,41 @@ Weiqin Wang is currently a master's student at the College of Computer Science a
 \vspace{0.5mm}
 \resumeItemListStart
   \item Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqing Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2609.38070}{Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}. \textit{arXiv Preprint}, 2026. [\href{https://github.com/szu-tera/DTC}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} As chain-of-thought reasoning improves, evaluating and calibrating LLM reasoning confidence---quantifying answer uncertainty---becomes increasingly important; current methods rely on probabilities of selected key tokens, yet the underlying mechanism remains unclear.
+      \item \textit{Method:} Proposes Divergent Token Confidence (DTC), which estimates confidence by counting tokens where two models strongly disagree during decoding, identified via the Jensen--Shannon divergence between next-token distributions along the same reasoning trajectory; it requires no training, leaves generation unaffected, and supports both white-box and black-box (auxiliary-model) settings.
+      \item \textit{Performance:} Outperforms probability-based and verbalized baselines across multiple model families and six mathematical benchmarks; under white-box evaluation a count-only estimator reaches 13.0\% average expected calibration error, versus 32.7\%--42.4\% for standard full-sequence confidence, and in black-box settings it drops from 32.1\%--40.2\% to 13.7\%--16.3\% on DeepSeek-V3.2.
+    \end{itemize}
   \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2605.29751}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} Semantic textual similarity (STS) is a foundational NLP task; current LLM-based methods extract fixed last-layer hidden states and compute similarity with fixed dimensions for every text pair, which suffers from two limitations: the last layer encodes general rather than purely semantic knowledge, and its large dimensionality introduces redundancy and noise.
+      \item \textit{Method:} A training-free framework, DySem, that uncovers more semantic-related internal components of LLMs via multilingual consensus (exploiting the fact that a text's core meaning is invariant across translations), and replaces static representation spaces with a text-pair-dependent joint semantic set over which similarity is computed.
+      \item \textit{Performance:} Achieves best/second-best average results across ten LLMs on seven standard STS benchmarks, significantly outperforming AlignedWVA (paired t-test, $p=4.4\times10^{-12}$) with an average gain of 4.55 points on instruction-tuned models, while using only about 1,000 dimensions or fewer on average.
+    \end{itemize}
   \item Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1858.pdf}{SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/SemPA}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} Traditional sentence embedding methods apply token-level contrastive learning on non-generative pre-trained models; recent LLM-based embedding methods either rely on fixed prompt templates (limited performance, no further model optimization) or modify the model architecture, altering internal computation and compromising generative ability.
+      \item \textit{Method:} Proposes SemPA, which boosts sentence representations while preserving LLM generative ability via semantic preference alignment: sentence-level Direct Preference Optimization on a paraphrase generation task teaches the model to discriminate semantically equivalent sentences, with a formal connection between DPO and contrastive learning established under the Plackett-Luce model.
+      \item \textit{Performance:} Achieves better semantic representations on semantic textual similarity tasks and various LLM benchmarks without sacrificing the inherent generation capability of LLMs.
+    \end{itemize}
   \item \textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang. \href{https://aclanthology.org/2026.acl-long.1727.pdf}{Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}. \textit{In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}, 2026. [\href{https://github.com/szu-tera/SCOPE}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} Test-time reinforcement learning uses majority-voting results as pseudo-labels to reduce reliance on annotated data, complementing RLVR, but this voting strategy induces confirmation bias and sparse rewards that limit overall performance.
+      \item \textit{Method:} Proposes SCOPE, which integrates step-wise confidence into pseudo-label estimation to prioritize high-quality reasoning paths over simple frequency counts, and dynamically partitions the candidate output pool into independent subgroups by balancing reasoning quality against exploration diversity, where repeated sampling yields local consensus and thus diverse supervision targets for broader exploration.
+      \item \textit{Performance:} Consistently outperforms recent baselines across models and benchmarks, achieving relative improvements of 13.1\% on AIME 2025 and 8.1\% on AMC.
+    \end{itemize}
   \item Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1736.pdf}{AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/AnchorMem}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} LLMs perform well on complex tasks but still need a memory system to leverage historical experience in long-term interactions; existing methods (e.g., A-Mem, Mem0) rely heavily on frequently rewriting interactions, and this over-reliance on summarization risks diluting contextual nuances and obscuring key retrieval features.
+      \item \textit{Method:} Inspired by the Proust Phenomenon in cognitive science, AnchorMem decouples the retrieval unit from the generation context: it extracts atomic facts as retrieval anchors while preserving raw contexts as immutable context, and builds an associative event graph with higher-order event links that bind related facts into shared event representations; retrieval anchors queries to facts and events but reconstructs context from the associated raw chunks and events.
+      \item \textit{Performance:} Significantly outperforms baselines on the LoCoMo benchmark across three closed-source and open-source models, reconciling fine-grained retrieval with the contextual integrity of interactions.
+    \end{itemize}
   \item \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2025.findings-acl.744/}{Ranked Voting based Self-Consistency of Large Language Models}. \textit{In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2025. [\href{https://github.com/szu-tera/RankedVotingSC}{code}]
+    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
+      \item \textit{Background:} Majority voting is considered an effective way to enhance chain-of-thought reasoning by selecting the answer with the highest self-consistency across reasoning paths, but previous methods generate only a single answer per trial, ignoring other potential answers that are then discarded in the voting process.
+      \item \textit{Method:} Proposes generating ranked answers within each reasoning process and conducting ranked voting among the ranked answers from different responses to make overall self-consistency more reliable, using three ranked-voting methods: instant-runoff, Borda count, and mean reciprocal rank.
+      \item \textit{Performance:} Outperforms baselines on six datasets (three multiple-choice and three open-ended QA tasks) with both open-source and closed-source LLMs, showing the potential of leveraging ranked-answer information to improve reasoning performance.
+    \end{itemize}
 \resumeItemListEnd
 
 \vspace{-2mm}
@@ -264,14 +296,14 @@ Weiqin Wang is currently a master's student at the College of Computer Science a
     \item Meritorious Winner, Mathematical Contest in Modeling/Interdisciplinary Contest in Modeling (MCM/ICM), USA
     \resumeItemListEnd
 
-\vspace{-2mm}
-\section{\textbf{Skills}}
-\vspace{-0.4mm}
-    \resumeItemListStart
-    \item \textbf{Programming and ML:} Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
-    \item \textbf{Tools:} Linux, Git, Office
-    \item \textbf{Languages:} Chinese (Native), English (CET-4: 532; CET-6: 509; academic reading, writing, and daily communication)
-    \resumeItemListEnd
+% \vspace{-2mm}
+% \section{\textbf{Skills}}
+% \vspace{-0.4mm}
+%     \resumeItemListStart
+%     \item \textbf{Programming and ML:} Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
+%     \item \textbf{Tools:} Linux, Git, Office
+%     \item \textbf{Languages:} Chinese (Native), English (CET-4: 532; CET-6: 509; academic reading, writing, and daily communication)
+%     \resumeItemListEnd
 
 % \section{\textbf{Patents and Publications} \hfill \textcolor{darkblue}{\scriptsize C=Conference, J=Journal, P=Patent, S=In Submission, T=Thesis}}
 % \vspace{0.2mm}
