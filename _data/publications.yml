@@ -14,8 +14,8 @@
   authors: "Kaijie Zheng*, <b>Weiqin Wang*</b>, Yile Wang, and Hui Huang."
   venue: "To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (<b>EMNLP</b>), 2026"
   links:
-    - label: arxiv
-      url: https://arxiv.org/abs/2605.29751
+    - label: pdf
+      url: https://aclanthology.org/2026.emnlp-main.2596.pdf
     - label: code
       url: https://github.com/szu-tera/DySem
   bib: /assets/bibtex/zheng2026dysem.bib

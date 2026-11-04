@@ -260,7 +260,7 @@
       \item \textit{方法：}提出 Divergent Token Confidence（DTC）框架，用同一推理轨迹上两个模型 next-token 分布的 Jensen--Shannon 散度识别“分歧 token”，并统计其数量来估计置信度；无需训练、不改变生成过程，同时支持白盒与黑盒（借助辅助模型）两种设置。
       \item \textit{表现：}在多个模型家族、六个数学基准上优于基于概率与口头表达的基线；白盒下仅凭计数即把平均期望校准误差降至 13.0\%（标准全序列方法为 32.7\%--42.4\%），黑盒下在 DeepSeek-V3.2 上由 32.1\%--40.2\% 降至 13.7\%--16.3\%。
     \end{itemize}
-  \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2605.29751}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
+  \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.emnlp-main.2596.pdf}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
     \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
       \item \textit{背景：}语义文本相似度（STS）是 NLP 的基础任务。当前基于 LLM 的方法通常固定提取末层隐状态、对所有文本对以固定维度计算相似度，存在两点局限：末层隐状态编码的是通用知识而非纯语义知识；隐层维度普遍很大，为语义表示引入冗余与噪声。
       \item \textit{方法：}提出免训练框架 DySem，基于“文本核心语义在翻译间保持不变”的直觉，通过多语言共识挖掘 LLM 内部更与语义相关的组件，并放弃静态表示空间，为每对文本构建依赖输入的联合语义集，仅在该共享维度子集上计算相似度。
