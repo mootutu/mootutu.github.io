@@ -1,5 +1,8 @@
 ---
 layout: learning-topic-layout
+eyebrow: Research notes
+illo: reading
+hide_back: true
 title: "Paper Reading Library"
 description: "A searchable collection of paper findings, evidence, limitations, and research insights."
 topic: paper-reading
@@ -7,15 +10,14 @@ order: 3
 lang: en
 ---
 
-{% include learning_topic_header.html %}
-
 {% assign papers = site.pages | where: "layout", "learning-post-layout" | where: "topic", "paper-reading" | sort: "date" | reverse %}
 
-<div class="paper-library-toolbar" aria-label="Paper filters">
-  <label class="paper-search-label" for="paper-search">Search papers</label>
-  <input id="paper-search" type="search" placeholder="Title, author, finding, method, dataset, tag..." autocomplete="off">
-
-  <div class="paper-filter-row">
+<div class="library-toolbar" role="search" aria-label="Filter papers">
+  <div class="field field--grow">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="paper-search" type="search" placeholder="Title, author, finding, method, dataset, tag…" autocomplete="off" aria-label="Search papers">
+  </div>
+  <div class="field">
     <label for="paper-status">Status</label>
     <select id="paper-status">
       <option value="">All</option>
@@ -25,7 +27,8 @@ lang: en
       <option value="reproduced">Reproduced</option>
       <option value="integrated">Integrated</option>
     </select>
-
+  </div>
+  <div class="field">
     <label for="paper-relevance">Relevance</label>
     <select id="paper-relevance">
       <option value="">All</option>
@@ -34,185 +37,41 @@ lang: en
       <option value="low">Low</option>
     </select>
   </div>
-
-  <p id="paper-result-count" class="paper-result-count" aria-live="polite"></p>
+  <p id="paper-result-count" class="library-count" aria-live="polite"></p>
 </div>
 
-<div id="paper-list" class="paper-list">
+<ul id="paper-list" class="paper-list">
   {% for paper in papers %}
   {% capture searchable %}{{ paper.title }} {{ paper.authors | join: ' ' }} {{ paper.tags | join: ' ' }} {{ paper.methods | join: ' ' }} {{ paper.datasets | join: ' ' }} {{ paper.models | join: ' ' }} {{ paper.one_line_summary }} {{ paper.content | strip_html | strip_newlines }}{% endcapture %}
-  <article class="paper-card"
+  <li class="paper-card" data-reveal
     data-search="{{ searchable | downcase | escape }}"
     data-status="{{ paper.status | default: 'unread' | downcase }}"
     data-relevance="{{ paper.relevance | default: 'medium' | downcase }}">
-    <div class="paper-card-heading">
-      <div class="paper-card-title"><a href="{{ paper.url | relative_url }}">{{ paper.title }}</a></div>
-      <span class="paper-status">{{ paper.status | default: "unread" }}</span>
-    </div>
-    <p class="paper-authors">{{ paper.authors | join: ", " }}{% if paper.paper_year %} · {{ paper.paper_year }}{% endif %}</p>
-    {% if paper.one_line_summary %}<p class="paper-summary">{{ paper.one_line_summary }}</p>{% endif %}
-    <div class="paper-tags">
-      {% for tag in paper.tags %}<span>{{ tag }}</span>{% endfor %}
-    </div>
-  </article>
+    <a href="{{ paper.url | relative_url }}">
+      <div class="paper-card__head">
+        <h2 class="paper-card__title">{{ paper.title }}</h2>
+        <span class="paper-card__badges">
+          <span class="venue-tag venue-tag--muted">{{ paper.status | default: "unread" }}</span>
+          {% if paper.relevance == 'high' %}<span class="venue-tag">high relevance</span>{% endif %}
+        </span>
+      </div>
+      <p class="paper-card__authors">{{ paper.authors | join: ", " }}{% if paper.paper_year %} · {{ paper.paper_year }}{% endif %}</p>
+      {% if paper.one_line_summary %}<p class="paper-card__summary">{{ paper.one_line_summary }}</p>{% endif %}
+      <div class="tag-list">
+        {% for tag in paper.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+      </div>
+    </a>
+  </li>
   {% endfor %}
-</div>
+</ul>
+<p id="paper-empty" class="empty-note" hidden>No papers match the current filters.</p>
 
-<p id="paper-empty" class="paper-empty" hidden>No papers match the current filters.</p>
-
-<h2>Maintenance workflow</h2>
-
-<ol>
-  <li>Copy <code>_templates/paper_reading_template.md</code> into <code>learning/paper-reading/</code>.</li>
-  <li>Name it with a stable identifier, for example <code>2603.25450-short-title.md</code>.</li>
-  <li>Record claims together with evidence, experimental conditions, and confidence.</li>
-  <li>Use a small controlled tag vocabulary so search results remain consistent.</li>
-</ol>
-
-<style>
-  .paper-library-toolbar {
-    margin: 1.5rem 0 2rem;
-    padding: 1rem;
-    border: 1px solid rgba(127, 127, 127, 0.28);
-    border-radius: 8px;
-  }
-
-  .paper-search-label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 600;
-  }
-
-  #paper-search,
-  .paper-filter-row select {
-    box-sizing: border-box;
-    border: 1px solid rgba(127, 127, 127, 0.4);
-    border-radius: 6px;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-  }
-
-  #paper-search {
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-  }
-
-  .paper-filter-row {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-top: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .paper-filter-row select {
-    min-width: 9rem;
-    padding: 0.45rem 0.6rem;
-    margin-right: 0.6rem;
-  }
-
-  .paper-result-count {
-    margin: 0.8rem 0 0;
-    color: #777;
-    font-size: 0.92rem;
-  }
-
-  .paper-list {
-    display: grid;
-    gap: 0.9rem;
-  }
-
-  .paper-card {
-    padding: 1rem;
-    border: 1px solid rgba(127, 127, 127, 0.25);
-    border-radius: 8px;
-  }
-
-  .paper-card-heading {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .paper-card-title {
-    margin: 0;
-    font-size: 1.12rem;
-    font-weight: 600;
-  }
-
-  .paper-status,
-  .paper-tags span {
-    display: inline-block;
-    padding: 0.15rem 0.45rem;
-    border: 1px solid rgba(127, 127, 127, 0.3);
-    border-radius: 999px;
-    font-size: 0.78rem;
-    white-space: nowrap;
-  }
-
-  .paper-authors {
-    margin: 0.45rem 0;
-    color: #777;
-    font-size: 0.9rem;
-  }
-
-  .paper-summary {
-    margin: 0.55rem 0;
-  }
-
-  .paper-tags {
-    display: flex;
-    gap: 0.35rem;
-    flex-wrap: wrap;
-  }
-
-  .paper-empty {
-    padding: 1rem 0;
-    color: #777;
-  }
-
-  @media (max-width: 620px) {
-    .paper-card-heading {
-      display: block;
-    }
-
-    .paper-status {
-      margin-top: 0.5rem;
-    }
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const search = document.getElementById('paper-search');
-    const status = document.getElementById('paper-status');
-    const relevance = document.getElementById('paper-relevance');
-    const cards = Array.from(document.querySelectorAll('.paper-card'));
-    const count = document.getElementById('paper-result-count');
-    const empty = document.getElementById('paper-empty');
-
-    function filterPapers() {
-      const query = search.value.trim().toLowerCase();
-      let visible = 0;
-
-      cards.forEach(function (card) {
-        const matchesQuery = !query || card.dataset.search.includes(query);
-        const matchesStatus = !status.value || card.dataset.status === status.value;
-        const matchesRelevance = !relevance.value || card.dataset.relevance === relevance.value;
-        const show = matchesQuery && matchesStatus && matchesRelevance;
-        card.hidden = !show;
-        if (show) visible += 1;
-      });
-
-      count.textContent = visible + (visible === 1 ? ' paper' : ' papers');
-      empty.hidden = visible !== 0;
-    }
-
-    search.addEventListener('input', filterPapers);
-    status.addEventListener('change', filterPapers);
-    relevance.addEventListener('change', filterPapers);
-    filterPapers();
-  });
-</script>
+<section class="prose prose-section">
+  <h2>Maintenance workflow</h2>
+  <ol>
+    <li>Copy <code>_templates/paper_reading_template.md</code> into <code>learning/paper-reading/</code>.</li>
+    <li>Name it with a stable identifier, for example <code>2603.25450-short-title.md</code>.</li>
+    <li>Record claims together with evidence, experimental conditions, and confidence.</li>
+    <li>Use a small controlled tag vocabulary so search results remain consistent.</li>
+  </ol>
+</section>

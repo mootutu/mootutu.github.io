@@ -1,0 +1,55 @@
+<ol class="pub-list">
+  {% for pub in site.data.publications %}
+  {% assign venue_text = pub.venue | strip_html %}
+  {% assign year = venue_text | slice: -4, 4 %}
+  {% if pub.venue contains '<b>' %}
+    {% assign venue_short = pub.venue | split: '<b>' | last | split: '</b>' | first %}
+    {% assign is_preprint = false %}
+  {% else %}
+    {% assign venue_short = 'Preprint' %}
+    {% assign is_preprint = true %}
+  {% endif %}
+  {% assign title = pub.title %}
+  {% assign last_char = title | slice: -1, 1 %}
+  {% if last_char == '.' %}
+    {% assign title_len = title.size | minus: 1 %}
+    {% assign title = title | slice: 0, title_len %}
+  {% endif %}
+  <li class="pub" data-reveal>
+    <div class="pub__venue">
+      <span class="venue-tag{% if is_preprint %} venue-tag--muted{% endif %}">{{ venue_short }}</span>
+      <span class="pub__year">{{ year }}</span>
+    </div>
+    <div>
+      <h3 class="pub__title">
+        {% if pub.links and pub.links.size > 0 %}
+        <a href="{{ pub.links[0].url }}" target="_blank" rel="noopener">{{ title }}</a>
+        {% else %}{{ title }}{% endif %}
+      </h3>
+      <p class="pub__authors">{{ pub.authors }}</p>
+      <p class="pub__full-venue">{{ pub.venue }}</p>
+      <div class="pub__links">
+        {% for link in pub.links %}
+        <a class="chip" href="{{ link.url }}" target="_blank" rel="noopener">{{ link.label }}
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg>
+        </a>
+        {% endfor %}
+        {% if pub.bib %}
+        <button class="chip" type="button" data-bib="{{ pub.bib }}">bibtex</button>
+        {% endif %}
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+
+<dialog class="dialog" id="bib-dialog" aria-labelledby="bib-dialog-title">
+  <div class="dialog__head">
+    <h2 id="bib-dialog-title">BibTeX</h2>
+    <div class="dialog__actions">
+      <button class="chip" type="button" id="bib-copy">Copy</button>
+      <button class="chip" type="button" id="bib-close" aria-label="Close">Close</button>
+    </div>
+  </div>
+  <pre>Loading…</pre>
+</dialog>

@@ -1,170 +1,275 @@
 ---
-layout: default
+layout: base
 lang: en
+description: "Weiqin Wang — master's student at Shenzhen University working on large language models."
 ---
-<style>
-  /* Modal Styling */
-  .modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1000;
-    /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */
-  }
 
-  .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    /* 10% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    /* Could be more or less, depending on screen size */
-    max-width: 700px;
-    border-radius: 8px;
-    position: relative;
-  }
-
-  .close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-
-  .close-button:hover,
-  .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  #bibtex-modal-content pre {
-    white-space: pre;
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 5px;
-    max-height: 400px;
-    /* Limit height and enable scroll if content is too long */
-    overflow: auto;
-  }
-</style>
-
-<!-- [<a href="https://scholar.google.com/citations?user=v1YnW6gAAAAJ&hl=en" target="_blank">Google Scholar</a>] -->
-<h2>Publications 📄</h2> <!-- 论文 -->
-(<b>*</b> equal contribution, <b>#</b> corresponding author)
-
-{% include publications.html %}
-
-<!-- Publications are rendered from _data/publications.yml -->
-
-<hr>
-<h2>Award 🏆</h2> <!-- 奖项 -->
-
-<ul>
-  <li><b>National Scholarship for Undergraduate Students</b></li>
-  <li><b>Special Academic Scholarship for Master's Students</b>, Shenzhen University</li>
-  <li><b>First-Class Academic Scholarship for Undergraduate Students</b>, Fujian Agriculture and Forestry University</li>
-  <li><b>Second Prize</b>, National Undergraduate Mathematical Contest in Modeling</li>
-  <li><b>Meritorious Winner</b>, Mathematical Contest in Modeling/Interdisciplinary Contest in Modeling (MCM/ICM), USA
-  </li>
-</ul>
-
-<hr>
-<h2>Academic &amp; Professional Services</h2>
-<ul>
-  <li>Reviewer: ICLR (2027)</li>
-  <li><b>Principles of Compilation</b>, Teaching Assistant, Spring 2025<br />Main responsibilities: experiment design,
-    lab instruction, grading, and answering students' questions.</li>
-</ul>
-
-<hr>
-<h2>Education 🎓</h2> <!-- 学习经历 -->
-<ul>
-  <li><b>B.Sc.</b> in Computer Science and Technology, College of Computer and Information, <b>Fujian Agriculture and
-      Forestry University</b>, 2021.09-2025.06, Fuzhou, China.</li>
-  <i>Overall ranking: <b>1/128</b> (0.78%); GPA ranking: <b>3/128</b> (2.34%). </i>
-  <li><b>M.Sc. candidate</b> in Computer Science and Technology, College of Computer Science and Software Engineering,
-    <b>Shenzhen University</b>, 2025.09–2028.06, Shenzhen, China.
-  </li>
-</ul>
-
-<br /><br />
-<!-- The Modal -->
-<div id="bibtexModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close-button" onclick="closeBibModal()">&times;</span>
-    <h3 style="margin-top: 0;">BibTeX Record</h3>
-    <div id="bibtex-modal-content">
-      <pre onclick="selectBibtexText()">Loading...</pre>
+<section class="hero container">
+  <div class="hero__grid hero__grid--illo">
+    <div class="intro">
+      <p class="eyebrow">NLP · Large Language Models</p>
+      <h1 class="hero__name">Weiqin Wang<span class="hero__name-zh" lang="zh">王伟钦</span></h1>
+      <p class="hero__lede">
+        I study how large language models
+        <span class="scribble">reason<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 C 25 2, 55 2, 98 5"/></svg></span>,
+        how they represent meaning, and when we can trust what they say.
+      </p>
+      <p class="hero__meta">
+        Master's student at the <a class="text-link" href="https://csse.szu.edu.cn/" target="_blank" rel="noopener">College of Computer Science and Software Engineering, Shenzhen University</a>,
+        advised by <a class="text-link" href="https://ylwangy.github.io/" target="_blank" rel="noopener">Yile Wang</a>.
+      </p>
+      {% include contact-buttons.html %}
     </div>
-    <p style="margin-bottom: 0;"><i>Click anywhere on the box above to highlight complete record</i></p>
+
+    <svg class="illo hero__art" viewBox="0 0 480 420" role="img" aria-label="Illustration: an open book from which a branching tree of reasoning steps grows toward a checked answer">
+      <path class="blob f-clay" d="M300 70 C 385 62, 452 128, 444 214 C 436 300, 372 352, 290 344 C 208 336, 168 276, 176 196 C 184 120, 228 76, 300 70 Z" />
+      <path class="blob blob--2 f-sky" d="M118 64 C 150 60, 172 86, 168 116 C 164 148, 136 162, 110 154 C 82 146, 70 118, 78 94 C 84 74, 98 66, 118 64 Z" />
+      <path class="blob blob--3 f-olive" d="M80 300 C 112 284, 150 300, 154 336 C 158 372, 126 392, 96 386 C 64 380, 46 352, 54 326 C 58 312, 66 306, 80 300 Z" />
+
+      <g class="hand">
+        <!-- book -->
+        <g class="pop" style="--d:.25s">
+          <path class="ink f-paper" style="fill:var(--illo-paper)" d="M250 312 C 215 296, 170 294, 140 304 L 140 384 C 172 374, 214 376, 250 392 Z" />
+          <path class="ink f-paper" style="fill:var(--illo-paper)" d="M250 312 C 285 296, 330 294, 360 304 L 360 384 C 328 374, 286 376, 250 392 Z" />
+          <path class="ink" d="M250 312 L 250 392" />
+          <path class="ink ink-thin" d="M160 326 C 185 318, 212 320, 236 328 M160 344 C 185 336, 212 338, 236 346 M160 362 C 180 356, 198 357, 216 362" />
+          <path class="ink ink-thin" d="M264 328 C 288 320, 315 318, 340 326 M264 346 C 288 338, 315 336, 340 344 M284 362 C 302 357, 320 356, 340 362" />
+        </g>
+
+        <!-- reasoning tree -->
+        <path class="ink draw" style="--d:.6s;--len:80" d="M250 312 C 248 290, 252 270, 250 250" />
+        <path class="ink draw" style="--d:.95s;--len:120" d="M250 250 C 230 230, 195 215, 180 180" />
+        <path class="ink draw" style="--d:1s;--len:120" d="M250 250 C 255 220, 262 195, 262 165" />
+        <path class="ink draw" style="--d:1.05s;--len:130;stroke-width:3.4" d="M250 250 C 275 235, 320 220, 338 185" />
+        <path class="ink draw" style="--d:1.35s;--len:80" d="M180 180 C 168 160, 158 140, 150 118" />
+        <path class="ink draw" style="--d:1.4s;--len:80" d="M180 180 C 192 160, 205 135, 210 112" />
+        <path class="ink draw" style="--d:1.45s;--len:90;stroke-width:3.4" d="M338 185 C 330 160, 322 135, 318 110" />
+        <path class="ink ink-thin pop" style="--d:1.5s;stroke-dasharray:4 6" d="M262 165 C 264 150, 266 140, 268 128" />
+
+        <circle class="ink pop f-paper" style="--d:.9s;fill:var(--illo-paper)" cx="250" cy="250" r="9" />
+        <circle class="ink pop" style="--d:1.25s;fill:var(--illo-paper)" cx="180" cy="180" r="8" />
+        <circle class="ink pop" style="--d:1.3s;fill:var(--illo-paper)" cx="262" cy="165" r="8" />
+        <circle class="ink pop" style="--d:1.35s;fill:var(--illo-sky)" cx="338" cy="185" r="9" />
+        <circle class="ink pop" style="--d:1.6s;fill:var(--illo-paper)" cx="150" cy="118" r="7" />
+        <circle class="ink pop" style="--d:1.65s;fill:var(--illo-paper)" cx="210" cy="112" r="7" />
+        <circle class="ink pop" style="--d:1.75s;fill:var(--illo-sky)" cx="318" cy="110" r="10" />
+
+        <!-- answer bubble -->
+        <g class="float" style="--d:1.95s">
+          <path class="ink" style="fill:var(--illo-paper)" d="M350 30 H422 Q436 30 436 44 V68 Q436 82 422 82 H362 L340 98 L346 82 Q336 82 336 68 V44 Q336 30 350 30 Z" />
+          <path class="ink" style="stroke:var(--illo-clay);stroke-width:4" d="M368 56 L380 67 L404 44" />
+        </g>
+      </g>
+
+      <!-- sparkles -->
+      <path class="twinkle f-ink" style="--d:2.1s" d="M420 140 Q420 150 430 150 Q420 150 420 160 Q420 150 410 150 Q420 150 420 140 Z" />
+      <path class="twinkle f-ink" style="--d:2.3s" d="M112 208 Q112 216 120 216 Q112 216 112 224 Q112 216 104 216 Q112 216 112 208 Z" />
+      <path class="twinkle f-ink" style="--d:2.5s" d="M214 40 Q214 47 221 47 Q214 47 214 54 Q214 47 207 47 Q214 47 214 40 Z" />
+      <circle class="pop f-olive" style="--d:2.2s" cx="400" cy="262" r="5" />
+      <circle class="pop f-clay" style="--d:2.4s" cx="126" cy="268" r="4" />
+    </svg>
   </div>
+</section>
+
+<section class="container" aria-label="Research focus">
+  <div class="focus">
+    <article class="focus-card" data-reveal>
+      <div class="focus-card__art">
+        <svg class="illo" viewBox="0 0 240 130" aria-hidden="true">
+          <path class="f-olive" d="M30 30 C 60 10, 110 20, 118 55 C 126 92, 90 118, 55 112 C 22 106, 6 70, 14 50 C 18 40, 22 34, 30 30 Z" />
+          <g class="hand">
+            <path class="ink" d="M49 62 C 80 40, 100 30, 123 28 M49 65 C 80 63, 100 67, 122 65 M49 68 C 80 90, 100 100, 123 102" />
+            <path class="ink" d="M137 30 C 160 34, 175 40, 189 46 M137 64 C 160 60, 175 56, 189 53" />
+            <path class="ink ink-thin" style="stroke-dasharray:4 5" d="M137 102 C 152 104, 162 104, 172 104" />
+            <path class="ink" d="M178 99 L187 108 M187 99 L178 108" />
+            <circle class="ink" style="fill:var(--illo-paper)" cx="42" cy="65" r="7" />
+            <circle class="ink" style="fill:var(--illo-paper)" cx="130" cy="28" r="7" />
+            <circle class="ink" style="fill:var(--illo-paper)" cx="130" cy="65" r="7" />
+            <circle class="ink" style="fill:var(--illo-paper)" cx="130" cy="102" r="7" />
+            <g class="wiggle wiggle--up">
+              <circle class="ink" style="fill:var(--illo-clay)" cx="201" cy="50" r="12" />
+              <path class="ink" style="stroke-width:2.6" d="M195 50 L200 55 L208 45" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="focus-card__body">
+        <h3>Reasoning &amp; reliability</h3>
+        <p>Self-consistency, reward signals for test-time RL, and uncertainty in multi-step reasoning.</p>
+      </div>
+    </article>
+    <article class="focus-card" data-reveal style="--reveal-delay: 0.08s">
+      <div class="focus-card__art">
+        <svg class="illo" viewBox="0 0 240 130" aria-hidden="true">
+          <g class="wiggle wiggle--left">
+            <circle class="f-sky" cx="96" cy="68" r="44" />
+            <circle class="ink hand" cx="96" cy="68" r="44" />
+            <circle class="f-ink" cx="74" cy="52" r="3" />
+            <circle class="f-ink" cx="80" cy="86" r="3" />
+            <circle class="f-ink" cx="98" cy="40" r="3" />
+          </g>
+          <g class="wiggle wiggle--right">
+            <circle class="f-clay" style="opacity:.85" cx="146" cy="68" r="44" />
+            <circle class="ink hand" cx="146" cy="68" r="44" />
+            <circle class="f-ink" cx="168" cy="52" r="3" />
+            <circle class="f-ink" cx="162" cy="90" r="3" />
+            <circle class="f-ink" cx="178" cy="72" r="3" />
+          </g>
+          <circle class="ink ink-thin" style="fill:var(--illo-paper)" cx="121" cy="58" r="4" />
+          <circle class="ink ink-thin" style="fill:var(--illo-paper)" cx="121" cy="80" r="4" />
+          <path class="ink hand" d="M106 10 C 111 5, 116 15, 121 10 C 126 5, 131 15, 136 10 M106 19 C 111 14, 116 24, 121 19 C 126 14, 131 24, 136 19" />
+        </svg>
+      </div>
+      <div class="focus-card__body">
+        <h3>Semantic representation</h3>
+        <p>What LLM hidden states encode about meaning, and how to turn them into better sentence embeddings.</p>
+      </div>
+    </article>
+    <article class="focus-card" data-reveal style="--reveal-delay: 0.16s">
+      <div class="focus-card__art">
+        <svg class="illo" viewBox="0 0 240 130" aria-hidden="true">
+          <path class="f-sand" d="M120 18 C 170 6, 222 38, 220 80 C 218 118, 170 128, 130 120 C 90 112, 70 80, 80 50 C 88 30, 100 22, 120 18 Z" />
+          <g class="hand">
+            <rect class="ink" style="fill:var(--illo-paper)" x="34" y="46" width="80" height="56" rx="6" transform="rotate(-8 74 74)" />
+            <rect class="ink" style="fill:var(--illo-paper)" x="42" y="38" width="80" height="56" rx="6" transform="rotate(-2 82 66)" />
+            <g transform="rotate(4 90 58)">
+              <rect class="ink" style="fill:var(--illo-paper)" x="50" y="30" width="80" height="56" rx="6" />
+              <path class="ink ink-thin" d="M62 46 H104 M62 58 H116 M62 70 H96" />
+              <circle class="f-clay" cx="118" cy="44" r="5" />
+            </g>
+            <path class="ink" d="M124 42 C 146 18, 174 26, 170 48 C 167 64, 150 60, 158 50 C 168 40, 190 48, 194 60" />
+            <g class="wiggle wiggle--spin">
+              <circle class="ink" cx="195" cy="66" r="5" />
+              <path class="ink" d="M195 71 L195 104 M186 80 L204 80 M180 92 C 183 103, 191 106, 195 104 C 199 106, 207 103, 210 92" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="focus-card__body">
+        <h3>Memory</h3>
+        <p>Anchoring facts with associative context so models can build and recall long-term memory.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="container">
+  <section class="section" id="publications" aria-labelledby="pub-title">
+    <div class="section__label">
+      <span class="section__index">01</span>
+      <h2 class="section__title" id="pub-title">Publications</h2>
+      <p class="section__note">* equal contribution<br># corresponding author</p>
+      {% include illo/section-papers.html %}
+    </div>
+    {% include publication-list.html %}
+  </section>
+
+  <section class="section" id="experience" aria-labelledby="exp-title">
+    <div class="section__label">
+      <span class="section__index">02</span>
+      <h2 class="section__title" id="exp-title">Experience</h2>
+      {% include illo/section-experience.html %}
+    </div>
+    <div>
+      <h3 class="rows__group">Education</h3>
+      <ul class="rows">
+        <li class="row" data-reveal>
+          <span class="row__aside">Sep 2025 – Jun 2028</span>
+          <div>
+            <div class="row__title">M.Sc. in Computer Science and Technology</div>
+            <div class="row__detail">College of Computer Science and Software Engineering, Shenzhen University · Shenzhen, China</div>
+            <div class="row__detail">Advisor: <a class="text-link" href="https://ylwangy.github.io/" target="_blank" rel="noopener">Yile Wang</a></div>
+          </div>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__aside">Sep 2021 – Jun 2025</span>
+          <div>
+            <div class="row__title">B.Sc. in Computer Science and Technology</div>
+            <div class="row__detail">College of Computer and Information, Fujian Agriculture and Forestry University · Fuzhou, China</div>
+            <span class="row__highlight">Overall ranking 1/128 · GPA ranking 3/128</span>
+          </div>
+        </li>
+      </ul>
+
+      <h3 class="rows__group">Research Internships</h3>
+      <ul class="rows">
+        <li class="row" data-reveal>
+          <span class="row__aside">Nov 2026 – Present</span>
+          <div>
+            <div class="row__title">Research Intern</div>
+            <div class="row__detail">Shanghai AI Laboratory · Shanghai, China</div>
+          </div>
+        </li>
+        <li class="row" data-reveal>
+          <span class="row__aside">Oct 2024 – Aug 2025</span>
+          <div>
+            <div class="row__title">Research Intern</div>
+            <div class="row__detail">Visual Computing Research Center (VCC), Shenzhen University · Shenzhen, China</div>
+            <div class="row__detail">Research on large language model reasoning and self-consistency, advised by <a class="text-link" href="https://ylwangy.github.io/" target="_blank" rel="noopener">Yile Wang</a>.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="awards" aria-labelledby="awards-title">
+    <div class="section__label">
+      <span class="section__index">03</span>
+      <h2 class="section__title" id="awards-title">Awards</h2>
+      {% include illo/section-awards.html %}
+    </div>
+    <ul class="rows">
+      <li class="row" data-reveal>
+        <span class="row__aside">National</span>
+        <div class="row__title">National Scholarship for Master's Students</div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">National</span>
+        <div class="row__title">National Scholarship for Undergraduate Students</div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">Shenzhen Univ.</span>
+        <div class="row__title">Special Academic Scholarship for Master's Students</div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">FAFU</span>
+        <div class="row__title">First-Class Academic Scholarship for Undergraduate Students</div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">CUMCM</span>
+        <div>
+          <div class="row__title">Second Prize</div>
+          <div class="row__detail">National Undergraduate Mathematical Contest in Modeling</div>
+        </div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">MCM / ICM</span>
+        <div>
+          <div class="row__title">Meritorious Winner</div>
+          <div class="row__detail">Mathematical Contest in Modeling / Interdisciplinary Contest in Modeling, USA</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section" id="service" aria-labelledby="service-title">
+    <div class="section__label">
+      <span class="section__index">04</span>
+      <h2 class="section__title" id="service-title">Service &amp; Teaching</h2>
+      {% include illo/section-service.html %}
+    </div>
+    <ul class="rows">
+      <li class="row" data-reveal>
+        <span class="row__aside">2027</span>
+        <div class="row__title">Reviewer, ICLR</div>
+      </li>
+      <li class="row" data-reveal>
+        <span class="row__aside">Spring 2025, 2026</span>
+        <div>
+          <div class="row__title">Teaching Assistant, Principles of Compilation</div>
+          <div class="row__detail">Shenzhen University · Experiment design, lab instruction, grading, and answering students' questions.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
 </div>
-
-<script>
-  // Get the modal
-  var modal = document.getElementById('bibtexModal');
-  var bibtexModalContent = document.getElementById('bibtex-modal-content').getElementsByTagName('pre')[0];
-
-  // Function to open modal and load BibTeX
-  async function openBibModal(bibFileUrl) {
-    bibtexModalContent.textContent = 'Loading...'; // Reset content
-    modal.style.display = "block";
-    try {
-      const response = await fetch(bibFileUrl);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const text = await response.text();
-      bibtexModalContent.textContent = text;
-    } catch (error) {
-      bibtexModalContent.textContent = `Error loading BibTeX file: ${error.message}`;
-      console.error('Error fetching BibTeX:', error);
-    }
-  }
-
-  // Function to close modal
-  function closeBibModal() {
-    modal.style.display = "none";
-  }
-
-  // Select the full BibTeX entry when the text area is clicked
-  function selectBibtexText() {
-    const range = document.createRange();
-    range.selectNodeContents(bibtexModalContent);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      closeBibModal();
-    }
-  }
-
-  // Close modal with Escape key
-  document.addEventListener('keydown', function (event) {
-    if (event.key === "Escape") {
-      closeBibModal();
-    }
-  });
-</script>
-( <i>last updated on Apr. 23, 2026</i> )

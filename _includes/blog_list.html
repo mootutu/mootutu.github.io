@@ -1,39 +1,30 @@
 {% assign posts = site.pages | where: "layout", "blog-post-layout" | sort: "date" | reverse %}
 
-<div class="blog-posts">
+<ul class="post-grid">
   {% for post in posts %}
-  <article class="blog-post">
-    <div class="blog-post-content">
-      <h2 class="blog-post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-      <div class="blog-post-meta">
-        <span>
-          Published: {{ post.date | date: "%B %-d, %Y" }}
-        </span>
-        {% if post.reading_time %}
-        <span>
-          Reading Time: {{ post.reading_time }}
-        </span>
-        {% endif %}
-      </div>
-      {% if post.excerpt %}
-      <p class="blog-post-excerpt">{{ post.excerpt }}</p>
-      {% endif %}
-      {% if post.tags %}
-      <div class="blog-post-tags">
-        {% for tag in post.tags %}
-        <a href="#" class="blog-tag">{{ tag }}</a>
-        {% endfor %}
+  <li data-reveal style="--reveal-delay: {{ forloop.index0 | modulo: 2 | times: 0.08 }}s">
+    <a class="post-card" href="{{ post.url | relative_url }}">
+      {% if post.cover_image %}
+      <div class="post-card__cover">
+        <img src="{{ post.cover_image | relative_url }}" alt="" loading="lazy">
       </div>
       {% endif %}
-      <a href="{{ post.url | relative_url }}" class="read-more">
-        Read More
-      </a>
-    </div>
-    {% if post.cover_image %}
-    <div class="blog-post-image">
-      <img src="{{ post.cover_image | relative_url }}" alt="{{ post.title }}">
-    </div>
-    {% endif %}
-  </article>
+      <div class="post-card__body">
+        <span class="post-card__meta">
+          {% if post.category %}{{ post.category }} · {% endif %}{{ post.date | date: "%b %-d, %Y" }}{% if post.reading_time %} · {{ post.reading_time | replace: 'minutes', 'min' }}{% endif %}
+        </span>
+        <h2 class="post-card__title">{{ post.title }}</h2>
+        {% if post.excerpt %}<p class="post-card__excerpt">{{ post.excerpt }}</p>{% endif %}
+        <div class="post-card__foot">
+          <div class="tag-list">
+            {% for tag in post.tags limit: 3 %}<span class="tag">{{ tag }}</span>{% endfor %}
+          </div>
+          <span class="arrow-link" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </span>
+        </div>
+      </div>
+    </a>
+  </li>
   {% endfor %}
-</div>
+</ul>

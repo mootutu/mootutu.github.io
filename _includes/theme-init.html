@@ -1,17 +1,4 @@
 <style>
-  body,
-  .wrapper,
-  .navbar,
-  .blog-post,
-  .topic-card,
-  .paper-card,
-  .toc-sticky {
-    transition: background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-      color 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
@@ -31,38 +18,14 @@
   html.theme-transitioning *::after {
     transition: none !important;
   }
-
-  #dark-mode-toggle:active {
-    transform: translateY(0) scale(0.94);
-  }
-
-  #dark-mode-toggle:focus-visible {
-    outline: 3px solid rgba(96, 165, 250, 0.55);
-    outline-offset: 3px;
-  }
-
-  #dark-mode-toggle svg[hidden] {
-    display: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    body,
-    .wrapper,
-    .navbar,
-    .blog-post,
-    .topic-card,
-    .paper-card,
-    .toc-sticky {
-      transition: none;
-    }
-  }
 </style>
 <script>
   (function () {
-    const storageKey = 'theme_preference';
-    const savedTheme = localStorage.getItem(storageKey);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = savedTheme === 'dark' || savedTheme === 'light'
+    var storageKey = 'theme_preference';
+    var savedTheme = null;
+    try { savedTheme = localStorage.getItem(storageKey); } catch (e) {}
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = savedTheme === 'dark' || savedTheme === 'light'
       ? savedTheme
       : (prefersDark ? 'dark' : 'light');
 

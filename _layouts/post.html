@@ -1,0 +1,59 @@
+---
+layout: base
+code: true
+progress: true
+---
+{% assign back_url = page.topic_url | default: layout.back_url %}
+{% assign back_label = layout.back_label | default: 'Back' %}
+{% assign content_text = content | strip_html %}
+{% assign word_count = content_text | number_of_words %}
+{% assign read_time = word_count | divided_by: 200 %}
+{% if read_time < 1 %}{% assign read_time = 1 %}{% endif %}
+
+<article class="post">
+  <header class="post-hero container">
+    <div class="post-hero__inner intro">
+      {% if back_url %}
+      <a class="back-link" href="{{ back_url }}">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>
+        {{ back_label }}
+      </a>
+      {% endif %}
+      {% assign eyebrow = page.category | default: layout.eyebrow %}
+      {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+      <h1 class="post-hero__title">{{ page.title }}</h1>
+      {% assign lede = page.one_line_summary | default: page.excerpt %}
+      {% if lede %}<p class="post-hero__lede">{{ lede }}</p>{% endif %}
+      <ul class="post-meta">
+        {% if page.authors %}
+        <li>{{ page.authors | join: ', ' }}{% if page.paper_year %} · {{ page.paper_year }}{% endif %}</li>
+        {% else %}
+        <li>{{ page.author | default: 'Weiqin Wang' }}</li>
+        {% endif %}
+        {% if page.date %}<li><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time></li>{% endif %}
+        <li>{{ read_time }} min read</li>
+        {% if page.status %}<li><span class="venue-tag venue-tag--muted">{{ page.status }}</span></li>{% endif %}
+        {% if page.paper_url %}<li><a class="text-link" href="{{ page.paper_url }}" target="_blank" rel="noopener">Paper{% if page.arxiv %} · arXiv:{{ page.arxiv }}{% endif %}</a></li>{% endif %}
+      </ul>
+    </div>
+  </header>
+
+  <div class="container post-layout">
+    <div class="prose" id="post-content">
+      {{ content }}
+    </div>
+    <aside class="toc" aria-label="On this page">
+      <p class="toc__title">On this page</p>
+      <nav id="toc"></nav>
+    </aside>
+  </div>
+
+  {% if back_url %}
+  <div class="container post-end">
+    <a class="button" href="{{ back_url }}">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:scaleX(-1)"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      {{ back_label }}
+    </a>
+  </div>
+  {% endif %}
+</article>

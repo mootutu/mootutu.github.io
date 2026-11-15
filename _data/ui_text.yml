@@ -1,15 +1,7 @@
+# Navigation labels used by _includes/site-header.html
 en:
   home: Home
-  blog: Blog
-  paper_reading: Paper Reading
-  about: About
-  tools: Tools
-  bio_include: bio.html
-  back_to_blog: "← Back to Blog List"
-  author: "Author"
-  published: "Published"
-  reading_time: "Reading Time"
-  minutes: "min"
-  category: "Category"
-  search_placeholder: "Search..."
-  no_results: "No results found"
+  publications: Publications
+  experience: Experience
+  awards: Awards
+  service: Service

@@ -1,7 +1,21 @@
 {% assign entries = site.pages | where: "layout", "learning-post-layout" | where: "lang", page.lang | where: "topic", page.topic | sort: "order" %}
-
-<div class="learning-entries">
+{% if entries.size > 0 %}
+<ol class="entry-list">
   {% for entry in entries %}
-  <a href="{{ entry.url | relative_url }}" class="entry-link">{{ entry.title }}</a>
+  <li data-reveal>
+    <a href="{{ entry.url | relative_url }}" class="entry">
+      <span class="entry__index">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+      <span>
+        <span class="entry__title">{{ entry.title }}</span>
+        {% if entry.date %}<span class="entry__meta">{{ entry.date | date: "%b %-d, %Y" }}</span>{% endif %}
+      </span>
+      <span class="arrow-link" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </span>
+    </a>
+  </li>
   {% endfor %}
-</div>
+</ol>
+{% else %}
+<p class="empty-note">No notes yet.</p>
+{% endif %}

@@ -1,10 +1,19 @@
 {% assign topics = site.pages | where: "layout", "learning-topic-layout" | where: "lang", page.lang | sort: "order" %}
-
-<div class="learning-topics">
+<ul class="topic-grid">
   {% for topic in topics %}
-  <a href="{{ topic.url | relative_url }}" class="topic-card">
-    <div class="topic-title">{{ topic.title }}</div>
-    <div class="topic-desc">{{ topic.description }}</div>
-  </a>
+  {% assign topic_entries = site.pages | where: "layout", "learning-post-layout" | where: "topic", topic.topic %}
+  <li data-reveal style="--reveal-delay: {{ forloop.index0 | times: 0.08 }}s">
+    <a href="{{ topic.url | relative_url }}" class="topic-card">
+      <span class="topic-card__index">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+      <h2 class="topic-card__title">{{ topic.title }}</h2>
+      <p class="topic-card__desc">{{ topic.description }}</p>
+      <span class="topic-card__foot">
+        {{ topic_entries.size }} {% if topic_entries.size == 1 %}note{% else %}notes{% endif %}
+        <span class="arrow-link" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </span>
+    </a>
+  </li>
   {% endfor %}
-</div>
+</ul>

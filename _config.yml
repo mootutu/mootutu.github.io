@@ -1,25 +1,3 @@
-# Site metadata
-# keywords: Cryptography, Privacy, Information Security, Digital Signatures
-# description: Academic Website of ABC
-# title: Homepage of ABC
-
-# author: ABC
-# authorimg: assets/images/dd.png
-# authoroccup: Engineering Manager
-
-# inst: DFINITY
-# insturl: https://www.dfinity.org
-# uni: Graz University of Technology
-# uniurl: http://www.tugraz.at
-
-# vcard: 'mailto:david@dfinity.org'
-# office: https://online.tugraz.at/tug_online/ris.einzelraum?raumkey=4944
-# twitter: dderler
-# keybase: dderler
-# linkedin: david-derler-08630495
-# dblp: hd/d/Derler:David
-# scholar: YfMKI0wAAAAJ
-
 # Build settings
 markdown: kramdown
 theme: minima

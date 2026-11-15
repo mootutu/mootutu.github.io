@@ -16,3 +16,4 @@ _site/
 *.synctex.gz
 *.toc
 *.xdv
+.sass-cache/
