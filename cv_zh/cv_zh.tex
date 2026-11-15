@@ -1,16 +1,12 @@
 % !TEX program = xelatex
-%
-%Academic CV LaTeX Template (Chinese version)
-% Based on: cv/my_cv.tex
-%
-% Compile with: xelatex cv_zh.tex
-% NOTE: MUST be compiled with XeLaTeX (ctex Chinese support), NOT pdflatex.
-%
+% 王伟钦 -- 个人简历（中文）
+% 必须使用 XeLaTeX 编译（ctex 中文支持）：latexmk cv_zh.tex
+% 版式宏定义在导言区；正文内容从 \begin{document} 开始。
 
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,10pt]{article}
 
-% Package imports
-\usepackage[UTF8, fontset=none]{ctex} % fonts configured manually below (labmate's setup)
+% ---------- Fonts ----------
+\usepackage[UTF8, fontset=none, scheme=plain]{ctex} % fonts configured manually below
 \setmainfont{texgyrepagella}[ % Palatino clone, loaded by filename from TeX Live (portable)
   Extension = .otf,
   UprightFont = *-regular,
@@ -18,302 +14,258 @@
   ItalicFont = *-italic,
   BoldItalicFont = *-bolditalic,
 ]
-% CJK font chain, identical to labmate's Chinese_version.tex:
-% prefers Noto Serif CJK SC / Source Han / PingFang when installed;
-% on Windows resolves to SimSun with AutoFakeBold (fake-bold Song, not SimHei) + AutoFakeSlant
+% CJK font chain: serif (Song) faces first so Chinese matches the Palatino Latin text;
+% italic maps to Kai where available. Falls back to sans faces, then to Windows fonts
+% with fake bold / slant.
 \newcommand{\setchinesefont}{%
   \IfFontExistsTF{Noto Serif CJK SC}{\setCJKmainfont{Noto Serif CJK SC}}{%
-  \IfFontExistsTF{Noto Sans CJK SC}{\setCJKmainfont{Noto Sans CJK SC}}{%
   \IfFontExistsTF{Source Han Serif SC}{\setCJKmainfont{Source Han Serif SC}}{%
+  \IfFontExistsTF{Songti SC}{\setCJKmainfont{Songti SC}[BoldFont={Songti SC Black}, ItalicFont={Kaiti SC}]}{%
+  \IfFontExistsTF{Noto Sans CJK SC}{\setCJKmainfont{Noto Sans CJK SC}}{%
   \IfFontExistsTF{Source Han Sans SC}{\setCJKmainfont{Source Han Sans SC}}{%
   \IfFontExistsTF{PingFang SC}{\setCJKmainfont{PingFang SC}}{%
-  \IfFontExistsTF{Songti SC}{\setCJKmainfont{Songti SC}}{%
   \IfFontExistsTF{SimSun}{\setCJKmainfont[AutoFakeBold=2.5,AutoFakeSlant=0.2]{SimSun}}{%
   \IfFontExistsTF{Microsoft YaHei}{\setCJKmainfont[AutoFakeBold=2.5,AutoFakeSlant=0.2]{Microsoft YaHei}}{%
   }}}}}}}}
 }
 \setchinesefont
-\usepackage{latexsym}
+
+% ---------- Page ----------
+\usepackage[a4paper, left=1.7cm, right=1.7cm, top=1.5cm, bottom=1.6cm, footskip=8mm]{geometry}
 \usepackage{xcolor}
-\usepackage{float}
-\usepackage{ragged2e}
-\usepackage[empty]{fullpage}
-\usepackage{wrapfig}
-\usepackage{lipsum}
-\usepackage{tabularx}
-\usepackage{titlesec}
-\usepackage{geometry}
-\usepackage{marvosym}
-\usepackage{verbatim}
 \usepackage{enumitem}
+\usepackage{titlesec}
 \usepackage{fancyhdr}
-\usepackage{multicol}
-\usepackage{graphicx}
+\usepackage{lastpage}
 \usepackage{fontawesome5}
 
-% Color definitions
-\definecolor{darkblue}{RGB}{0,0,139}
+% ---------- Colors (same palette as the website) ----------
+\definecolor{ink}{HTML}{1F1E1B}     % body text
+\definecolor{soft}{HTML}{3D3B36}    % secondary text
+\definecolor{muted}{HTML}{6E6A62}   % dates, locations, footer
+\definecolor{accent}{HTML}{A64D2C}  % headings and links
+\definecolor{hair}{HTML}{D9D2C3}    % rules
+\color{ink}
 
-% Page layout
-\setlength{\multicolsep}{0pt}
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-\fancyfoot{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\geometry{left=1.4cm, top=0.6cm, right=1.2cm, bottom=0.6cm}
-\setlength{\footskip}{5pt} % Addressing fancyhdr warning
-
-% Hyperlink setup (moved after fancyhdr to address warning)
 \usepackage[hidelinks]{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=darkblue,
-    filecolor=darkblue,
-    urlcolor=darkblue,
-}
-
-% Custom box settings
-\usepackage[most]{tcolorbox}
-\tcbset{
-    frame code={},
-    center title,
-    left=0pt,
-    right=0pt,
-    top=0pt,
-    bottom=0pt,
-    colback=gray!20,
-    colframe=white,
-    width=\dimexpr\textwidth\relax,
-    enlarge left by=-2mm,
-    boxsep=4pt,
-    arc=0pt,outer arc=0pt,
-}
-
-% URL style
+\hypersetup{colorlinks=true, linkcolor=accent, filecolor=accent, urlcolor=accent,
+  pdftitle={王伟钦 -- 个人简历}, pdfauthor={Weiqin Wang}}
 \urlstyle{same}
 
-% Text alignment
-\raggedright
-\setlength{\tabcolsep}{0in}
+% ---------- Paragraphs ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.2}
+\emergencystretch=2em
+\hyphenpenalty=600
+\clubpenalty=10000
+\widowpenalty=10000
 
-% Section formatting
-\titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+% ---------- Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize\color{muted}王伟钦\enspace\textperiodcentered\enspace 个人简历\enspace\textperiodcentered\enspace \thepage\,/\,\pageref*{LastPage}}
 
-% Custom commands
-\newcommand{\resumeItem}[2]{
-  \item{
-    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
-  }
+% ---------- Section headings ----------
+\titleformat{\section}{\normalfont\bfseries\color{accent}\large}{}{0pt}{\sectionstyle}
+  [{\vspace{-0.2ex}\color{hair}\titlerule[0.6pt]}]
+\titlespacing*{\section}{0pt}{2.6ex plus 0.6ex minus 0.3ex}{1.1ex}
+
+% ---------- Header ----------
+\newcommand{\cvicon}[1]{{\color{accent}\footnotesize #1}\hspace{0.35em}}
+\newcommand{\cvsep}{\hspace{0.9em}{\color{hair}\textbar}\hspace{0.9em}}
+\newcommand{\cvlink}[2]{\href{#1}{\color{ink}#2}}
+
+% ---------- Entries: {organisation}{location}{role}{dates} ----------
+\newcommand{\cventry}[4]{%
+  \par\addvspace{1.3ex}%
+  {\textbf{#1}\hfill #4\par}\nobreak
+  {\vspace{0.15ex}\small\textit{#3}\hfill{\color{muted}#2}\par}\nobreak
 }
+% One-line entry: {label}{text}
+\newcommand{\cvline}[2]{\par\addvspace{1.3ex}\textbf{#1}\quad #2\par}
 
-\newcommand{\resumePOR}[3]{
-\vspace{0.5mm}\item
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}}
-    \end{tabular*}
-    \vspace{-2mm}
+\newlist{cvitems}{itemize}{1}
+\setlist[cvitems]{label={\color{accent}\tiny\raisebox{0.35ex}{\textbullet}},
+  leftmargin=1.1em, labelsep=0.5em, topsep=0.5ex, partopsep=0pt, itemsep=0.25ex, parsep=0pt}
+
+% ---------- Publications ----------
+\newcounter{pubno}
+% \pub{title}{paper url}{authors}{venue}{year}{code url}
+\newcommand{\pub}[6]{%
+  \par\addvspace{1.7ex plus 0.4ex}\stepcounter{pubno}%
+  \begingroup
+  \leftskip=\pubindent
+  \noindent\llap{\makebox[\pubindent][l]{\color{muted}\small[\arabic{pubno}]}}%
+  {\rightskip=0pt plus 4em \interlinepenalty=10000 \hyphenpenalty=10000 \exhyphenpenalty=10000
+   \href{#2}{\textbf{\color{accent}#1}}\par}\nobreak
+  \vspace{0.2ex}%
+  {\small #3 \textit{#4}, #5.\enspace
+   \publink{#2}{\faFile*[regular]}{论文}\enspace\publink{#6}{\faGithub}{代码}\par}\nobreak
+  \endgroup
 }
+\newlength{\pubindent}
+\setlength{\pubindent}{1.7em}
+\newcommand{\publink}[3]{\href{#1}{\mbox{\scriptsize #2\,\footnotesize #3}}}
+\newcommand{\me}[1]{\textbf{#1}}
 
-\newcommand{\resumeSubheading}[4]{
-\vspace{0.5mm}\item
-    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
-        \textbf{#1} & \textit{\footnotesize{#4}} \\
-        \textit{\footnotesize{#3}} &  \footnotesize{#2}\\
-    \end{tabular*}
-    \vspace{-2.4mm}
-}
+\newlist{pubnotes}{itemize}{1}
+\setlist[pubnotes]{label={}, leftmargin=\pubindent, labelwidth=0pt, labelsep=0pt,
+  topsep=0.45ex, partopsep=0pt, itemsep=0.2ex, parsep=0pt,
+  before=\small\color{soft}}
 
-\newcommand{\resumeProject}[4]{
-\vspace{0.5mm}\item
-    \begin{tabularx}{0.98\textwidth}[t]{@{}Xr@{}}
-        \textbf{#1} & \textit{\footnotesize{#3}} \\
-        \footnotesize{\textit{#2}} & \footnotesize{#4}
-    \end{tabularx}
-    \vspace{-2.4mm}
-}
-
-\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
-
-\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
-\renewcommand{\labelitemii}{$\vcenter{\hbox{\tiny$\circ$}}$}
-
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm]}
-\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm,itemsep=0mm]}
-
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{2mm}}
-\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2mm}}
-\newcommand{\cvsection}[1]{%
-\vspace{2mm}
-\begin{tcolorbox}
-    \textbf{\large #1}
-\end{tcolorbox}
-    \vspace{-4mm}
-}
-
-\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
-\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
-\newcolumntype{C}{>{\centering\arraybackslash}X}%
-
-% Commands for icon sizing and positioning
-\newcommand{\socialicon}[1]{\raisebox{-0.05em}{\resizebox{!}{1em}{#1}}}
-\newcommand{\ieeeicon}[1]{\raisebox{-0.3em}{\resizebox{!}{1.3em}{#1}}}
-
-% Font options (Latin text)
-\newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
-\newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
-\newcommand{\headerfontiii}{\normalfont} % main font already TeX Gyre Pagella via fontspec
-\newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
-\newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
-\newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
-\newcommand{\headerfontvii}{\fontfamily{qhv}\selectfont} % Quasi-Helvetica (another Arial/Calibri alternative)
-\newcommand{\headerfontviii}{\fontfamily{qpl}\selectfont} % Quasi-Palatino (another elegant serif option)
-\newcommand{\headerfontix}{\fontfamily{qtm}\selectfont} % Quasi-Times (another Times New Roman alternative)
-\newcommand{\headerfontx}{\fontfamily{bch}\selectfont} % Charter (clean serif font)
+\newcommand{\sectionstyle}[1]{#1}
+\newcommand{\publabel}[1]{\textbf{#1：}}
 
 \begin{document}
-\headerfontiii
 
-% Header
+% ======================= 页眉 =======================
 \begin{center}
-    {\Huge\textbf{王伟钦}}
+  {\fontsize{25}{28}\selectfont\bfseries 王\hspace{0.18em}伟\hspace{0.18em}钦}\\[2.8mm]
+  {\small
+    \cvicon{\faPhone*}(+86) 187-6005-3825\cvsep
+    \cvlink{mailto:here1swqw@gmail.com}{\cvicon{\faEnvelope[regular]}here1swqw@gmail.com}\cvsep
+    \cvlink{https://mootutu.github.io/}{\cvicon{\faGlobe}mootutu.github.io}\cvsep
+    \cvlink{https://scholar.google.com/citations?user=JonSUasAAAAJ}{\cvicon{\faGraduationCap}谷歌学术}\cvsep
+    \cvlink{https://www.linkedin.com/in/weiqin-wang-aa8800392/}{\cvicon{\faLinkedin}LinkedIn}}\\[1.2mm]
+  {\small\color{muted}
+    \cvicon{\faMapMarker*}广东省深圳市南山区深圳大学沧海校区致真楼 L6-711}
 \end{center}
-\vspace{-4.5mm}
+\vspace{-1.5mm}
 
-\begin{center}
-    \small
-    {\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}(+86) 187-6005-3825} |
-    \href{mailto:here1swqw@gmail.com}{{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}here1swqw@gmail.com}} |
-    \href{https://mootutu.github.io/}{{\color{black}{\footnotesize\faGlobe}\hspace*{0.13cm}mootutu.github.io}} |
-    \href{https://scholar.google.com/citations?user=JonSUasAAAAJ}{{\color{black}{\footnotesize\faGraduationCap}\hspace*{0.13cm}谷歌学术}} |
-    \href{https://www.linkedin.com/in/weiqin-wang-aa8800392/}{{\color{black}{\footnotesize\faLinkedin}\hspace*{0.13cm}LinkedIn}}
-\end{center}
-\vspace{-4.5mm}
-
-\begin{center}
-    \small
-    {\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}广东省深圳市南山区深圳大学沧海校区致真楼 L6-711
-\end{center}
-
-% \vspace{-4mm}
-\vspace{-2mm}
-
-% \section{\textbf{个人简介}}
-% \vspace{1mm}
-% \small{
+% \section{个人简介}
 % 本人现为深圳大学 2025 级推免入学的硕士研究生，研究方向为大语言模型后训练、测试时拓展与文本表征。
-% }
-% \vspace{-1mm}
-% \vspace{1mm}
 
-\section{\textbf{教育经历}}
-    \vspace{-0.4mm}
-    \resumeSubHeadingListStart
+% ======================= 教育经历 =======================
+\section{教育经历}
 
-    \resumeSubheading
-    {深圳大学}{中国，深圳}
-    {计算机科学与技术 硕士（推免）}{2025.09 -- 2028.06}
-    \resumeItemListStart
-      \item 研究方向：大语言模型后训练、测试时拓展与文本表征
-      \item 导师：\href{https://ylwangy.github.io/}{王祎乐} 助理教授
-    \resumeItemListEnd
+\cventry{深圳大学}{中国，深圳}
+  {计算机科学与技术 硕士（推免）}{2025.09 -- 2028.06}
+\begin{cvitems}
+  \item 研究方向：大语言模型后训练、测试时拓展与文本表征
+  \item 导师：\href{https://ylwangy.github.io/}{王祎乐}
+\end{cvitems}
 
-    \resumeSubheading
-    {福建农林大学}{中国，福州}
-    {计算机科学与技术 工学学士}{2021.09 -- 2025.06}
+\cventry{福建农林大学}{中国，福州}
+  {计算机科学与技术 工学学士}{2021.09 -- 2025.06}
 
-    \resumeSubHeadingListEnd
+% ======================= 科研经历 =======================
+\section{科研经历}
 
-\vspace{-2mm}
-% \vspace{1mm}
+\cventry{上海人工智能实验室}{中国，上海}
+  {科研实习生}{2026.11 -- 至今}
+\begin{cvitems}
+  \item 导师：\href{https://drugd.github.io/KunLiCV.github.io/}{李坤}
+  \item 研究方向：递归自我改进（RSI）
+\end{cvitems}
 
-\section{\textbf{科研经历}}
-\vspace{-0.4mm}
-  \resumeSubHeadingListStart
-  \resumeSubheading
-      {上海人工智能实验室}{中国，上海}
-      {科研实习生}{2026.11 -- 至今}
-  \resumeSubheading
-      {深圳大学 可视计算研究中心（VCC）}{中国，深圳}
-      {科研实习生}{2024.10 -- 2025.08}
-      \resumeItemListStart
-        \item 导师：\href{https://ylwangy.github.io/}{王祎乐} 助理教授
-        \item 从事大语言模型推理与自洽性（self-consistency）方法相关研究。
-      \resumeItemListEnd
-  \resumeSubheading
-      {深圳大学}{中国，深圳}
-      {《编译原理》课程助教}{2025 春季学期、2026 春季学期}
-  \resumePOR{审稿人}{：ICLR (2027)}{}
-  \resumeSubHeadingListEnd
+\cventry{深圳大学 可视计算研究中心（VCC）}{中国，深圳}
+  {科研实习生}{2024.10 -- 2025.08}
+\begin{cvitems}
+  \item 导师：\href{https://ylwangy.github.io/}{王祎乐}
+  \item 研究方向：测试时拓展
+\end{cvitems}
 
-\vspace{-2mm}
+\cventry{深圳大学}{中国，深圳}
+  {《编译原理》课程助教}{2025 春季学期、2026 春季学期}
 
+\cvline{审稿人}{ICLR (2027)}
 
-\section{\textbf{论文发表}}
-\vspace{-0.4mm}
-\small{(* 同等贡献，\# 通讯作者)}
-\vspace{0.5mm}
-\resumeItemListStart
-  \item Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2609.38070}{Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}. \textit{arXiv Preprint}, 2026. [\href{https://github.com/szu-tera/DTC}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}大模型思维链推理能力增强后，评估与校准其推理置信度、量化答案不确定性愈发重要；现有方法多依赖部分关键 token 的概率，但其内在机制仍不清晰。
-      \item \textit{方法：}提出 Divergent Token Confidence（DTC）框架，用同一推理轨迹上两个模型 next-token 分布的 Jensen--Shannon 散度识别“分歧 token”，并统计其数量来估计置信度；无需训练、不改变生成过程，同时支持白盒与黑盒（借助辅助模型）两种设置。
-      \item \textit{表现：}在多个模型家族、六个数学基准上优于基于概率与口头表达的基线；白盒下仅凭计数即把平均期望校准误差降至 13.0\%（标准全序列方法为 32.7\%--42.4\%），黑盒下在 DeepSeek-V3.2 上由 32.1\%--40.2\% 降至 13.7\%--16.3\%。
-    \end{itemize}
-  \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.emnlp-main.2596.pdf}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}语义文本相似度（STS）是 NLP 的基础任务。当前基于 LLM 的方法通常固定提取末层隐状态、对所有文本对以固定维度计算相似度，存在两点局限：末层隐状态编码的是通用知识而非纯语义知识；隐层维度普遍很大，为语义表示引入冗余与噪声。
-      \item \textit{方法：}提出免训练框架 DySem，基于“文本核心语义在翻译间保持不变”的直觉，通过多语言共识挖掘 LLM 内部更与语义相关的组件，并放弃静态表示空间，为每对文本构建依赖输入的联合语义集，仅在该共享维度子集上计算相似度。
-      \item \textit{表现：}在七个标准 STS 基准、十种 LLM 上取得最佳/次佳平均成绩，显著优于 AlignedWVA（配对 t 检验 $p=4.4\times10^{-12}$），指令微调模型上平均提升 4.55 分；平均仅约 1000 维或更少即可取得有竞争力的效果。
-    \end{itemize}
-  \item Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1858.pdf}{SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/SemPA}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}传统句子表征方法基于非生成式预训练模型做 token 级对比学习；近期基于生成式 LLM 的方法要么依赖固定 prompt 模板（未对模型进一步优化、性能受限），要么改动模型结构（改变内部计算机制、损害生成能力）。
-      \item \textit{方法：}提出 SemPA，通过语义偏好对齐在保留 LLM 生成能力的同时提升句子表征：在复述生成任务上应用句子级直接偏好优化（DPO），使模型学会判别语义等价的句子，并在 Plackett-Luce 模型框架下建立了 DPO 与对比学习的形式化联系。
-      \item \textit{表现：}在语义文本相似度任务及多项 LLM 基准上均取得更好的语义表征，且不牺牲模型固有的生成能力。
-    \end{itemize}
-  \item \textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang. \href{https://aclanthology.org/2026.acl-long.1727.pdf}{Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}. \textit{In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}, 2026. [\href{https://github.com/szu-tera/SCOPE}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}测试时强化学习以多数投票结果作为伪标签，降低对标注数据的依赖，是 RLVR 的互补方向；但该投票策略易引发确认偏差、且奖励稀疏，限制了整体性能。
-      \item \textit{方法：}提出框架 SCOPE，将步级置信度融入伪标签估计，优先选择高质量推理路径而非简单计频；并在推理质量与探索多样性之间权衡，把候选输出池动态划分为相互独立的子群，对每个子群重复采样得到局部共识，提供多样化的监督目标以鼓励更广探索。
-      \item \textit{表现：}在多种模型与基准上一致优于近期基线；在挑战性的 AIME 2025 上相对提升 13.1\%，在 AMC 上提升 8.1\%。
-    \end{itemize}
-  \item Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1736.pdf}{AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/AnchorMem}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}LLM 虽在复杂任务上表现优异，但在长期交互中仍需记忆系统来利用历史经验。现有方法（如 A-Mem、Mem0）过度依赖频繁改写来组织交互，而对摘要的过度依赖会稀释关键上下文细节、模糊关键检索特征。
-      \item \textit{方法：}受认知科学“普鲁斯特效应”（特定锚点触发整体回忆）启发，提出 AnchorMem，将检索单元与生成上下文解耦：从历史中抽取原子事实作为检索锚点，并保留原始上下文作为不可变上下文；构建带高阶事件连接的关联事件图，把相关事实绑定为共享事件表示。检索时以事实与事件为锚定位相关记忆，再用关联的原始文本块与事件重建上下文。
-      \item \textit{表现：}在 LoCoMo 基准上，跨三种闭源与开源模型显著优于基线，在实现细粒度检索的同时保持交互上下文的完整性。
-    \end{itemize}
-  \item \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2025.findings-acl.744/}{Ranked Voting based Self-Consistency of Large Language Models}. \textit{In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2025. [\href{https://github.com/szu-tera/RankedVotingSC}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{背景：}多数投票被视为增强思维链推理的有效方法，即选择不同推理路径中“自洽性”最高的答案；但已有方法每次试验通常只生成单一答案，忽略了其他潜在答案，使这些备选答案在后续投票中被丢弃。
-      \item \textit{方法：}提出在每次推理过程中生成排序答案，并在多条响应的排序答案之间进行排序投票，使整体自洽性更可靠；具体采用即时决胜制、Borda 计数与平均倒数秩三种排序投票方法。
-      \item \textit{表现：}在六个数据集（三个多选题与三个开放式问答）上，使用开源与闭源 LLM 均优于基线，展现出利用排序答案信息、通过排序投票提升推理性能的潜力。
-    \end{itemize}
-\resumeItemListEnd
+% ======================= 论文发表 =======================
+\section{论文发表}
+{\footnotesize\color{muted}* 同等贡献，\# 通讯作者\par}
+\vspace{-0.6ex}
 
-\vspace{-2mm}
-\section{\textbf{荣誉奖项}}
-    \resumeItemListStart
-    \item 国家奖学金（本科生）
-    \item 国家奖学金（硕士研究生）
-    \item 深圳大学硕士生学业奖学金（特等）
-    \item 福建农林大学本科生学业奖学金（一等）
-    \item 全国大学生数学建模竞赛二等奖
-    \item 美国大学生数学建模竞赛／交叉学科建模竞赛（MCM/ICM）Meritorious Winner（一等奖）
-    \resumeItemListEnd
+\pub
+  {Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}
+  {https://arxiv.org/abs/2609.38070}
+  {Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang.}
+  {arXiv Preprint}{2026}
+  {https://github.com/szu-tera/DTC}
+\begin{pubnotes}
+  \item \publabel{背景}大模型思维链推理能力增强后，评估与校准其推理置信度、量化答案不确定性愈发重要；现有方法多依赖部分关键 token 的概率，但其内在机制仍不清晰。
+  \item \publabel{方法}提出 Divergent Token Confidence（DTC）框架，用同一推理轨迹上两个模型 next-token 分布的 Jensen--Shannon 散度识别“分歧 token”，并统计其数量来估计置信度；无需训练、不改变生成过程，同时支持白盒与黑盒（借助辅助模型）两种设置。
+  \item \publabel{表现}在多个模型家族、六个数学基准上优于基于概率与口头表达的基线；白盒下仅凭计数即把平均期望校准误差降至 13.0\%（标准全序列方法为 32.7\%--42.4\%），黑盒下在 DeepSeek-V3.2 上由 32.1\%--40.2\% 降至 13.7\%--16.3\%。
+\end{pubnotes}
 
-% \vspace{-2mm}
-% \section{\textbf{专业技能}}
-% \vspace{-0.4mm}
-%     \resumeItemListStart
-%     \item \textbf{编程与机器学习：}Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
-%     \item \textbf{工具：}Linux, Git, Office
-%     \item \textbf{语言：}中文（母语）；英语（CET-4: 532；CET-6: 509；具备学术读写与日常交流能力）
-%     \resumeItemListEnd
+\pub
+  {DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}
+  {https://aclanthology.org/2026.emnlp-main.2596.pdf}
+  {Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang.}
+  {To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}{2026}
+  {https://github.com/szu-tera/DySem}
+\begin{pubnotes}
+  \item \publabel{背景}语义文本相似度（STS）是 NLP 的基础任务。当前基于 LLM 的方法通常固定提取末层隐状态、对所有文本对以固定维度计算相似度，存在两点局限：末层隐状态编码的是通用知识而非纯语义知识；隐层维度普遍很大，为语义表示引入冗余与噪声。
+  \item \publabel{方法}提出免训练框架 DySem，基于“文本核心语义在翻译间保持不变”的直觉，通过多语言共识挖掘 LLM 内部更与语义相关的组件，并放弃静态表示空间，为每对文本构建依赖输入的联合语义集，仅在该共享维度子集上计算相似度。
+  \item \publabel{表现}在七个标准 STS 基准、十种 LLM 上取得最佳/次佳平均成绩，显著优于 AlignedWVA（配对 t 检验 $p=4.4\times10^{-12}$），指令微调模型上平均提升 4.55 分；平均仅约 1000 维或更少即可取得有竞争力的效果。
+\end{pubnotes}
+
+\pub
+  {SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}
+  {https://aclanthology.org/2026.findings-acl.1858.pdf}
+  {Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang.}
+  {In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2026}
+  {https://github.com/szu-tera/SemPA}
+\begin{pubnotes}
+  \item \publabel{背景}传统句子表征方法基于非生成式预训练模型做 token 级对比学习；近期基于生成式 LLM 的方法要么依赖固定 prompt 模板（未对模型进一步优化、性能受限），要么改动模型结构（改变内部计算机制、损害生成能力）。
+  \item \publabel{方法}提出 SemPA，通过语义偏好对齐在保留 LLM 生成能力的同时提升句子表征：在复述生成任务上应用句子级直接偏好优化（DPO），使模型学会判别语义等价的句子，并在 Plackett-Luce 模型框架下建立了 DPO 与对比学习的形式化联系。
+  \item \publabel{表现}在语义文本相似度任务及多项 LLM 基准上均取得更好的语义表征，且不牺牲模型固有的生成能力。
+\end{pubnotes}
+
+\pub
+  {Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}
+  {https://aclanthology.org/2026.acl-long.1727.pdf}
+  {\textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang.}
+  {In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}{2026}
+  {https://github.com/szu-tera/SCOPE}
+\begin{pubnotes}
+  \item \publabel{背景}测试时强化学习以多数投票结果作为伪标签，降低对标注数据的依赖，是 RLVR 的互补方向；但该投票策略易引发确认偏差、且奖励稀疏，限制了整体性能。
+  \item \publabel{方法}提出框架 SCOPE，将步级置信度融入伪标签估计，优先选择高质量推理路径而非简单计频；并在推理质量与探索多样性之间权衡，把候选输出池动态划分为相互独立的子群，对每个子群重复采样得到局部共识，提供多样化的监督目标以鼓励更广探索。
+  \item \publabel{表现}在多种模型与基准上一致优于近期基线；在挑战性的 AIME 2025 上相对提升 13.1\%，在 AMC 上提升 8.1\%。
+\end{pubnotes}
+
+\pub
+  {AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}
+  {https://aclanthology.org/2026.findings-acl.1736.pdf}
+  {Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang.}
+  {In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2026}
+  {https://github.com/szu-tera/AnchorMem}
+\begin{pubnotes}
+  \item \publabel{背景}LLM 虽在复杂任务上表现优异，但在长期交互中仍需记忆系统来利用历史经验。现有方法（如 A-Mem、Mem0）过度依赖频繁改写来组织交互，而对摘要的过度依赖会稀释关键上下文细节、模糊关键检索特征。
+  \item \publabel{方法}受认知科学“普鲁斯特效应”（特定锚点触发整体回忆）启发，提出 AnchorMem，将检索单元与生成上下文解耦：从历史中抽取原子事实作为检索锚点，并保留原始上下文作为不可变上下文；构建带高阶事件连接的关联事件图，把相关事实绑定为共享事件表示。检索时以事实与事件为锚定位相关记忆，再用关联的原始文本块与事件重建上下文。
+  \item \publabel{表现}在 LoCoMo 基准上，跨三种闭源与开源模型显著优于基线，在实现细粒度检索的同时保持交互上下文的完整性。
+\end{pubnotes}
+
+\pub
+  {Ranked Voting based Self-Consistency of Large Language Models}
+  {https://aclanthology.org/2025.findings-acl.744/}
+  {\textbf{Weiqin Wang}, Yile Wang, \& Hui Huang.}
+  {In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2025}
+  {https://github.com/szu-tera/RankedVotingSC}
+\begin{pubnotes}
+  \item \publabel{背景}多数投票被视为增强思维链推理的有效方法，即选择不同推理路径中“自洽性”最高的答案；但已有方法每次试验通常只生成单一答案，忽略了其他潜在答案，使这些备选答案在后续投票中被丢弃。
+  \item \publabel{方法}提出在每次推理过程中生成排序答案，并在多条响应的排序答案之间进行排序投票，使整体自洽性更可靠；具体采用即时决胜制、Borda 计数与平均倒数秩三种排序投票方法。
+  \item \publabel{表现}在六个数据集（三个多选题与三个开放式问答）上，使用开源与闭源 LLM 均优于基线，展现出利用排序答案信息、通过排序投票提升推理性能的潜力。
+\end{pubnotes}
+
+% ======================= 荣誉奖项 =======================
+\section{荣誉奖项}
+\begin{cvitems}
+  \item 国家奖学金（本科生）
+  \item 国家奖学金（硕士研究生）
+  \item 深圳大学硕士生学业奖学金（特等）
+  \item 福建农林大学本科生学业奖学金（一等）
+  \item 全国大学生数学建模竞赛二等奖
+  \item 美国大学生数学建模竞赛／交叉学科建模竞赛（MCM/ICM）Meritorious Winner（一等奖）
+\end{cvitems}
+
+% \section{专业技能}
+% \begin{cvitems}
+%   \item \textbf{编程与机器学习：}Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
+%   \item \textbf{工具：}Linux, Git, Office
+%   \item \textbf{语言：}中文（母语）；英语（CET-4: 532；CET-6: 509；具备学术读写与日常交流能力）
+% \end{cvitems}
 
 \end{document}

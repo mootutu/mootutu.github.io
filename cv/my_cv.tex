@@ -1,514 +1,252 @@
-%
-%Academic CV LaTeX Template
-% Author: Dubasi Pavan Kumar
-% LinkedIn: https://www.linkedin.com/in/im-pavankumar/
-% License: MIT
-%
-% For errors, suggestions, or improvements, please contact:
-% Email: pavankumard.pg19.ma@nitp.ac.in
-%
+% Weiqin Wang -- Curriculum Vitae (English)
+% Compile with pdfLaTeX:  latexmk my_cv.tex
+% Layout macros are defined in the preamble; the content starts at \begin{document}.
 
+\documentclass[a4paper,10pt]{article}
 
-
-\documentclass[a4paper,11pt]{article}
-
-% Package imports
-\usepackage{latexsym}
-\usepackage{xcolor}
-\usepackage{float}
-\usepackage{ragged2e}
-\usepackage[empty]{fullpage}
-\usepackage{wrapfig}
-\usepackage{lipsum}
-\usepackage{tabularx}
-\usepackage{titlesec}
-\usepackage{geometry}
-\usepackage{marvosym}
-\usepackage{verbatim}
-\usepackage{enumitem}
-\usepackage{fancyhdr}
-\usepackage{multicol}
-\usepackage{graphicx}
-\usepackage{cfr-lm}
+% ---------- Fonts: Palatino ----------
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+\usepackage[tracking=true]{microtype}
+
+% ---------- Page ----------
+\usepackage[a4paper, left=1.7cm, right=1.7cm, top=1.3cm, bottom=1.5cm, footskip=8mm]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
 \usepackage{fontawesome5}
 
-% Color definitions
-\definecolor{darkblue}{RGB}{0,0,139}
+% ---------- Colors (same palette as the website) ----------
+\definecolor{ink}{HTML}{1F1E1B}     % body text
+\definecolor{soft}{HTML}{3D3B36}    % secondary text
+\definecolor{muted}{HTML}{6E6A62}   % dates, locations, footer
+\definecolor{accent}{HTML}{A64D2C}  % headings and links
+\definecolor{hair}{HTML}{D9D2C3}    % rules
+\color{ink}
 
-% Page layout
-\setlength{\multicolsep}{0pt} 
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-\fancyfoot{}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
-\setlength{\footskip}{5pt} % Addressing fancyhdr warning
-
-% Hyperlink setup (moved after fancyhdr to address warning)
 \usepackage[hidelinks]{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=darkblue,
-    filecolor=darkblue,
-    urlcolor=darkblue,
-}
-
-% Custom box settings
-\usepackage[most]{tcolorbox}
-\tcbset{
-    frame code={},
-    center title,
-    left=0pt,
-    right=0pt,
-    top=0pt,
-    bottom=0pt,
-    colback=gray!20,
-    colframe=white,
-    width=\dimexpr\textwidth\relax,
-    enlarge left by=-2mm,
-    boxsep=4pt,
-    arc=0pt,outer arc=0pt,
-}
-
-% URL style
+\hypersetup{colorlinks=true, linkcolor=accent, filecolor=accent, urlcolor=accent,
+  pdftitle={Weiqin Wang -- Curriculum Vitae}, pdfauthor={Weiqin Wang}}
 \urlstyle{same}
 
-% Text alignment
-\raggedright
-\setlength{\tabcolsep}{0in}
+% ---------- Paragraphs ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{1.02}
+\emergencystretch=2em
+\hyphenpenalty=600
+\clubpenalty=10000
+\widowpenalty=10000
 
-% Section formatting
-\titleformat{\section}{
-  \vspace{-4pt}\scshape\raggedright\large
-}{}{0em}{}[\color{black}\titlerule \vspace{-7pt}]
+% ---------- Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize\color{muted}Weiqin Wang\enspace\textperiodcentered\enspace Curriculum Vitae\enspace\textperiodcentered\enspace \thepage\,/\,\pageref*{LastPage}}
 
-% Custom commands
-\newcommand{\resumeItem}[2]{
-  \item{
-    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
-  }
+% ---------- Section headings ----------
+\titleformat{\section}{\normalfont\bfseries\color{accent}\normalsize}{}{0pt}{\sectionstyle}
+  [{\vspace{-0.55ex}\color{hair}\titlerule[0.6pt]}]
+\titlespacing*{\section}{0pt}{2.6ex plus 0.6ex minus 0.3ex}{1.1ex}
+
+% ---------- Header ----------
+\newcommand{\cvicon}[1]{{\color{accent}\footnotesize #1}\hspace{0.35em}}
+\newcommand{\cvsep}{\hspace{0.9em}{\color{hair}\textbar}\hspace{0.9em}}
+\newcommand{\cvlink}[2]{\href{#1}{\color{ink}#2}}
+
+% ---------- Entries: {organisation}{location}{role}{dates} ----------
+\newcommand{\cventry}[4]{%
+  \par\addvspace{1.3ex}%
+  {\textbf{#1}\hfill #4\par}\nobreak
+  {\vspace{0.15ex}\small\textit{#3}\hfill{\color{muted}#2}\par}\nobreak
 }
+% One-line entry: {label}{text}
+\newcommand{\cvline}[2]{\par\addvspace{1.3ex}\textbf{#1}\quad #2\par}
 
-\newcommand{\resumePOR}[3]{
-\vspace{0.5mm}\item
-    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
-        \textbf{#1}\hspace{0.3mm}#2 & \textit{\small{#3}} 
-    \end{tabular*}
-    \vspace{-2mm}
+\newlist{cvitems}{itemize}{1}
+\setlist[cvitems]{label={\color{accent}\tiny\raisebox{0.35ex}{\textbullet}},
+  leftmargin=1.1em, labelsep=0.5em, topsep=0.5ex, partopsep=0pt, itemsep=0.25ex, parsep=0pt}
+
+% ---------- Publications ----------
+\newcounter{pubno}
+% \pub{title}{paper url}{authors}{venue}{year}{code url}
+\newcommand{\pub}[6]{%
+  \par\addvspace{1.7ex plus 0.4ex}\stepcounter{pubno}%
+  \begingroup
+  \leftskip=\pubindent
+  \noindent\llap{\makebox[\pubindent][l]{\color{muted}\small[\arabic{pubno}]}}%
+  {\rightskip=0pt plus 4em \interlinepenalty=10000 \hyphenpenalty=10000 \exhyphenpenalty=10000
+   \href{#2}{\textbf{\color{accent}#1}}\par}\nobreak
+  \vspace{0.2ex}%
+  {\small #3 \textit{#4}, #5.\enspace
+   \publink{#2}{\faFile*[regular]}{Paper}\enspace\publink{#6}{\faGithub}{Code}\par}\nobreak
+  \endgroup
 }
+\newlength{\pubindent}
+\setlength{\pubindent}{1.7em}
+\newcommand{\publink}[3]{\href{#1}{\mbox{\scriptsize #2\,\footnotesize #3}}}
+\newcommand{\me}[1]{\textbf{#1}}
 
-\newcommand{\resumeSubheading}[4]{
-\vspace{0.5mm}\item
-    \begin{tabular*}{0.98\textwidth}[t]{l@{\extracolsep{\fill}}r}
-        \textbf{#1} & \textit{\footnotesize{#4}} \\
-        \textit{\footnotesize{#3}} &  \footnotesize{#2}\\
-    \end{tabular*}
-    \vspace{-2.4mm}
-}
+\newlist{pubnotes}{itemize}{1}
+\setlist[pubnotes]{label={}, leftmargin=\pubindent, labelwidth=0pt, labelsep=0pt,
+  topsep=0.45ex, partopsep=0pt, itemsep=0.2ex, parsep=0pt,
+  before=\small\color{soft}}
 
-\newcommand{\resumeProject}[4]{
-\vspace{0.5mm}\item
-    \begin{tabularx}{0.98\textwidth}[t]{@{}Xr@{}}
-        \textbf{#1} & \textit{\footnotesize{#3}} \\
-        \footnotesize{\textit{#2}} & \footnotesize{#4}
-    \end{tabularx}
-    \vspace{-2.4mm}
-}
-
-\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
-
-\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
-\renewcommand{\labelitemii}{$\vcenter{\hbox{\tiny$\circ$}}$}
-
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm]}
-\newcommand{\resumeHeadingSkillStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm,itemsep=0mm]}
-
-\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{2mm}}
-\newcommand{\resumeHeadingSkillEnd}{\end{itemize}\vspace{-2mm}}
-\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2mm}}
-\newcommand{\cvsection}[1]{%
-\vspace{2mm}
-\begin{tcolorbox}
-    \textbf{\large #1}
-\end{tcolorbox}
-    \vspace{-4mm}
-}
-
-\newcolumntype{L}{>{\raggedright\arraybackslash}X}%
-\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
-\newcolumntype{C}{>{\centering\arraybackslash}X}%
-
-% Commands for icon sizing and positioning
-\newcommand{\socialicon}[1]{\raisebox{-0.05em}{\resizebox{!}{1em}{#1}}}
-\newcommand{\ieeeicon}[1]{\raisebox{-0.3em}{\resizebox{!}{1.3em}{#1}}}
-
-% Font options
-\newcommand{\headerfonti}{\fontfamily{phv}\selectfont} % Helvetica-like (similar to Arial/Calibri)
-\newcommand{\headerfontii}{\fontfamily{ptm}\selectfont} % Times-like (similar to Times New Roman)
-\newcommand{\headerfontiii}{\fontfamily{ppl}\selectfont} % Palatino (elegant serif)
-\newcommand{\headerfontiv}{\fontfamily{pbk}\selectfont} % Bookman (readable serif)
-\newcommand{\headerfontv}{\fontfamily{pag}\selectfont} % Avant Garde-like (similar to Trebuchet MS)
-\newcommand{\headerfontvi}{\fontfamily{cmss}\selectfont} % Computer Modern Sans Serif
-\newcommand{\headerfontvii}{\fontfamily{qhv}\selectfont} % Quasi-Helvetica (another Arial/Calibri alternative)
-\newcommand{\headerfontviii}{\fontfamily{qpl}\selectfont} % Quasi-Palatino (another elegant serif option)
-\newcommand{\headerfontix}{\fontfamily{qtm}\selectfont} % Quasi-Times (another Times New Roman alternative)
-\newcommand{\headerfontx}{\fontfamily{bch}\selectfont} % Charter (clean serif font)
+\newcommand{\sectionstyle}[1]{\textls[110]{\MakeUppercase{#1}}}
+\newcommand{\publabel}[1]{\textbf{#1.}\enspace}
 
 \begin{document}
-\headerfontiii
 
-% Header
+% ======================= Header =======================
 \begin{center}
-    {\Huge\textbf{Weiqin Wang}}
+  {\fontsize{25}{28}\selectfont\bfseries\textls[30]{Weiqin Wang}}\\[2.6mm]
+  {\small
+    \cvicon{\faPhone*}(+86) 187-6005-3825\cvsep
+    \cvlink{mailto:here1swqw@gmail.com}{\cvicon{\faEnvelope[regular]}here1swqw@gmail.com}\cvsep
+    \cvlink{https://mootutu.github.io/}{\cvicon{\faGlobe}mootutu.github.io}\cvsep
+    \cvlink{https://scholar.google.com/citations?user=JonSUasAAAAJ}{\cvicon{\faGraduationCap}Google Scholar}\cvsep
+    \cvlink{https://www.linkedin.com/in/weiqin-wang-aa8800392/}{\cvicon{\faLinkedin}LinkedIn}}\\[1.2mm]
+  {\small\color{muted}
+    \cvicon{\faMapMarker*}L6-711, Zhizhen Building, Canghai Campus, Shenzhen University, Nanshan District, Shenzhen, China}
 \end{center}
-\vspace{-4.5mm}
+\vspace{-1.5mm}
 
-\begin{center}
-    \small
-    {\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}(+86) 187-6005-3825} |
-    \href{mailto:here1swqw@gmail.com}{{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}here1swqw@gmail.com}} |
-    \href{https://mootutu.github.io/}{{\color{black}{\footnotesize\faGlobe}\hspace*{0.13cm}mootutu.github.io}} |
-    \href{https://scholar.google.com/citations?user=JonSUasAAAAJ}{{\color{black}{\footnotesize\faGraduationCap}\hspace*{0.13cm}Google Scholar}} |
-    \href{https://www.linkedin.com/in/weiqin-wang-aa8800392/}{{\color{black}{\footnotesize\faLinkedin}\hspace*{0.13cm}LinkedIn}}
-\end{center}
-\vspace{-4.5mm}
-
-% \begin{center}
-%     \small{
-%     \socialicon{\faLinkedin} \href{https://www.linkedin.com/in/your-profile/}{your-profile} | 
-%     \socialicon{\faGithub} \href{https://github.com/your-username}{your-username} | 
-%     \ieeeicon{\includegraphics[height=1.3em]{ieee_collabratec_icon.png}} \href{https://ieee-collabratec.ieee.org/app/p/your-profile}{your-profile} |
-%     \socialicon{\faTwitter} \href{https://twitter.com/your-handle}{your-handle}
-%     }
-% \end{center}
-% \vspace{-6mm}
-\begin{center}
-    \small
-    {\color{black}\footnotesize\faMapMarker*}\hspace*{0.13cm}L6-711, Zhizhen Building, Canghai Campus, Shenzhen University, Nanshan District, Shenzhen, China
-\end{center}
-
-% \vspace{-4mm}
-\vspace{-2mm}
-
-% \section{\textbf{About}}
-% \vspace{1mm}
-% \small{
+% \section{About}
 % I am currently a master's student admitted through the 2025 recommended exemption program. My research interests include LLM post-training, test-time scaling, and text representations.
-% }
-% \vspace{-1mm}
-% \vspace{1mm}
 
+% ======================= Education =======================
+\section{Education}
 
+\cventry{Shenzhen University}{Shenzhen, China}
+  {M.Sc. in Computer Science and Technology (Recommended Exemption)}{Sept. 2025 -- June 2028}
+\begin{cvitems}
+  \item Research Interests: LLM post-training, test-time scaling, and text representations
+  \item Advisor: \href{https://ylwangy.github.io/}{Yile Wang}
+\end{cvitems}
 
-\section{\textbf{Education}}
-    \vspace{-0.4mm}
-    \resumeSubHeadingListStart
+\cventry{Fujian Agriculture and Forestry University}{Fuzhou, China}
+  {B.Sc. in Computer Science and Technology}{Sept. 2021 -- June 2025}
 
-    \resumeSubheading
-    {Shenzhen University}{Shenzhen, China}
-    {M.Sc. in Computer Science and Technology (Recommended Exemption)}{Sept. 2025 -- June 2028}
-    \resumeItemListStart
-      \item Research Interests: LLM post-training, test-time scaling, and text representations
-      \item Advisor: Assistant Prof. \href{https://ylwangy.github.io/}{Yile Wang}
-    \resumeItemListEnd
+% ======================= Experience =======================
+\section{Experience}
 
-    \resumeSubheading
-    {Fujian Agriculture and Forestry University}{Fuzhou, China}
-    {B.Sc. in Computer Science and Technology}{Sept. 2021 -- June 2025}
+\cventry{Shanghai AI Laboratory}{Shanghai, China}
+  {Research Intern}{Nov. 2026 -- Present}
+\begin{cvitems}
+  \item Advisor: \href{https://drugd.github.io/KunLiCV.github.io/}{Kun Li}
+  \item Research direction: recursive self-improvement (RSI)
+\end{cvitems}
 
-    \resumeSubHeadingListEnd
+\cventry{Shenzhen University, Visual Computing Research Center (VCC)}{Shenzhen, China}
+  {Research Intern}{Oct. 2024 -- Aug. 2025}
+\begin{cvitems}
+  \item Advisor: \href{https://ylwangy.github.io/}{Yile Wang}
+  \item Research direction: test-time scaling
+\end{cvitems}
 
-\vspace{-2mm}
-% \vspace{1mm}
+\cventry{Shenzhen University}{Shenzhen, China}
+  {Teaching Assistant, Principles of Compilation}{Spring 2025, Spring 2026}
 
-\section{\textbf{Experience}}
-\vspace{-0.4mm}
-  \resumeSubHeadingListStart
-  \resumeSubheading
-      {Shanghai AI Laboratory}{Shanghai, China}
-      {Research Intern}{Nov. 2026 -- Present}
-  \resumeSubheading
-      {Shenzhen University, Visual Computing Research Center (VCC)}{Shenzhen, China}
-      {Research Intern}{Oct. 2024 -- Aug. 2025}
-      \resumeItemListStart
-        \item Advisor: Assistant Prof. \href{https://ylwangy.github.io/}{Yile Wang}.
-        \item Conducted research on large language model reasoning and self-consistency methods.
-      \resumeItemListEnd
-  \resumeSubheading
-      {Shenzhen University}{Shenzhen, China}
-      {Teaching Assistant, Principles of Compilation}{Spring 2025, Spring 2026}
-  \resumePOR{Reviewer}{: ICLR (2027)}{}
-  \resumeSubHeadingListEnd
+\cvline{Reviewer}{ICLR (2027)}
 
-\vspace{-2mm}
+% ======================= Publications =======================
+\section{Publications}
+{\footnotesize\color{muted}* Equal contribution,\enspace \# Corresponding author\par}
+\vspace{-0.6ex}
 
+\pub
+  {Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}
+  {https://arxiv.org/abs/2609.38070}
+  {Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang.}
+  {arXiv Preprint}{2026}
+  {https://github.com/szu-tera/DTC}
+\begin{pubnotes}
+  \item \publabel{Background}As chain-of-thought reasoning improves, evaluating and calibrating LLM reasoning confidence---quantifying answer uncertainty---becomes increasingly important; current methods rely on probabilities of selected key tokens, yet the underlying mechanism remains unclear.
+  \item \publabel{Method}Proposes Divergent Token Confidence (DTC), which estimates confidence by counting tokens where two models strongly disagree during decoding, identified via the Jensen--Shannon divergence between next-token distributions along the same reasoning trajectory; it requires no training, leaves generation unaffected, and supports both white-box and black-box (auxiliary-model) settings.
+  \item \publabel{Performance}Outperforms probability-based and verbalized baselines across multiple model families and six mathematical benchmarks; under white-box evaluation a count-only estimator reaches 13.0\% average expected calibration error, versus 32.7\%--42.4\% for standard full-sequence confidence, and in black-box settings it drops from 32.1\%--40.2\% to 13.7\%--16.3\% on DeepSeek-V3.2.
+\end{pubnotes}
 
-\section{\textbf{Publications}}
-\vspace{-0.4mm}
-\small{(* Equal contribution, \# Corresponding author)}
-\vspace{0.5mm}
-\resumeItemListStart
-  \item Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, \textbf{Weiqin Wang}, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, \& Hui Huang. \href{https://arxiv.org/abs/2609.38070}{Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs}. \textit{arXiv Preprint}, 2026. [\href{https://github.com/szu-tera/DTC}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} As chain-of-thought reasoning improves, evaluating and calibrating LLM reasoning confidence---quantifying answer uncertainty---becomes increasingly important; current methods rely on probabilities of selected key tokens, yet the underlying mechanism remains unclear.
-      \item \textit{Method:} Proposes Divergent Token Confidence (DTC), which estimates confidence by counting tokens where two models strongly disagree during decoding, identified via the Jensen--Shannon divergence between next-token distributions along the same reasoning trajectory; it requires no training, leaves generation unaffected, and supports both white-box and black-box (auxiliary-model) settings.
-      \item \textit{Performance:} Outperforms probability-based and verbalized baselines across multiple model families and six mathematical benchmarks; under white-box evaluation a count-only estimator reaches 13.0\% average expected calibration error, versus 32.7\%--42.4\% for standard full-sequence confidence, and in black-box settings it drops from 32.1\%--40.2\% to 13.7\%--16.3\% on DeepSeek-V3.2.
-    \end{itemize}
-  \item Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.emnlp-main.2596.pdf}{DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}. \textit{To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}, 2026. [\href{https://github.com/szu-tera/DySem}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} Semantic textual similarity (STS) is a foundational NLP task; current LLM-based methods extract fixed last-layer hidden states and compute similarity with fixed dimensions for every text pair, which suffers from two limitations: the last layer encodes general rather than purely semantic knowledge, and its large dimensionality introduces redundancy and noise.
-      \item \textit{Method:} A training-free framework, DySem, that uncovers more semantic-related internal components of LLMs via multilingual consensus (exploiting the fact that a text's core meaning is invariant across translations), and replaces static representation spaces with a text-pair-dependent joint semantic set over which similarity is computed.
-      \item \textit{Performance:} Achieves best/second-best average results across ten LLMs on seven standard STS benchmarks, significantly outperforming AlignedWVA (paired t-test, $p=4.4\times10^{-12}$) with an average gain of 4.55 points on instruction-tuned models, while using only about 1,000 dimensions or fewer on average.
-    \end{itemize}
-  \item Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1858.pdf}{SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/SemPA}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} Traditional sentence embedding methods apply token-level contrastive learning on non-generative pre-trained models; recent LLM-based embedding methods either rely on fixed prompt templates (limited performance, no further model optimization) or modify the model architecture, altering internal computation and compromising generative ability.
-      \item \textit{Method:} Proposes SemPA, which boosts sentence representations while preserving LLM generative ability via semantic preference alignment: sentence-level Direct Preference Optimization on a paraphrase generation task teaches the model to discriminate semantically equivalent sentences, with a formal connection between DPO and contrastive learning established under the Plackett-Luce model.
-      \item \textit{Performance:} Achieves better semantic representations on semantic textual similarity tasks and various LLM benchmarks without sacrificing the inherent generation capability of LLMs.
-    \end{itemize}
-  \item \textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang. \href{https://aclanthology.org/2026.acl-long.1727.pdf}{Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}. \textit{In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}, 2026. [\href{https://github.com/szu-tera/SCOPE}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} Test-time reinforcement learning uses majority-voting results as pseudo-labels to reduce reliance on annotated data, complementing RLVR, but this voting strategy induces confirmation bias and sparse rewards that limit overall performance.
-      \item \textit{Method:} Proposes SCOPE, which integrates step-wise confidence into pseudo-label estimation to prioritize high-quality reasoning paths over simple frequency counts, and dynamically partitions the candidate output pool into independent subgroups by balancing reasoning quality against exploration diversity, where repeated sampling yields local consensus and thus diverse supervision targets for broader exploration.
-      \item \textit{Performance:} Consistently outperforms recent baselines across models and benchmarks, achieving relative improvements of 13.1\% on AIME 2025 and 8.1\% on AMC.
-    \end{itemize}
-  \item Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2026.findings-acl.1736.pdf}{AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}. \textit{In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2026. [\href{https://github.com/szu-tera/AnchorMem}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} LLMs perform well on complex tasks but still need a memory system to leverage historical experience in long-term interactions; existing methods (e.g., A-Mem, Mem0) rely heavily on frequently rewriting interactions, and this over-reliance on summarization risks diluting contextual nuances and obscuring key retrieval features.
-      \item \textit{Method:} Inspired by the Proust Phenomenon in cognitive science, AnchorMem decouples the retrieval unit from the generation context: it extracts atomic facts as retrieval anchors while preserving raw contexts as immutable context, and builds an associative event graph with higher-order event links that bind related facts into shared event representations; retrieval anchors queries to facts and events but reconstructs context from the associated raw chunks and events.
-      \item \textit{Performance:} Significantly outperforms baselines on the LoCoMo benchmark across three closed-source and open-source models, reconciling fine-grained retrieval with the contextual integrity of interactions.
-    \end{itemize}
-  \item \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang. \href{https://aclanthology.org/2025.findings-acl.744/}{Ranked Voting based Self-Consistency of Large Language Models}. \textit{In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}, 2025. [\href{https://github.com/szu-tera/RankedVotingSC}{code}]
-    \begin{itemize}[leftmargin=4.5mm,labelsep=1mm,itemsep=0mm,topsep=0.4mm,parsep=0pt,partopsep=0pt]
-      \item \textit{Background:} Majority voting is considered an effective way to enhance chain-of-thought reasoning by selecting the answer with the highest self-consistency across reasoning paths, but previous methods generate only a single answer per trial, ignoring other potential answers that are then discarded in the voting process.
-      \item \textit{Method:} Proposes generating ranked answers within each reasoning process and conducting ranked voting among the ranked answers from different responses to make overall self-consistency more reliable, using three ranked-voting methods: instant-runoff, Borda count, and mean reciprocal rank.
-      \item \textit{Performance:} Outperforms baselines on six datasets (three multiple-choice and three open-ended QA tasks) with both open-source and closed-source LLMs, showing the potential of leveraging ranked-answer information to improve reasoning performance.
-    \end{itemize}
-\resumeItemListEnd
+\pub
+  {DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity}
+  {https://aclanthology.org/2026.emnlp-main.2596.pdf}
+  {Kaijie Zheng*, \textbf{Weiqin Wang*}, Yile Wang, \& Hui Huang.}
+  {To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (\textbf{EMNLP})}{2026}
+  {https://github.com/szu-tera/DySem}
+\begin{pubnotes}
+  \item \publabel{Background}Semantic textual similarity (STS) is a foundational NLP task; current LLM-based methods extract fixed last-layer hidden states and compute similarity with fixed dimensions for every text pair, which suffers from two limitations: the last layer encodes general rather than purely semantic knowledge, and its large dimensionality introduces redundancy and noise.
+  \item \publabel{Method}A training-free framework, DySem, that uncovers more semantic-related internal components of LLMs via multilingual consensus (exploiting the fact that a text's core meaning is invariant across translations), and replaces static representation spaces with a text-pair-dependent joint semantic set over which similarity is computed.
+  \item \publabel{Performance}Achieves best/second-best average results across ten LLMs on seven standard STS benchmarks, significantly outperforming AlignedWVA (paired t-test, $p=4.4\times10^{-12}$) with an average gain of 4.55 points on instruction-tuned models, while using only about 1,000 dimensions or fewer on average.
+\end{pubnotes}
 
-\vspace{-2mm}
-\section{\textbf{Honors \& Awards}}
-    \resumeItemListStart
-    \item National Scholarship for Undergraduate Students
-    \item National Scholarship for Master's Students
-    \item Special Academic Scholarship for Master's Students, Shenzhen University
-    \item First-Class Academic Scholarship for Undergraduate Students, Fujian Agriculture and Forestry University
-    \item Second Prize, National Undergraduate Mathematical Contest in Modeling
-    \item Meritorious Winner, Mathematical Contest in Modeling/Interdisciplinary Contest in Modeling (MCM/ICM), USA
-    \resumeItemListEnd
+\pub
+  {SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment}
+  {https://aclanthology.org/2026.findings-acl.1858.pdf}
+  {Ziyang Chen, Zhenxuan Huang, Yile Wang, \textbf{Weiqin Wang}, Lu Yin, \& Hui Huang.}
+  {In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2026}
+  {https://github.com/szu-tera/SemPA}
+\begin{pubnotes}
+  \item \publabel{Background}Traditional sentence embedding methods apply token-level contrastive learning on non-generative pre-trained models; recent LLM-based embedding methods either rely on fixed prompt templates (limited performance, no further model optimization) or modify the model architecture, altering internal computation and compromising generative ability.
+  \item \publabel{Method}Proposes SemPA, which boosts sentence representations while preserving LLM generative ability via semantic preference alignment: sentence-level Direct Preference Optimization on a paraphrase generation task teaches the model to discriminate semantically equivalent sentences, with a formal connection between DPO and contrastive learning established under the Plackett-Luce model.
+  \item \publabel{Performance}Achieves better semantic representations on semantic textual similarity tasks and various LLM benchmarks without sacrificing the inherent generation capability of LLMs.
+\end{pubnotes}
 
-% \vspace{-2mm}
-% \section{\textbf{Skills}}
-% \vspace{-0.4mm}
-%     \resumeItemListStart
-%     \item \textbf{Programming and ML:} Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
-%     \item \textbf{Tools:} Linux, Git, Office
-%     \item \textbf{Languages:} Chinese (Native), English (CET-4: 532; CET-6: 509; academic reading, writing, and daily communication)
-%     \resumeItemListEnd
+\pub
+  {Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning}
+  {https://aclanthology.org/2026.acl-long.1727.pdf}
+  {\textbf{Weiqin Wang}, Yile Wang, Kehao Chen, \& Hui Huang.}
+  {In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL})}{2026}
+  {https://github.com/szu-tera/SCOPE}
+\begin{pubnotes}
+  \item \publabel{Background}Test-time reinforcement learning uses majority-voting results as pseudo-labels to reduce reliance on annotated data, complementing RLVR, but this voting strategy induces confirmation bias and sparse rewards that limit overall performance.
+  \item \publabel{Method}Proposes SCOPE, which integrates step-wise confidence into pseudo-label estimation to prioritize high-quality reasoning paths over simple frequency counts, and dynamically partitions the candidate output pool into independent subgroups by balancing reasoning quality against exploration diversity, where repeated sampling yields local consensus and thus diverse supervision targets for broader exploration.
+  \item \publabel{Performance}Consistently outperforms recent baselines across models and benchmarks, achieving relative improvements of 13.1\% on AIME 2025 and 8.1\% on AMC.
+\end{pubnotes}
 
-% \section{\textbf{Patents and Publications} \hfill \textcolor{darkblue}{\scriptsize C=Conference, J=Journal, P=Patent, S=In Submission, T=Thesis}}
-% \vspace{0.2mm}
-% \small{
-% \begin{enumerate}[leftmargin=*, labelsep=0.5em, align=left, widest={[\textbf{S.1}]}, itemindent=0em, label={\textbf{[\arabic*]}]}]
-% \item[\textbf{[C.1]}] Your Name, et al. (Year). \href{https://doi.org/XX.XXXX/XXXXXXX.XXXX.XXXXXXX}{\textbf{Title of Conference Paper}}. In \textit{Name of Conference Proceedings}, pp. XX-XX. Publisher. Date, Location. DOI: XX.XXXX/XXXXXXX.XXXX.XXXXXXX
+\pub
+  {AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models}
+  {https://aclanthology.org/2026.findings-acl.1736.pdf}
+  {Zhanyu Shen, Sijie Cheng, Zhicheng Guo, \textbf{Weiqin Wang}, Yile Wang, \& Hui Huang.}
+  {In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2026}
+  {https://github.com/szu-tera/AnchorMem}
+\begin{pubnotes}
+  \item \publabel{Background}LLMs perform well on complex tasks but still need a memory system to leverage historical experience in long-term interactions; existing methods (e.g., A-Mem, Mem0) rely heavily on frequently rewriting interactions, and this over-reliance on summarization risks diluting contextual nuances and obscuring key retrieval features.
+  \item \publabel{Method}Inspired by the Proust Phenomenon in cognitive science, AnchorMem decouples the retrieval unit from the generation context: it extracts atomic facts as retrieval anchors while preserving raw contexts as immutable context, and builds an associative event graph with higher-order event links that bind related facts into shared event representations; retrieval anchors queries to facts and events but reconstructs context from the associated raw chunks and events.
+  \item \publabel{Performance}Significantly outperforms baselines on the LoCoMo benchmark across three closed-source and open-source models, reconciling fine-grained retrieval with the contextual integrity of interactions.
+\end{pubnotes}
 
-% \item[\textbf{[S.1]}] Your Name, et al. (Year). \textbf{Title of Submitted Paper}. Manuscript submitted for publication in \textit{Journal Name}.
+\pub
+  {Ranked Voting based Self-Consistency of Large Language Models}
+  {https://aclanthology.org/2025.findings-acl.744/}
+  {\textbf{Weiqin Wang}, Yile Wang, \& Hui Huang.}
+  {In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (\textbf{ACL Findings})}{2025}
+  {https://github.com/szu-tera/RankedVotingSC}
+\begin{pubnotes}
+  \item \publabel{Background}Majority voting is considered an effective way to enhance chain-of-thought reasoning by selecting the answer with the highest self-consistency across reasoning paths, but previous methods generate only a single answer per trial, ignoring other potential answers that are then discarded in the voting process.
+  \item \publabel{Method}Proposes generating ranked answers within each reasoning process and conducting ranked voting among the ranked answers from different responses to make overall self-consistency more reliable, using three ranked-voting methods: instant-runoff, Borda count, and mean reciprocal rank.
+  \item \publabel{Performance}Outperforms baselines on six datasets (three multiple-choice and three open-ended QA tasks) with both open-source and closed-source LLMs, showing the potential of leveraging ranked-answer information to improve reasoning performance.
+\end{pubnotes}
 
-% \item[\textbf{[P.1]}] Inventor 1, Your Name, Inventor 3, et al. (Year). \href{https://patentoffice.gov/patent/XXXXXXXXX}{\textbf{Title of Patent}}. Patent Office, Patent No. XXXXXXXXX. Registration Date: Date, Grant Date: Date, Publication Date: Date.
+% ======================= Honors =======================
+\section{Honors \& Awards}
+\begin{cvitems}
+  \item National Scholarship for Undergraduate Students
+  \item National Scholarship for Master's Students
+  \item Special Academic Scholarship for Master's Students, Shenzhen University
+  \item First-Class Academic Scholarship for Undergraduate Students, Fujian Agriculture and Forestry University
+  \item Second Prize, National Undergraduate Mathematical Contest in Modeling
+  \item Meritorious Winner, Mathematical Contest in Modeling/Interdisciplinary Contest in Modeling (MCM/ICM), USA
+\end{cvitems}
 
-% \item[\textbf{[J.1]}] Author 1, Your Name, Author 3, et al. (Year). \href{https://doi.org/XX.XXXX/XXXXX.XXXX.XXXXXXX}{\textbf{Title of Journal Article}}. \textit{Journal Name}, Vol. XX, Issue X, pp. XXX-XXX. DOI: XX.XXXX/XXXXX.XXXX.XXXXXXX
-% \end{enumerate}
-% }
-
-% \section{\textbf{Skills}}
-% \vspace{-0.4mm}
-%  \resumeHeadingSkillStart
-%   \resumeSubItem{Programming Languages:}
-%     {Language 1, Language 2, Language 3, Language 4, Language 5}
-%   \resumeSubItem{Web Technologies:}
-%     {Technology 1, Technology 2, Technology 3, Technology 4, Technology 5}
-%   \resumeSubItem{Database Systems:}
-%     {Database 1, Database 2, Database 3}
-%   \resumeSubItem{Data Science \& Machine Learning:}
-%     {Tool 1, Tool 2, Tool 3, Tool 4, Tool 5, Tool 6}
-% \resumeSubItem{Cloud Technologies:}
-%     {Cloud Platform 1, Cloud Platform 2, Cloud Platform 3}
-%   \resumeSubItem{DevOps \& Version Control:}
-%     {Tool 1, Tool 2, Tool 3, Tool 4, Tool 5}
-%   \resumeSubItem{Specialized Area:}
-%     {Skill 1, Skill 2, Skill 3, Skill 4}
-%   \resumeSubItem{Mathematical \& Statistical Tools:}
-%     {Tool 1, Tool 2, Tool 3, Tool 4, Tool 5}
-%   \resumeSubItem{Other Tools \& Technologies:}
-%     {Tool 1, Tool 2, Tool 3, Tool 4, Tool 5}
-%   \resumeSubItem{Research Skills:}{Skill 1, Skill 2, Skill 3, Skill 4, Skill 5, Skill 6}
-%  \resumeHeadingSkillEnd
-
-% \section{\textbf{Honors and Awards}}
-% \vspace{-0.4mm}
-% \resumeSubHeadingListStart
-
-% \resumeProject
-%   {Award Name A}
-%   {Awarding Institution/Organization}
-%   {Month Year}
-%   {{}[\href{https://award-link-a.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Brief description of the award and its significance
-%   \item Impact or recognition associated with the award
-% \resumeItemListEnd
-
-% \resumeProject
-%   {Award Name B}
-%   {Awarding Institution/Organization}
-%   {Month Year}
-%   {{}[\href{https://award-link-b.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Brief description of the award and its significance
-%   \item Impact or recognition associated with the award
-% \resumeItemListEnd
-
-% \resumeProject
-%   {Competition Achievement}
-%   {Competition Name, Organizing Body}
-%   {Month Year}
-%   {{}[\href{https://competition-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Specific achievement or rank in the competition
-%   \item Skills or abilities demonstrated through this achievement
-% \resumeItemListEnd
-
-% \resumeSubHeadingListEnd
-
-% \vspace{-6mm}
-% \section{\textbf{Leadership Experience}}
-% \vspace{-0.4mm}
-% \resumeSubHeadingListStart
-% \resumeProject
-%   {Leadership Role A}
-%   {Organization/Institution Name}
-%   {Month Year - Month Year}
-%   {{}[\href{https://organization-a-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Key responsibility or achievement in this role
-%   \item Quantifiable impact or improvement made during tenure
-%   \item Initiative taken or project led
-% \resumeItemListEnd
-
-% \resumeProject
-%   {Leadership Role B}
-%   {Organization/Institution Name}
-%   {Month Year - Month Year}
-%   {{}[\href{https://organization-b-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Key responsibility or achievement in this role
-%   \item Quantifiable impact or improvement made during tenure
-%   \item Initiative taken or project led
-% \resumeItemListEnd
-
-% \resumeSubHeadingListEnd
-
-% \vspace{-6mm}
-
-% \section{\textbf{Volunteer Experience}}
-% \vspace{-0.4mm}
-% \resumeSubHeadingListStart
-% \resumeProject
-%   {Volunteer Role A}
-%   {Organization Name}
-%   {Month Year - Month Year}
-%   {{}[\href{https://volunteer-org-a-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Key responsibility or contribution in this role
-%   \item Impact of your volunteer work
-%   \item Skills developed or applied during this experience
-% \resumeItemListEnd
-
-% \resumeProject
-%   {Volunteer Role B}
-%   {Organization Name}
-%   {Month Year - Present}
-%   {{}[\href{https://volunteer-org-b-link.com}{\textcolor{darkblue}{\faIcon{globe}}}]}
-% \resumeItemListStart
-%   \item Key responsibility or contribution in this role
-%   \item Impact of your volunteer work
-%   \item Skills developed or applied during this experience
-% \resumeItemListEnd
-
-% \resumeSubHeadingListEnd
-% \vspace{-6mm}
-
-% \section{\textbf{Professional Memberships}}
-% \vspace{-0.4mm}
-% \resumeSubHeadingListStart
-% \resumePOR{Professional Organization A}
-%     {, Membership ID: XXXXXXXX}
-%     {Month Year - Present}
-% \resumePOR{Professional Organization B}
-%     {, \href{https://membership-certificate-link.com}{Membership ID: XXXXXXXX}}
-%     {Month Year - Present}
-% \resumePOR{Professional Organization C}
-%     {, \href{https://membership-certificate-link.com}{Membership ID: XXXXXXXX}}
-%     {Month Year - Present}
-
-% \resumeSubHeadingListEnd
-% \vspace{-6mm}
-
-% \section{\textbf{Certifications}}
-% \vspace{-0.2mm}
-% \resumeSubHeadingListStart
-% \resumePOR{}{\href{https://certification-link-a.com}{
-% \textbf{Certification A}
-% }}{Month Year}
-% \resumePOR{}{
-% \textbf{Certifying Body:} {{\href{https://certification-link-b.com}{Certification B}}}}{Month Year}
-% \resumePOR{}{
-% \textbf{Certifying Body:} {{\href{https://certification-link-c.com}{Certification C}}}}{Month Year}
-% \resumePOR{}{\href{https://certification-link-d.com}{
-% \textbf{Certification D}
-% }}{Month Year}
-
-% \resumeSubHeadingListEnd
-% \vspace{-6mm}
-
-% \section{\textbf{Additional Information}}
-% \vspace{-0.4mm}
-% \small{
-% \textbf{Languages:} Language A (Proficiency level), Language B (Proficiency level), Language C (Proficiency level)
-
-% \textbf{Interests:} Interest 1, Interest 2, Interest 3, Interest 4
-% }
-% \vspace{-4mm}
-
-
-% \section{\textbf{References}}
-% \vspace{-0.2mm}
-% \small{
-% \begin{enumerate}[leftmargin=*,labelsep=2mm]
-% \item \textbf{Reference Person 1}\\
-%    Job Title, Department\\
-%    Organization/Institution Name\\
-%    Email: email1@example.com\\
-%    Phone: +X-XXX-XXX-XXXX\\
-%    \textit{Relationship: [e.g., Thesis Advisor, Manager, etc.]}
-
-% \item \textbf{Reference Person 2}\\
-%    Job Title, Department\\
-%    Organization/Institution Name\\
-%    Email: email2@example.com\\
-%    Phone: +X-XXX-XXX-XXXX\\
-%    \textit{Relationship: [e.g., Project Supervisor, Colleague, etc.]}
-
-% \item \textbf{Reference Person 3}\\
-%    Job Title, Department\\
-%    Organization/Institution Name\\
-%    Email: email3@example.com\\
-%    Phone: +X-XXX-XXX-XXXX\\
-%    \textit{Relationship: [e.g., Mentor, Collaborator, etc.]}
-% \end{enumerate}
-% }
+% \section{Skills}
+% \begin{cvitems}
+%   \item \textbf{Programming and ML:} Python, PyTorch, SQL Server, C/C++, LaTeX, Markdown
+%   \item \textbf{Tools:} Linux, Git, Office
+%   \item \textbf{Languages:} Chinese (Native), English (CET-4: 532; CET-6: 509; academic reading, writing, and daily communication)
+% \end{cvitems}
 
 \end{document}
