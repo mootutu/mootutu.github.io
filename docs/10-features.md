@@ -35,8 +35,11 @@ Minimind、Python 等普通学习笔记**目前不在搜索范围内**。如需�
 - `<html>` 上有 `dark-mode` 类时为深色
 - `site.css` 在 `html.dark-mode` 下重新定义所有颜色变量，组件只用变量，所以不需要为每个组件单独写深色样式
 - `_includes/theme-init.html` 在页面渲染前读取 `localStorage` 中的 `theme_preference`；没有保存过时跟随系统设置
-- 导航栏右侧的月亮/太阳按钮（`#dark-mode-toggle`）切换主题，并以按钮为圆心做圆形展开过渡（浏览器支持 View Transitions 时）
-- 用户没有手动切换过时，系统主题变化会实时跟随
+- 导航栏右侧是三段选择 `#theme-switch`：**Light / Auto / Dark**。选 Light 或 Dark 会把选择存进 `theme_preference`；选 Auto 会删除这个记录，改为跟随系统设置
+- 切换时整页颜色淡入淡出（浏览器支持 View Transitions 时；系统开启“减少动态效果”时直接切换）
+- 处于 Auto 时，系统主题变化（例如晚上系统自动切到深色）会实时跟随
+- 宽度不足 1100px 时只显示三个图标，不显示文字
+- 逻辑在 `assets/javascripts/theme-toggle.js`，样式在 `site.css` 的 “Theme switch” 部分
 
 ### 给新组件加深色支持
 

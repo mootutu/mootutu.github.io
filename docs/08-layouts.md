@@ -102,7 +102,7 @@ Jekyll 会把子布局的 Front Matter 合并进父布局的 `layout` 变量，�
 
 | 文件 | 用途 | 使用位置 |
 |------|------|---------|
-| `site-header.html` | 导航栏、深色模式按钮 | `base.html` |
+| `site-header.html` | 导航栏、Light / Auto / Dark 主题切换、隐藏入口面板 | `base.html` |
 | `site-footer.html` | 版权、最后更新时间 | `base.html` |
 | `theme-init.html` | 首屏前设置深色/浅色，视图过渡样式 | `base.html` |
 | `publication-list.html` | 论文列表与 BibTeX 弹窗 | `index.html` |

@@ -1,91 +1,79 @@
 (function () {
-  const storageKey = 'theme_preference';
-  const root = document.documentElement;
-  const toggle = document.getElementById('dark-mode-toggle');
+  var storageKey = 'theme_preference';
+  var root = document.documentElement;
+  var group = document.getElementById('theme-switch');
+  if (!group) return;
 
-  if (!toggle) return;
+  var buttons = Array.prototype.slice.call(group.querySelectorAll('[data-theme-mode]'));
+  var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var busy = false;
 
-  const darkIcon = toggle.querySelector('#dark-icon');
-  const lightIcon = toggle.querySelector('#light-icon');
-  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let isTransitioning = false;
-
-  function applyTheme(theme, persist) {
-    const isDark = theme === 'dark';
-
-    root.classList.toggle('dark-mode', isDark);
-    root.style.colorScheme = theme;
-    toggle.setAttribute('aria-pressed', String(isDark));
-    toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-    toggle.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
-
-    if (darkIcon) darkIcon.hidden = isDark;
-    if (lightIcon) lightIcon.hidden = !isDark;
-
-    if (persist) localStorage.setItem(storageKey, theme);
+  function readMode() {
+    var saved = null;
+    try { saved = localStorage.getItem(storageKey); } catch (e) {}
+    return saved === 'light' || saved === 'dark' ? saved : 'auto';
   }
 
-  applyTheme(root.classList.contains('dark-mode') ? 'dark' : 'light', false);
+  function saveMode(mode) {
+    try {
+      if (mode === 'auto') localStorage.removeItem(storageKey);
+      else localStorage.setItem(storageKey, mode);
+    } catch (e) {}
+  }
 
-  toggle.addEventListener('click', function () {
-    if (isTransitioning) return;
+  function themeFor(mode) {
+    if (mode === 'auto') return systemDark.matches ? 'dark' : 'light';
+    return mode;
+  }
 
-    const nextTheme = root.classList.contains('dark-mode') ? 'light' : 'dark';
+  function markButtons(mode) {
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-theme-mode') === mode));
+    });
+  }
 
-    if (!document.startViewTransition || reduceMotionQuery.matches) {
-      applyTheme(nextTheme, true);
+  function applyTheme(theme) {
+    root.classList.toggle('dark-mode', theme === 'dark');
+    root.style.colorScheme = theme;
+  }
+
+  function switchTheme(theme) {
+    var current = root.classList.contains('dark-mode') ? 'dark' : 'light';
+    if (theme === current) return;
+    if (busy || !document.startViewTransition || reduceMotion.matches) {
+      applyTheme(theme);
       return;
     }
-
-    const rect = toggle.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const radius = Math.hypot(
-      Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
-    );
-
-    isTransitioning = true;
+    busy = true;
     root.classList.add('theme-transitioning');
-
-    const transition = document.startViewTransition(function () {
-      applyTheme(nextTheme, true);
-    });
-
+    var transition = document.startViewTransition(function () { applyTheme(theme); });
     transition.ready.then(function () {
       return root.animate(
-        {
-          clipPath: [
-            'circle(0px at ' + x + 'px ' + y + 'px)',
-            'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'
-          ]
-        },
-        {
-          duration: 460,
-          easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-          pseudoElement: '::view-transition-new(root)'
-        }
+        { opacity: [0, 1] },
+        { duration: 420, easing: 'ease', pseudoElement: '::view-transition-new(root)' }
       ).finished;
-    }).catch(function () {
-      // The theme has already changed; only the optional reveal animation failed.
-    });
-
+    }).catch(function () {});
     transition.finished.finally(function () {
       root.classList.remove('theme-transitioning');
-      isTransitioning = false;
+      busy = false;
+    });
+  }
+
+  markButtons(readMode());
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var mode = b.getAttribute('data-theme-mode');
+      saveMode(mode);
+      markButtons(mode);
+      switchTheme(themeFor(mode));
     });
   });
 
-  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  const handleSystemThemeChange = function (event) {
-    if (localStorage.getItem(storageKey) === null) {
-      applyTheme(event.matches ? 'dark' : 'light', false);
-    }
+  var onSystemChange = function () {
+    if (readMode() === 'auto') switchTheme(themeFor('auto'));
   };
-
-  if (colorSchemeQuery.addEventListener) {
-    colorSchemeQuery.addEventListener('change', handleSystemThemeChange);
-  } else if (colorSchemeQuery.addListener) {
-    colorSchemeQuery.addListener(handleSystemThemeChange);
-  }
+  if (systemDark.addEventListener) systemDark.addEventListener('change', onSystemChange);
+  else if (systemDark.addListener) systemDark.addListener(onSystemChange);
 }());
