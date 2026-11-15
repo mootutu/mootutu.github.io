@@ -1,301 +1,199 @@
 # 学习内容维护
 
-## 4.1 学习内容概述
+## 4.1 概述
 
-学习内容采用两层结构：
+学习区分两层：
 
-```
-Learning Topic（学习主题）
-    └── Learning Post（学习文章）
-        └── Learning Post
-        └── ...
-```
+- **Learning Topic（学习主题）**：一个主题一个页面，比如 Minimind、Python Guidelines、Paper Reading。页面会自动列出属于这个主题的全部笔记。
+- **Learning Post（学习笔记）**：属于某个主题的单篇笔记，通常用 Markdown 写。
 
-### Learning Topic（学习主题）
+`learning.html` 是学习区首页，自动把所有主题显示成编号卡片，并显示每个主题的笔记数量。
 
-- 主题索引页，用于组织一系列相关文章
-- 例如：Python Guidelines、Minimind Learning
-
-### Learning Post（学习文章）
-
-- 具体的学习笔记/文章
-- 属于某个主题
-- 使用 Markdown 格式编写
-
-### 使用场景
-
-| 内容类型 | 适用场景 |
-|----------|----------|
-| Learning Topic | 一个系统化的学习领域（如 Python 规范、机器学习笔记） |
-| Learning Post | 该领域下的具体知识点 |
+论文阅读库（Paper Reading）是一个特殊主题，笔记字段更多，页面带搜索和筛选，单独在 [4.5](#45-论文阅读笔记) 说明。
 
 ---
 
 ## 4.2 目录结构
 
 ```
+learning.html                       # 学习区首页（主题卡片）
 learning/
-├── python.html                    # Python 主题索引页
-├── python_guidelines/             # Python 文章目录
-│   ├── python_style_conventions.md
-│   └── python_language_conventions.md
-├── minimind.html                  # Minimind 主题索引页
-└── minimind/                      # Minimind 文章目录
-    └── part2.md
-
-cn/learning/
-├── python.html
+├── minimind.html                   # 主题页：topic: minimind
+├── minimind/                       # 该主题的笔记
+│   ├── day1.html
+│   ├── part2.md
+│   ├── part3.md
+│   └── part4.md
+├── python.html                     # 主题页：topic: python
 ├── python_guidelines/
-│   ├── python_style_conventions.md
-│   └── python_language_conventions.md
-├── minimind.html
-└── minimind/
+│   ├── python_language_conventions.md
+│   └── python_style_conventions.md
+├── paper-reading.html              # 论文阅读库：topic: paper-reading
+└── paper-reading/
+    ├── README.md                   # 目录说明（不是笔记）
+    └── 2603.25450-cross-model-disagreement.md
 ```
+
+笔记归属哪个主题只看 Front Matter 里的 `topic`，跟所在目录名无关（例如 `python_guidelines/` 下的笔记写的是 `topic: python`）。不过为了好找，请把笔记放在对应主题的目录里。
 
 ---
 
-## 4.3 Learning Topic 维护
+## 4.3 学习主题
 
-### 4.3.1 主题页面结构
-
-主题索引页使用 `learning-topic-layout` 布局：
+### 主题页结构
 
 ```html
 ---
 layout: learning-topic-layout
-title: "Python Guidelines 🐍"
-description: "主题描述文字..."
-topic: python
+title: "Minimind Learning"
+description: "Recording the process of building a large model (minimind) from scratch."
+topic: minimind
 order: 1
 lang: en
-translate_url: /cn/learning/python.html
 ---
+{% include learning_entries.html %}
 ```
 
-### 4.3.2 新增学习主题
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `layout` | 是 | 固定为 `learning-topic-layout` |
+| `title` | 是 | 页头大标题，也是学习区首页卡片标题 |
+| `description` | 是 | 页头引言，也是卡片描述 |
+| `topic` | 是 | 主题键，笔记通过它归属到这个主题 |
+| `order` | 是 | 在学习区首页的排序（从小到大） |
+| `lang` | 是 | 固定为 `en` |
+| `eyebrow` | 否 | 标题上方的小字，缺省为 `Learning topic` |
+| `illo` | 否 | 页头插画，缺省为 `learning`（见 [10.8](./10-features.md#108-插画)） |
+| `hide_back` | 否 | 设为 `true` 时不显示“All topics”返回链接 |
 
-#### 步骤 1：创建主题索引页
+页头（返回链接、小字、标题、引言、插画）由布局自动生成，主题页正文只需要 `{% include learning_entries.html %}`。标题里不要加 emoji，以保持风格统一。
 
-创建 `learning/new-topic.html`：
+### 新增学习主题
 
-```html
----
-layout: learning-topic-layout
-title: "New Topic Name 🔥"
-description: "主题描述..."
-topic: new-topic
-order: 3
-lang: en
-translate_url: /cn/learning/new-topic.html
----
-```
-
-#### 步骤 2：创建文章目录
-
-```bash
-mkdir learning/new_topic
-mkdir cn/learning/new_topic
-```
-
-#### 步骤 3：创建中文版本
-
-- 创建 `cn/learning/new-topic.html`
-- 填写中文 `title`/`description`/`topic`/`order`
+1. 新建主题页 `learning/your-topic.html`，按上面的结构填写
+2. 新建笔记目录 `learning/your-topic/`
+3. 本地打开 `/learning.html`，确认新卡片出现、笔记数量正确
 
 ---
 
-## 4.4 Learning Post 维护
+## 4.4 新增学习笔记
 
-### 4.4.1 Front Matter 字段
+### Front Matter
 
 ```yaml
 ---
 layout: learning-post-layout
-title: "文章标题"
-date: 2025-12-31
+title: "2 Positional Encoding RoPE&YaRN"
+date: 2025-12-26
 lang: en
-topic: python
-order: 1
-topic_url: /learning/python.html
-translate_url: /cn/learning/python_guidelines/article.html
-mathjax: false
+topic: minimind
+order: 2
+topic_url: /learning/minimind.html
+mathjax: true
 ---
 ```
 
 | 字段 | 必填 | 说明 |
 |------|------|------|
-| `layout` | 是 | 必须为 `learning-post-layout` |
-| `title` | 是 | 文章标题 |
-| `date` | 是 | 发布日期 |
-| `lang` | 是 | `en` 或 `zh-CN` |
-| `topic` | 是 | 主题 key（如 `minimind`） |
-| `order` | 是 | 文章排序（数字） |
-| `topic_url` | 是 | 所属主题页面的 URL |
-| `translate_url` | 是 | 翻译版本 URL |
-| `mathjax` | 否 | 是否启用数学公式，默认 `false` |
+| `layout` | 是 | 固定为 `learning-post-layout` |
+| `title` | 是 | 笔记标题 |
+| `date` | 是 | 显示在笔记页和主题页列表中 |
+| `lang` | 是 | 固定为 `en`（主题页只列出 `lang` 相同的笔记） |
+| `topic` | 是 | 与主题页的 `topic` 一致 |
+| `order` | 是 | 在主题页中的顺序 |
+| `topic_url` | 是 | 返回链接指向的主题页；不填会回到 `/learning.html` |
+| `mathjax` | 否 | 用到公式时设为 `true` |
+| `category` | 否 | 标题上方的小字，缺省为 `Notes` |
+| `excerpt` | 否 | 标题下方的引言 |
 
-### 4.4.2 新增学习文章
+### 步骤
 
-#### 步骤 1：创建文章文件
+1. 复制模板
 
-```bash
-# 复制模板
-cp _templates/learning_post_template.md learning/topic_name/new-article.md
-```
-
-#### 步骤 2：编辑 Front Matter
-
-```yaml
----
-layout: learning-post-layout
-title: "New Article Title"
-date: 2025-12-31
-lang: en
-topic: topic-name
-order: 1
-topic_url: /learning/topic-name.html
-translate_url: /cn/learning/topic_name/new-article.html
-mathjax: false
----
-```
-
-#### 步骤 3：编写 Markdown 内容
-
-```markdown
-## 第一部分
-
-正文内容...
-
-### 1.1 子标题
-
-更多内容...
-
-## 第二部分
-
-```python
-# 代码示例
-def hello():
-    print("Hello!")
-```
-
-```
-
-**注意**：Markdown 文件会被 Jekyll 自动转换为 HTML。
-
-#### 步骤 4：创建中文版本
-
-- 创建 `cn/learning/topic_name/new-article.md`
-- 设置 `topic` 和 `order` 与英文一致
-
-#### 步骤 5：本地预览
-
-```bash
-jekyll serve
-# 访问 http://localhost:4000/learning/topic_name/new-article.html
-```
-
-### 4.4.3 修改学习文章
-
-1. 直接编辑 `.md` 文件
-2. 同步修改中文版本
-3. 本地预览
-4. 提交推送
-
-### 4.4.4 删除学习文章
-
-1. 删除文章文件
    ```bash
-   rm learning/topic_name/article.md
-   rm cn/learning/topic_name/article.md
+   cp _templates/learning_post_template.md learning/minimind/part5.md
    ```
 
-2. 提交更改
+2. 填写 Front Matter，用 Markdown 写正文
+3. 本地打开对应主题页，确认新笔记出现在正确的位置，再打开笔记检查目录、公式、代码块
+
+### 修改和删除
+
+- 修改：直接编辑文件；改 `order` 可以调整在主题页中的顺序
+- 删除：`git rm` 对应文件即可，主题页和学习区首页的数量会自动更新
 
 ---
 
-## 4.5 Markdown 编写规范
+## 4.5 论文阅读笔记
 
-### 标题层级
+论文阅读库 `learning/paper-reading.html` 会列出所有 `topic: paper-reading` 的笔记（按 `date` 倒序），并提供：
 
-```markdown
-## H2 标题 - 主要章节
-### H3 标题 - 子章节
-#### H4 标题 - 更细分（较少使用）
-```
+- 搜索框：匹配标题、作者、标签、方法、数据集、模型、一句话总结和正文
+- 筛选：阅读状态 `status`、相关度 `relevance`
 
-- 文章内不要使用 H1（`#`），H1 由布局自动生成
-- 标题会自动生成侧边目录
-
-### 代码块
-
-````markdown
-```python
-def example():
-    return "Hello"
-```
+### 新增论文笔记
 
 ```bash
-npm install
-```
-````
-
-### 提示框（使用引用语法）
-
-```markdown
-> 💡 **Tip**: 这是一个提示信息
-
-> ⚠️ **Warning**: 这是一个警告
+cp _templates/paper_reading_template.md learning/paper-reading/2603.12345-short-title.md
 ```
 
-### 表格
+文件名建议用 `arXiv编号-简短标题.md`，没有 arXiv 编号时用 `年份-第一作者-关键词.md`。
 
-```markdown
-| 列1 | 列2 | 列3 |
-|-----|-----|-----|
-| A   | B   | C   |
-```
+### 专用字段
 
-### 图片
+| 字段 | 说明 | 可选值 / 示例 |
+|------|------|--------------|
+| `paper_year` | 论文年份 | `2026` |
+| `authors` | 作者列表 | YAML 列表 |
+| `arxiv` | arXiv 编号 | `"2603.25450"` |
+| `doi` | DOI | 可留空 |
+| `paper_url` | 论文链接，笔记页会显示 “Paper · arXiv:…” 链接 | URL |
+| `status` | 阅读状态 | `unread` / `skimming` / `read` / `reproduced` / `integrated` |
+| `relevance` | 与自己研究的相关度；`high` 时卡片上会多一个橙色标记 | `high` / `medium` / `low` |
+| `tags` | 标签（尽量复用已有标签） | YAML 列表 |
+| `methods` / `datasets` / `models` | 方法、数据集、模型，参与搜索 | YAML 列表 |
+| `one_line_summary` | 一句话总结，显示在卡片和笔记页标题下 | 字符串 |
 
-```markdown
-![描述文字](/assets/images/posts/topic/image.png)
-```
+`status` 和 `relevance` 必须使用上表中的小写值，否则筛选不到。
+
+论文阅读库页面底部还有一段 “Maintenance workflow”，是给自己看的维护步骤，修改时直接编辑 `learning/paper-reading.html`。
 
 ---
 
-## 4.6 启用数学公式
+## 4.6 Markdown 写作约定
 
-如需在文章中使用 LaTeX 数学公式：
+- 用 `##` 分大节、`###` 分小节，右侧目录基于这两级生成；`####` 不进目录
+- 代码块用三个反引号并写语言名，例如 ` ```python `
+- 提示、引用用 `>`，会显示为左侧橙色竖线的浅色块
+- 表格会在窄屏上横向滚动
+- 站内链接写 `.html` 后缀，例如 `[Part 3](/learning/minimind/part3.html)`
 
-1. 在 Front Matter 中设置 `mathjax: true`
-2. 使用标准 LaTeX 语法
+---
 
-行内公式：
+## 4.7 数学公式
+
+在 Front Matter 里加 `mathjax: true` 后即可使用：
+
 ```markdown
-当 $a \ne 0$ 时，方程 $ax^2 + bx + c = 0$ 有两个解。
-```
-
+行内公式：$\cos\theta$
 独立公式：
-```markdown
+
 $$
-x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
 $$
 ```
 
----
-
-## 4.7 现有主题一览
-
-| 主题 | 索引页 | 文章目录 | 说明 |
-|------|--------|----------|------|
-| Python Guidelines | `learning/python.html` | `learning/python_guidelines/` | Python 编码规范 |
-| Minimind Learning | `learning/minimind.html` | `learning/minimind/` | 大模型学习笔记 |
+过宽的公式会在自己的范围内横向滚动，不会撑宽整页。
 
 ---
 
-## 4.8 学习主页维护（learning.html）
+## 4.8 现有主题
 
-学习主页会根据主题页的 Front Matter 自动生成卡片，无需手动编辑 `learning.html` 或 `cn/learning.html`。
+| 主题 | 主题页 | `topic` | 笔记目录 |
+|------|--------|---------|---------|
+| Minimind Learning | `learning/minimind.html` | `minimind` | `learning/minimind/` |
+| Python Guidelines | `learning/python.html` | `python` | `learning/python_guidelines/` |
+| Paper Reading Library | `learning/paper-reading.html` | `paper-reading` | `learning/paper-reading/` |
 
 ---
 
@@ -306,6 +204,6 @@ $$
   </a>
   <a href="./05-bilingual.md" class="doc-nav-card next">
     <span class="doc-nav-label">下一篇</span>
-    <span class="doc-nav-title">双语内容维护 →</span>
+    <span class="doc-nav-title">站点语言与界面文字 →</span>
   </a>
 </div>

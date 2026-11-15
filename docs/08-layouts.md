@@ -1,333 +1,180 @@
 # 布局与组件
 
-## 8.1 布局系统概述
+## 8.1 布局体系
 
-Jekyll 使用布局（Layout）系统来定义页面的 HTML 结构。内容文件通过 Front Matter 中的 `layout` 字段指定使用哪个布局。
-
-### 布局继承
+所有页面最终都套用 `base.html`。中间有两种“页面类型”布局，再往外是一层很薄的包装布局，用来给不同栏目设置默认值：
 
 ```
-default.html (基础布局)
-    ├── blog-layout.html
-    ├── blog-post-layout.html
-    ├── learning-layout.html
-    ├── learning-topic-layout.html
-    ├── learning-post-layout.html
-    └── about-layout.html
+base.html                     骨架：<head>、导航、页脚、脚本
+├── page.html                 列表页 / 介绍页：页头 + 正文
+│   ├── blog-layout.html          博客列表
+│   ├── learning-layout.html      学习区首页
+│   ├── learning-topic-layout.html 学习主题页
+│   └── about-layout.html         About
+├── post.html                 文章页：页头 + 正文 + 目录
+│   ├── blog-post-layout.html     博客文章
+│   └── learning-post-layout.html 学习笔记 / 论文笔记
+└── （index.html 直接使用 base）
 ```
 
----
+包装布局只有 Front Matter 和一行 `{{ content }}`，例如：
 
-## 8.2 布局文件一览
-
-### 目录位置
-
-```
-_layouts/
-├── default.html
-├── blog-layout.html
-├── blog-post-layout.html
-├── learning-layout.html
-├── learning-topic-layout.html
-├── learning-post-layout.html
-└── about-layout.html
-```
-
-### 布局用途说明
-
-| 布局文件 | 用途 | 使用页面 |
-|----------|------|----------|
-| `default.html` | 基础布局，包含导航栏、暗黑模式 | 首页、关于页 |
-| `blog-layout.html` | 博客列表页布局 | `blog.html` |
-| `blog-post-layout.html` | 博客文章布局（含 TOC） | 博客文章 |
-| `learning-layout.html` | 学习主题列表布局 | `learning.html` |
-| `learning-topic-layout.html` | 单个学习主题布局 | 主题索引页 |
-| `learning-post-layout.html` | 学习文章布局（含 TOC、MathJax） | 学习文章 |
-| `about-layout.html` | 关于页面布局 | `about.html` |
-
----
-
-## 8.3 各布局详解
-
-### default.html
-
-**用途**：基础布局，其他布局的父级
-
-**包含功能**：
-- HTML 头部（meta、CSS、字体）
-- 导航栏组件
-- 暗黑模式切换
-- 语言切换按钮
-- 返回顶部按钮
-- 个人简介组件（首页）
-
-**结构**：
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <!-- Meta、CSS、字体 -->
-</head>
-<body>
-    {% include navigation.html %}
-
-    <div class="wrapper">
-        {{ content }}
-    </div>
-
-    <!-- 浮动按钮：返回顶部、语言切换、暗黑模式 -->
-    <!-- JavaScript -->
-</body>
-</html>
-```
-
-### blog-post-layout.html
-
-**用途**：博客文章页面
-
-**包含功能**：
-- 文章标题、元信息（作者、日期、分类、阅读时间）
-- 侧边栏目录（TOC）- 大屏幕显示
-- Prism.js 代码高亮
-- 返回博客列表按钮
-
-**Front Matter 要求**：
 ```yaml
-layout: blog-post-layout
-title: "文章标题"
-date: 2025-12-31
-author: "作者名"
-category: "分类"
-lang: en
-translate_url: /cn/blog/posts/xxx.html
+# _layouts/blog-post-layout.html
+---
+layout: post
+back_url: /blog.html
+back_label: All posts
+eyebrow: Blog
+---
+{{ content }}
 ```
 
-### learning-post-layout.html
+保留这些旧布局名，是因为博客列表、主题页、搜索都靠 `where: "layout", "blog-post-layout"` 这类条件筛选内容；内容文件的 `layout` 字段因此不用改。
 
-**用途**：学习文章页面
+### 布局变量的合并
 
-**包含功能**：
-- 文章标题、元信息
-- 侧边栏目录（TOC）
-- MathJax 数学公式支持（可选）
-- Prism.js 代码高亮
-- 返回主题页按钮
+Jekyll 会把子布局的 Front Matter 合并进父布局的 `layout` 变量，所以在 `page.html`、`post.html`、`base.html` 里都能读到包装布局设置的值。取值优先级是：
 
-**Front Matter 要求**：
-```yaml
-layout: learning-post-layout
-title: "文章标题"
-date: 2025-12-31
-lang: en
-topic_url: /learning/topic.html
-translate_url: /cn/learning/topic/xxx.html
-mathjax: false  # 是否启用数学公式
+```liquid
+{% assign illo = page.illo | default: layout.illo %}
 ```
 
-### learning-topic-layout.html
-
-**用途**：学习主题索引页
-
-**包含功能**：
-- 主题标题和描述
-- 文章链接列表
-- 返回学习主页按钮
-
-**Front Matter 要求**：
-```yaml
-layout: learning-topic-layout
-lang: en
-translate_url: /cn/learning/topic.html
-```
+即**页面自己的 Front Matter 优先**，其次才是布局的默认值。
 
 ---
 
-## 8.4 可复用组件
+## 8.2 `base.html`
 
-### 组件目录
+负责所有页面共用的部分：
 
-```
-_includes/
-├── navigation.html      # 导航栏
-├── bio.html             # 英文个人简介
-├── bio-cn.html          # 中文个人简介
-├── floating-buttons.html     # 浮动按钮（未使用）
-└── floating-buttons-css.html # 浮动按钮样式（未使用）
-```
+- `<head>`：标题（`页面标题 · Weiqin Wang`）、description、favicon、`theme-init.html`、Google Fonts、`site.css`
+- 隐藏的 SVG 滤镜 `#hand-drawn`，给插画线条加手绘抖动
+- `site-header.html`、`<main>`、`site-footer.html`
+- 回到顶部按钮
+- `theme-toggle.js`、`site.js`
 
-### navigation.html
+可由布局开启的选项：
 
-**用途**：网站顶部导航栏
+| 布局变量 | 作用 | 谁开启 |
+|---------|------|--------|
+| `code: true` | 加载 Prism.js 主题与语言包 | `post.html` |
+| `progress: true` | 页面顶部显示阅读进度条 | `post.html` |
 
-**包含功能**：
-- 品牌名称（带闪烁光标动画）
-- 导航链接（Home、Blog、Learning、About）
-- 搜索功能（实时搜索）
-- 活动页面高亮
-- 毛玻璃（Glassmorphism）效果
-- 响应式设计
-- Bocchi GIF 装饰
+可由页面开启的选项：
 
-**使用方式**：
-```liquid
-{% include navigation.html %}
-```
-
-### bio.html / bio-cn.html
-
-**用途**：个人简介组件
-
-**包含内容**：
-- 头像（可点击切换）
-- 姓名和职位
-- 联系方式图标链接
-- 简介文字
-
-**使用方式**：
-```liquid
-{% include bio.html %}
-{% include bio-cn.html %}
-```
-
-**动态选择**（根据语言）：
-```liquid
-{% assign ui = site.data.ui_text[page.lang] %}
-{% include {{ ui.bio_include }} %}
-```
+| 页面变量 | 作用 |
+|---------|------|
+| `mathjax: true` | 加载 MathJax |
+| `description` | 写入 `<meta name="description">`；缺省时依次使用 `excerpt`、`one_line_summary` |
 
 ---
 
-## 8.5 修改布局的注意事项
+## 8.3 `page.html`
 
-### 修改前备份
+用于列表页和 About。页头包含：返回链接、小字、标题、引言、右侧插画；下面是 `<div class="container page-body">{{ content }}</div>`。
 
-```bash
-cp _layouts/target-layout.html _layouts/target-layout.html.bak
-```
-
-### 测试所有相关页面
-
-修改布局后，测试所有使用该布局的页面：
-
-| 修改的布局 | 需要测试的页面 |
-|------------|---------------|
-| `default.html` | 首页、关于页 |
-| `blog-post-layout.html` | 所有博客文章 |
-| `learning-post-layout.html` | 所有学习文章 |
-
-### 暗黑模式兼容
-
-修改样式时，确保添加 `.dark-mode` 对应样式：
-
-```css
-/* 亮色模式 */
-.element {
-    background: #ffffff;
-    color: #333333;
-}
-
-/* 暗黑模式 */
-.dark-mode .element {
-    background: #1a1a2e;
-    color: #e2e8f0;
-}
-```
-
-### 响应式设计
-
-使用媒体查询确保不同屏幕尺寸的兼容：
-
-```css
-/* 桌面端 */
-.sidebar {
-    display: block;
-}
-
-/* 移动端 */
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
-    }
-}
-```
+| 变量 | 来源 | 说明 |
+|------|------|------|
+| `title` | 页面 | 标题（同时用于浏览器标签） |
+| `heading` | 页面 | 页头显示的标题，填了就覆盖 `title`（About 用它显示 “Hi, I'm Weiqin.”） |
+| `description` | 页面 | 标题下的引言 |
+| `eyebrow` | 页面 / 布局 | 标题上方的小字 |
+| `illo` | 页面 / 布局 | 插画名，对应 `_includes/illo/{名字}.html`；不填则没有插画、标题占满宽度 |
+| `back_url` / `back_label` | 页面 / 布局 | 返回链接 |
+| `hide_back` | 页面 | 设为 `true` 隐藏返回链接 |
 
 ---
 
-## 8.6 Liquid 模板语法
+## 8.4 `post.html`
 
-### 常用语法
+用于博客文章和学习笔记：
 
-**变量输出**：
-```liquid
-{{ page.title }}
-{{ site.data.ui_text[page.lang].home }}
-```
+- **页头**：返回链接（`topic_url` 优先，否则用布局的 `back_url`）、小字（`category`，否则布局的 `eyebrow`）、标题、引言（`one_line_summary` 或 `excerpt`）、元信息
+- **元信息**：作者（论文笔记显示 `authors` 和 `paper_year`）、日期、自动计算的阅读时长、`status`、`paper_url` 链接
+- **正文**：`<div class="prose" id="post-content">`
+- **目录**：右侧 `<aside class="toc">`，由 `site.js` 根据正文 `h2`/`h3` 生成，宽度小于 1080px 时隐藏
+- **文末**：返回按钮
 
-**条件判断**：
-```liquid
-{% if page.mathjax %}
-    <!-- 加载 MathJax -->
-{% endif %}
-```
+---
 
-**循环**：
-```liquid
-{% for post in site.posts %}
-    <a href="{{ post.url }}">{{ post.title }}</a>
-{% endfor %}
-```
+## 8.5 组件（`_includes/`）
 
-**包含组件**：
-```liquid
-{% include navigation.html %}
-{% include {{ ui.bio_include }} %}
-```
+| 文件 | 用途 | 使用位置 |
+|------|------|---------|
+| `site-header.html` | 导航栏、深色模式按钮 | `base.html` |
+| `site-footer.html` | 版权、最后更新时间 | `base.html` |
+| `theme-init.html` | 首屏前设置深色/浅色，视图过渡样式 | `base.html` |
+| `publication-list.html` | 论文列表与 BibTeX 弹窗 | `index.html` |
+| `blog_list.html` | 博客卡片网格 | `blog.html` |
+| `learning_topics.html` | 学习主题卡片 | `learning.html` |
+| `learning_entries.html` | 主题下的笔记列表 | `learning/minimind.html`、`learning/python.html` |
+| `illo/blog.html` 等 | 页头插画 | `page.html`（按 `illo` 变量引入） |
 
-### 常用变量
+导航栏依次是 Home、Publications、Experience、Awards、Service，都指向首页：Home 是 `/`，其余是 `/#publications` 这样的区块锚点。每个链接带有 `data-section="区块 id"`；在首页滚动时，`site.js` 会高亮当前所在区块对应的链接（页面顶部时高亮 Home）。新增首页区块并想放进导航时，给 `<section>` 一个 `id`，再在 `site-header.html` 加一个带同名 `data-section` 的链接，并在 `ui_text.yml` 加文字。
 
-| 变量 | 说明 |
+### 隐藏页面
+
+博客、学习区、论文阅读库、About 目前**不在导航中**，首页也没有链接指向它们，但页面照常构建。
+
+**隐藏入口**：在任意页面上，连续快速点击左上角名字前的橙色圆点 5 次（1.5 秒内），或在页面上直接键入 `mootutu`，会弹出一个 “Back room” 面板，列出下面这些页面。面板在 `_includes/site-header.html` 的 `#secret-dialog`，触发逻辑在 `site.js` 的 “Hidden entrance” 部分；单击圆点不会跳转首页（点名字文字才会）。
+
+也可以直接输入地址访问：
+
+| 页面 | 地址 |
 |------|------|
-| `page.title` | 当前页面标题 |
-| `page.date` | 当前页面日期 |
-| `page.lang` | 当前页面语言 |
-| `page.url` | 当前页面 URL |
-| `page.content` | 当前页面内容 |
-| `site.data.xxx` | `_data/xxx.yml` 中的数据 |
-| `content` | 子布局/页面的内容 |
+| 博客列表 | `/blog.html` |
+| 学习区首页 | `/learning.html` |
+| 论文阅读库 | `/learning/paper-reading.html` |
+| About | `/about.html` |
+| 维护文档 | `/maintenance.html` |
+
+这些页面之间的互相链接（例如文章页的返回链接）都还在。要重新公开某个页面，在 `site-header.html` 里加回导航链接即可。
 
 ---
 
-## 8.7 添加新布局
+## 8.6 修改布局的注意事项
 
-### 步骤
+1. 改 `base.html`、`site-header.html`、`site.css` 会影响所有页面，改完至少检查：首页、博客列表、一篇博客、学习区首页、一个主题页、一篇带公式的笔记、论文阅读库、About
+2. 每个页面都在浅色和深色模式下各看一次
+3. 用浏览器开发者工具切到 375px 宽检查手机布局，确认没有横向滚动条
+4. 新样式用 `site.css` 里的变量，不要写死颜色
+5. 新加的动画要在 `prefers-reduced-motion: reduce` 下能关掉（全局规则已覆盖大多数情况）
 
-1. **创建布局文件**
-   ```bash
-   touch _layouts/new-layout.html
-   ```
+---
 
-2. **定义布局结构**
-   ```html
-   ---
-   layout: default
-   ---
+## 8.7 新增一种页面
 
-   <div class="new-layout-container">
-       {{ content }}
-   </div>
+大多数情况不需要新布局，用 `page` 或 `post` 加一个包装布局即可：
 
-   <style>
-       /* 布局样式 */
-   </style>
-   ```
+```yaml
+# _layouts/talks-layout.html
+---
+layout: page
+eyebrow: Talks
+illo: about
+back_url: /
+back_label: Home
+---
+{{ content }}
+```
 
-3. **在页面中使用**
-   ```yaml
-   ---
-   layout: new-layout
-   title: "页面标题"
-   ---
-   ```
+页面里写 `layout: talks-layout`。只有页面结构确实和现有两种都不同时，才新建一个继承 `base` 的布局。
+
+---
+
+## 8.8 Liquid 常用写法
+
+```liquid
+{% assign posts = site.pages | where: "layout", "blog-post-layout" | sort: "date" | reverse %}
+{% for post in posts %}{{ post.title }}{% endfor %}
+
+{{ page.date | date: "%b %-d, %Y" }}
+{{ page.title | default: "Untitled" }}
+{% include illo/{{ illo }}.html %}
+```
+
+常用变量：`site.pages`、`site.data.publications`、`site.data.ui_text.en`、`site.time`、`page.url`、`page.title`、`layout.xxx`。
 
 ---
 

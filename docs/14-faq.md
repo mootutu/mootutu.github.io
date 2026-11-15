@@ -1,313 +1,137 @@
 # 常见问题 FAQ
 
-## 内容相关问题
+## 内容
 
-### Q: 为什么我新增的文章不显示在列表中？
+### Q：新增的文章没有出现在列表里？
 
-**原因**：Front Matter 不完整或缺少 `topic`/`order` 等字段。
+依次检查：
 
-**解决方法**：
-1. 博客文章：补齐 `excerpt`、`tags`、`reading_time`、`cover_image`
-2. 学习文章：确保 `topic` 与主题页一致，`order` 为数字
+1. `layout` 是否正确：博客是 `blog-post-layout`，学习笔记是 `learning-post-layout`
+2. 学习笔记的 `topic` 是否和主题页完全一致（大小写、连字符）
+3. `lang` 是否写了 `en`（主题页只列出同语言的笔记）
+4. Front Matter 是否以 `---` 开头和结尾、YAML 缩进是否正确
+5. 本地服务是否在终端里报错
 
----
+### Q：为什么 Markdown 文件的链接要写成 `.html`？
 
-### Q: 为什么 Markdown 文件的链接要写成 .html？
+Jekyll 把 `part2.md` 构建成 `part2.html`，线上只存在 `.html` 文件。
 
-**原因**：Jekyll 会将 `.md` 文件转换为 `.html` 文件。
+### Q：文章右侧没有目录？
 
-**示例**：
-```html
-<!-- 源文件是 article.md，但链接写成 -->
-<a href="/learning/topic/article.html">文章标题</a>
-```
+- 目录至少需要 2 个 `h2` / `h3` 标题
+- 屏幕宽度小于 1080px 时目录会隐藏
+- 只有文章页（博客文章、学习笔记）有目录
 
----
+### Q：标题下面的引言从哪里来？
 
-### Q: 为什么文章的目录（TOC）没有生成？
+文章页依次使用 `one_line_summary`、`excerpt`；列表页和 About 使用 `description`。都没有就不显示。
 
-**可能原因**：
-1. 屏幕宽度小于 1280px（TOC 只在大屏幕显示）
-2. 标题没有 `id` 属性
-3. 没有使用 H2/H3 标题
+### Q：阅读时长和卡片上写的不一样？
 
-**解决方法**：
-```html
-<!-- 确保标题有 id -->
-<h2 id="section-1">标题</h2>
-```
+文章页按字数自动计算，卡片显示手写的 `reading_time`。以哪个为准都可以，想一致就按文章页的数字改 `reading_time`。
 
 ---
 
-### Q: 如何在学习文章中使用数学公式？
+## 样式
 
-**方法**：
-1. 在 Front Matter 中设置 `mathjax: true`
-2. 使用 LaTeX 语法编写公式
+### Q：深色模式下某个元素颜色不对？
 
-```yaml
----
-mathjax: true
----
+说明它用了写死的颜色。把颜色换成 `site.css` 里的变量（`var(--text)`、`var(--surface)` 等），或者补一条 `html.dark-mode .xxx { … }`。
 
-行内公式：$E = mc^2$
+### Q：代码没有高亮？
 
-独立公式：
-$$
-\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
-$$
-```
+- 代码要写在 `<pre><code class="language-xxx">` 里，或 Markdown 代码块写了语言名
+- 该语言是否已加载（见 [10.5](./10-features.md#105-代码高亮)）
+- 只有文章页加载 Prism；在列表页或 About 里写代码块不会高亮
 
----
+### Q：手机上页面能左右滑动？
 
-## 样式相关问题
+通常是某个元素太宽：长公式、长链接、宽表格、固定宽度的图片。表格和公式已经做了横向滚动；其他情况可在浏览器开发者工具里找出超宽元素，给它加 `max-width: 100%` 或 `overflow-x: auto`。
 
-### Q: 暗黑模式下某个元素显示异常怎么办？
+### Q：改了 CSS，浏览器里没变化？
 
-**解决方法**：为该元素添加 `.dark-mode` 样式：
+本地预览时刷新一次即可（`site.css` 带版本参数）。如果还不行，确认 `jekyll serve` 已经重新构建（终端会打印 `Regenerating`）。
 
-```css
-/* 亮色模式 */
-.my-element {
-    background: #ffffff;
-    color: #333333;
-}
+### Q：想调整动画或关掉某个动画？
 
-/* 暗黑模式 */
-.dark-mode .my-element {
-    background: #1a1a2e;
-    color: #e2e8f0;
-}
-```
+动画相关的规则在 `site.css` 的 “Motion” 和 “Illustrations” 区块。删掉元素上的 `data-reveal` 就不会渐入；插画元素去掉 `draw`、`pop` 等类就会静止显示。
 
 ---
 
-### Q: 代码高亮不工作怎么办？
+## 图片
 
-**检查项**：
-1. 是否使用了正确的语言标识符
-2. HTML 格式是否正确
+### Q：图片不显示？
 
-**正确格式**：
-```html
-<pre><code class="language-python">
-def hello():
-    print("Hello")
-</code></pre>
-```
+- 路径以 `/assets/` 开头
+- 文件名大小写与引用一致（线上区分大小写）
+- 扩展名一致（`.png` / `.jpg`）
 
-**支持的语言**：`python`、`bash`、`javascript`、`json`、`yaml`、`html`、`css`
+### Q：封面图被裁掉了一部分？
+
+卡片按 16:9 裁切。请把封面做成 16:9，主体放在中间。
 
 ---
 
-### Q: 移动端显示有问题怎么办？
+## 语言
 
-**排查步骤**：
-1. 使用浏览器开发者工具（F12）
-2. 切换到移动设备模式
-3. 检查是否有响应式样式
+### Q：怎么写中文版？
 
-**添加响应式样式**：
-```css
-@media (max-width: 768px) {
-    .my-element {
-        /* 移动端样式 */
-    }
-}
-```
+站点目前只有英文版，不再维护中文镜像，见 [05-站点语言与界面文字](./05-bilingual.md)。
 
 ---
 
-## 图片相关问题
+## 部署
 
-### Q: 图片不显示怎么办？
+### Q：推送后网站没有更新？
 
-**检查项**：
-1. 图片文件是否存在
-2. 路径是否正确（使用绝对路径）
-3. 文件名大小写是否匹配
+到仓库的 Actions 页面看构建是否完成；完成后强制刷新浏览器。详见 [11.4](./11-deployment.md#114-部署验证)。
 
-**正确的图片引用**：
-```html
-<img src="/assets/images/covers/article.png" alt="描述">
-```
+### Q：本地 `bundle install` 失败？
 
----
+如果是 Ruby 4，`github-pages` 依赖装不上，参考 [2.1 如果本机是 Ruby 4](./02-quickstart.md#如果本机是-ruby-4) 的替代方法。
 
-### Q: 封面图尺寸应该是多少？
+### Q：如何回滚？
 
-**推荐**：
-- 比例：1:1（正方形）
-- 尺寸：400x400 ~ 800x800 像素
-- 格式：PNG 或 JPG
+用 `git revert <commit>` 生成反向提交再推送，见 [11.6](./11-deployment.md#116-回滚)。
 
 ---
 
-## 双语相关问题
+## 配置
 
-### Q: 语言切换按钮不工作怎么办？
+### Q：改了 `_config.yml` 没有生效？
 
-**检查项**：
-1. `translate_url` 是否正确设置
-2. 目标页面是否存在
+`jekyll serve` 不会重新读取配置文件，停掉服务后重新启动。
 
-**Front Matter 示例**：
-```yaml
-# 英文页面
-translate_url: /cn/blog/posts/article.html
+### Q：怎么改导航栏文字？
 
-# 中文页面
-translate_url: /blog/posts/article.html
-```
+改 `_data/ui_text.yml`。要增减导航项，修改 `_includes/site-header.html`。
 
 ---
 
-### Q: 如何只创建单语言版本？
+## 搜索
 
-**方法**：将 `translate_url` 设置为默认首页：
+### Q：搜不到某篇学习笔记？
 
-```yaml
-# 只有英文版本
-translate_url: /cn/index.html
-```
+搜索只收录博客文章和论文阅读笔记，见 [10.1](./10-features.md#101-搜索)。
 
-后续创建中文版本时再更新。
+### Q：怎么让某页不被搜到？
 
----
-
-## 部署相关问题
-
-### Q: 推送后网站没有更新怎么办？
-
-**解决步骤**：
-1. 检查 GitHub Actions 是否构建成功
-2. 强制刷新浏览器（Ctrl+F5）
-3. 等待 1-3 分钟后重试
-4. 清除浏览器缓存
+博客文章和论文笔记都会被收录。要排除某一篇，可以在它的 Front Matter 里加 `search: false`，并在 `search.html` 的筛选中加上 `where_exp: "doc", "doc.search != false"`。
 
 ---
 
-### Q: GitHub Actions 构建失败怎么办？
+## 其他
 
-**排查步骤**：
-1. 进入 GitHub 仓库 → Actions
-2. 点击失败的构建
-3. 查看错误日志
+### Q：怎么查看构建后的静态文件？
 
-**常见错误**：
-- Front Matter 语法错误（如缺少 `---`）
-- Liquid 模板语法错误
-- 文件编码问题（使用 UTF-8）
-
----
-
-### Q: 如何回滚到之前的版本？
-
-**方法**：
 ```bash
-# 查看提交历史
-git log --oneline
-
-# 回滚到指定提交
-git reset --hard <commit-hash>
-
-# 强制推送
-git push --force origin main
+bundle exec jekyll build
+open _site/index.html
 ```
 
----
+### Q：维护文档页（`/maintenance.html`）显示的还是旧内容？
 
-## 配置相关问题
-
-### Q: 修改了 _config.yml 没有生效？
-
-**原因**：修改配置文件后需要重启 Jekyll 服务器。
-
-**解决方法**：
-```bash
-# 停止服务器 (Ctrl+C)
-# 重新启动
-jekyll serve
-```
-
----
-
-### Q: 如何添加新的 UI 文本？
-
-**步骤**：
-1. 编辑 `_data/ui_text.yml`
-2. 同时添加 `en` 和 `zh-CN` 版本
-
-```yaml
-en:
-  new_text: "New Text"
-
-zh-CN:
-  new_text: "新文本"
-```
-
-3. 在模板中使用：`{{ ui.new_text }}`
-
----
-
-## 搜索相关问题
-
-### Q: 搜索结果不正确或找不到内容？
-
-**可能原因**：
-1. 内容太新，索引未更新
-2. 搜索关键词少于 4 个字符
-
-**解决方法**：
-1. 确保页面有正确的 Front Matter
-2. 重新构建站点
-3. 使用更长的搜索关键词
-
----
-
-### Q: 如何让某个页面不被搜索到？
-
-**目前不支持**：当前实现会索引所有带 Front Matter 的页面。
-
-如需排除，需要修改 `search.html` 中的索引逻辑。
-
----
-
-## 其他问题
-
-### Q: 如何备份网站内容？
-
-**方法**：
-```bash
-# 克隆完整仓库
-git clone https://github.com/mootutu/mootutu.github.io.git backup
-
-# 或下载 ZIP
-# GitHub 仓库页面 → Code → Download ZIP
-```
-
----
-
-### Q: 如何在本地查看构建的静态文件？
-
-**方法**：
-```bash
-# 构建站点
-jekyll build
-
-# 静态文件在 _site/ 目录
-ls _site/
-```
-
----
-
-### Q: 遇到文档中没有的问题怎么办？
-
-**建议**：
-1. 查看 Jekyll 官方文档：https://jekyllrb.com/docs/
-2. 搜索 GitHub Issues
-3. 查看浏览器控制台错误信息
-4. 检查 Jekyll 服务器输出日志
+这个页面从 GitHub 的 `main` 分支读取 `docs/`，文档要推送到 `main` 后才会更新。
 
 ---
 

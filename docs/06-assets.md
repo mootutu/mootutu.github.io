@@ -1,278 +1,160 @@
 # 静态资源管理
 
-## 6.1 资源目录结构
+## 6.1 目录结构
 
 ```
 assets/
-├── css/                    # 样式表
-│   ├── pygment_trac.css    # 代码高亮样式
-│   └── styles.css          # 通用样式
-│
-├── javascripts/            # JavaScript 文件
-│   └── scale.fix.js        # 响应式修复脚本
-│
-├── images/                 # 图片资源
-│   ├── ggbond.ico          # 网站图标
-│   ├── mootutu.png         # 头像 1
-│   ├── weiqin.png          # 头像 2
-│   ├── bocchi.gif          # 导航栏动画
-│   ├── covers/             # 博客封面图
-│   └── posts/              # 文章内图片
-│
-├── fontawesome/            # FontAwesome 图标库
-│   ├── css/
-│   ├── js/
-│   └── webfonts/
-│
-└── bibtex/                 # 论文引用文件
-    ├── chen2026sempa.bib
-    ├── shen2026anchormem.bib
-    ├── wang2025ranked.bib
-    └── wang2026beyond.bib
+├── css/
+│   └── site.css              # 全站唯一的样式表
+├── javascripts/
+│   ├── site.js               # 全站交互
+│   └── theme-toggle.js       # 深色模式切换
+├── images/
+│   ├── covers/               # 博客封面（与文章同名）
+│   ├── posts/{文章名}/        # 博客文章配图
+│   ├── minimind/             # Minimind 笔记配图
+│   ├── favicon.svg           # 网站图标（矢量源文件）
+│   ├── apple-touch-icon.png  # iOS 主屏幕图标
+│   ├── mootutu.png           # 旧头像，目前没有页面使用
+│   ├── weiqin.png            # 旧照片，目前没有页面使用
+│   └── nailong.ico / .jpg    # 目前没有页面使用
+├── bibtex/                   # 论文 BibTeX
+└── fontawesome/              # 旧图标库，目前没有页面引用
 ```
+
+标注“没有页面使用”的文件可以在确认不需要后删除，以减小仓库体积。
 
 ---
 
-## 6.2 图片资源管理
+## 6.2 图片
 
-### 6.2.1 图片分类
+### 分类与位置
 
-| 类型 | 存放位置 | 用途 |
-|------|----------|------|
-| 网站图标 | `assets/images/` | favicon、头像 |
-| 博客封面图 | `assets/images/covers/` | 博客列表展示 |
-| 文章内图片 | `assets/images/posts/{article}/` | 文章正文配图 |
+| 类型 | 位置 | 说明 |
+|------|------|------|
+| 博客封面 | `assets/images/covers/文章名.png` | 16:9 显示，见 [3.8](./03-blog-maintenance.md#38-封面图规范) |
+| 博客配图 | `assets/images/posts/文章名/` | 每篇一个目录 |
+| 学习笔记配图 | `assets/images/{主题}/` | 如 `assets/images/minimind/` |
+| 网站图标 | `assets/images/favicon.svg`、根目录 `favicon.ico`、`assets/images/apple-touch-icon.png` | 见 [7.6](./07-personal-info.md#76-网站图标) |
 
-### 6.2.2 封面图规范
+### 要求
 
-**存放位置：**
-```
-assets/images/covers/
-├── modernizing-python.png
-├── git-basics.png
-├── automating-tasks-python.png
-└── markdown-guide.png
-```
-
-**命名规则：**
-- 与文章文件名一致（不含扩展名）
-- 使用小写字母和连字符
-
-**尺寸建议：**
-- 比例：1:1（正方形）
-- 尺寸：400x400 ~ 800x800 像素
-- 格式：PNG 或 JPG
-
-**示例对应关系：**
-
-| 文章文件 | 封面图文件 |
-|----------|-----------|
-| `blog/posts/git-basics.html` | `assets/images/covers/git-basics.png` |
-| `blog/posts/my-new-post.html` | `assets/images/covers/my-new-post.png` |
-
-### 6.2.3 文章内图片规范
-
-**存放位置：**
-```
-assets/images/posts/
-└── article-name/           # 以文章名命名的目录
-    ├── image.png           # 第一张图
-    ├── image-1.png         # 第二张图
-    ├── image-2.png         # 第三张图
-    └── screenshot.png      # 也可用描述性名称
-```
-
-**命名规则：**
-- 目录名与文章文件名一致
-- 图片可用序号命名：`image.png`、`image-1.png`、`image-2.png`
-- 也可用描述性名称：`vscode-config.png`、`terminal-output.png`
-
-**引用方式（HTML）：**
-```html
-<figure class="image">
-    <img src="/assets/images/posts/article-name/image.png" alt="描述文字">
-    <figcaption>图片说明</figcaption>
-</figure>
-```
-
-**引用方式（Markdown）：**
-```markdown
-![描述文字](/assets/images/posts/article-name/image.png)
-```
-
-### 6.2.4 添加新图片流程
-
-1. **确定图片类型**
-   - 封面图 → `assets/images/covers/`
-   - 文章配图 → `assets/images/posts/{article}/`
-
-2. **创建目录（如需要）**
-   ```bash
-   mkdir -p assets/images/posts/new-article
-   ```
-
-3. **复制图片并命名**
-   ```bash
-   cp ~/Downloads/screenshot.png assets/images/posts/new-article/image.png
-   ```
-
-4. **在文章中引用**
-
-5. **本地预览确认**
+- 文件名小写、用连字符；不要有空格和中文
+- 照片用 JPG，截图和带透明的图用 PNG
+- 单张尽量控制在 500 KB 以内
+- 引用一律用 `/assets/...` 开头的绝对路径
 
 ---
 
-## 6.3 CSS 管理
+## 6.3 CSS：`assets/css/site.css`
 
-### 现有 CSS 文件
+全站只有这一个样式表，由 `_layouts/base.html` 引入。页面和布局里**不要**再写 `<style>`。
 
-| 文件 | 用途 |
+文件按区块组织，搜索注释标题即可定位：
+
+| 区块 | 内容 |
 |------|------|
-| `assets/css/pygment_trac.css` | 代码高亮基础样式 |
-| `assets/css/styles.css` | 通用样式（较少使用） |
+| `:root` / `html.dark-mode` | 设计变量：颜色、插画配色、字体、圆角、缓动曲线 |
+| Base | 基础排版、链接、`.container` |
+| Header | 顶部导航、图标按钮、移动端菜单 |
+| Hero / Focus cards / Sections | 首页首屏、研究方向卡片、编号区块 |
+| Publications / Generic rows | 论文列表、教育/奖项/服务行 |
+| Footer / Dialog / Search palette | 页脚、BibTeX 弹窗、搜索面板 |
+| Motion / Illustrations | 渐入动效、插画样式与动画 |
+| Inner pages：Page hero / Post / Prose | 列表页页头、文章页、正文排版 |
+| Blog index / Learning / Paper library | 博客卡片、主题卡片、笔记列表、论文库 |
+| Back to top / MathJax | 回到顶部按钮、公式溢出处理 |
 
-### 样式位置说明
+### 设计变量
 
-本项目大部分样式直接写在布局文件和页面中（内联 `<style>` 标签），而非独立 CSS 文件：
+改颜色、字体时只改变量，不要在各处写死颜色值：
 
-- 博客列表样式 → `_includes/blog_page_styles.html`
-- 博客文章样式 → `_layouts/blog-post-layout.html`
-- 学习页面样式 → `_layouts/learning-*.html`
-- 导航栏样式 → `_includes/navigation.html`
+| 变量 | 浅色 | 用途 |
+|------|------|------|
+| `--bg` | `#f4f1ea` | 页面底色 |
+| `--surface` | `#faf8f3` | 卡片底色 |
+| `--surface-strong` | `#ebe6da` | 标签、强调底色 |
+| `--text` | `#1f1e1b` | 标题、主要文字 |
+| `--text-soft` | `#3d3b36` | 正文 |
+| `--muted` | `#6e6a62` | 次要文字 |
+| `--line` | 12% 黑 | 分隔线、边框 |
+| `--accent` | `#c4633f` | 陶土橙点缀色 |
+| `--illo-*` | — | 插画配色：`clay`、`olive`、`sky`、`sand`、`paper`、`ink`、`panel` |
+| `--font-serif` / `--font-sans` / `--font-mono` | — | 三种字体 |
 
-### 修改样式的注意事项
-
-1. 确定要修改的样式所在文件
-2. 注意暗黑模式兼容（检查 `.dark-mode` 相关样式）
-3. 测试响应式效果（不同屏幕宽度）
+`html.dark-mode` 下同名变量会被重新定义成深色值，所以只要用变量，深色模式就自动生效。
 
 ---
 
-## 6.4 JavaScript 管理
+## 6.4 JavaScript
 
-### 内置脚本
-
-| 文件 | 用途 |
+| 文件 | 内容 |
 |------|------|
-| `assets/javascripts/scale.fix.js` | 响应式视口修复 |
+| `assets/javascripts/site.js` | 导航栏滚动边框、移动端菜单、首页导航高亮、滚动渐入、搜索面板（目前未启用）、BibTeX 弹窗、回到顶部、阅读进度条、文章目录、论文库筛选 |
+| `assets/javascripts/theme-toggle.js` | 深色/浅色切换按钮（带圆形展开过渡） |
+| `_includes/theme-init.html` | 内联脚本，在页面渲染前根据偏好加上 `dark-mode` 类，避免闪烁 |
+
+`site.js` 里的每个功能都会先检查页面上有没有对应元素，没有就跳过，所以所有页面共用一个文件即可。
 
 ### 外部库（CDN）
 
-| 库 | 版本 | 用途 | 引用位置 |
-|----|------|------|----------|
-| Prism.js | v1.29.0 | 代码语法高亮 | 博客/学习文章布局 |
-| MathJax | v3 | 数学公式渲染 | 学习文章布局 |
+| 库 | 地址 | 何时加载 |
+|----|------|---------|
+| Prism.js 1.29.0 | cdnjs | 文章页（布局设置了 `code: true`） |
+| MathJax 3.2.2 | cdnjs | 页面 Front Matter 有 `mathjax: true` |
+| Google Fonts | fonts.googleapis.com | 所有页面 |
 
-### 内联脚本位置
+### 缓存
 
-主要功能脚本直接写在布局文件中：
-
-- 暗黑模式切换 → `_layouts/default.html`
-- TOC 生成 → `_layouts/blog-post-layout.html`
-- 搜索功能 → `_includes/navigation.html`
-- 返回顶部 → 各布局文件
+`base.html` 引用 `site.css` 和 `site.js` 时带了 `?v=构建时间`，每次部署都会让浏览器拿到新文件，不需要手动改版本号。
 
 ---
 
-## 6.5 字体资源
+## 6.5 字体
 
-### 使用的字体
-
-| 字体 | 用途 | 来源 |
+| 字体 | 变量 | 用途 |
 |------|------|------|
-| Fira Code | 代码显示 | Google Fonts CDN |
-| System Fonts | 正文 | 系统默认 |
+| Source Serif 4 | `--font-serif` | 标题、引言、插画旁的大字 |
+| Inter | `--font-sans` | 正文、导航、按钮 |
+| JetBrains Mono | `--font-mono` | 代码、编号、日期 |
 
-### 字体引用
-
-```html
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-```
+三种字体都从 Google Fonts 加载（`_layouts/base.html` 的 `<head>`）。后备字体中包含了中文字体（Songti SC、PingFang SC）。
 
 ---
 
-## 6.6 图标资源
+## 6.6 图标与插画
 
-### FontAwesome
-
-完整的 FontAwesome 库位于 `assets/fontawesome/`：
-
-```
-assets/fontawesome/
-├── css/
-│   ├── all.min.css
-│   └── ...
-├── js/
-└── webfonts/
-```
-
-### 使用方式
-
-```html
-<i class="fas fa-home"></i>
-<i class="fab fa-github"></i>
-```
+- 界面图标（搜索、月亮/太阳、箭头等）都是直接写在模板里的内联 SVG，不依赖图标库
+- 页头和首页插画是内联 SVG，放在 `_includes/illo/` 和 `index.html` 中，画法见 [10.8](./10-features.md#108-插画)
 
 ---
 
-## 6.7 BibTeX 文件
+## 6.7 BibTeX
 
-### 存放位置
-
-```
-assets/bibtex/
-├── chen2026sempa.bib
-├── shen2026anchormem.bib
-├── wang2025ranked.bib
-└── wang2026beyond.bib
-```
-
-### 命名规则
-
-```
-{作者姓}{年份}{关键词}.bib
-```
-
-示例：`wang2026beyond.bib`
-
-### 添加新 BibTeX
-
-1. 创建 `.bib` 文件
-2. 放入 `assets/bibtex/` 目录
-3. 在 `_data/publications.yml` 中添加引用
+- 位置：`assets/bibtex/`
+- 命名：`第一作者姓 + 年份 + 标题首个关键词.bib`，全小写，如 `wang2025ranked.bib`
+- 与 `_data/publications.yml` 中的 `id` 和 `bib` 字段保持一致
+- 首页点击 “bibtex” 会在弹窗中显示文件内容，并可一键复制
 
 ---
 
-## 6.8 资源路径规范
+## 6.8 路径规范
 
-### 绝对路径 vs 相对路径
-
-**推荐使用绝对路径**（以 `/` 开头）：
+站点部署在域名根目录，所有站内资源和链接都用以 `/` 开头的绝对路径：
 
 ```html
-<!-- 推荐 -->
-<img src="/assets/images/covers/article.png">
-
-<!-- 不推荐 -->
-<img src="../assets/images/covers/article.png">
+<img src="/assets/images/posts/git-basics/image.png" alt="">
+<a href="/learning/minimind/part3.html">Part 3</a>
 ```
 
-### 路径示例
-
-| 资源类型 | 路径格式 |
-|----------|----------|
-| 封面图 | `/assets/images/covers/{filename}.png` |
-| 文章图片 | `/assets/images/posts/{article}/{image}.png` |
-| CSS | `/assets/css/{filename}.css` |
-| JS | `/assets/javascripts/{filename}.js` |
-| BibTeX | `/assets/bibtex/{filename}.bib` |
+不要写 `../assets/...` 这样的相对路径，否则在不同深度的页面中会失效。
 
 ---
 
 <div class="doc-nav">
   <a href="./05-bilingual.md" class="doc-nav-card prev">
     <span class="doc-nav-label">上一篇</span>
-    <span class="doc-nav-title">← 双语内容维护</span>
+    <span class="doc-nav-title">← 站点语言与界面文字</span>
   </a>
   <a href="./07-personal-info.md" class="doc-nav-card next">
     <span class="doc-nav-label">下一篇</span>

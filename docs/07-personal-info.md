@@ -1,269 +1,192 @@
 # 个人信息维护
 
-## 7.1 个人简介更新
+## 7.1 首页文字
 
-### 文件位置
+首页内容全部在 `index.html` 里，从上到下是：
 
-| 语言 | 文件路径 |
-|------|----------|
-| 英文 | `_includes/bio.html` |
-| 中文 | `_includes/bio-cn.html` |
+| 区块 | 标记 | 内容 |
+|------|------|------|
+| 首屏 | `<section class="hero">` | 小字 `eyebrow`、英文名 + 中文名、一句研究方向（`hero__lede`）、学校与导师（`hero__meta`）、联系按钮（`contact-buttons.html`）、右侧主插画 |
+| 研究方向卡片 | `<div class="focus">` | 三张卡片，每张有一幅小插画、标题和一句说明 |
+| 01 Publications | `<section id="publications">` | 自动从 `_data/publications.yml` 生成，见 [7.2](#72-添加论文) |
+| 02 Experience | `<section id="experience">` | 分 “Education” 和 “Research Internships” 两组，每段经历一个 `<li class="row">` |
+| 03 Awards | `<section id="awards">` | 每个奖项一个 `<li class="row">` |
+| 04 Service & Teaching | `<section id="service">` | 审稿、助教等 |
 
-### 简介结构
+每个编号区块左侧标题下方都有一幅小插画，分别是 `_includes/illo/section-papers.html`、`section-experience.html`、`section-awards.html`、`section-service.html`（窄屏下隐藏）。
 
-个人简介组件包含：
-- 头像图片
-- 姓名
-- 职位/身份
-- 联系方式链接
-- 简介文字
+页脚的“Last updated”是构建时间，自动更新，不用手改。
 
-### 修改步骤
-
-1. **打开对应文件**
-   ```bash
-   # 英文简介
-   code _includes/bio.html
-
-   # 中文简介
-   code _includes/bio-cn.html
-   ```
-
-2. **修改内容**
-   - 姓名、职位等文字直接编辑
-   - 联系方式链接更新 `href` 属性
-   - 简介段落更新文字内容
-
-3. **本地预览**
-   ```bash
-   jekyll serve
-   # 访问 http://localhost:4000
-   ```
-
-4. **提交更改**
-   ```bash
-   git add _includes/bio.html _includes/bio-cn.html
-   git commit -m "docs: Update personal bio"
-   git push
-   ```
-
-### 注意事项
-
-- 英文和中文简介需要分别维护
-- 修改后检查两个版本的一致性
-
----
-
-## 7.2 头像更新
-
-### 头像文件位置
-
-```
-assets/images/
-├── mootutu.png      # 主头像
-└── weiqin.png       # 备用头像（点击切换）
-```
-
-### 更换头像
-
-1. **准备新头像图片**
-   - 推荐尺寸：200x200 ~ 400x400 像素
-   - 格式：PNG（支持透明背景）或 JPG
-
-2. **替换文件**
-   ```bash
-   # 替换主头像
-   cp ~/Downloads/new-avatar.png assets/images/mootutu.png
-
-   # 或替换备用头像
-   cp ~/Downloads/new-avatar-alt.png assets/images/weiqin.png
-   ```
-
-3. **保持文件名不变**
-   - 如果使用相同文件名，无需修改代码
-   - 如果使用新文件名，需要更新 `_includes/bio.html` 中的引用
-
-4. **清除缓存预览**
-   - 浏览器可能缓存旧图片
-   - 使用 Ctrl+F5（Windows）或 Cmd+Shift+R（Mac）强制刷新
-
----
-
-## 7.3 联系方式更新
-
-### 联系方式位置
-
-联系方式链接在 `_includes/bio.html` 和 `_includes/bio-cn.html` 中定义。
-
-### 常见联系方式
+### 修改研究方向一句话
 
 ```html
-<!-- 邮箱 -->
-<a href="mailto:your-email@example.com">
-    <i class="fas fa-envelope"></i>
-</a>
-
-<!-- GitHub -->
-<a href="https://github.com/username">
-    <i class="fab fa-github"></i>
-</a>
-
-<!-- LinkedIn -->
-<a href="https://linkedin.com/in/username">
-    <i class="fab fa-linkedin"></i>
-</a>
-
-<!-- Twitter/X -->
-<a href="https://twitter.com/username">
-    <i class="fab fa-twitter"></i>
-</a>
-
-<!-- Google Scholar -->
-<a href="https://scholar.google.com/citations?user=xxx">
-    <i class="fas fa-graduation-cap"></i>
-</a>
+<p class="hero__lede">
+  I study how large language models
+  <span class="scribble">reason<svg …><path d="M2 7 C 25 2, 55 2, 98 5"/></svg></span>,
+  how they represent meaning, and when we can trust what they say.
+</p>
 ```
 
-### 添加新联系方式
+`<span class="scribble">` 包住的那个词下面会画出一条手写下划线。换词时保留 `<svg>` 部分不动即可。
 
-1. 在 bio.html 中找到联系方式区域
-2. 添加新的链接元素
-3. 使用 FontAwesome 图标
-4. 同步更新中文版本
+### 增加一行经历 / 奖项
+
+```html
+<li class="row" data-reveal>
+  <span class="row__aside">Nov 2026 – Present</span>  <!-- 左侧：起止年月，或机构简称 -->
+  <div>
+    <div class="row__title">Best Paper Award</div>
+    <div class="row__detail">Some Conference</div>  <!-- 可选：补充说明 -->
+    <span class="row__highlight">Top 1%</span>      <!-- 可选：灰底高亮 -->
+  </div>
+</li>
+```
+
+`data-reveal` 让这一行在滚动到时渐入，保留即可。
+
+Experience 区块里的日期统一写成 `Mon YYYY – Mon YYYY`（英文月份缩写、en dash `–`），正在进行的写 `Present`。要新增一组（例如 “Industry Experience”），在 `<ul class="rows">` 前加：
+
+```html
+<h3 class="rows__group">Industry Experience</h3>
+```
+
+### 研究方向卡片
+
+每张卡片是一个 `<article class="focus-card">`，上半部分是 `focus-card__art` 里的插画，下半部分是 `focus-card__body` 里的标题和说明。只改文字时不需要动插画；插画画法见 [10.8](./10-features.md#108-插画)。
 
 ---
 
-## 7.4 添加出版物
+## 7.2 添加论文
 
-### 出版物位置
+### 步骤 1：BibTeX
 
-出版物数据集中在 `_data/publications.yml`，首页通过共享 include 渲染：
-- 英文：首页 `index.html`
-- 中文：首页 `cn/index.html`
+把文件放到 `assets/bibtex/`，命名规则见 [6.7](./06-assets.md#67-bibtex)。
 
-### 添加新出版物步骤
+### 步骤 2：`_data/publications.yml`
 
-#### 步骤 1：创建 BibTeX 文件
-
-在 `assets/bibtex/` 目录创建 `.bib` 文件：
-
-```bash
-# 文件名格式：作者年份关键词.bib
-touch assets/bibtex/wang2025newtopic.bib
-```
-
-BibTeX 内容示例：
-```bibtex
-@inproceedings{wang2025newtopic,
-  title={Paper Title Here},
-  author={Wang, Weiqin and Others, Some},
-  booktitle={Conference Name},
-  year={2025}
-}
-```
-
-#### 步骤 2：更新数据文件
-
-在 `_data/publications.yml` 添加条目：
+按时间从新到旧排列，新论文加在最上面：
 
 ```yaml
-- id: wang2025newtopic
-  title:
-    en: "Paper Title Here"
-    zh: "Paper Title Here"
-  authors:
-    en: "<b>Weiqin Wang</b>, Some Others"
-    zh: "<b>王伟钦</b>, 合作者"
-  venue:
-    en: "Conference Name (CONF), 2025"
-    zh: "Conference Name (CONF), 2025"
+- id: wang2026example
+  title: "Paper Title Ending With a Period."
+  authors: "<b>Weiqin Wang</b>, Coauthor A, and Hui Huang."
+  venue: "In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL</b>), 2026"
   links:
     - label: pdf
-      url: https://example.com/paper.pdf
-  bib: /assets/bibtex/wang2025newtopic.bib
+      url: https://aclanthology.org/2026.acl-long.1.pdf
+    - label: code
+      url: https://github.com/szu-tera/Example
+  bib: /assets/bibtex/wang2026example.bib
 ```
 
-#### 步骤 3：验证
+| 字段 | 说明 |
+|------|------|
+| `id` | 与 BibTeX 文件名一致 |
+| `title` | 标题；末尾的句号会在页面上自动去掉 |
+| `authors` | 作者，自己的名字用 `<b>…</b>` 加粗；共同一作加 `*`，通讯作者加 `#` |
+| `venue` | 完整出处。**`<b>…</b>` 里的文字会成为左侧的会议标签**（如 ACL、EMNLP、ACL Findings）；没有 `<b>` 时标签显示为灰色的 “Preprint” |
+| `venue` 的最后 4 个字符 | 会被当作年份显示在标签下方，所以必须以年份结尾 |
+| `links` | 链接按钮；第一个链接同时作为标题的跳转地址 |
+| `bib` | BibTeX 路径；有这个字段才会显示 “bibtex” 按钮 |
 
-1. 本地预览首页
-2. 点击 [bib] 链接检查弹窗
-3. 测试 PDF 链接
+### 步骤 3：检查
+
+本地打开首页，确认：会议标签和年份正确、自己的名字加粗、各链接可打开、BibTeX 弹窗能显示内容。
+
+同时记得更新简历（[7.4](#74-更新简历)）。
 
 ---
 
-## 7.5 更新简历
+## 7.3 About 页面
 
-### 简历文件位置
+`about.html`：
 
+- Front Matter 的 `heading` 是页头大标题（“Hi, I'm Weiqin.”），`description` 是标题下的引言
+- 正文写在 `<div class="prose about-prose">` 里
+- 底部是联系按钮，与首页共用 `_includes/contact-buttons.html`
+
+---
+
+## 7.4 更新简历
+
+| 简历 | 源文件 | 生成文件 | 编译引擎 |
+|------|--------|---------|---------|
+| 英文 | `cv/my_cv.tex` | `cv/my_cv.pdf` | pdfLaTeX |
+| 中文 | `cv_zh/cv_zh.tex` | `cv_zh/cv_zh.pdf` | XeLaTeX（ctex） |
+
+两个目录里都有 `latexmkrc`，直接在目录中运行即可：
+
+```bash
+cd cv && latexmk my_cv.tex
+cd ../cv_zh && latexmk cv_zh.tex
 ```
-resume.pdf
-```
 
-### 更新步骤
+编译产生的 `.aux`、`.log` 等文件已在 `.gitignore` 中忽略。提交时把 `.tex` 和 `.pdf` 一起提交。
 
-1. **准备新简历**
-   - 导出为 PDF 格式
-   - 命名为 `resume.pdf`
+简历在这些地方被链接：
 
-2. **替换文件**
-   ```bash
-   cp ~/Downloads/new-resume.pdf resume.pdf
-   ```
+| 位置 | 链接 |
+|------|------|
+| 首页、About 页的 CV 按钮 | `/cv/my_cv.pdf` |
 
-3. **提交更改**
-   ```bash
-   git add resume.pdf
-   git commit -m "docs: Update resume"
-   git push
-   ```
+中文简历 `cv_zh.pdf` 目前不在站内链接，需要时可以直接把 `/cv_zh/cv_zh.pdf` 发给别人。
 
-### 简历链接位置
+根目录的 `resume.pdf` 是旧文件，目前没有页面链接到它。
 
-简历链接通常在个人简介或关于页面中：
+---
+
+## 7.5 联系方式
+
+首页首屏和 About 页底部的按钮都来自同一个文件 `_includes/contact-buttons.html`，按顺序是：
+
+| 按钮 | 链接 |
+|------|------|
+| Email | `mailto:here1swqw@gmail.com` |
+| Google Scholar | `https://scholar.google.com/citations?user=JonSUasAAAAJ` |
+| LinkedIn | `https://www.linkedin.com/in/weiqin-wang-aa8800392/` |
+| CV | `/cv/my_cv.pdf` |
+
+改链接、调整顺序或新增按钮（例如 GitHub）都只改这一个文件。每个按钮里是一个 16×16 的线条图标 + 文字：
+
 ```html
-<a href="/resume.pdf" target="_blank">Resume/CV</a>
+<a class="button" href="https://github.com/xxx" target="_blank" rel="noopener">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">…</svg>
+  GitHub
+</a>
 ```
+
+第一个按钮带 `button--primary`（深色实心），其余是描边按钮。
 
 ---
 
-## 7.6 更新网站图标
+## 7.6 网站图标
 
-### 图标文件位置
+网站图标是首页推理树插画的缩小版：米白圆角底、黑色树枝、一个空心节点和一个陶土橙节点。共三个文件：
 
+| 文件 | 用途 |
+|------|------|
+| `assets/images/favicon.svg` | 现代浏览器使用的矢量图标（源文件，改图标先改它） |
+| `favicon.ico`（仓库根目录） | 老浏览器和直接请求 `/favicon.ico` 时使用，内含 16/32/48 像素 |
+| `assets/images/apple-touch-icon.png` | iPhone/iPad “添加到主屏幕”时的 180×180 图标（方形满铺，系统自动切圆角） |
+
+在 `_layouts/base.html` 和 `maintenance.html` 的 `<head>` 中引用：
+
+```html
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
 ```
-assets/images/ggbond.ico
-```
 
-### 更新步骤
-
-1. **准备新图标**
-   - 格式：ICO 或 PNG
-   - 推荐尺寸：32x32 或 64x64 像素
-
-2. **替换文件**
-   ```bash
-   cp ~/Downloads/new-favicon.ico assets/images/ggbond.ico
-   ```
-
-3. **如使用不同文件名**
-
-   需要更新布局文件中的引用：
-   ```html
-   <link rel="icon" type="image/x-icon" href="/assets/images/new-name.ico">
-   ```
+`.ico` 和 `.png` 是由 SVG 的同一套图形用 Python（Pillow）画出来的。修改图标时，先改 SVG，再按同样的图形重新生成另外两个文件，三者保持一致。浏览器会缓存图标，替换后可能要清缓存或过一段时间才看到新图标。
 
 ---
 
-## 7.7 维护检查清单
+## 7.7 检查清单
 
-更新个人信息后，检查以下项目：
-
-- [ ] 英文版本已更新
-- [ ] 中文版本已同步更新
-- [ ] 本地预览效果正常
-- [ ] 链接可正常访问
-- [ ] 图片正常显示
-- [ ] 暗黑模式下显示正常
+- [ ] 首页文字、经历、奖项已更新
+- [ ] 新论文的会议标签、年份、加粗、链接、BibTeX 都正确
+- [ ] 中英文简历已重新编译并提交 PDF
+- [ ] `contact-buttons.html` 中的链接都能打开
 
 ---
 

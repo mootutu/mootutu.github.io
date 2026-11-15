@@ -2,205 +2,141 @@
 
 ## 1.1 项目简介
 
-这是一个基于 Jekyll 的个人学术/技术网站，托管在 GitHub Pages 上。网站包含以下主要功能：
+这是一个基于 Jekyll 的个人学术主页，托管在 GitHub Pages 上，线上地址是 `https://mootutu.github.io`。
 
-- **个人首页**：展示个人简介、出版物、获奖情况
-- **博客系统**：记录工具使用、技术教程、学习心得
-- **学习笔记**：按主题组织的系统化学习内容
-- **双语支持**：支持中英文切换
+站点包含：
 
-**线上地址**：`https://mootutu.github.io`
+- **首页**：个人介绍、研究方向、论文、教育经历、奖项、学术服务
+- **博客**：工具使用、技术教程类文章
+- **学习区**：按主题组织的学习笔记（Minimind、Python Guidelines 等）
+- **论文阅读库**：可搜索、可筛选的论文阅读笔记
+- **About**：简短自我介绍与联系方式
+- **简历**：英文、中文两份 LaTeX 简历（PDF）
 
----
-
-## 1.2 技术栈
-
-| 技术 | 版本/说明 | 用途 |
-|------|----------|------|
-| **Jekyll** | - | 静态站点生成器，将 Markdown/HTML 转换为静态网页 |
-| **Liquid** | - | Jekyll 的模板引擎，用于动态内容渲染 |
-| **Kramdown** | - | Markdown 解析器，支持扩展语法 |
-| **GitHub Pages** | - | 自动构建和托管服务 |
-| **Prism.js** | v1.29.0 | 代码语法高亮（支持 Python、Bash、JSON 等） |
-| **MathJax** | v3 | 数学公式渲染（LaTeX 语法） |
-| **FontAwesome** | - | 图标库 |
-| **Fira Code** | - | 代码专用等宽字体 |
+站点只有英文版，没有中文镜像，也没有语言切换。
 
 ---
 
-## 1.3 核心概念
+## 1.2 设计风格
 
-### 内容类型
+2026-11 起全站使用统一的新设计：
 
-本站有三种主要内容类型：
+- 暖色米白底色，深色模式是暖黑底，陶土橙作为点缀色
+- 标题用衬线体 Source Serif 4，正文用 Inter，代码用 JetBrains Mono
+- 首页和各列表页的页头配有手绘风 SVG 插画
+- 动效克制：内容渐入、插画线条描绘、卡片悬停上浮；系统开启“减少动态效果”时自动关闭
 
-| 类型 | 说明 | 文件格式 | 存放位置 |
-|------|------|----------|----------|
-| **Blog Post** | 博客文章，按时间排序 | HTML | `/blog/posts/` |
-| **Learning Topic** | 学习主题索引页 | HTML | `/learning/` |
-| **Learning Post** | 学习文章，属于某个主题 | Markdown/HTML | `/learning/{topic}/` |
-
-### 双语架构
-
-网站采用目录镜像方式实现双语：
-
-```
-/                        # 英文版本
-├── index.html
-├── blog.html
-├── blog/posts/
-└── learning/
-
-/cn/                     # 中文版本（镜像结构）
-├── index.html
-├── blog.html
-├── blog/posts/
-└── learning/
-```
-
-每个页面通过 `translate_url` 字段链接到对应的翻译版本。
-
-### 布局系统
-
-Jekyll 使用布局（Layout）来定义页面结构：
-
-```
-_layouts/
-├── default.html           # 基础布局（首页、关于页）
-├── blog-layout.html       # 博客列表页布局
-├── blog-post-layout.html  # 博客文章布局
-├── learning-layout.html   # 学习主题列表布局
-├── learning-topic-layout.html  # 单个学习主题布局
-└── learning-post-layout.html   # 学习文章布局
-```
+颜色、字体、间距都定义在 `assets/css/site.css` 顶部的 CSS 变量里，详见 [06-静态资源管理](./06-assets.md) 和 [10-特殊功能](./10-features.md)。
 
 ---
 
-## 1.4 目录结构
+## 1.3 技术栈
 
-### 完整目录树
+| 技术 | 版本 | 用途 |
+|------|------|------|
+| Jekyll | 3.10（由 `github-pages` gem 决定） | 静态站点生成 |
+| Liquid | 4 | 模板语言 |
+| Kramdown | — | Markdown 解析 |
+| Prism.js | 1.29.0（cdnjs） | 代码高亮 |
+| MathJax | 3.2.2（cdnjs） | 数学公式 |
+| Google Fonts | — | Source Serif 4、Inter、JetBrains Mono |
+| GitHub Pages | — | 自动构建与托管 |
+
+站点没有使用任何前端框架，交互都由 `assets/javascripts/site.js` 和 `theme-toggle.js` 两个原生 JS 文件实现。
+
+---
+
+## 1.4 内容类型
+
+| 类型 | 说明 | 格式 | 位置 | 布局 |
+|------|------|------|------|------|
+| Blog Post | 博客文章 | HTML | `blog/posts/` | `blog-post-layout` |
+| Learning Topic | 学习主题页 | HTML | `learning/*.html` | `learning-topic-layout` |
+| Learning Post | 学习笔记 | Markdown（推荐）或 HTML | `learning/{目录}/` | `learning-post-layout` |
+| Paper Note | 论文阅读笔记（学习笔记的一种，`topic: paper-reading`） | Markdown | `learning/paper-reading/` | `learning-post-layout` |
+
+博客列表、学习主题列表、主题下的笔记列表、论文阅读库都会根据 Front Matter **自动生成**，不需要手动维护索引。
+
+---
+
+## 1.5 目录结构
 
 ```
 mootutu.github.io/
-│
-├── _config.yml              # Jekyll 主配置文件
-├── _data/                   # 站点数据
-│   └── ui_text.yml          # 多语言 UI 文本
-│
-├── _layouts/                # 页面布局模板
-│   ├── default.html
-│   ├── blog-layout.html
+├── _config.yml
+├── _data/
+│   ├── publications.yml        # 首页论文列表
+│   └── ui_text.yml             # 导航等界面文字
+├── _layouts/
+│   ├── base.html               # 所有页面的骨架
+│   ├── page.html               # 列表页 / 介绍页
+│   ├── post.html               # 文章页
+│   ├── blog-layout.html        # ↓ 以下都是套用 page / post 的包装层
 │   ├── blog-post-layout.html
 │   ├── learning-layout.html
 │   ├── learning-topic-layout.html
-│   └── learning-post-layout.html
-│
-├── _includes/               # 可复用组件
-│   ├── navigation.html      # 导航栏
-│   ├── bio.html             # 英文个人简介
-│   └── bio-cn.html          # 中文个人简介
-│
-├── _templates/              # 内容创建模板
+│   ├── learning-post-layout.html
+│   └── about-layout.html
+├── _includes/
+│   ├── site-header.html        # 导航栏（首页各区块的锚点）
+│   ├── site-footer.html        # 页脚
+│   ├── theme-init.html         # 首屏前设置深色/浅色
+│   ├── publication-list.html   # 首页论文列表 + BibTeX 弹窗
+│   ├── blog_list.html          # 博客卡片列表
+│   ├── learning_topics.html    # 学习主题卡片
+│   ├── learning_entries.html   # 主题下的笔记列表
+│   └── illo/                   # 页头插画（blog / learning / reading / about）
+├── _templates/
 │   ├── blog_post_template.html
-│   └── learning_post_template.md
-│
-├── assets/                  # 静态资源
-│   ├── css/                 # 样式表
-│   ├── javascripts/         # JavaScript
-│   ├── images/              # 图片资源
-│   │   ├── covers/          # 博客封面图
-│   │   └── posts/           # 文章内图片
-│   ├── fontawesome/         # 图标库
-│   └── bibtex/              # 论文引用文件
-│
-├── blog/                    # 英文博客
-│   └── posts/               # 博客文章
-│       ├── modernizing-python.html
-│       ├── git-basics.html
-│       └── ...
-│
-├── learning/                # 英文学习内容
-│   ├── python.html          # Python 主题索引页
-│   ├── python_guidelines/   # Python 文章目录
-│   │   ├── python_style_conventions.md
-│   │   └── python_language_conventions.md
-│   ├── minimind.html        # Minimind 主题索引页
-│   └── minimind/            # Minimind 文章目录
-│
-├── cn/                      # 中文版本
-│   ├── index.html
-│   ├── blog.html
-│   ├── blog/posts/
-│   ├── learning.html
-│   └── learning/
-│
-├── docs/                    # 维护文档（本目录）
-│
-├── index.html               # 英文首页
-├── blog.html                # 英文博客列表
-├── learning.html            # 英文学习主题列表
-├── about.html               # 关于页面
-└── search.html              # 搜索功能（生成 search.json）
+│   ├── learning_post_template.md
+│   └── paper_reading_template.md
+├── assets/
+│   ├── css/site.css            # 全站唯一的样式表
+│   ├── javascripts/
+│   │   ├── site.js             # 全站交互
+│   │   └── theme-toggle.js     # 深色模式切换
+│   ├── images/                 # 封面、文章配图、图标等
+│   ├── bibtex/                 # 论文 BibTeX
+│   └── fontawesome/            # 旧图标库（目前没有页面引用）
+├── blog/posts/
+├── learning/
+│   ├── minimind.html  minimind/
+│   ├── python.html    python_guidelines/
+│   └── paper-reading.html  paper-reading/
+├── cv/                         # 英文简历 my_cv.tex → my_cv.pdf
+├── cv_zh/                      # 中文简历 cv_zh.tex → cv_zh.pdf
+├── docs/                       # 本维护文档（不参与 Jekyll 构建）
+├── index.html  blog.html  learning.html  about.html
+├── search.html                 # 生成 /search.json
+└── maintenance.html            # 在线阅读 docs/ 的页面
 ```
 
 ### 目录职责速查
 
-| 目录 | 职责 | 需要手动维护 |
-|------|------|-------------|
-| `_layouts/` | 页面结构模板 | 很少修改 |
-| `_includes/` | 可复用组件 | 更新个人简介时 |
-| `_data/` | 配置数据 | 添加新 UI 文本时 |
-| `_templates/` | 创建内容的模板 | 几乎不需要 |
-| `assets/images/covers/` | 博客封面图 | 每次新增博客 |
-| `assets/images/posts/` | 文章内图片 | 需要时 |
-| `blog/posts/` | 博客文章 | 每次新增/修改博客 |
-| `learning/` | 学习内容 | 每次新增/修改学习内容 |
-| `cn/` | 中文版本 | 每次新增内容时同步 |
+| 目录 / 文件 | 职责 | 多久改一次 |
+|-------------|------|-----------|
+| `index.html` | 首页文字、研究方向、教育、奖项、服务 | 有新经历时 |
+| `_data/publications.yml` | 论文列表 | 有新论文时 |
+| `blog/posts/` | 博客文章 | 写新文章时 |
+| `learning/` | 学习主题与笔记 | 写新笔记时 |
+| `cv/`、`cv_zh/` | 简历 | 有新经历时 |
+| `_layouts/`、`_includes/` | 页面结构 | 很少 |
+| `assets/css/site.css` | 全站样式 | 调整设计时 |
 
 ---
 
-## 1.5 关键文件说明
+## 1.6 页面与布局对照
 
-### 配置文件
-
-| 文件 | 说明 |
-|------|------|
-| `_config.yml` | Jekyll 主配置，定义站点元数据、插件、集合 |
-| `_data/ui_text.yml` | 多语言 UI 文本（导航栏、按钮、标签等） |
-
-### 索引页面（自动生成）
-
-| 文件 | 说明 |
-|------|------|
-| `blog.html` | 英文博客列表（自动生成） |
-| `cn/blog.html` | 中文博客列表（自动生成） |
-| `learning.html` | 英文学习主题列表（自动生成） |
-| `cn/learning.html` | 中文学习主题列表（自动生成） |
-| `learning/python.html` | Python 主题索引（自动生成） |
-
-### 组件文件
-
-| 文件 | 说明 |
-|------|------|
-| `_includes/navigation.html` | 导航栏（含搜索功能） |
-| `_includes/bio.html` | 英文个人简介 |
-| `_includes/bio-cn.html` | 中文个人简介 |
-
----
-
-## 1.6 内容类型对比
-
-| 特性 | Blog Post | Learning Topic | Learning Post |
-|------|-----------|----------------|---------------|
-| **用途** | 独立文章，技术教程 | 主题索引/导航页 | 系统化学习笔记 |
-| **文件格式** | HTML | HTML | Markdown（推荐） |
-| **布局** | `blog-post-layout` | `learning-topic-layout` | `learning-post-layout` |
-| **存放位置** | `/blog/posts/` | `/learning/` | `/learning/{topic}/` |
-| **需要封面图** | 是 | 否 | 否 |
-| **Front Matter** | title, date, author, category, excerpt, tags, reading_time, cover_image, lang, translate_url | title, description, topic, order, lang, translate_url | title, date, topic, order, lang, topic_url, translate_url, mathjax |
-| **索引维护** | 自动生成 | 自动生成 | 自动生成 |
-
----
+| 页面 | 文件 | 布局链 |
+|------|------|--------|
+| 首页 | `index.html` | `base` |
+| 博客列表 | `blog.html` | `blog-layout` → `page` → `base` |
+| 博客文章 | `blog/posts/*.html` | `blog-post-layout` → `post` → `base` |
+| 学习主题列表 | `learning.html` | `learning-layout` → `page` → `base` |
+| 学习主题页 | `learning/*.html` | `learning-topic-layout` → `page` → `base` |
+| 学习笔记 / 论文笔记 | `learning/*/*.md` | `learning-post-layout` → `post` → `base` |
+| About | `about.html` | `about-layout` → `page` → `base` |
+| 维护文档页 | `maintenance.html` | 无（独立页面） |
 
 ---
 

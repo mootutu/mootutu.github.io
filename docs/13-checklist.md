@@ -1,229 +1,93 @@
 # 维护检查清单
 
-## 13.1 新增博客文章检查清单
+## 13.1 新增博客文章
 
-### 创建阶段
+- [ ] 从 `_templates/blog_post_template.html` 复制，文件名小写 + 连字符
+- [ ] Front Matter：`title`、`date`、`category`、`excerpt`、`tags`、`reading_time`、`cover_image`、`lang: en` 都已填写
+- [ ] 正文用 `h2` / `h3` 分节，没有自定义 `<style>`
+- [ ] 代码块写了 `language-xxx`
+- [ ] 封面图放在 `assets/images/covers/同名.png`，16:9，主体居中
+- [ ] 文章配图放在 `assets/images/posts/同名/`，路径以 `/` 开头
+- [ ] `/blog.html` 中出现新卡片，封面、日期、摘要正确
+- [ ] 文章页的目录、代码高亮正常
 
-- [ ] 复制模板文件到正确位置
-  - 英文：`blog/posts/article-name.html`
-  - 中文：`cn/blog/posts/article-name.html`
+## 13.2 新增学习笔记
 
-- [ ] Front Matter 填写完整
-  - [ ] `layout: blog-post-layout`
-  - [ ] `title` 已填写
-  - [ ] `date` 格式正确（YYYY-MM-DD）
-  - [ ] `author` 已填写
-  - [ ] `category` 已填写
-  - [ ] `lang` 正确（en 或 zh-CN）
-  - [ ] `translate_url` 指向正确
+- [ ] 从 `_templates/learning_post_template.md` 复制，放在对应主题目录
+- [ ] `topic` 与主题页一致，`order` 不与已有笔记重复，`topic_url` 正确
+- [ ] 用到公式时写了 `mathjax: true`，公式渲染正常、手机上不撑宽页面
+- [ ] 主题页中出现新笔记，顺序正确；学习区首页的笔记数量 +1
+- [ ] 笔记页的返回链接回到正确的主题页
 
-### 内容阶段
+## 13.3 新增论文阅读笔记
 
-- [ ] 文章内容编写完成
-- [ ] 标题有正确的 `id` 属性（用于 TOC）
-- [ ] 代码块指定了语言（如 `language-python`）
-- [ ] 图片路径正确
+- [ ] 从 `_templates/paper_reading_template.md` 复制，文件名 `arXiv编号-简短标题.md`
+- [ ] `status`、`relevance` 使用规定的小写值
+- [ ] 填写了 `one_line_summary`、`paper_url`、`tags`
+- [ ] 论文阅读库中出现新卡片，搜索和两个筛选都能找到它
 
-### 资源阶段
+## 13.4 新增学习主题
 
-- [ ] 封面图已添加
-  - 位置：`assets/images/covers/article-name.png`
-  - 命名与文章文件名一致
-
-- [ ] 文章内图片已添加（如需要）
-  - 位置：`assets/images/posts/article-name/`
-
-### 索引阶段
-
-- [ ] Front Matter 中摘要/标签/封面等字段已填写
-
-### 验证阶段
-
-- [ ] 本地预览正常
-- [ ] 链接可点击
-- [ ] 图片正常显示
-- [ ] TOC 正常生成
-- [ ] 暗黑模式显示正常
-- [ ] 语言切换正常
-
----
-
-## 13.2 新增学习文章检查清单
-
-### 创建阶段
-
-- [ ] 创建文章文件
-  - 英文：`learning/topic/article.md`
-  - 中文：`cn/learning/topic/article.md`
-
-- [ ] Front Matter 填写完整
-  - [ ] `layout: learning-post-layout`
-  - [ ] `title` 已填写
-  - [ ] `date` 格式正确
-  - [ ] `lang` 正确
-  - [ ] `topic_url` 指向主题页面
-  - [ ] `translate_url` 指向正确
-  - [ ] `mathjax` 设置正确（如需公式）
-
-### 内容阶段
-
-- [ ] 文章内容编写完成
-- [ ] Markdown 语法正确
-- [ ] 代码块指定了语言
-
-### 索引阶段
-
-- [ ] `topic` 和 `order` 已设置（英文/中文一致）
-
-### 验证阶段
-
-- [ ] 本地预览正常
-- [ ] 返回主题按钮工作正常
-- [ ] 代码高亮正常
-- [ ] MathJax 公式正常（如启用）
-
----
-
-## 13.3 新增学习主题检查清单
-
-### 创建阶段
-
-- [ ] 创建主题索引页
-  - 英文：`learning/topic.html`
-  - 中文：`cn/learning/topic.html`
-
-- [ ] 创建文章目录
-  - 英文：`learning/topic/`
-  - 中文：`cn/learning/topic/`
-
-- [ ] Front Matter 填写完整
-  - [ ] `layout: learning-topic-layout`
-  - [ ] `lang` 正确
-  - [ ] `translate_url` 指向正确
-
-### 索引阶段
-
-- [ ] 主题页 Front Matter 已填写（title/description/topic/order）
-
----
-
-## 13.4 更新个人信息检查清单
-
-### 更新个人简介
-
-- [ ] 英文简介已更新（`_includes/bio.html`）
-- [ ] 中文简介已更新（`_includes/bio-cn.html`）
-- [ ] 两个版本内容一致
-
-### 更新头像
-
-- [ ] 新头像已替换
-- [ ] 文件名保持不变（或已更新引用）
-- [ ] 图片尺寸合适
-
-### 更新出版物
-
-- [ ] BibTeX 文件已添加（`assets/bibtex/`）
-- [ ] 数据文件已更新（`_data/publications.yml`）
-- [ ] 英文/中文首页渲染正常
-- [ ] BibTeX 模态框内容正确
-- [ ] PDF 链接有效
-
----
+- [ ] 新建 `learning/主题.html`，`layout: learning-topic-layout`，填写 `title`、`description`、`topic`、`order`、`lang`
+- [ ] 正文只有 `{% include learning_entries.html %}`
+- [ ] 标题里没有 emoji
+- [ ] `/learning.html` 出现新卡片
 
 ## 13.5 提交前检查清单
 
-### 内容检查
+### 内容
 
-- [ ] 所有文本无拼写错误
-- [ ] 所有链接可正常访问
-- [ ] 所有图片正常显示
-- [ ] Front Matter 格式正确
+- [ ] 拼写、日期正确
+- [ ] 所有链接可以打开
+- [ ] 图片都能显示
 
-### 双语检查
+### 外观
 
-- [ ] 英文版本完整
-- [ ] 中文版本完整
-- [ ] translate_url 互相指向正确
+- [ ] 浅色、深色模式各检查一次
+- [ ] 375px 宽（手机）下没有横向滚动条
+- [ ] 改了样式时，至少检查：首页、博客列表、一篇博客、学习区首页、一个主题页、一篇带公式的笔记、论文阅读库、About
 
-### 样式检查
+### 构建
 
-- [ ] 亮色模式显示正常
-- [ ] 暗黑模式显示正常
-- [ ] 移动端显示正常
-
-### 功能检查
-
-- [ ] 导航链接正常
-- [ ] 搜索功能正常
-- [ ] TOC 生成正常
-- [ ] 返回按钮正常
-
----
+- [ ] `jekyll serve` 终端没有 `Liquid Exception` / `Error`
+- [ ] 只 `git add` 了相关文件；没有提交 `_site/`、`.sass-cache/`、LaTeX 中间文件
 
 ## 13.6 发布后检查清单
 
-### 部署验证
+- [ ] GitHub Actions 中 “pages build and deployment” 成功
+- [ ] 线上页面强制刷新后显示新内容
+- [ ] 手机上打开一次
+- [ ] 改了文档时，`/maintenance.html` 显示的是新内容
 
-- [ ] GitHub Actions 构建成功
-- [ ] 网站可正常访问
+## 13.7 个人信息更新
 
-### 内容验证
+- [ ] 首页对应区块已修改（[7.1](./07-personal-info.md#71-首页文字)）
+- [ ] 新论文：`publications.yml` 条目 + BibTeX 文件，会议标签、年份、加粗正确
+- [ ] 简历 `.tex` 已修改并重新编译，PDF 已提交
+- [ ] `_includes/contact-buttons.html` 中的链接都能打开
 
-- [ ] 新内容已上线
-- [ ] 链接可正常访问
-- [ ] 图片正常显示
+## 13.8 定期维护
 
-### 功能验证
+### 每月
 
-- [ ] 搜索可找到新内容
-- [ ] 语言切换正常
-- [ ] 所有交互功能正常
+- [ ] 首页信息是否过时
+- [ ] 外部链接（论文、代码仓库）是否还能打开
 
----
+### 每学期
 
-## 13.7 定期维护检查清单
+- [ ] 简历和首页经历同步
+- [ ] 清理不再使用的图片（见 [6.1](./06-assets.md#61-目录结构)）
+- [ ] 检查 Prism、MathJax 的 CDN 版本是否需要更新
 
-### 月度检查
+## 13.9 问题排查
 
-- [ ] 检查所有外部链接是否有效
-- [ ] 检查 CDN 资源是否可访问
-- [ ] 清理未使用的图片资源
-
-### 季度检查
-
-- [ ] 更新依赖版本（如有）
-- [ ] 检查 GitHub Pages 构建日志
-- [ ] 备份重要内容
-
----
-
-## 13.8 问题排查检查清单
-
-### 页面不显示
-
-- [ ] 文件是否存在于正确位置
-- [ ] 文件名大小写是否正确
-- [ ] Front Matter 是否有语法错误
-- [ ] 是否已提交并推送
-
-### 样式异常
-
-- [ ] CSS 类名是否正确
-- [ ] 是否遗漏了暗黑模式样式
-- [ ] 是否有 CSS 语法错误
-
-### 链接失效
-
-- [ ] URL 路径是否正确
-- [ ] 是否使用了绝对路径
-- [ ] 目标文件是否存在
-
-### 图片不显示
-
-- [ ] 图片文件是否存在
-- [ ] 路径是否正确（绝对路径）
-- [ ] 文件名大小写是否匹配
+| 现象 | 先检查 |
+|------|-------|
+| 页面空白或报错 | 终端里的 Liquid 报错；Front Matter 缩进和引号 |
+| 新内容不在列表里 | `layout`、`topic`、`lang` 是否写对 |
+| 样式错乱 | 是否在页面里写了 `<style>`；浏览器是否缓存了旧 CSS |
+| 链接失效 | 路径是否以 `/` 开头；`.md` 文件链接要写 `.html` |
+| 图片不显示 | 文件名大小写、扩展名、路径 |
 
 ---
 
@@ -234,6 +98,6 @@
   </a>
   <a href="./14-faq.md" class="doc-nav-card next">
     <span class="doc-nav-label">下一篇</span>
-    <span class="doc-nav-title">常见问题FAQ →</span>
+    <span class="doc-nav-title">常见问题 FAQ →</span>
   </a>
 </div>

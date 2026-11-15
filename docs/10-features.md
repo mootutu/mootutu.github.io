@@ -1,393 +1,195 @@
 # 特殊功能
 
-## 10.1 搜索功能
-
-### 工作原理
-
-1. **索引生成**：`search.html` 生成 `search.json`，包含所有可搜索内容
-2. **前端搜索**：导航栏中的搜索框通过 JavaScript 实时搜索
-3. **结果展示**：匹配结果以下拉列表形式显示
-
-### 搜索索引（search.json）
-
-**生成位置**：`/search.html` → `/search.json`
-
-**索引内容**：
-- 所有博客文章
-- 所有学习文章
-- 主题页面
-
-**索引字段**：
-```json
-{
-  "title": "文章标题",
-  "category": "分类",
-  "tags": "标签1, 标签2",
-  "url": "/blog/posts/article.html",
-  "date": "December 30, 2025",
-  "lang": "en",
-  "content": "文章内容前50词..."
-}
-```
-
-### 搜索实现位置
-
-搜索功能在 `_includes/navigation.html` 中实现：
-
-```html
-<input type="text" id="search-input" placeholder="{{ ui.search_placeholder }}">
-<div id="search-results"></div>
-
-<script>
-// 搜索逻辑
-</script>
-```
-
-### 搜索特性
-
-| 特性 | 说明 |
-|------|------|
-| 实时搜索 | 输入即搜索，无需按回车 |
-| 语言过滤 | 自动根据当前页面语言过滤结果 |
-| 最大结果数 | 最多显示 5 条结果 |
-| 最小搜索长度 | 4 个字符以上才触发搜索 |
-| ESC 关闭 | 按 ESC 键关闭搜索结果 |
-
-### 内容如何被索引
-
-新增的文章会自动被索引，条件是：
-- 文件有正确的 Front Matter
-- 文件位于 `blog/posts/` 或 `learning/` 目录
-
----
-
-## 10.2 暗黑模式
-
-### 实现原理
-
-1. **状态存储**：使用 `localStorage` 保存用户偏好
-2. **即时应用**：页面加载时立即应用，避免闪烁
-3. **切换按钮**：固定在右下角
-
-### 触发方式
-
-- 点击右下角的暗黑模式切换按钮
-- 状态会持久化保存
-
-### CSS 类
-
-```css
-/* 暗黑模式应用于 html 和 body */
-.dark-mode {
-    /* 暗黑模式样式 */
-}
-```
-
-### 颜色方案
-
-| 元素 | 亮色模式 | 暗黑模式 |
-|------|----------|----------|
-| 背景 | `#ffffff` | `#1a1a2e` → `#16213e` |
-| 文字 | `#333333` | `#e2e8f0` |
-| 次要文字 | `#666666` | `#cbd5e1` |
-| 链接 | `#0066cc` | `#60a5fa` |
-| 边框 | `#e9ecef` | `#334155` |
-| 代码背景 | `#f8f9fa` | `#1e293b` |
-
-### 添加暗黑模式支持
-
-为新元素添加暗黑模式样式：
-
-```css
-/* 亮色模式 */
-.my-element {
-    background: #ffffff;
-    color: #333333;
-}
-
-/* 暗黑模式 */
-.dark-mode .my-element {
-    background: #1a1a2e;
-    color: #e2e8f0;
-}
-```
-
-### 实现代码位置
-
-暗黑模式逻辑在 `_layouts/default.html` 中：
-
-```javascript
-// 页面加载时检查偏好
-if (localStorage.getItem('darkMode') === 'true') {
-    document.documentElement.classList.add('dark-mode');
-}
-
-// 切换函数
-function toggleDarkMode() {
-    document.documentElement.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode',
-        document.documentElement.classList.contains('dark-mode'));
-}
-```
-
----
-
-## 10.3 目录自动生成（TOC）
-
-### 工作原理
-
-1. JavaScript 扫描页面中的 H2 和 H3 标题
-2. 自动生成目录结构
-3. 在侧边栏显示（大屏幕）
-
-### 支持的布局
-
-- `blog-post-layout.html`
-- `learning-post-layout.html`
-
-### 标题要求
-
-```html
-<!-- 标题必须有 id 属性 -->
-<h2 id="section-1">第一部分</h2>
-<h3 id="section-1-1">1.1 子标题</h3>
-```
-
-### 显示条件
-
-- 屏幕宽度 ≥ 1280px
-- 页面中存在 H2/H3 标题
-
-### TOC 特性
-
-| 特性 | 说明 |
-|------|------|
-| 粘性定位 | 滚动时固定在侧边 |
-| 滚动跟随 | 当前阅读位置高亮 |
-| 点击跳转 | 平滑滚动到对应章节 |
-
----
-
-## 10.4 阅读时间计算
-
-### 计算算法
-
-```javascript
-// 英文：200 词/分钟
-// 中文：500 字符/分钟
-// 最小值：1 分钟
-
-function calculateReadingTime(content, lang) {
-    if (lang === 'zh-CN') {
-        return Math.max(1, Math.ceil(content.length / 500));
-    } else {
-        const words = content.split(/\s+/).length;
-        return Math.max(1, Math.ceil(words / 200));
-    }
-}
-```
-
-### 显示位置
-
-- 博客文章元信息区
-- 学习文章元信息区
-- 博客列表卡片
-
----
-
-## 10.5 代码高亮（Prism.js）
-
-### 使用的库
-
-- **Prism.js** v1.29.0
-- **主题**：Tomorrow Night
-
-### 支持的语言
-
-| 语言 | 标识符 |
-|------|--------|
-| Python | `python` |
-| Bash/Shell | `bash` |
-| JavaScript | `javascript` |
-| JSON | `json` |
-| TOML | `toml` |
-| YAML | `yaml` |
-| HTML | `html` |
-| CSS | `css` |
+## 10.1 搜索
 
 ### 使用方式
 
-**HTML 文件中**：
-```html
-<pre><code class="language-python">def hello():
-    print("Hello, World!")
-</code></pre>
-```
+> **目前未启用。** 搜索只覆盖博客和论文阅读笔记，这些页面已从导航隐藏，所以导航栏里的搜索按钮和搜索面板也一起去掉了。`/search.json` 仍会生成，`site.js` 里的搜索代码也保留着：在 `site-header.html` 里加回 `#search-open` 按钮和 `#search-dialog` 面板（可从 git 历史中找回）即可恢复，恢复后按钮或 **⌘K**（Windows/Linux 为 **Ctrl+K**）打开面板。
 
-**Markdown 文件中**：
-````markdown
-```python
-def hello():
-    print("Hello, World!")
-```
-````
+### 索引来源
 
-### 添加新语言支持
+`search.html` 在构建时生成 `/search.json`，收录：
 
-1. 找到 Prism.js CDN 链接（在布局文件中）
-2. 添加对应语言组件：
-   ```html
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-新语言.min.js"></script>
-   ```
+- 所有博客文章（`layout: blog-post-layout`）
+- 所有论文阅读笔记（`topic: paper-reading`）
+- 论文阅读库页面
 
-### 代码块样式
+Minimind、Python 等普通学习笔记**目前不在搜索范围内**。如需加入，在 `search.html` 中把对应条件加入 `pages_to_index`。
 
-代码块使用 Fira Code 字体，具有：
-- 圆角边框
-- 行号显示
-- 复制按钮（部分主题）
+每条记录包含 `title`、`category`、`tags`、`url`、`date`、`content`。`content` 优先使用 `description`，其次 `intro`，否则取正文前 50 个词。
+
+### 匹配规则
+
+- 标题、标签：输入 2 个字符以上就匹配
+- 正文摘要：输入 4 个字符以上才匹配（避免短词误中）
+- 最多显示 8 条结果
+
+实现位于 `assets/javascripts/site.js` 的 “Search palette” 部分，面板结构在 `_includes/site-header.html`。
 
 ---
 
-## 10.6 数学公式（MathJax）
+## 10.2 深色模式
 
-### 启用方式
+### 原理
 
-在 Front Matter 中设置：
+- `<html>` 上有 `dark-mode` 类时为深色
+- `site.css` 在 `html.dark-mode` 下重新定义所有颜色变量，组件只用变量，所以不需要为每个组件单独写深色样式
+- `_includes/theme-init.html` 在页面渲染前读取 `localStorage` 中的 `theme_preference`；没有保存过时跟随系统设置
+- 导航栏右侧的月亮/太阳按钮（`#dark-mode-toggle`）切换主题，并以按钮为圆心做圆形展开过渡（浏览器支持 View Transitions 时）
+- 用户没有手动切换过时，系统主题变化会实时跟随
 
-```yaml
----
-mathjax: true
----
-```
+### 给新组件加深色支持
 
-### 仅在 Learning Post 中可用
+只要用变量写颜色即可：
 
-MathJax 只在 `learning-post-layout.html` 中加载。
-
-### 语法
-
-**行内公式**：
-```markdown
-当 $a \ne 0$ 时，方程 $ax^2 + bx + c = 0$ 有解。
-```
-
-**独立公式**：
-```markdown
-$$
-x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
-$$
-```
-
-### 配置位置
-
-MathJax 配置在 `_layouts/learning-post-layout.html` 中：
-
-```html
-{% if page.mathjax %}
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-{% endif %}
-```
-
----
-
-## 10.7 返回顶部按钮
-
-### 位置
-
-固定在页面右下角（第一个按钮）
-
-### 显示条件
-
-滚动超过 300px 时显示
-
-### 实现
-
-```javascript
-window.onscroll = function() {
-    if (document.documentElement.scrollTop > 300) {
-        backToTopBtn.style.display = "block";
-    } else {
-        backToTopBtn.style.display = "none";
-    }
-};
-```
-
----
-
-## 10.8 语言切换按钮
-
-### 位置
-
-固定在页面右下角（第二个按钮）
-
-### 工作方式
-
-1. 读取当前页面的 `translate_url` 字段
-2. 如果存在，跳转到对应翻译页面
-3. 如果不存在，跳转到默认语言首页
-
-### 按钮显示
-
-- 英文页面显示：`中`
-- 中文页面显示：`EN`
-
----
-
-## 10.9 头像切换
-
-### 位置
-
-首页个人简介区域
-
-### 功能
-
-点击头像可以在两个头像之间切换：
-- `mootutu.png`
-- `weiqin.png`
-
-### 实现
-
-```javascript
-function toggleAvatar() {
-    const avatar = document.getElementById('avatar');
-    if (avatar.src.includes('mootutu')) {
-        avatar.src = '/assets/images/weiqin.png';
-    } else {
-        avatar.src = '/assets/images/mootutu.png';
-    }
+```css
+.my-card {
+  background: var(--surface);
+  color: var(--text-soft);
+  border: 1px solid var(--line);
 }
 ```
 
+确实需要特殊处理时，用 `html.dark-mode .my-card { … }`。
+
 ---
 
-## 10.10 BibTeX 模态框
+## 10.3 文章目录（TOC）与阅读进度
 
-### 功能
+只在文章页（`post.html`）生效：
 
-点击论文的 `[bib]` 链接，弹出模态框显示 BibTeX 引用内容。
+- 目录根据正文中的 `h2`、`h3` 生成，至少 2 个标题才显示
+- 没有 `id` 的标题会自动补 `section-1`、`section-2`……
+- 目录文字会去掉开头的编号（如 `1.`、`2.3`）
+- 滚动时高亮当前所在小节
+- 屏幕宽度小于 1080px 时隐藏目录
+- 页面顶部有一条橙色阅读进度条
 
-### 实现位置
+实现位于 `site.js` 的 “Article: reading progress + table of contents” 部分。
 
-在 `index.html` 中：
+---
+
+## 10.4 阅读时长
+
+文章页的阅读时长在 `post.html` 中计算：
+
+```liquid
+{% assign word_count = content | strip_html | number_of_words %}
+{% assign read_time = word_count | divided_by: 200 %}
+```
+
+不足 1 分钟按 1 分钟显示。博客列表卡片上显示的是 Front Matter 里手写的 `reading_time`，两者可能不同。
+
+---
+
+## 10.5 代码高亮
+
+- 使用 Prism.js 1.29.0（`prism-tomorrow` 主题），只在文章页加载
+- 已加载语言：`python`、`bash`、`toml`、`json`、`yaml`，以及 Prism 核心自带的 `markup`、`css`、`clike`、`javascript`
+- 代码块背景固定为暖黑色，浅色、深色模式下都一样
+
+HTML 写法：
 
 ```html
-<!-- 触发按钮 -->
-<a href="javascript:void(0)" onclick="showBibtex('citation-id')">[bib]</a>
-
-<!-- 模态框内容 -->
-<div id="citation-id" class="bibtex-content" style="display:none;">
-    <pre>@article{...}</pre>
-</div>
-
-<!-- 模态框容器 -->
-<div id="bibtex-modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <pre id="bibtex-text"></pre>
-    </div>
-</div>
+<pre><code class="language-python">print("hello")</code></pre>
 ```
+
+Markdown 写法：三个反引号后写语言名。
+
+### 增加语言
+
+在 `_layouts/base.html` 的 `{% if layout.code %}` 区块里加一行：
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js" defer></script>
+```
+
+---
+
+## 10.6 数学公式
+
+- Front Matter 写 `mathjax: true` 后，`base.html` 会加载 MathJax 3.2.2
+- 行内公式用 `$…$` 或 `\(…\)`，独立公式用 `$$…$$`
+- 任何页面都可以开启，不限于学习笔记
+- 过宽的公式在自身范围内横向滚动（`site.css` 末尾的 MathJax 规则）
+
+---
+
+## 10.7 动效
+
+| 效果 | 用法 |
+|------|------|
+| 滚动渐入 | 给元素加 `data-reveal` 属性；用 `style="--reveal-delay: 0.08s"` 设置延迟 |
+| 首屏依次浮现 | 父元素加 `class="intro"`，前 5 个子元素按顺序延迟出现 |
+| 卡片悬停上浮 | `.focus-card`、`.post-card`、`.topic-card`、`.paper-card` 自带 |
+| 链接下划线过渡 | 给链接加 `class="text-link"` |
+
+滚动渐入用的是 `translate` + `opacity` 动画，不会和卡片悬停用的 `transform` 冲突。
+
+系统开启“减少动态效果”（`prefers-reduced-motion: reduce`）时，`site.css` 会把所有动画和过渡时长压到接近 0，内容直接显示。
+
+---
+
+## 10.8 插画
+
+### 现有插画
+
+| 插画 | 位置 | 内容 |
+|------|------|------|
+| 首页主图 | `index.html` 的 `.hero__art` | 书里长出推理树，指向打勾的气泡 |
+| 研究方向卡片 ×3 | `index.html` 的 `.focus-card__art` | 投票路径、重叠的语义圆、卡片与锚 |
+| 区块小图 ×4 | `_includes/illo/section-*.html` | 论文：纸和笔；经历：学士帽与小旗；奖项：奖杯；服务：清单（窄屏隐藏） |
+| `illo/blog.html` | 博客列表页头 | 笔记本、铅笔、咖啡杯 |
+| `illo/learning.html` | 学习区、主题页页头 | 书堆和小苗 |
+| `illo/reading.html` | 论文阅读库页头 | 放大镜和论文 |
+| `illo/about.html` | About 页头 | “hi!” 对话气泡 |
+
+### 画法约定
+
+插画都是内联 SVG，外层加 `class="illo"`：
+
+| 类名 | 作用 |
+|------|------|
+| `ink` / `ink-thin` | 黑色线条（深色模式下变浅色），粗 2.4 / 1.6 |
+| `hand` | 加在 `<g>` 上，给线条加手绘抖动（滤镜 `#hand-drawn` 定义在 `base.html`） |
+| `f-clay` `f-olive` `f-sky` `f-sand` `f-paper` `f-ink` | 填充色，对应 `--illo-*` 变量 |
+| `blob` | 背景色块：缩放出现后缓慢漂浮 |
+| `draw` | 线条描绘动画，用 `--len`（线长上限）和 `--d`（延迟）控制 |
+| `pop` | 弹出出现，`--d` 控制延迟 |
+| `float` | 弹出后上下轻微浮动 |
+| `twinkle` | 小星星闪烁 |
+
+页头动画只在 `.hero__art` 和 `.page-hero__art` 内生效。
+
+### 新增一幅页头插画
+
+1. 新建 `_includes/illo/my-illo.html`，`viewBox="0 0 300 240"`，参照现有文件的结构
+2. 在页面或包装布局的 Front Matter 写 `illo: my-illo`
+3. 浅色、深色模式各检查一次
+
+---
+
+## 10.9 BibTeX 弹窗
+
+首页论文的 “bibtex” 按钮带有 `data-bib="/assets/bibtex/xxx.bib"`。点击后 `site.js` 用 `fetch` 读取文件内容，显示在 `<dialog id="bib-dialog">` 中，可以一键复制。弹窗结构在 `_includes/publication-list.html`。
+
+---
+
+## 10.10 回到顶部
+
+页面向下滚动超过 600px 时，右下角出现回到顶部按钮。按钮在 `base.html`，逻辑在 `site.js`。
+
+---
+
+## 10.11 论文库筛选
+
+`learning/paper-reading.html` 中每张论文卡片带有 `data-search`、`data-status`、`data-relevance` 属性，`site.js` 根据搜索框和两个下拉框实时隐藏不匹配的卡片，并更新数量。
+
+---
+
+## 10.12 维护文档页
+
+维护文档页的地址是 `/maintenance.html`，站内没有链接指向它，需要时直接输入地址访问。这个页面是独立的 HTML（`layout: null`），会从 GitHub 读取 `main` 分支上的 `docs/*.md` 并渲染，所以**文档要推送到 `main` 后才会在这个页面上更新**。新增或改名文档时，需要同步修改 `maintenance.html` 里的卡片和 `docTitles` 映射。
 
 ---
 

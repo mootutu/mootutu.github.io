@@ -1,53 +1,21 @@
 # 个人主页维护指南
 
-本指南说明了如何维护和更新个人主页。
+完整的维护文档在 [`docs/`](docs/README.md)，这里只列最常用的入口。
 
-## 项目结构
+| 想做的事 | 去改哪里 | 文档 |
+|---------|---------|------|
+| 修改首页介绍、教育、奖项、服务 | `index.html` | [07 个人信息维护](docs/07-personal-info.md) |
+| 添加论文 | `_data/publications.yml` + `assets/bibtex/` | [7.2 添加论文](docs/07-personal-info.md#72-添加论文) |
+| 更新简历 | `cv/my_cv.tex`、`cv_zh/cv_zh.tex` | [7.4 更新简历](docs/07-personal-info.md#74-更新简历) |
+| 写博客 | `blog/posts/` | [03 博客文章维护](docs/03-blog-maintenance.md) |
+| 写学习笔记 / 论文笔记 | `learning/` | [04 学习内容维护](docs/04-learning-maintenance.md) |
+| 改样式、颜色、字体 | `assets/css/site.css` | [06 静态资源管理](docs/06-assets.md) |
+| 改页面结构 | `_layouts/`、`_includes/` | [08 布局与组件](docs/08-layouts.md) |
 
-仓库已经过重组，以保持根目录整洁。所有静态资源现在都位于 `assets/` 目录下：
-
-- `assets/css/`: 样式表
-- `assets/javascripts/`: JavaScript 文件
-- `assets/images/`: 图片（包括作者照片）
-- `assets/fontawesome/`: FontAwesome 图标
-- `assets/bibtex/`: 论文的 BibTeX 文件
-
-## 如何更新
-
-### 1. 更新个人简介 (Biography)
-个人简介部分分为两个包含文件：
-- **英文版**: 编辑 `_includes/bio.html`
-
-### 2. 添加论文 (Publications)
-要添加新的论文：
-1.  **添加 BibTeX**: 将 `.bib` 文件放入 `assets/bibtex/` 目录。
-2.  **更新数据文件**: 在 `_data/publications.yml` 中添加一条新的论文记录。
-    ```yaml
-    - id: your2025paper
-      title:
-        en: "Paper Title"
-        zh: "Paper Title"
-      authors:
-        en: "<b>Your Name</b>, Coauthor"
-        zh: "<b>你的名字</b>, 合作者"
-      venue:
-        en: "Conference Name, 2025"
-        zh: "Conference Name, 2025"
-      links:
-        - label: pdf
-          url: https://example.com/paper.pdf
-      bib: /assets/bibtex/your2025paper.bib
-    ```
-
-### 3. 更新奖项与新闻 (Awards & News)
-直接在 `index.html` 和 `index-cn.html` 中编辑 "Award" (获奖情况) 或 "News" 部分。
-
-## 本地开发
-
-要在本地运行网站，请确保已安装 Jekyll，然后运行：
+本地预览：
 
 ```bash
-bundle exec jekyll serve
+bundle exec jekyll serve --livereload
 ```
 
-访问 `http://localhost:4000` 查看网站。
+然后访问 `http://localhost:4000`。

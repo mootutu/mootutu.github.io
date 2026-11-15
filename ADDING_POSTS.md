@@ -1,59 +1,33 @@
-# Adding New Posts Guide
+# Adding New Posts
 
-This guide outlines the steps to add new Blog Posts and Learning Posts to the website.
+Full instructions (in Chinese) are in [`docs/03-blog-maintenance.md`](docs/03-blog-maintenance.md) and [`docs/04-learning-maintenance.md`](docs/04-learning-maintenance.md). Quick version:
 
-## 1. Adding a Blog Post
+## Blog post
 
-### Step 1: Create the Post File
-1.  Navigate to `_templates/blog_post_template.html`.
-2.  Copy the content.
-3.  Create a new HTML file in `blog/posts/` (e.g., `blog/posts/my-new-post.html`).
-4.  Paste the template content into your new file.
+1. `cp _templates/blog_post_template.html blog/posts/my-new-post.html`
+2. Fill in the front matter: `title`, `date`, `category`, `excerpt`, `tags`, `reading_time`, `cover_image`, `lang: en`.
+3. Write the body in HTML below the second `---`. Use `<h2>`/`<h3>` for sections; the table of contents is generated automatically.
+4. Add a 16:9 cover image at `assets/images/covers/my-new-post.png`.
 
-### Step 2: Edit Content
-1.  **Update Front Matter**:
-    *   `title`: The title of your post.
-    *   `date`: YYYY-MM-DD.
-    *   `author`: Author name.
-    *   `category`: Category label.
-    *   `excerpt`: Short summary for the blog index.
-    *   `tags`: List of tags.
-    *   `reading_time`: Reading time label (e.g., `6 minutes`).
-    *   `cover_image`: Path under `/assets/images/covers/`.
-    *   `lang`: `en`.
-2.  **Write Content**: Write your HTML content below the second `---`.
+The blog index updates automatically.
 
-### Step 3: Blog Index Auto-Update
-The blog index is generated automatically from front matter. No manual edits are needed for `blog.html`.
+## Learning note
 
----
+1. `cp _templates/learning_post_template.md learning/<topic-folder>/my-note.md`
+2. Fill in `title`, `date`, `lang: en`, `topic`, `order`, `topic_url`, and `mathjax: true` if you use math.
+3. Write the body in Markdown.
 
-## 2. Adding a Learning Post
+The topic page and the Learning index update automatically.
 
-### Step 1: Create the Post File
-1.  Navigate to `_templates/learning_post_template.md`.
-2.  Copy the content.
-3.  Identify the topic folder under `learning/` (e.g., `learning/minimind/`).
-4.  Create a new Markdown (`.md`) file in that folder (e.g., `learning/minimind/step3.md`).
-5.  Paste the template content.
+## Paper-reading note
 
-### Step 2: Edit Content
-1.  **Update Front Matter**:
-    *   `title`: Post title.
-    *   `date`: YYYY-MM-DD.
-    *   `lang`: `en`.
-    *   `topic`: Topic key (e.g., `minimind`).
-    *   `order`: Numeric order for display.
-    *   `topic_url`: Link to the topic index (e.g., `/learning/minimind.html`).
-    *   `mathjax`: Set to `true` if you use math.
-2.  **Write Content**: use Markdown.
+1. `cp _templates/paper_reading_template.md learning/paper-reading/<arxiv-id>-short-title.md`
+2. Fill in the paper fields, especially `status` (`unread`/`skimming`/`read`/`reproduced`/`integrated`), `relevance` (`high`/`medium`/`low`), `tags`, and `one_line_summary`.
 
-### Step 3: Topic Index Auto-Update
-Topic pages render their entry lists automatically based on `topic` and `order`.
+## Preview
 
-## 3. Preview locally
-Run the site locally to verify your changes:
 ```bash
-bundle exec jekyll serve
+bundle exec jekyll serve --livereload
 ```
-Open [http://localhost:4000](http://localhost:4000) in your browser.
+
+Open <http://localhost:4000>.

@@ -1,11 +1,26 @@
-# Jekyll Environment for My Academic Website
+# mootutu.github.io
 
-This repository contains the Jekyll environment, which is used to automatically generate my personal academic website hosted on github pages ([link](mootutu.github.io)).
+Source for my personal academic website, built with Jekyll and hosted on GitHub Pages: <https://mootutu.github.io>.
 
-## Publication List
+- **Homepage** (`index.html`) — introduction, research focus, publications, education, awards
+- **Blog** (`blog/posts/`) and **Learning notes** (`learning/`), including a searchable paper-reading library
+- **CV** — English (`cv/`) and Chinese (`cv_zh/`) LaTeX sources and PDFs
 
-Publications are defined in `_data/publications.yml` and rendered on the homepages (`index.html` and `cn/index.html`) via a shared include. Add BibTeX files under `assets/bibtex/` and reference them in the data file using the `bib` field.
+Publications are listed in `_data/publications.yml`, with BibTeX files under `assets/bibtex/`.
+
+## Local preview
+
+```bash
+bundle install
+bundle exec jekyll serve --livereload
+```
+
+Then open <http://localhost:4000>. The `github-pages` gem needs Ruby 3.x; see `docs/02-quickstart.md` for a workaround on Ruby 4.
+
+## Documentation
+
+The maintenance guide (in Chinese) lives in [`docs/`](docs/README.md) and is also readable on the site at `/maintenance.html`.
 
 ## License
 
-The license for the code is inherited from [orderedlist/minimal](https://github.com/orderedlist/minimal), which was used as the basis for the theme. That is, the code is licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+The original theme was based on [orderedlist/minimal](https://github.com/orderedlist/minimal), licensed under [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/).
