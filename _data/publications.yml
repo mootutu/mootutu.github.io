@@ -1,64 +1,70 @@
 - id: li2026probability
+  illo: probability
   title: "Probability is Not Enough: Exploring and Counting Divergent Tokens for Reasoning Uncertainty Quantification in LLMs."
   authors: "Feiyang Li, Shengjing Liu, Qi Zhan, Sijie Cheng, <b>Weiqin Wang</b>, Hongwen Chen, Yuxuan Yang, Wen Wang, Yile Wang, and Hui Huang."
   venue: "arXiv Preprint, 2026"
   links:
-    - label: arxiv
+    - label: paper
       url: https://arxiv.org/abs/2609.38070
     - label: code
       url: https://github.com/szu-tera/DTC
   bib: /assets/bibtex/li2026probability.bib
 
 - id: zheng2026dysem
+  illo: dysem
   title: "DySem: Uncovering Dynamic Semantic Components of Large Language Models for Calculating Semantic Textual Similarity."
   authors: "Kaijie Zheng*, <b>Weiqin Wang*</b>, Yile Wang, and Hui Huang."
   venue: "To appear in Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (<b>EMNLP</b>), 2026"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2026.emnlp-main.2596.pdf
     - label: code
       url: https://github.com/szu-tera/DySem
   bib: /assets/bibtex/zheng2026dysem.bib
 
 - id: chen2026sempa
+  illo: sempa
   title: "SemPA: Improving Sentence Embeddings of Large Language Models through Semantic Preference Alignment."
   authors: "Ziyang Chen, Zhenxuan Huang, Yile Wang, <b>Weiqin Wang</b>, Lu Yin, and Hui Huang."
   venue: "In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2026.findings-acl.1858.pdf
     - label: code
       url: https://github.com/szu-tera/SemPA
   bib: /assets/bibtex/chen2026sempa.bib
 
 - id: wang2026beyond
+  illo: beyond
   title: "Beyond Majority Voting: Towards Fine-grained and More Reliable Reward Signal for Test-Time Reinforcement Learning."
   authors: "<b>Weiqin Wang</b>, Yile Wang, Kehao Chen, and Hui Huang."
   venue: "In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL</b>), 2026"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2026.acl-long.1727.pdf
     - label: code
       url: https://github.com/szu-tera/SCOPE
   bib: /assets/bibtex/wang2026beyond.bib
 
 - id: shen2026anchormem
+  illo: anchormem
   title: "AnchorMem: Anchored Facts with Associative Contexts for Building Memory in Large Language Models."
   authors: "Zhanyu Shen, Sijie Cheng, Zhicheng Guo, <b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
   venue: "In Findings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2026"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2026.findings-acl.1736.pdf
     - label: code
       url: https://github.com/szu-tera/AnchorMem
   bib: /assets/bibtex/shen2026anchormem.bib
 
 - id: wang2025ranked
+  illo: ranked
   title: "Ranked Voting based Self-Consistency of Large Language Models."
   authors: "<b>Weiqin Wang</b>, Yile Wang, and Hui Huang."
   venue: "In Findings of the 63rd Annual Meeting of the Association for Computational Linguistics (<b>ACL Findings</b>), 2025"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2025.findings-acl.744.pdf
     - label: code
       url: https://github.com/szu-tera/RankedVotingSC

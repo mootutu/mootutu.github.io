@@ -1,790 +1,255 @@
 ---
-layout: null
+layout: page
+title: 维护文档
+eyebrow: Maintenance
+description: mootutu.github.io 的维护手册：新增内容、改样式、部署发布都在这里。
+illo: maintenance
+lang: zh-CN
+hide_back: true
 ---
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <link rel="icon" href="/favicon.ico" sizes="32x32">
-    <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
-    <!-- Marked.js for Markdown rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- Prism.js for syntax highlighting -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #333;
-        }
+<div class="doc-index" id="doc-index">
+  <h2 class="rows__group">基础入门</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#01-overview" data-doc="01-overview">
+      <span class="topic-card__index">01</span>
+      <h3 class="topic-card__title">项目概述</h3>
+      <p class="topic-card__desc">项目简介、技术栈、目录结构总览</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#02-quickstart" data-doc="02-quickstart">
+      <span class="topic-card__index">02</span>
+      <h3 class="topic-card__title">快速开始</h3>
+      <p class="topic-card__desc">本地环境搭建、常用操作速查</p>
+    </a></li>
+  </ul>
+  <h2 class="rows__group">内容维护</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#03-blog-maintenance" data-doc="03-blog-maintenance">
+      <span class="topic-card__index">03</span>
+      <h3 class="topic-card__title">博客文章维护</h3>
+      <p class="topic-card__desc">Blog Post 的新增、修改、删除完整流程</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#04-learning-maintenance" data-doc="04-learning-maintenance">
+      <span class="topic-card__index">04</span>
+      <h3 class="topic-card__title">学习内容维护</h3>
+      <p class="topic-card__desc">Learning Topic / Learning Post 维护流程</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#05-bilingual" data-doc="05-bilingual">
+      <span class="topic-card__index">05</span>
+      <h3 class="topic-card__title">站点语言与界面文字</h3>
+      <p class="topic-card__desc">英文单语约定、ui_text.yml</p>
+    </a></li>
+  </ul>
+  <h2 class="rows__group">资源与信息</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#06-assets" data-doc="06-assets">
+      <span class="topic-card__index">06</span>
+      <h3 class="topic-card__title">静态资源管理</h3>
+      <p class="topic-card__desc">图片、CSS、JS 等资源的存放规范</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#07-personal-info" data-doc="07-personal-info">
+      <span class="topic-card__index">07</span>
+      <h3 class="topic-card__title">个人信息维护</h3>
+      <p class="topic-card__desc">首页文字、论文、配图、简历、图标</p>
+    </a></li>
+  </ul>
+  <h2 class="rows__group">技术参考</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#08-layouts" data-doc="08-layouts">
+      <span class="topic-card__index">08</span>
+      <h3 class="topic-card__title">布局与组件</h3>
+      <p class="topic-card__desc">base / page / post 布局与组件</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#09-config" data-doc="09-config">
+      <span class="topic-card__index">09</span>
+      <h3 class="topic-card__title">配置文件</h3>
+      <p class="topic-card__desc">_config.yml、_data 配置说明</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#10-features" data-doc="10-features">
+      <span class="topic-card__index">10</span>
+      <h3 class="topic-card__title">特殊功能</h3>
+      <p class="topic-card__desc">深色模式、目录、动效、插画</p>
+    </a></li>
+  </ul>
+  <h2 class="rows__group">部署与规范</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#11-deployment" data-doc="11-deployment">
+      <span class="topic-card__index">11</span>
+      <h3 class="topic-card__title">部署与发布</h3>
+      <p class="topic-card__desc">GitHub Pages 部署流程</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#12-naming" data-doc="12-naming">
+      <span class="topic-card__index">12</span>
+      <h3 class="topic-card__title">命名规范汇总</h3>
+      <p class="topic-card__desc">文件、目录、Front Matter 命名约定</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#13-checklist" data-doc="13-checklist">
+      <span class="topic-card__index">13</span>
+      <h3 class="topic-card__title">维护检查清单</h3>
+      <p class="topic-card__desc">新增 / 提交 / 发布检查清单</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#14-faq" data-doc="14-faq">
+      <span class="topic-card__index">14</span>
+      <h3 class="topic-card__title">常见问题</h3>
+      <p class="topic-card__desc">常见问题与解决方案</p>
+    </a></li>
+  </ul>
+  <h2 class="rows__group">附录</h2>
+  <ul class="topic-grid doc-grid">
+    <li><a class="topic-card doc-card" href="#appendix/templates" data-doc="appendix/templates">
+      <span class="topic-card__index">A1</span>
+      <h3 class="topic-card__title">模板文件</h3>
+      <p class="topic-card__desc">博客、学习笔记、论文笔记模板</p>
+    </a></li>
+    <li><a class="topic-card doc-card" href="#appendix/cheatsheet" data-doc="appendix/cheatsheet">
+      <span class="topic-card__index">A2</span>
+      <h3 class="topic-card__title">速查表</h3>
+      <p class="topic-card__desc">Front Matter、命令速查</p>
+    </a></li>
+  </ul>
+</div>
 
-        /* 假的 404 页面 */
-        .fake-404 {
-            text-align: center;
-            color: white;
-        }
+<article class="doc-reader" id="doc-reader" hidden>
+  <div class="doc-reader__bar">
+    <a class="chip" href="#" id="doc-back">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg>
+      返回目录
+    </a>
+    <a class="chip" href="#" id="doc-source" target="_blank" rel="noopener">在 GitHub 上查看</a>
+  </div>
+  <div class="post-layout doc-reader__layout">
+    <div class="prose doc-reader__content" id="doc-content"></div>
+    <aside class="toc" id="doc-toc-wrap" aria-label="本页目录">
+      <p class="toc__title">本页目录</p>
+      <nav id="doc-toc"></nav>
+    </aside>
+  </div>
+</article>
 
-        .fake-404 h1 {
-            font-size: 8rem;
-            font-weight: 700;
-            text-shadow: 4px 4px 0 rgba(0,0,0,0.1);
-            cursor: default;
-            user-select: none;
-        }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+  (function () {
+    var REPO = 'https://raw.githubusercontent.com/mootutu/mootutu.github.io/main/docs/';
+    var VIEW = 'https://github.com/mootutu/mootutu.github.io/blob/main/docs/';
+    var hero = document.querySelector('.page-hero');
+    var index = document.getElementById('doc-index');
+    var reader = document.getElementById('doc-reader');
+    var content = document.getElementById('doc-content');
+    var source = document.getElementById('doc-source');
+    var tocWrap = document.getElementById('doc-toc-wrap');
+    var tocNav = document.getElementById('doc-toc');
+    var tocObserver = null;
 
-        .fake-404 p {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-            opacity: 0.9;
-        }
-
-        .fake-404 a {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 12px 30px;
-            background: white;
-            color: #764ba2;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .fake-404 a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* 主内容容器 */
-        .main-container {
-            display: none;
-            width: 95%;
-            max-width: 1200px;
-            max-height: 90vh;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 卡片目录页面 */
-        .index-page {
-            padding: 40px;
-            overflow-y: auto;
-            max-height: 90vh;
-        }
-
-        .index-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .index-header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-
-        .index-header p {
-            color: #64748b;
-            font-size: 1.1rem;
-        }
-
-        /* 分类区块 */
-        .category-section {
-            margin-bottom: 35px;
-        }
-
-        .category-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 15px;
-            padding-left: 5px;
-        }
-
-        /* 卡片网格 */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-
-        /* 文档卡片 */
-        .doc-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .doc-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.15);
-            border-color: #667eea;
-        }
-
-        .doc-card-number {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-bottom: 12px;
-        }
-
-        .doc-card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .doc-card-desc {
-            font-size: 0.9rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        /* 文档阅读页面 */
-        .doc-page {
-            display: none;
-            height: 90vh;
-            overflow: hidden;
-        }
-
-        .doc-header {
-            display: flex;
-            align-items: center;
-            padding: 20px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: background 0.2s;
-        }
-
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
-
-        .doc-header-title {
-            margin-left: 20px;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .doc-content {
-            padding: 40px;
-            overflow-y: auto;
-            height: calc(90vh - 70px);
-        }
-
-        /* 文档内容样式 */
-        .doc-content h1 { font-size: 2rem; margin-bottom: 1rem; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
-        .doc-content h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #334155; }
-        .doc-content h3 { font-size: 1.2rem; margin: 1.5rem 0 0.75rem; color: #475569; }
-        .doc-content p { margin: 1rem 0; line-height: 1.8; color: #475569; }
-        .doc-content ul, .doc-content ol { margin: 1rem 0; padding-left: 2rem; }
-        .doc-content li { margin: 0.5rem 0; line-height: 1.6; }
-        .doc-content code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
-        .doc-content pre { background: #1e293b; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
-        .doc-content pre code { background: none; padding: 0; color: #e2e8f0; }
-        .doc-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        .doc-content th, .doc-content td { border: 1px solid #e2e8f0; padding: 10px 15px; text-align: left; }
-        .doc-content th { background: #f8fafc; font-weight: 600; }
-        .doc-content blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; color: #64748b; background: #f8fafc; padding: 1rem; border-radius: 0 8px 8px 0; }
-        .doc-content a { color: #667eea; text-decoration: none; }
-        .doc-content a:hover { text-decoration: underline; }
-        .doc-content hr { border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0; }
-
-        /* 文档底部导航卡片 */
-        .doc-nav {
-            display: flex;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .doc-nav-card {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1.25rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            text-decoration: none !important;
-            color: inherit;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .doc-nav-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-color: #667eea;
-            text-decoration: none !important;
-        }
-
-        .doc-nav-card.prev { text-align: left; }
-        .doc-nav-card.next { text-align: right; }
-
-        .doc-nav-label {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .doc-nav-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #334155;
-        }
-
-        .doc-nav-card:hover .doc-nav-title { color: #667eea; }
-
-        .doc-nav-placeholder { flex: 1; }
-
-        /* 加载状态 */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-            color: #94a3b8;
-        }
-
-        .loading::after {
-            content: '';
-            width: 30px;
-            height: 30px;
-            border: 3px solid #e2e8f0;
-            border-top-color: #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* 输入序列显示 - 默认隐藏 */
-        .input-display {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: none;
-            gap: 5px;
-            z-index: 1000;
-        }
-
-        .input-display.show {
-            display: flex;
-        }
-
-        .input-display .key {
-            width: 30px;
-            height: 30px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: white;
-            transition: all 0.2s;
-        }
-
-        .input-display .key.active {
-            background: rgba(255,255,255,0.9);
-            color: #764ba2;
-            transform: scale(1.1);
-        }
-
-        /* 解锁闪光效果 */
-        .unlock-flash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        .unlock-flash.flash {
-            animation: flash 0.5s ease;
-        }
-
-        @keyframes flash {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* 提示 */
-        .hint {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-        }
-
-        .hint.show {
-            opacity: 1;
-        }
-
-        /* 响应式 */
-        @media (max-width: 768px) {
-            .index-page {
-                padding: 20px;
-            }
-            .index-header h1 {
-                font-size: 1.8rem;
-            }
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .doc-content {
-                padding: 20px;
-            }
-            .doc-header {
-                padding: 15px 20px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- 假的 404 页面 -->
-    <div class="fake-404" id="fake404">
-        <h1 id="title404">404</h1>
-        <p>Oops! The page you're looking for doesn't exist.</p>
-        <a href="/">← Back to Home</a>
-    </div>
-
-    <!-- 主内容容器 -->
-    <div class="main-container" id="mainContainer">
-        <!-- 卡片目录页 -->
-        <div class="index-page" id="indexPage">
-            <div class="index-header">
-                <h1>维护文档</h1>
-                <p>mootutu.github.io 完整维护手册</p>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">基础入门</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="01-overview">
-                        <span class="doc-card-number">01</span>
-                        <div class="doc-card-title">项目概述</div>
-                        <div class="doc-card-desc">项目简介、技术栈、目录结构总览</div>
-                    </div>
-                    <div class="doc-card" data-doc="02-quickstart">
-                        <span class="doc-card-number">02</span>
-                        <div class="doc-card-title">快速开始</div>
-                        <div class="doc-card-desc">本地环境搭建、常用操作速查</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">内容维护</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="03-blog-maintenance">
-                        <span class="doc-card-number">03</span>
-                        <div class="doc-card-title">博客文章维护</div>
-                        <div class="doc-card-desc">Blog Post 的新增、修改、删除完整流程</div>
-                    </div>
-                    <div class="doc-card" data-doc="04-learning-maintenance">
-                        <span class="doc-card-number">04</span>
-                        <div class="doc-card-title">学习内容维护</div>
-                        <div class="doc-card-desc">Learning Topic / Learning Post 维护流程</div>
-                    </div>
-                    <div class="doc-card" data-doc="05-bilingual">
-                        <span class="doc-card-number">05</span>
-                        <div class="doc-card-title">站点语言与界面文字</div>
-                        <div class="doc-card-desc">英文单语约定、ui_text.yml</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">资源与信息</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="06-assets">
-                        <span class="doc-card-number">06</span>
-                        <div class="doc-card-title">静态资源管理</div>
-                        <div class="doc-card-desc">图片、CSS、JS 等资源的存放规范</div>
-                    </div>
-                    <div class="doc-card" data-doc="07-personal-info">
-                        <span class="doc-card-number">07</span>
-                        <div class="doc-card-title">个人信息维护</div>
-                        <div class="doc-card-desc">首页文字、论文、简历、图标</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">技术参考</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="08-layouts">
-                        <span class="doc-card-number">08</span>
-                        <div class="doc-card-title">布局与组件</div>
-                        <div class="doc-card-desc">base / page / post 布局与组件</div>
-                    </div>
-                    <div class="doc-card" data-doc="09-config">
-                        <span class="doc-card-number">09</span>
-                        <div class="doc-card-title">配置文件</div>
-                        <div class="doc-card-desc">_config.yml、_data 配置说明</div>
-                    </div>
-                    <div class="doc-card" data-doc="10-features">
-                        <span class="doc-card-number">10</span>
-                        <div class="doc-card-title">特殊功能</div>
-                        <div class="doc-card-desc">搜索、深色模式、目录、动效、插画</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">部署与规范</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="11-deployment">
-                        <span class="doc-card-number">11</span>
-                        <div class="doc-card-title">部署与发布</div>
-                        <div class="doc-card-desc">GitHub Pages 部署流程</div>
-                    </div>
-                    <div class="doc-card" data-doc="12-naming">
-                        <span class="doc-card-number">12</span>
-                        <div class="doc-card-title">命名规范汇总</div>
-                        <div class="doc-card-desc">文件、目录、Front Matter 命名约定</div>
-                    </div>
-                    <div class="doc-card" data-doc="13-checklist">
-                        <span class="doc-card-number">13</span>
-                        <div class="doc-card-title">维护检查清单</div>
-                        <div class="doc-card-desc">新增/提交/发布检查清单</div>
-                    </div>
-                    <div class="doc-card" data-doc="14-faq">
-                        <span class="doc-card-number">14</span>
-                        <div class="doc-card-title">常见问题</div>
-                        <div class="doc-card-desc">常见问题与解决方案</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="category-section">
-                <div class="category-title">附录</div>
-                <div class="cards-grid">
-                    <div class="doc-card" data-doc="appendix/templates">
-                        <span class="doc-card-number">A1</span>
-                        <div class="doc-card-title">模板文件</div>
-                        <div class="doc-card-desc">博客、学习笔记、论文笔记模板</div>
-                    </div>
-                    <div class="doc-card" data-doc="appendix/cheatsheet">
-                        <span class="doc-card-number">A2</span>
-                        <div class="doc-card-title">速查表</div>
-                        <div class="doc-card-desc">Front Matter、命令速查</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 文档阅读页 -->
-        <div class="doc-page" id="docPage">
-            <div class="doc-header">
-                <button class="back-btn" id="backBtn">
-                    <span>←</span>
-                    <span>返回目录</span>
-                </button>
-                <span class="doc-header-title" id="docHeaderTitle"></span>
-            </div>
-            <div class="doc-content" id="docContent">
-                <div class="loading">加载中</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 输入序列显示 -->
-    <div class="input-display" id="inputDisplay">
-        <div class="key" data-index="0">↑</div>
-        <div class="key" data-index="1">↑</div>
-        <div class="key" data-index="2">↓</div>
-        <div class="key" data-index="3">↓</div>
-        <div class="key" data-index="4">←</div>
-        <div class="key" data-index="5">→</div>
-        <div class="key" data-index="6">←</div>
-        <div class="key" data-index="7">→</div>
-        <div class="key" data-index="8">B</div>
-        <div class="key" data-index="9">A</div>
-    </div>
-
-    <!-- 解锁闪光效果 -->
-    <div class="unlock-flash" id="unlockFlash"></div>
-
-    <!-- 提示 -->
-    <div class="hint" id="hint"></div>
-
-    <script>
-        // ========== Konami Code 检测 ==========
-        const konamiCode = [
-            'ArrowUp', 'ArrowUp',
-            'ArrowDown', 'ArrowDown',
-            'ArrowLeft', 'ArrowRight',
-            'ArrowLeft', 'ArrowRight',
-            'KeyB', 'KeyA'
-        ];
-
-        let inputSequence = [];
-        let hintTimeout;
-        const inputDisplay = document.getElementById('inputDisplay');
-        const keys = inputDisplay.querySelectorAll('.key');
-
-        function updateKeyDisplay() {
-            keys.forEach((key, index) => {
-                key.classList.toggle('active', index < inputSequence.length);
+    function buildToc() {
+      tocNav.textContent = '';
+      tocWrap.classList.remove('has-items');
+      if (tocObserver) tocObserver.disconnect();
+      var headings = Array.prototype.slice.call(content.querySelectorAll('h2, h3'));
+      if (headings.length < 2) return;
+      var list = document.createElement('ul');
+      var links = [];
+      headings.forEach(function (h, i) {
+        h.id = 'sec-' + (i + 1);
+        var li = document.createElement('li');
+        if (h.tagName === 'H3') li.className = 'toc__child';
+        var a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent.replace(/^\s*[A-Z]?\d+(\.\d+)*\.?\s+/, '');
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        li.appendChild(a);
+        list.appendChild(li);
+        links.push(a);
+      });
+      tocNav.appendChild(list);
+      tocWrap.classList.add('has-items');
+      if ('IntersectionObserver' in window) {
+        tocObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (a) {
+              a.classList.toggle('is-active', a.getAttribute('href') === '#' + entry.target.id);
             });
-        }
+          });
+        }, { rootMargin: '-90px 0px -70% 0px' });
+        headings.forEach(function (h) { tocObserver.observe(h); });
+      }
+    }
 
-        function showHint(message) {
-            const hint = document.getElementById('hint');
-            hint.textContent = message;
-            hint.classList.add('show');
-            clearTimeout(hintTimeout);
-            hintTimeout = setTimeout(() => hint.classList.remove('show'), 2000);
-        }
+    marked.setOptions({ gfm: true, breaks: false });
 
-        function unlock() {
-            const flash = document.getElementById('unlockFlash');
-            flash.classList.add('flash');
+    function resolve(base, href) {
+      var parts = base.split('/').slice(0, -1);
+      href.replace(/\.md$/, '').split('/').forEach(function (p) {
+        if (p === '..') parts.pop();
+        else if (p !== '.' && p !== '') parts.push(p);
+      });
+      return parts.join('/');
+    }
 
-            setTimeout(() => {
-                flash.classList.remove('flash');
-                document.getElementById('fake404').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                inputDisplay.style.display = 'none';
-            }, 250);
-        }
+    function showIndex() {
+      reader.hidden = true;
+      index.hidden = false;
+      hero.hidden = false;
+      document.title = '维护文档 · Weiqin Wang';
+    }
 
-        document.addEventListener('keydown', (e) => {
-            const expectedKey = konamiCode[inputSequence.length];
-
-            if (e.code === expectedKey) {
-                inputSequence.push(e.code);
-
-                if (inputSequence.length === 1) {
-                    inputDisplay.classList.add('show');
-                }
-
-                updateKeyDisplay();
-
-                if (inputSequence.length === konamiCode.length) {
-                    showHint('🎉 解锁成功!');
-                    unlock();
-                }
-            } else {
-                if (inputSequence.length > 0) {
-                    inputSequence = [];
-                    updateKeyDisplay();
-                    inputDisplay.classList.remove('show');
-
-                    if (e.code === konamiCode[0]) {
-                        inputSequence.push(e.code);
-                        inputDisplay.classList.add('show');
-                        updateKeyDisplay();
-                    }
-                }
+    function showDoc(name) {
+      index.hidden = true;
+      hero.hidden = true;
+      reader.hidden = false;
+      source.href = VIEW + name + '.md';
+      content.innerHTML = '<p class="doc-reader__status">加载中…</p>';
+      tocNav.textContent = '';
+      tocWrap.classList.remove('has-items');
+      window.scrollTo(0, 0);
+      fetch(REPO + name + '.md')
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
+        .then(function (md) {
+          content.innerHTML = marked.parse(md);
+          var h1 = content.querySelector('h1');
+          document.title = (h1 ? h1.textContent : name) + ' · 维护文档';
+          content.querySelectorAll('a[href]').forEach(function (a) {
+            var href = a.getAttribute('href');
+            if (/^(https?:|mailto:|#)/.test(href)) {
+              if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+              return;
             }
+            var hashAt = href.indexOf('#');
+            var path = hashAt >= 0 ? href.slice(0, hashAt) : href;
+            if (/\.md$/.test(path)) a.setAttribute('href', '#' + resolve(name, path));
+          });
+          if (window.Prism) Prism.highlightAllUnder(content);
+          buildToc();
+        })
+        .catch(function (err) {
+          content.innerHTML = '<h1>加载失败</h1><p>无法加载文档 <code></code>（' + err.message + '）。可以点上方“在 GitHub 上查看”。</p>';
+          content.querySelector('code').textContent = name;
         });
+    }
 
-        // 彩蛋：连续点击 404 数字 7 次也可以解锁
-        let clickCount = 0;
-        let clickTimeout;
+    function route() {
+      var name = decodeURIComponent(location.hash.slice(1));
+      if (name) showDoc(name); else showIndex();
+    }
 
-        document.getElementById('title404').addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimeout);
-
-            if (clickCount >= 7) {
-                showHint('🎉 发现彩蛋!');
-                unlock();
-                clickCount = 0;
-            } else {
-                clickTimeout = setTimeout(() => clickCount = 0, 2000);
-            }
-        });
-
-        // ========== 页面导航 ==========
-        const indexPage = document.getElementById('indexPage');
-        const docPage = document.getElementById('docPage');
-        const docContent = document.getElementById('docContent');
-        const docHeaderTitle = document.getElementById('docHeaderTitle');
-        const backBtn = document.getElementById('backBtn');
-        const docCards = document.querySelectorAll('.doc-card');
-
-        // 文档标题映射
-        const docTitles = {
-            '01-overview': '项目概述',
-            '02-quickstart': '快速开始',
-            '03-blog-maintenance': '博客文章维护',
-            '04-learning-maintenance': '学习内容维护',
-            '05-bilingual': '站点语言与界面文字',
-            '06-assets': '静态资源管理',
-            '07-personal-info': '个人信息维护',
-            '08-layouts': '布局与组件',
-            '09-config': '配置文件',
-            '10-features': '特殊功能',
-            '11-deployment': '部署与发布',
-            '12-naming': '命名规范汇总',
-            '13-checklist': '维护检查清单',
-            '14-faq': '常见问题',
-            'appendix/templates': '模板文件',
-            'appendix/cheatsheet': '速查表'
-        };
-
-        // 配置 marked
-        marked.setOptions({
-            highlight: function(code, lang) {
-                if (Prism.languages[lang]) {
-                    return Prism.highlight(code, Prism.languages[lang], lang);
-                }
-                return code;
-            },
-            breaks: true,
-            gfm: true
-        });
-
-        // 显示目录页
-        function showIndex() {
-            indexPage.style.display = 'block';
-            docPage.style.display = 'none';
-        }
-
-        // 显示文档页
-        function showDoc() {
-            indexPage.style.display = 'none';
-            docPage.style.display = 'block';
-        }
-
-        // 加载文档
-        async function loadDoc(docName) {
-            showDoc();
-            docHeaderTitle.textContent = docTitles[docName] || docName;
-            docContent.innerHTML = '<div class="loading">加载中</div>';
-
-            try {
-                const url = `https://raw.githubusercontent.com/mootutu/mootutu.github.io/main/docs/${docName}.md`;
-                const response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error('文档加载失败');
-                }
-
-                const markdown = await response.text();
-                docContent.innerHTML = marked.parse(markdown);
-                Prism.highlightAll();
-                docContent.scrollTop = 0;
-
-            } catch (error) {
-                docContent.innerHTML = `
-                    <h1>加载失败</h1>
-                    <p>无法加载文档：${docName}</p>
-                    <p style="color: #94a3b8;">错误信息：${error.message}</p>
-                    <p style="margin-top: 2rem;">
-                        <a href="https://github.com/mootutu/mootutu.github.io/blob/main/docs/${docName}.md" target="_blank">
-                            在 GitHub 上查看 →
-                        </a>
-                    </p>
-                `;
-            }
-        }
-
-        // 绑定卡片点击事件
-        docCards.forEach(card => {
-            card.addEventListener('click', () => {
-                loadDoc(card.dataset.doc);
-            });
-        });
-
-        // 返回按钮
-        backBtn.addEventListener('click', showIndex);
-
-        // 拦截文档内容中的 .md 链接点击
-        docContent.addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
-
-            const href = link.getAttribute('href');
-            if (!href || !href.endsWith('.md')) return;
-
-            e.preventDefault();
-
-            let docName = href
-                .replace(/^\.\//, '')
-                .replace(/^\.\.\//, '')
-                .replace(/\.md$/, '');
-
-            loadDoc(docName);
-        });
-    </script>
-</body>
-</html>
+    document.getElementById('doc-back').addEventListener('click', function (e) {
+      e.preventDefault();
+      history.pushState(null, '', location.pathname);
+      showIndex();
+    });
+    window.addEventListener('hashchange', route);
+    route();
+  }());
+</script>

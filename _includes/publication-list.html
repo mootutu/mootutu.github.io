@@ -16,11 +16,13 @@
     {% assign title = title | slice: 0, title_len %}
   {% endif %}
   <li class="pub" data-reveal>
-    <div class="pub__venue">
-      <span class="venue-tag{% if is_preprint %} venue-tag--muted{% endif %}">{{ venue_short }}</span>
+    {% assign pub_illo = pub.illo | default: 'default' %}
+    <div class="pub__art">
+      {% include illo/pub/{{ pub_illo }}.html %}
+      <span class="venue-tag pub__badge{% if is_preprint %} venue-tag--muted{% endif %}">{{ venue_short }}</span>
       <span class="pub__year">{{ year }}</span>
     </div>
-    <div>
+    <div class="pub__body">
       <h3 class="pub__title">
         {% if pub.links and pub.links.size > 0 %}
         <a href="{{ pub.links[0].url }}" target="_blank" rel="noopener">{{ title }}</a>

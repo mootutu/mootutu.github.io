@@ -136,7 +136,7 @@ mootutu.github.io/
 | 学习主题页 | `learning/*.html` | `learning-topic-layout` → `page` → `base` |
 | 学习笔记 / 论文笔记 | `learning/*/*.md` | `learning-post-layout` → `post` → `base` |
 | About | `about.html` | `about-layout` → `page` → `base` |
-| 维护文档页 | `maintenance.html` | 无（独立页面） |
+| 维护文档页 | `maintenance.html` | `page`（从 GitHub main 读取 docs/ 并渲染，地址 `#文档名` 可直接打开某篇） |
 
 ---
 

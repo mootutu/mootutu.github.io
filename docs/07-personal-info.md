@@ -68,11 +68,12 @@ Experience 区块里的日期统一写成 `Mon YYYY – Mon YYYY`（英文月份
 
 ```yaml
 - id: wang2026example
+  illo: example
   title: "Paper Title Ending With a Period."
   authors: "<b>Weiqin Wang</b>, Coauthor A, and Hui Huang."
   venue: "In Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (<b>ACL</b>), 2026"
   links:
-    - label: pdf
+    - label: paper
       url: https://aclanthology.org/2026.acl-long.1.pdf
     - label: code
       url: https://github.com/szu-tera/Example
@@ -82,16 +83,40 @@ Experience 区块里的日期统一写成 `Mon YYYY – Mon YYYY`（英文月份
 | 字段 | 说明 |
 |------|------|
 | `id` | 与 BibTeX 文件名一致 |
+| `illo` | 论文配图名，对应 `_includes/illo/pub/{名字}.html`；不填则用通用的 `default.html`（一张纸） |
 | `title` | 标题；末尾的句号会在页面上自动去掉 |
 | `authors` | 作者，自己的名字用 `<b>…</b>` 加粗；共同一作加 `*`，通讯作者加 `#` |
-| `venue` | 完整出处。**`<b>…</b>` 里的文字会成为左侧的会议标签**（如 ACL、EMNLP、ACL Findings）；没有 `<b>` 时标签显示为灰色的 “Preprint” |
-| `venue` 的最后 4 个字符 | 会被当作年份显示在标签下方，所以必须以年份结尾 |
-| `links` | 链接按钮；第一个链接同时作为标题的跳转地址 |
+| `venue` | 完整出处。**`<b>…</b>` 里的文字会成为插画左上角的会议标签**（如 ACL、EMNLP、ACL Findings）；没有 `<b>` 时标签显示为灰色的 “Preprint” |
+| `venue` 的最后 4 个字符 | 会被当作年份显示在插画右下角，所以必须以年份结尾 |
+| `links` | 链接按钮；第一个链接同时作为标题的跳转地址。论文链接（PDF 或 arXiv）统一用 `paper`，代码用 `code` |
 | `bib` | BibTeX 路径；有这个字段才会显示 “bibtex” 按钮 |
 
-### 步骤 3：检查
+### 步骤 3（可选）：论文配图
 
-本地打开首页，确认：会议标签和年份正确、自己的名字加粗、各链接可打开、BibTeX 弹窗能显示内容。
+每篇论文左侧有一张小插画，放在 `_includes/illo/pub/`，现有 6 张：
+
+| 文件 | 论文 | 画面 |
+|------|------|------|
+| `probability.html` | Probability is Not Enough | token 链分叉成多个候选，旁边计数 |
+| `dysem.html` | DySem | 两段文本之间的动态语义分量柱状图 |
+| `sempa.html` | SemPA | 向量空间里偏好 / 非偏好两个方向 |
+| `beyond.html` | Beyond Majority Voting | 箭靶，表示更精细的奖励信号 |
+| `anchormem.html` | AnchorMem | 船锚牵着几张事实卡片 |
+| `ranked.html` | Ranked Voting | 1/2/3 名次领奖台 |
+| `default.html` | （通用） | 一张纸 |
+
+新论文画新图时，复制一个现有文件改：
+
+- `viewBox="0 0 160 120"`，第一个 `<path>` 是背景色块（`f-sand`、`f-olive`、`f-sky` 轮换使用）
+- 线条用 `class="ink"`（细线加 `ink-thin`），填色用 `style="fill:var(--illo-clay)"` 这类变量，深色模式会自动适配
+- 线条放在 `<g class="hand">` 里，获得手绘抖动效果
+- 想要鼠标悬停时动一下的部分，包在 `<g class="wiggle wiggle--up">` 里（还有 `--left`、`--right`、`--spin`）
+
+然后在 `publications.yml` 的条目里写 `illo: 文件名`（不带 `.html`）。
+
+### 步骤 4：检查
+
+本地打开首页，确认：配图显示正常、会议标签和年份正确、自己的名字加粗、各链接可打开、BibTeX 弹窗能显示内容。
 
 同时记得更新简历（[7.4](#74-更新简历)）。
 
