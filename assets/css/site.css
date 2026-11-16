@@ -2941,6 +2941,60 @@ html.dark-mode .dr {
 
 .dr .busy div { background: var(--surface); padding: 14px 20px; border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); }
 
+/* sticker tray on the stage (thumb-friendly on phones) */
+.dr .tray {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  width: min(620px, calc(100% - 20px));
+  z-index: 4;
+  padding: 8px 8px 10px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.dr .tray-head { display: flex; align-items: center; gap: 4px; }
+.dr .tray-tabs { display: flex; gap: 2px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+.dr .tray-tabs::-webkit-scrollbar { display: none; }
+.dr .tray-tabs .tab { flex: none; }
+
+.dr .tray-x {
+  flex: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.dr .tray-x:hover { background: var(--surface-strong); color: var(--text); }
+
+.dr .tray-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, 54px);
+  grid-auto-columns: 54px;
+  gap: 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 8px 2px 4px;
+  scrollbar-width: thin;
+}
+
+.dr .tray-grid .il { padding: 5px; }
+.dr .tray-hint { font-size: 11px; color: var(--muted); padding: 4px 4px 0; }
+.dr .stage.tray-open .strip { display: none; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .dr .app { display: block; height: auto; padding: 10px 10px 30px; }
@@ -2951,4 +3005,8 @@ html.dark-mode .dr {
   .dr .th { width: 42px; height: 42px; }
   .dr .strip { bottom: 8px; padding: 6px; gap: 6px; }
   .dr .tools { top: 8px; right: 8px; }
+  .dr .stage.tray-open { height: 72vh; }
+  .dr .tray { bottom: 8px; width: calc(100% - 16px); }
+  .dr .tray-grid { grid-template-rows: repeat(2, 50px); grid-auto-columns: 50px; }
+  .dr .illos { max-height: 232px; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); }
 }

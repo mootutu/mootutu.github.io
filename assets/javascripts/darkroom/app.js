@@ -620,7 +620,8 @@ function draw(){
   const ph = curPhoto(), narrow = rect.width < 600, hasStrip = photos.length > 0;
   const padX = Math.max(narrow ? 10 : 30, rect.width*.05);
   const padTop = narrow ? 46 : Math.max(56, rect.height*.07);
-  const padBot = hasStrip ? (narrow ? 66 : 90) : (narrow ? 20 : Math.max(40, rect.height*.05));
+  const trayEl = $("#tray"), trayOpen = trayEl && !trayEl.hidden;
+  const padBot = trayOpen ? trayEl.offsetHeight + 22 : hasStrip ? (narrow ? 66 : 90) : (narrow ? 20 : Math.max(40, rect.height*.05));
   const g1 = geom(1, ph), TW = g1.W + 2*PAD, TH = g1.H + 2*PAD;
   let bw = TW, bh = TH;
   if(state.withBg && state.tilt){
@@ -654,6 +655,12 @@ function drawSelection(ctx, e, dpr){
   ctx.setLineDash([]);
   ctx.beginPath(); ctx.arc(w, h, 7*dpr, 0, Math.PI*2); ctx.fillStyle = "#FFFFFF"; ctx.fill(); ctx.lineWidth = 2*dpr; ctx.stroke();
   ctx.beginPath(); ctx.arc(w, h, 2.5*dpr, 0, Math.PI*2); ctx.fillStyle = "#C6613F"; ctx.fill();
+  if(e.type === "illo"){
+    const r = 8*dpr;
+    ctx.beginPath(); ctx.arc(-w, -h, r, 0, Math.PI*2); ctx.fillStyle = "#C6613F"; ctx.fill();
+    ctx.strokeStyle = "#FFFFFF"; ctx.lineWidth = 1.8*dpr; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(-w - r*.38, -h - r*.38); ctx.lineTo(-w + r*.38, -h + r*.38); ctx.moveTo(-w + r*.38, -h - r*.38); ctx.lineTo(-w - r*.38, -h + r*.38); ctx.stroke();
+  }
   ctx.restore();
 }
 let raf = 0;
@@ -1207,23 +1214,64 @@ function toCard(e){
 const sameSel = x => !!sel && x.type === sel.type && (x.type !== "illo" || x.slot === sel.slot);
 function freeRef(t){ const F = freeOf(curPhoto()); return t.type === "illo" ? F.illos[t.slot] : F[t.type]; }
 function toLocal(e, p){ const dx = p.x - e.cx, dy = p.y - e.cy, c = Math.cos(-e.rot), s = Math.sin(-e.rot); return {x: dx*c - dy*s, y: dx*s + dy*c}; }
-function hitFree(p){
+function hitFree(p, touch){
   if(!isFree() || tool !== "move") return null;
   const ph = curPhoto(), els = freeElements(geom(view.s, ph), ph, Math.max(0, cur));
-  if(sel){ const e = els.find(sameSel); if(e){ const l = toLocal(e, p); if(Math.hypot(l.x - (e.w/2 + 6), l.y - (e.h/2 + 6)) < 14) return {e, handle:true}; } }
-  for(let i = els.length - 1; i >= 0; i--){ const e = els[i], l = toLocal(e, p); if(Math.abs(l.x) <= e.w/2 + 5 && Math.abs(l.y) <= e.h/2 + 5) return {e, handle:false}; }
+  const R = touch ? 24 : 14, padHit = touch ? 12 : 5;
+  if(sel){
+    const e = els.find(sameSel);
+    if(e){
+      const l = toLocal(e, p), core = Math.abs(l.x) < e.w*.3 && Math.abs(l.y) < e.h*.3;
+      if(!core && Math.hypot(l.x - (e.w/2 + 6), l.y - (e.h/2 + 6)) < R) return {e, handle:true};
+      if(!core && e.type === "illo" && Math.hypot(l.x + (e.w/2 + 6), l.y + (e.h/2 + 6)) < R) return {e, del:true};
+    }
+  }
+  for(let i = els.length - 1; i >= 0; i--){ const e = els[i], l = toLocal(e, p); if(Math.abs(l.x) <= e.w/2 + padHit && Math.abs(l.y) <= e.h/2 + padHit) return {e, handle:false}; }
   return null;
 }
+/* in a preset layout, grabbing a sticker switches to free layout without moving anything */
+function hitPresetSticker(p, touch){
+  if(isFree() || tool !== "move") return null;
+  const ph = curPhoto(), g = geom(view.s, ph), lay = illoLayout(g, ph, Math.max(0, cur));
+  for(let i = lay.items.length - 1; i >= 0; i--){
+    const it = lay.items[i], l = toLocal({cx: it.cx, cy: it.cy, rot: it.rot}, p), half = it.size*.45 + (touch ? 10 : 2);
+    if(Math.abs(l.x) <= half && Math.abs(l.y) <= half) return it;
+  }
+  return null;
+}
+let freeHinted = false;
+function enterFreeFromPreset(){
+  const prev = state.illoMode;
+  initFree(prev, freeOf(curPhoto()));
+  state.lastPreset = prev; state.illoMode = "free";
+  syncControls(); syncUI();
+  if(!freeHinted){ freeHinted = true; toast("已切到自由摆放：拖动移动，双指缩放旋转"); }
+}
+let elPinch = null;
+const touchPts = new Map();
 canvas.addEventListener("pointerdown", e => {
   suppressClick = false;
-  const p = toCard(e);
+  const p = toCard(e), touch = e.pointerType !== "mouse";
+  touchPts.set(e.pointerId, p);
   if(tool === "brush"){
+    if(stroke) return;
     const g = geom(view.s, curPhoto());
     stroke = {id:e.pointerId, s:{c: state.brush.color, w: state.brush.width, pts:[r4(p.x/g.W), r4(p.y/g.H)]}, last:p, g};
     docOf(curPhoto()).doodles.push(stroke.s);
     canvas.setPointerCapture(e.pointerId); suppressClick = true; schedule(); return;
   }
-  const hit = hitFree(p);
+  // second finger while dragging an element → pinch-scale / rotate that element
+  if(drag && e.pointerId !== drag.id && touchPts.has(drag.id)){
+    const a = touchPts.get(drag.id), r = freeRef(sel);
+    if(r){
+      elPinch = {ids:[drag.id, e.pointerId], d0: Math.max(1, Math.hypot(p.x - a.x, p.y - a.y)), a0: Math.atan2(p.y - a.y, p.x - a.x),
+        m0: {x:(a.x + p.x)/2, y:(a.y + p.y)/2}, ref: Object.assign({}, r), g: drag.g};
+      drag = null; canvas.setPointerCapture(e.pointerId); suppressClick = true; return;
+    }
+  }
+  if(!isFree() && hitPresetSticker(p, touch)) enterFreeFromPreset();
+  const hit = hitFree(p, touch);
+  if(hit && hit.del){ removeSelIllo(); suppressClick = true; return; }
   if(hit){
     sel = {type: hit.e.type, slot: hit.e.slot};
     drag = {id: e.pointerId, handle: hit.handle, start: p, ref: Object.assign({}, freeRef(sel)), c: {x: hit.e.cx, y: hit.e.cy}, g: geom(view.s, curPhoto())};
@@ -1238,6 +1286,20 @@ canvas.addEventListener("pointerdown", e => {
   if(pointers.size === 2){ const [a,b] = [...pointers.values()]; pinch = {d: Math.hypot(a.x-b.x, a.y-b.y), z: curPhoto().zoom}; }
 });
 canvas.addEventListener("pointermove", e => {
+  if(touchPts.has(e.pointerId)) touchPts.set(e.pointerId, toCard(e));
+  if(elPinch && elPinch.ids.includes(e.pointerId)){
+    const [a, b] = elPinch.ids.map(id => touchPts.get(id)), r = freeRef(sel);
+    if(!a || !b || !r) return;
+    const d = Math.hypot(b.x - a.x, b.y - a.y), ang = Math.atan2(b.y - a.y, b.x - a.x), m = {x:(a.x + b.x)/2, y:(a.y + b.y)/2};
+    r.scale = r4(Math.min(8, Math.max(.15, elPinch.ref.scale * d / elPinch.d0)));
+    let rot = elPinch.ref.rot + ang - elPinch.a0;
+    const deg = rot*180/Math.PI, near = Math.round(deg/90)*90;
+    if(Math.abs(deg - near) < 3) rot = near*Math.PI/180;
+    r.rot = r4(rot);
+    r.cx = r4(Math.min(1, Math.max(0, elPinch.ref.cx + (m.x - elPinch.m0.x)/elPinch.g.W)));
+    r.cy = r4(Math.min(1, Math.max(0, elPinch.ref.cy + (m.y - elPinch.m0.y)/elPinch.g.H)));
+    schedule(); return;
+  }
   if(stroke && e.pointerId === stroke.id){
     const p = toCard(e);
     if(Math.hypot(p.x - stroke.last.x, p.y - stroke.last.y) < 1.5) return;
@@ -1259,7 +1321,10 @@ canvas.addEventListener("pointermove", e => {
     schedule(); return;
   }
   if(!pointers.has(e.pointerId)){
-    if(isFree() && tool === "move" && e.pointerType === "mouse"){ const h = hitFree(toCard(e)); canvas.style.cursor = h ? (h.handle ? "nwse-resize" : "move") : ""; }
+    if(tool === "move" && e.pointerType === "mouse"){
+      const q = toCard(e), h = isFree() ? hitFree(q) : (hitPresetSticker(q) ? {} : null);
+      canvas.style.cursor = h ? (h.handle ? "nwse-resize" : h.del ? "pointer" : "move") : "";
+    }
     return;
   }
   const ph = curPhoto(); if(!ph) return;
@@ -1272,6 +1337,8 @@ canvas.addEventListener("pointermove", e => {
   schedule();
 });
 function endPointer(e){
+  touchPts.delete(e.pointerId);
+  if(elPinch && elPinch.ids.includes(e.pointerId)) elPinch = null;
   if(stroke && e.pointerId === stroke.id){ stroke = null; schedule(); syncUI(); }
   if(drag && e.pointerId === drag.id) drag = null;
   pointers.delete(e.pointerId); if(pointers.size < 2) pinch = null;
@@ -1305,6 +1372,7 @@ window.addEventListener("keydown", e => {
   if(inField || mod) return;
   if(e.key === "Escape" && !$("#modal").hidden){ closeModal(); return; }
   if(e.key === "b" || e.key === "B"){ setTool("brush"); return; }
+  if(e.key === "s" || e.key === "S"){ setTray(tray.hidden); return; }
   if(e.key === "v" || e.key === "V"){ setTool("move"); return; }
   if(isFree() && sel){
     const r = freeRef(sel), st = e.shiftKey ? .02 : .004;
@@ -1411,21 +1479,49 @@ $("#stickerFile").addEventListener("change", async e => {
     try{ await img.decode(); }catch(err){ URL.revokeObjectURL(url); toast(`${f.name} 无法读取`); continue; }
     const id = `my${++cuid}`;
     customs[id] = {id, n: f.name.replace(/\.[^.]+$/,"").slice(0,16) || "我的贴纸", img, url, w: img.naturalWidth || 300, h: img.naturalHeight || 300, cat:"mine"};
-    addGridItem(id);
+    addGridItem(id); addTrayItem(id);
     if(!state.illos.includes(id)){ state.illos.push(id); if(state.illos.length > MAX_ILLOS){ state.illos.shift(); state.free.illos.shift(); } }
   }
   illoCat = "mine"; syncUI(); schedule();
   if(files.length) toast("已加入「我的」，并放到相纸上");
 });
 $("#illoTabs").addEventListener("click", e => { const t = e.target.closest("[data-cat]"); if(t){ illoCat = t.dataset.cat; syncUI(); } });
-grid.addEventListener("click", e => {
-  const b = e.target.closest("[data-illo]"); if(!b) return;
-  const id = b.dataset.illo, i = state.illos.indexOf(id);
-  const frees = () => [state.free, ...photos.map(p => p.free).filter(Boolean)];
-  if(i >= 0){ state.illos.splice(i,1); frees().forEach(F => F.illos.splice(i,1)); }
-  else { state.illos.push(id); if(state.illos.length > MAX_ILLOS){ state.illos.shift(); frees().forEach(F => F.illos.shift()); } }
-  sel = null; syncUI(); schedule();
-});
+const allFrees = () => [state.free, ...photos.map(p => p.free).filter(Boolean)];
+function toggleIllo(id, fromTray){
+  const i = state.illos.indexOf(id);
+  if(i >= 0){ state.illos.splice(i,1); allFrees().forEach(F => F.illos.splice(i,1)); sel = null; syncUI(); schedule(); return; }
+  if(fromTray && !isFree()) enterFreeFromPreset();
+  state.illos.push(id);
+  if(state.illos.length > MAX_ILLOS){ state.illos.shift(); allFrees().forEach(F => F.illos.shift()); }
+  sel = null;
+  if(fromTray && isFree() && !state.illoPer){
+    const slot = state.illos.length - 1, F = freeOf(curPhoto()), g = geom(1, curPhoto());
+    const n = slot % 5;
+    F.illos[slot] = {cx: r4(.5 + (n - 2)*.06), cy: r4((g.y0 + g.ih*(.42 + (n % 2)*.08))/g.H), scale: 1.1, rot: r4(((slot*37)%11 - 5)*.035)};
+    sel = {type:"illo", slot};
+  }
+  syncUI(); schedule();
+}
+grid.addEventListener("click", e => { const b = e.target.closest("[data-illo]"); if(b) toggleIllo(b.dataset.illo, false); });
+
+/* sticker tray on the stage (thumb-friendly on phones) */
+const tray = $("#tray"), trayGrid = $("#trayGrid");
+function addTrayItem(id){
+  const it = getIllo(id), b = document.createElement("button");
+  b.className = "il"; b.dataset.tray = id; b.title = it.n;
+  b.innerHTML = customs[id] ? `<img src="${customs[id].url}" alt="">` : illoSVG(id);
+  trayGrid.appendChild(b);
+}
+ILLOS.forEach(il => addTrayItem(il.id));
+function setTray(open){
+  tray.hidden = !open; stage.classList.toggle("tray-open", open);
+  if(open && tool !== "move") setTool("move");
+  syncUI(); draw();
+}
+$("#trayBtn").onclick = () => setTray(tray.hidden);
+$("#trayClose").onclick = () => setTray(false);
+trayGrid.addEventListener("click", e => { const b = e.target.closest("[data-tray]"); if(b) toggleIllo(b.dataset.tray, true); });
+$("#trayTabs").addEventListener("click", e => { const t = e.target.closest("[data-cat]"); if(t){ illoCat = t.dataset.cat; syncUI(); trayGrid.scrollLeft = 0; } });
 $("#illoRandom").onclick = () => {
   const pool = ILLOS.filter(i => !["all","picked","mine"].includes(illoCat) ? i.cat === illoCat : true).map(i => i.id);
   const n = Math.min(pool.length, isFree() ? 3 + Math.floor(Math.random()*3) : 2 + Math.floor(Math.random()*2)), out = [];
@@ -1579,6 +1675,13 @@ function syncUI(){
     else if(badge) badge.remove();
   });
   upTile.hidden = !(illoCat === "mine" || illoCat === "all");
+  $$("#trayTabs [data-cat]").forEach(t => t.classList.toggle("on", t.dataset.cat === illoCat));
+  $$("#trayGrid [data-tray]").forEach(b => {
+    const id = b.dataset.tray, i = state.illos.indexOf(id), cat = getIllo(id).cat;
+    b.hidden = !(illoCat === "all" || (illoCat === "picked" ? i >= 0 : cat === illoCat));
+    b.classList.toggle("on", i >= 0);
+  });
+  $("#trayBtn").classList.toggle("on", !tray.hidden);
   $("#illoCount").textContent = state.illoPer ? "每张随机" : `${state.illos.length} / ${MAX_ILLOS}`;
   $$('#illoModes [data-value="right"],#illoModes [data-value="sides"]').forEach(c => c.classList.toggle("dim-off", even));
   $("#freeBox").hidden = !free;

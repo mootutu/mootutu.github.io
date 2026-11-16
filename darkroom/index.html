@@ -25,6 +25,8 @@ noindex: true
     <section class="stage" id="stage">
       <div class="pill" id="hint"></div>
       <div class="tools">
+        <button class="tool" id="trayBtn" title="贴纸库（S）"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M5 4h14a1 1 0 0 1 1 1v8l-7 7H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M13 20v-5a2 2 0 0 1 2-2h5"/></svg></button>
+        <span class="sep"></span>
         <button class="tool" id="undoBtn" title="撤销（⌘/Ctrl + Z）">↶</button>
         <button class="tool" id="redoBtn" title="重做（⇧ + ⌘/Ctrl + Z）">↷</button>
         <span class="sep"></span>
@@ -33,6 +35,23 @@ noindex: true
       </div>
       <canvas id="card" class="empty" aria-label="拍立得预览"></canvas>
       <div class="strip" id="strip" hidden></div>
+      <div class="tray" id="tray" hidden>
+        <div class="tray-head">
+          <div class="tray-tabs" id="trayTabs">
+            <button class="tab" data-cat="all">全部</button>
+            <button class="tab" data-cat="nature">自然</button>
+            <button class="tab" data-cat="life">生活</button>
+            <button class="tab" data-cat="object">物件</button>
+            <button class="tab" data-cat="animal">动物</button>
+            <button class="tab" data-cat="symbol">符号</button>
+            <button class="tab" data-cat="mine">我的</button>
+            <button class="tab" data-cat="picked">已选</button>
+          </div>
+          <button class="tray-x" id="trayClose" title="收起贴纸库">×</button>
+        </div>
+        <div class="tray-grid" id="trayGrid"></div>
+        <div class="tray-hint">点一下贴到相纸上，再按住拖动；双指缩放旋转，点 × 删除。</div>
+      </div>
     </section>
 
     <aside class="panel">

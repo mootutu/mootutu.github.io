@@ -209,6 +209,7 @@ Markdown 写法：三个反引号后写语言名。
 | `assets/javascripts/darkroom/illos.js` | 插画库（100×100 坐标的路径数据） |
 | `assets/javascripts/darkroom/app.js` | 全部功能逻辑（绘制、导出、拼图、PDF、视频、模板、撤销） |
 
+- 舞台右上角的「贴纸库」按钮（快捷键 S）会在舞台底部弹出横向滑动的贴纸托盘，方便手机上挑选。从托盘加的贴纸会自动切到自由摆放，放在照片中间；任何排版下直接拖相纸上的贴纸也会自动切到自由摆放。触屏上双指可以缩放和旋转选中的元素，选中框左上角的 × 用来删除贴纸。
 - 工具脚本较大（约 100 KB），只在这个页面加载，所以没有并进 `site.js`。
 - 相纸上用到的字体（Newsreader、Caveat、Noto Serif SC 等）只在这个页面以非阻塞方式加载；3.5 秒内 Google Fonts 加载不到时会改用 `fonts.loli.net` 镜像。
 - 自己保存的模板存在浏览器的 `localStorage`（键名 `instant-frame-templates-v1`），换设备不会同步，可以用「导出 .json」备份。
