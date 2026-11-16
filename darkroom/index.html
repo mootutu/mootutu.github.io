@@ -1,0 +1,316 @@
+---
+layout: base
+title: Darkroom
+description: 暗房 · 把照片放进一张拍立得相纸里。
+lang: zh-CN
+noindex: true
+---
+{% assign asset_version = site.time | date: '%s' %}
+<!-- Fonts drawn onto the polaroid canvas (the page chrome uses the site fonts).
+     Loaded without blocking; falls back to a mirror if Google Fonts is unreachable. -->
+<link rel="stylesheet" media="print" onload="this.media='all';window.__drFontsOk=true"
+  href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Homemade+Apple&family=JetBrains+Mono:wght@400;500&family=Kalam:wght@400&family=Liu+Jian+Mao+Cao&family=Ma+Shan+Zheng&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Patrick+Hand&family=Share+Tech+Mono&family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&display=swap">
+<script>
+  setTimeout(function () {
+    if (window.__drFontsOk) return;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.loli.net/css2?family=Caveat:wght@500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Homemade+Apple&family=JetBrains+Mono:wght@400;500&family=Kalam:wght@400&family=Liu+Jian+Mao+Cao&family=Ma+Shan+Zheng&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Patrick+Hand&family=Share+Tech+Mono&family=ZCOOL+KuaiLe&family=Zhi+Mang+Xing&display=swap';
+    document.head.appendChild(l);
+  }, 3500);
+</script>
+
+<div class="dr" id="darkroom">
+  <div class="app">
+    <section class="stage" id="stage">
+      <div class="pill" id="hint"></div>
+      <div class="tools">
+        <button class="tool" id="undoBtn" title="撤销（⌘/Ctrl + Z）">↶</button>
+        <button class="tool" id="redoBtn" title="重做（⇧ + ⌘/Ctrl + Z）">↷</button>
+        <span class="sep"></span>
+        <button class="tool" data-tool="move" title="移动 / 调整（V）">✥</button>
+        <button class="tool" data-tool="brush" title="画笔涂鸦（B）">✎</button>
+      </div>
+      <canvas id="card" class="empty" aria-label="拍立得预览"></canvas>
+      <div class="strip" id="strip" hidden></div>
+    </section>
+
+    <aside class="panel">
+      <div class="panel-head">
+        <p class="eyebrow">Back room · 暗房</p>
+        <h1>Darkroom</h1>
+        <p class="panel-lede">把照片放进一张拍立得相纸里。照片只在你的浏览器里处理，不会上传。</p>
+      </div>
+      <details class="group" open>
+        <summary>00 模板<span class="aside" id="tplNote"></span></summary>
+        <div class="gbody">
+          <div class="tpls" id="tpls"></div>
+          <div class="dr-row mt">
+            <button class="btn small" id="tplSave">保存当前为模板</button>
+            <button class="btn small" id="tplExport">导出 .json</button>
+            <button class="btn small" id="tplImport">导入</button>
+            <input type="file" id="tplFile" accept=".json,application/json" hidden>
+          </div>
+          <div class="dr-row mt" id="tplSaveRow" hidden>
+            <input type="text" id="tplName" maxlength="20" placeholder="给模板起个名字" style="flex:1;min-width:0">
+            <button class="btn small primary" id="tplSaveOk">保存</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>01 照片<span class="aside" id="imgInfo"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="btn clay" id="pick">添加照片</button>
+            <button class="btn small" id="clearAll" hidden>清空</button>
+            <input type="file" id="file" accept="image/*" multiple hidden>
+          </div>
+          <div class="sub mt">可一次选择多张；每张照片的构图、说明和涂鸦会分别记住。</div>
+          <div class="dr-row mt" id="batchTools" hidden>
+            <button class="btn small" id="sortDate">按拍摄日期排序</button>
+            <button class="btn small" id="nameCaption">文件名作说明</button>
+            <button class="btn small" id="pasteCaptions">批量粘贴说明</button>
+          </div>
+          <div class="slider mt" id="zoomRow"><span>缩放</span><input type="range" id="zoom" min="1" max="4" step="0.01" value="1"><output id="zoomOut">1.00×</output></div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>02 画幅比例<span class="aside" id="ratioOut"></span></summary>
+        <div class="gbody"><div class="dr-row" id="ratios"></div></div>
+      </details>
+
+      <details class="group" open>
+        <summary>03 相纸</summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="style" data-value="classic">经典厚底</button>
+            <button class="dr-chip" data-group="style" data-value="wide">宽底留白</button>
+            <button class="dr-chip" data-group="style" data-value="even">等边画廊</button>
+          </div>
+          <div class="swatches mt" id="papers"></div>
+          <div class="slider mt"><span>边框</span><input type="range" id="border" min="0.6" max="1.6" step="0.01"><output id="borderOut"></output></div>
+          <div class="switches mt"><label class="switch"><input type="checkbox" id="grain"><span></span>纸张颗粒</label></div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>04 装饰物件<span class="aside" id="decoNote"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="deco" data-value="none">无</button>
+            <button class="dr-chip" data-group="deco" data-value="tape">顶部胶带</button>
+            <button class="dr-chip" data-group="deco" data-value="tape2">对角胶带</button>
+            <button class="dr-chip" data-group="deco" data-value="clip">回形针</button>
+            <button class="dr-chip" data-group="deco" data-value="pin">图钉</button>
+            <button class="dr-chip" data-group="deco" data-value="peg">木夹子</button>
+          </div>
+          <div class="swatches mt" id="decoColors"></div>
+          <div class="dr-row mt"><button class="btn small" id="decoShuffle">换个角度</button><span class="sub">胶带和图钉会用上面的颜色。</span></div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>05 插画<span class="aside" id="illoCount"></span></summary>
+        <div class="gbody">
+          <div class="tabs" id="illoTabs">
+            <button class="tab" data-cat="all">全部</button>
+            <button class="tab" data-cat="nature">自然</button>
+            <button class="tab" data-cat="life">生活</button>
+            <button class="tab" data-cat="object">物件</button>
+            <button class="tab" data-cat="animal">动物</button>
+            <button class="tab" data-cat="symbol">符号</button>
+            <button class="tab" data-cat="mine">我的</button>
+            <button class="tab" data-cat="picked">已选</button>
+          </div>
+          <div class="illos" id="illoGrid"></div>
+          <input type="file" id="stickerFile" accept="image/png,image/svg+xml,image/webp,image/gif,image/jpeg" multiple hidden>
+          <div class="dr-row mt">
+            <button class="btn small" id="illoRandom">随机一组</button>
+            <button class="btn small" id="illoShuffle">换个摆法</button>
+            <button class="btn small" id="illoClear">清空</button>
+            <button class="btn small" id="stickerUpload">上传贴纸</button>
+          </div>
+          <div class="dr-row mt" id="themeRow"><span class="label" id="themeLabel">配色</span></div>
+          <div class="dr-row mt" id="illoModes">
+            <button class="dr-chip" data-group="illoMode" data-value="right">靠右排列</button>
+            <button class="dr-chip" data-group="illoMode" data-value="sides">左右对称</button>
+            <button class="dr-chip" data-group="illoMode" data-value="corner">贴纸压角</button>
+            <button class="dr-chip" data-group="illoMode" data-value="free">✥ 自由摆放</button>
+          </div>
+          <div class="box" id="freeBox" hidden>
+            <div class="sub">直接在相纸上拖动插画和文字；拖选中框右下角的圆点可以<b>缩放 + 旋转</b>，双击把角度归零。选中后 <span class="dr-kbd">Delete</span> 移除插画，方向键微调。</div>
+            <div class="sel-line" id="selLine"></div>
+            <div class="dr-row" style="margin-top:8px">
+              <button class="btn small" id="freeDelete" hidden>移除选中插画</button>
+              <button class="btn small" id="freeReset">重置排版</button>
+            </div>
+            <div class="switches mt">
+              <label class="switch"><input type="checkbox" id="freeSticker"><span></span>贴纸白边</label>
+              <label class="switch"><input type="checkbox" id="freeOwn"><span></span>单独调整这一张</label>
+            </div>
+          </div>
+          <div class="slider mt" id="illoSizeRow"><span>大小</span><input type="range" id="illoSize" min="0.5" max="1.5" step="0.01"><output id="illoSizeOut"></output></div>
+          <div class="switches mt"><label class="switch"><input type="checkbox" id="illoPer"><span></span>每张照片随机搭配</label></div>
+          <div class="sub mt" id="illoNote"></div>
+        </div>
+      </details>
+
+      <details class="group" open id="textGroup">
+        <summary>06 文字<span class="aside" id="textNote"></span></summary>
+        <div class="gbody" id="textBody">
+          <textarea id="caption" rows="2" maxlength="120" placeholder="写一句话…（回车换行，最多 3 行）"></textarea>
+          <div class="switches" style="margin-top:10px"><label class="switch"><input type="checkbox" id="perCaption"><span></span>每张单独写</label></div>
+          <div class="dr-row mt">
+            <button class="dr-chip f-italic" data-group="font" data-value="italic">Italic</button>
+            <button class="dr-chip f-serif" data-group="font" data-value="serif">衬线</button>
+            <button class="dr-chip" data-group="font" data-value="sans">无衬线</button>
+            <button class="dr-chip f-mono" data-group="font" data-value="mono">Mono</button>
+            <button class="dr-chip f-hand" data-group="font" data-value="hand">手写</button>
+            <button class="dr-chip f-casual" data-group="font" data-value="casual">随手记</button>
+            <button class="dr-chip f-brush" data-group="font" data-value="brush">草书</button>
+            <button class="dr-chip f-cute" data-group="font" data-value="cute">圆趣</button>
+          </div>
+          <div class="dr-row" style="margin-top:8px" id="alignRow">
+            <button class="dr-chip" data-group="align" data-value="left">左对齐</button>
+            <button class="dr-chip" data-group="align" data-value="center">居中</button>
+          </div>
+          <div class="dr-row mt" id="textColors"><span class="label">颜色</span></div>
+          <div class="slider mt"><span>字号</span><input type="range" id="textSize" min="0.6" max="1.6" step="0.01"><output id="textSizeOut"></output></div>
+          <div class="dr-row mt">
+            <span class="label">日期来源</span>
+            <button class="dr-chip" data-group="dateSource" data-value="exif">拍摄日期</button>
+            <button class="dr-chip" data-group="dateSource" data-value="custom">自定义</button>
+          </div>
+          <div class="two mt">
+            <div class="dr-field" id="dateField"><label>自定义日期</label><input type="date" id="date"></div>
+            <div class="dr-field"><label>右下角小字</label><input type="text" id="note" maxlength="24"></div>
+          </div>
+          <div class="dr-row mt">
+            <button class="dr-chip f-mono" data-group="dateFmt" data-value="dot">2026.11.17</button>
+            <button class="dr-chip f-mono" data-group="dateFmt" data-value="en">NOV 17 2026</button>
+            <button class="dr-chip" data-group="dateFmt" data-value="cn">年月日</button>
+            <button class="dr-chip" data-group="dateFmt" data-value="off">不显示</button>
+          </div>
+          <div class="switches mt">
+            <label class="switch"><input type="checkbox" id="accent"><span></span>陶土色圆点</label>
+            <label class="switch"><input type="checkbox" id="autoNum"><span></span>编号自动递增</label>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>07 涂鸦<span class="aside" id="doodleNote"></span></summary>
+        <div class="gbody">
+          <div class="sub">点舞台右上角的 ✎ 进入画笔，直接在相纸上画（线条、圈圈、箭头都行）。涂鸦按照片分别保存，画错了按 ⌘Z 撤销。</div>
+          <div class="swatches mt" id="brushColors"></div>
+          <div class="slider mt"><span>粗细</span><input type="range" id="brushWidth" min="0.4" max="3" step="0.05"><output id="brushWidthOut"></output></div>
+          <div class="dr-row mt">
+            <button class="btn small" id="brushToggle">进入画笔</button>
+            <button class="btn small" id="doodleClear">清除这张的涂鸦</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>08 色调与胶片<span class="aside" id="filmNote"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="filter" data-value="none">原色</button>
+            <button class="dr-chip" data-group="filter" data-value="warm">暖调</button>
+            <button class="dr-chip" data-group="filter" data-value="fade">褪色</button>
+            <button class="dr-chip" data-group="filter" data-value="mono">黑白</button>
+          </div>
+          <div class="switches mt">
+            <label class="switch"><input type="checkbox" id="stamp"><span></span>橙色日期印字</label>
+            <label class="switch"><input type="checkbox" id="leak"><span></span>漏光</label>
+            <label class="switch"><input type="checkbox" id="vignette"><span></span>暗角</label>
+            <label class="switch"><input type="checkbox" id="fadeEdge"><span></span>褪色边角</label>
+          </div>
+          <div class="sub mt">漏光的位置每张照片都不一样。</div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>09 导出<span class="aside" id="dims"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="quality" data-value="std">标准</button>
+            <button class="dr-chip" data-group="quality" data-value="hd">高清</button>
+            <button class="dr-chip" data-group="quality" data-value="max">超清</button>
+            <span style="width:8px"></span>
+            <button class="dr-chip f-mono" data-group="format" data-value="png">PNG</button>
+            <button class="dr-chip f-mono" data-group="format" data-value="jpg">JPG</button>
+          </div>
+          <div class="switches mt"><label class="switch"><input type="checkbox" id="withBg"><span></span>带背景（适合发图）</label></div>
+          <div id="bgOpts">
+            <div class="swatches mt" id="bgs"></div>
+            <div class="slider mt"><span>倾斜</span><input type="range" id="tilt" min="-6" max="6" step="0.1"><output id="tiltOut"></output></div>
+          </div>
+          <div class="actions">
+            <button class="btn primary block" id="export">导出图片</button>
+            <button class="btn" id="copy" title="复制为 PNG">复制</button>
+          </div>
+          <div class="stack">
+            <button class="btn clay block" id="exportAll" hidden>导出全部</button>
+            <button class="btn block" id="exportVideo">导出显影动画（约 4 秒视频）</button>
+          </div>
+          <div class="sub mt" id="batchNote" hidden>批量导出会打包成一个 ZIP。照片多时建议选 JPG，体积小很多。</div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>10 拼图 · 多张合成<span class="aside" id="collageNote"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="collage.layout" data-value="scatter">散落桌面</button>
+            <button class="dr-chip" data-group="collage.layout" data-value="grid">整齐网格</button>
+            <button class="dr-chip" data-group="collage.layout" data-value="line">晾衣绳</button>
+          </div>
+          <div class="dr-row mt">
+            <span class="label">画布</span>
+            <button class="dr-chip" data-group="collage.canvas" data-value="3:4">3:4 小红书</button>
+            <button class="dr-chip" data-group="collage.canvas" data-value="4:5">4:5</button>
+            <button class="dr-chip" data-group="collage.canvas" data-value="1:1">1:1 朋友圈</button>
+            <button class="dr-chip" data-group="collage.canvas" data-value="9:16">9:16 壁纸</button>
+          </div>
+          <div class="swatches mt" id="collageBgs"></div>
+          <button class="btn primary block mt" id="collageOpen">预览拼图</button>
+          <div class="sub mt">最多 12 张，按照片顺序排列；没有照片时用示意图。</div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>11 打印 PDF<span class="aside" id="printNote"></span></summary>
+        <div class="gbody">
+          <div class="dr-row">
+            <button class="dr-chip" data-group="print.size" data-value="mini">Mini · 54mm</button>
+            <button class="dr-chip" data-group="print.size" data-value="square">Square · 72mm</button>
+            <button class="dr-chip" data-group="print.size" data-value="classic">经典 600 · 88mm</button>
+            <button class="dr-chip" data-group="print.size" data-value="wide">Wide · 108mm</button>
+          </div>
+          <div class="switches mt">
+            <label class="switch"><input type="checkbox" id="printMarks"><span></span>裁切线</label>
+            <label class="switch"><input type="checkbox" id="printFill"><span></span>铺满整页（重复）</label>
+          </div>
+          <div class="sub mt" id="printHint"></div>
+          <button class="btn primary block mt" id="printPdf">生成 A4 打印 PDF</button>
+        </div>
+      </details>
+    </aside>
+  </div>
+
+  <div class="modal" id="modal" hidden>
+    <div class="sheet">
+      <h3 id="modalTitle"></h3>
+      <div class="mbody" id="modalBody"></div>
+      <div class="mfoot" id="modalFoot"></div>
+    </div>
+  </div>
+  <div class="busy" id="busy" hidden><div id="busyText">处理中…</div></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="/assets/javascripts/darkroom/illos.js?v={{ asset_version }}" defer></script>
+<script src="/assets/javascripts/darkroom/app.js?v={{ asset_version }}" defer></script>

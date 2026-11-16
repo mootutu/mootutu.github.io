@@ -128,6 +128,7 @@ Jekyll 会把子布局的 Front Matter 合并进父布局的 `layout` 变量，�
 | 论文阅读库 | `/learning/paper-reading.html` |
 | About | `/about.html` |
 | 维护文档 | `/maintenance.html` |
+| 暗房 Darkroom（拍立得相纸工具） | `/darkroom/` |
 
 这些页面之间的互相链接（例如文章页的返回链接）都还在。要重新公开某个页面，在 `site-header.html` 里加回导航链接即可。
 

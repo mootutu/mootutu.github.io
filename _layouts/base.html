@@ -8,6 +8,7 @@
   <title>{% if page_title != '' %}{{ page_title }} · {% endif %}Weiqin Wang</title>
   {% capture page_desc %}{{ page.description | default: page.excerpt | default: page.one_line_summary | default: 'Weiqin Wang — research on large language models.' | strip_html | strip_newlines | truncate: 200 }}{% endcapture %}
   <meta name="description" content="{{ page_desc | escape }}">
+  {% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">

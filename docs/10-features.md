@@ -196,6 +196,26 @@ Markdown 写法：三个反引号后写语言名。
 
 ---
 
+## 10.13 暗房 Darkroom
+
+`/darkroom/` 是一个纯前端的拍立得相纸工具：上传照片（可批量），套进 Anthropic 风格的相纸，加插画、装饰物件、胶片效果、涂鸦和文字，再导出 PNG/JPG、ZIP、拼图、A4 打印 PDF 或显影动画视频。照片只在浏览器本地处理，不会上传。
+
+**入口**：和其他隐藏页面一样放在 Back room 面板里（连点橙色圆点 5 次，或键入 `mootutu`），导航和站内搜索都没有它；页面 front matter 里的 `noindex: true` 会让 `base.html` 输出 `<meta name="robots" content="noindex, nofollow">`。
+
+| 文件 | 作用 |
+|------|------|
+| `darkroom/index.html` | 页面骨架（`layout: base`，带站点页眉、页脚和主题切换） |
+| `assets/css/site.css` 末尾的 “Darkroom” 段 | 页面样式，全部限定在 `.dr` 容器内，用站点的颜色变量，深色模式自动适配 |
+| `assets/javascripts/darkroom/illos.js` | 插画库（100×100 坐标的路径数据） |
+| `assets/javascripts/darkroom/app.js` | 全部功能逻辑（绘制、导出、拼图、PDF、视频、模板、撤销） |
+
+- 工具脚本较大（约 100 KB），只在这个页面加载，所以没有并进 `site.js`。
+- 相纸上用到的字体（Newsreader、Caveat、Noto Serif SC 等）只在这个页面以非阻塞方式加载；3.5 秒内 Google Fonts 加载不到时会改用 `fonts.loli.net` 镜像。
+- 自己保存的模板存在浏览器的 `localStorage`（键名 `instant-frame-templates-v1`），换设备不会同步，可以用「导出 .json」备份。
+- 新增插画：在 `illos.js` 的 `ILLOS` 数组里加一项（`p` 是若干路径，`f` 是填充色键 C/K/O/S/M/W/H/I），再把 id 写进文件底部 `ILLO_CATS` 的对应分类。
+
+---
+
 <div class="doc-nav">
   <a href="./09-config.md" class="doc-nav-card prev">
     <span class="doc-nav-label">上一篇</span>
