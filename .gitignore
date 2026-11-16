@@ -17,3 +17,6 @@ _site/
 *.toc
 *.xdv
 .sass-cache/
+
+# Claude Code local settings and worktrees
+.claude/
