@@ -1,0 +1,353 @@
+---
+layout: blog-post-layout
+title: "A Practical Guide to tmux"
+date: 2026-11-19
+author: "Weiqin Wang"
+category: "Technical Tutorial"
+excerpt: "Keep terminal work alive across SSH drops, split one window into many panes, and set up a tmux config that stays out of your way."
+tags: ["tmux", "Terminal", "Technical Tutorial"]
+reading_time: "10 minutes"
+cover_image: /assets/images/covers/tmux-guide.png
+lang: en
+---
+
+<div class="blog-content">
+  <p>tmux is a <strong>terminal multiplexer</strong>: it lets one terminal window hold many shells, and it keeps those
+    shells running after you close the window or lose your SSH connection. If you have ever had a long training run die
+    because your laptop went to sleep, tmux is the fix. This guide covers the mental model, the everyday commands, a
+    sensible config file, and a few workflows I use on remote servers.</p>
+
+  <h2 id="why-tmux">1. Why tmux?</h2>
+  <ul>
+    <li><strong>Persistence</strong>: processes keep running on the server after you disconnect. Reconnect later and
+      pick up exactly where you left off.</li>
+    <li><strong>Splits and tabs anywhere</strong>: split a single SSH session into panes and windows, with no GUI
+      needed.</li>
+    <li><strong>One layout per project</strong>: keep a session for each project, each with its own editor, logs, and
+      shells, and switch between them in a keystroke.</li>
+    <li><strong>Pairing</strong>: two people attached to the same session see the same screen.</li>
+  </ul>
+
+  <h2 id="install">2. Installation</h2>
+  <pre><code># macOS
+brew install tmux
+
+# Ubuntu / Debian
+sudo apt install tmux
+
+# Fedora / CentOS
+sudo dnf install tmux
+
+# Check the version (3.x recommended)
+tmux -V</code></pre>
+  <p>No root access on a shared server? <code>conda install -c conda-forge tmux</code> installs it into your user
+    environment.</p>
+
+  <h2 id="concepts">3. The Mental Model</h2>
+  <p>tmux has four layers. Once these click, every command makes sense:</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>What it is</th>
+        <th>Analogy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Server</strong></td>
+        <td>A background process that owns everything. Starts automatically on first use.</td>
+        <td>The browser itself</td>
+      </tr>
+      <tr>
+        <td><strong>Session</strong></td>
+        <td>A named group of windows. You attach to and detach from sessions.</td>
+        <td>A browser window</td>
+      </tr>
+      <tr>
+        <td><strong>Window</strong></td>
+        <td>A full-screen page inside a session, listed in the status bar.</td>
+        <td>A tab</td>
+      </tr>
+      <tr>
+        <td><strong>Pane</strong></td>
+        <td>A rectangular split inside a window, each running its own shell.</td>
+        <td>A split view inside a tab</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>When you close your terminal or SSH drops, you only lose the <em>client</em>. The server, and every session under
+    it, keeps running.</p>
+
+  <h2 id="prefix">4. The Prefix Key</h2>
+  <p>Almost every tmux shortcut starts with the <strong>prefix</strong>, which is <code>Ctrl + b</code> by default.
+    Press and release the prefix, then press the command key. In this guide, <code>prefix d</code> means: press
+    <code>Ctrl + b</code>, release, then press <code>d</code>.</p>
+  <p>Two shortcuts worth learning first:</p>
+  <ul>
+    <li><code>prefix ?</code>: list every key binding</li>
+    <li><code>prefix :</code>: open the tmux command prompt (for example, type <code>kill-session</code>)</li>
+  </ul>
+
+  <h2 id="sessions">5. Sessions</h2>
+  <h3 id="sessions-cli">5.1 From the shell</h3>
+  <pre><code># Start a new session named "train"
+tmux new -s train
+
+# List sessions
+tmux ls
+
+# Attach to a session (or the most recent one if no name is given)
+tmux attach -t train
+tmux a
+
+# Attach if it exists, otherwise create it
+tmux new -A -s train
+
+# Kill a session
+tmux kill-session -t train
+
+# Kill everything (the whole server)
+tmux kill-server</code></pre>
+
+  <h3 id="sessions-keys">5.2 Inside tmux</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Keys</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>prefix d</code></td><td>Detach (the session keeps running)</td></tr>
+      <tr><td><code>prefix s</code></td><td>Pick a session from an interactive tree</td></tr>
+      <tr><td><code>prefix $</code></td><td>Rename the current session</td></tr>
+      <tr><td><code>prefix (</code> / <code>prefix )</code></td><td>Previous / next session</td></tr>
+    </tbody>
+  </table>
+  <blockquote>
+    <p><strong>Detach, don't exit.</strong> Typing <code>exit</code> closes the shell, and closing the last shell ends
+      the session. Use <code>prefix d</code> when you want to leave something running.</p>
+  </blockquote>
+
+  <h2 id="windows">6. Windows</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Keys</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>prefix c</code></td><td>Create a new window</td></tr>
+      <tr><td><code>prefix ,</code></td><td>Rename the current window</td></tr>
+      <tr><td><code>prefix n</code> / <code>prefix p</code></td><td>Next / previous window</td></tr>
+      <tr><td><code>prefix 0</code>…<code>9</code></td><td>Jump to window by number</td></tr>
+      <tr><td><code>prefix w</code></td><td>Pick a window from a list (with previews)</td></tr>
+      <tr><td><code>prefix l</code></td><td>Toggle to the last-used window</td></tr>
+      <tr><td><code>prefix &amp;</code></td><td>Kill the current window (asks for confirmation)</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="panes">7. Panes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Keys</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>prefix %</code></td><td>Split left / right</td></tr>
+      <tr><td><code>prefix "</code></td><td>Split top / bottom</td></tr>
+      <tr><td><code>prefix</code> + arrow key</td><td>Move to the pane in that direction</td></tr>
+      <tr><td><code>prefix o</code></td><td>Cycle through panes</td></tr>
+      <tr><td><code>prefix q</code></td><td>Show pane numbers (press a number to jump)</td></tr>
+      <tr><td><code>prefix z</code></td><td>Zoom the current pane to full screen (press again to restore)</td></tr>
+      <tr><td><code>prefix Space</code></td><td>Cycle through preset layouts</td></tr>
+      <tr><td><code>prefix {</code> / <code>prefix }</code></td><td>Swap the pane with the previous / next one</td></tr>
+      <tr><td><code>prefix !</code></td><td>Break the pane out into its own window</td></tr>
+      <tr><td><code>prefix Ctrl + arrow</code></td><td>Resize the pane (keep pressing the arrow to repeat)</td></tr>
+      <tr><td><code>prefix x</code></td><td>Kill the current pane</td></tr>
+    </tbody>
+  </table>
+  <p><code>prefix z</code> is the one people forget and then love: zoom into a pane to read a long stack trace, then
+    zoom back out to your layout.</p>
+
+  <h2 id="copy-mode">8. Scrolling and Copy Mode</h2>
+  <p>Your mouse wheel does not scroll tmux history by default. Use <strong>copy mode</strong> instead:</p>
+  <ol>
+    <li>Press <code>prefix [</code> to enter copy mode.</li>
+    <li>Scroll with arrow keys, <code>PgUp</code> / <code>PgDn</code>, or (with vi keys enabled) <code>Ctrl + u</code>
+      / <code>Ctrl + d</code>.</li>
+    <li>Search backward with <code>?</code> or forward with <code>/</code>, then <code>n</code> / <code>N</code> to
+      move between matches.</li>
+    <li>With vi keys: press <code>v</code> to start selecting, <code>y</code> to copy.</li>
+    <li>Press <code>q</code> to leave copy mode. Paste the tmux buffer with <code>prefix ]</code>.</li>
+  </ol>
+  <p>The config in the next section turns on mouse support and vi keys, which makes this much friendlier.</p>
+
+  <h2 id="config">9. A Sensible <code>~/.tmux.conf</code></h2>
+  <p>tmux reads <code>~/.tmux.conf</code> on startup. Here is a small config that fixes the most common annoyances:</p>
+  <pre><code># ---- Prefix: Ctrl+a is easier to reach than Ctrl+b ----
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+
+# ---- General ----
+set -g mouse on                  # click panes, drag borders, wheel-scroll
+set -g history-limit 50000       # much longer scrollback
+set -g base-index 1              # windows start at 1, matching the keyboard
+setw -g pane-base-index 1
+set -g renumber-windows on       # no gaps after closing a window
+set -sg escape-time 10           # no lag after Esc in vim
+set -g default-terminal "tmux-256color"
+set -ag terminal-overrides ",xterm-256color:RGB"   # true color
+
+# ---- Easier splits that keep the current directory ----
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind c new-window -c "#{pane_current_path}"
+
+# ---- Vim-style pane navigation and resizing ----
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# ---- vi keys in copy mode ----
+setw -g mode-keys vi
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi y send -X copy-selection-and-cancel
+
+# ---- Reload this file with prefix r ----
+bind r source-file ~/.tmux.conf \; display "Config reloaded"
+
+# ---- A quiet status bar ----
+set -g status-position bottom
+set -g status-style "bg=default,fg=colour245"
+set -g status-left "#[bold]#S  "
+set -g status-right "%Y-%m-%d %H:%M"
+setw -g window-status-current-style "fg=colour214,bold"</code></pre>
+  <p>Apply it without restarting tmux:</p>
+  <pre><code>tmux source-file ~/.tmux.conf</code></pre>
+  <blockquote>
+    <p>Note: this config reuses <code>prefix l</code> for "move right", which replaces the default "last window"
+      shortcut. Add <code>bind Tab last-window</code> if you want it back. The rest of this post still writes keys as
+      <code>prefix …</code>, so it works with either prefix.</p>
+  </blockquote>
+
+  <h2 id="workflows">10. Everyday Workflows</h2>
+
+  <h3 id="workflow-remote">10.1 Long-running jobs on a remote server</h3>
+  <p>This is the reason most people install tmux:</p>
+  <pre><code># On your laptop
+ssh my-server
+
+# On the server
+tmux new -A -s exp
+python train.py --config configs/base.yaml
+
+# Detach with prefix d, close the laptop, go home.
+# Later, from anywhere:
+ssh my-server
+tmux a -t exp</code></pre>
+  <p>Combine the two steps with <code>ssh -t my-server tmux new -A -s exp</code>, which attaches if the session exists
+    and creates it otherwise.</p>
+
+  <h3 id="workflow-layout">10.2 A scripted project layout</h3>
+  <p>tmux commands work from scripts, so you can rebuild a whole workspace with one command:</p>
+  <pre><code>#!/usr/bin/env bash
+SESSION=blog
+DIR=~/code/my-site
+
+tmux has-session -t "$SESSION" 2&gt;/dev/null || {
+  tmux new-session -d -s "$SESSION" -n editor -c "$DIR"
+  tmux send-keys   -t "$SESSION:editor" "nvim ." C-m
+
+  tmux new-window  -t "$SESSION" -n server -c "$DIR"
+  tmux send-keys   -t "$SESSION:server" "bundle exec jekyll serve" C-m
+  tmux split-window -t "$SESSION:server" -v -c "$DIR"
+  tmux send-keys   -t "$SESSION:server.2" "git status" C-m
+
+  tmux select-window -t "$SESSION:editor"
+}
+tmux attach -t "$SESSION"</code></pre>
+
+  <h3 id="workflow-sync">10.3 Typing into several panes at once</h3>
+  <p>Need to run the same command on four servers? Open one pane per server, then:</p>
+  <pre><code># prefix : then type
+setw synchronize-panes on</code></pre>
+  <p>Everything you type now goes to every pane in the window. Run the same command with <code>off</code> to stop.</p>
+
+  <h3 id="workflow-send">10.4 Checking on a job without attaching</h3>
+  <pre><code># Print the last 20 lines of a pane's output
+tmux capture-pane -p -t exp | tail -20
+
+# Send Ctrl+C to a running job
+tmux send-keys -t exp C-c</code></pre>
+
+  <h2 id="plugins">11. Plugins (Optional)</h2>
+  <p><a href="https://github.com/tmux-plugins/tpm" target="_blank">tpm</a> is the standard plugin manager. Install
+    it:</p>
+  <pre><code>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</code></pre>
+  <p>Then add to the <strong>bottom</strong> of <code>~/.tmux.conf</code>:</p>
+  <pre><code>set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'    # widely agreed defaults
+set -g @plugin 'tmux-plugins/tmux-resurrect'   # save/restore sessions across reboots
+set -g @plugin 'tmux-plugins/tmux-continuum'   # auto-save every 15 minutes
+set -g @plugin 'tmux-plugins/tmux-yank'        # copy to the system clipboard
+
+run '~/.tmux/plugins/tpm/tpm'</code></pre>
+  <p>Reload the config, then press <code>prefix I</code> (capital i) to install. With tmux-resurrect,
+    <code>prefix Ctrl + s</code> saves and <code>prefix Ctrl + r</code> restores your sessions.</p>
+  <p>Note that tmux sessions survive disconnects, but <strong>not reboots</strong>. Resurrect restores the layout and
+    working directories; it cannot bring back a process that was killed.</p>
+
+  <h2 id="troubleshooting">12. Common Gotchas</h2>
+  <ul>
+    <li><strong>"sessions should be nested with care"</strong>: you ran <code>tmux</code> inside tmux. Detach first,
+      or press the prefix twice to send it to the inner session.</li>
+    <li><strong>Colors look wrong in vim</strong>: set <code>default-terminal</code> and <code>terminal-overrides</code>
+      as in the config above, then restart the tmux server (<code>tmux kill-server</code>).</li>
+    <li><strong>Config changes don't apply</strong>: <code>source-file</code> only adds settings. Removed lines
+      stay active until the server restarts.</li>
+    <li><strong>Copy goes to the tmux buffer, not the clipboard</strong>: hold <code>Shift</code> (or
+      <code>Option</code> in iTerm2) while selecting with the mouse, or install tmux-yank.</li>
+    <li><strong>Mac Terminal sends Option as a character</strong>: enable "Use Option as Meta key" if you bind
+      <code>M-</code> shortcuts.</li>
+  </ul>
+
+  <h2 id="cheatsheet">13. Cheat Sheet</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Command / Keys</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>New named session</td><td><code>tmux new -s name</code></td></tr>
+      <tr><td>Attach or create</td><td><code>tmux new -A -s name</code></td></tr>
+      <tr><td>List sessions</td><td><code>tmux ls</code></td></tr>
+      <tr><td>Detach</td><td><code>prefix d</code></td></tr>
+      <tr><td>Switch session</td><td><code>prefix s</code></td></tr>
+      <tr><td>New window</td><td><code>prefix c</code></td></tr>
+      <tr><td>Next / previous window</td><td><code>prefix n</code> / <code>prefix p</code></td></tr>
+      <tr><td>Split left-right / top-bottom</td><td><code>prefix %</code> / <code>prefix "</code></td></tr>
+      <tr><td>Move between panes</td><td><code>prefix</code> + arrow</td></tr>
+      <tr><td>Zoom pane</td><td><code>prefix z</code></td></tr>
+      <tr><td>Scroll / copy mode</td><td><code>prefix [</code>, then <code>q</code> to quit</td></tr>
+      <tr><td>Paste</td><td><code>prefix ]</code></td></tr>
+      <tr><td>Command prompt</td><td><code>prefix :</code></td></tr>
+      <tr><td>All key bindings</td><td><code>prefix ?</code></td></tr>
+    </tbody>
+  </table>
+
+  <p>Start with sessions and detaching, add splits and zoom once those feel natural, and only then reach for plugins.
+    For everything else, <code>man tmux</code> is long but thorough.</p>
+</div>
